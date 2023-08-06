@@ -101,7 +101,14 @@
 
   
   <url>
-    <loc>https://yyjccc.github.io/tags/web%E5%9F%BA%E7%A1%80/</loc>
+    <loc>https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2023-08-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yyjccc.github.io/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/</loc>
     <lastmod>2023-08-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -115,14 +122,7 @@
   </url>
   
   <url>
-    <loc>https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/</loc>
-    <lastmod>2023-08-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yyjccc.github.io/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/</loc>
+    <loc>https://yyjccc.github.io/tags/web%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2023-08-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
