@@ -4,16 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="yyjccc的博客">
-    <meta name="description" content="123slug: 命令执行漏洞总结title: 命令执行漏洞总结tags: web安全
-
-
-
-命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数
+    <meta name="keywords" content="命令执行漏洞总结, yyjccc的博客">
+    <meta name="description" content="命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数
 系统命令执行
 
 system(args)–有回显
-shell_exec(args)">
+shell_exec(args)–无回显必须输出
+passthru()
+popen(handle,mode)–无回显
+exec">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -25,7 +24,7 @@ shell_exec(args)">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>yyjccc的博客</title>
+    <title>命令执行漏洞总结 | yyjccc的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -349,12 +348,12 @@ shell_exec(args)">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title"></h1>
+                    <h1 class="description center-align post-title">命令执行漏洞总结</h1>
                 </div>
             </div>
         </div>
@@ -376,9 +375,13 @@ shell_exec(args)">
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                <span class="chip bg-color">web安全</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -416,11 +419,7 @@ shell_exec(args)">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slug: 命令执行漏洞总结</span><br><span class="line">title: 命令执行漏洞总结</span><br><span class="line">tags: web安全</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="命令执行漏洞（RCE）"><a href="#命令执行漏洞（RCE）" class="headerlink" title="命令执行漏洞（RCE）"></a>命令执行漏洞（RCE）</h1><h2 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h2><p>php 常见的调用外部程序的函数</p>
+                <h1 id="命令执行漏洞（RCE）"><a href="#命令执行漏洞（RCE）" class="headerlink" title="命令执行漏洞（RCE）"></a>命令执行漏洞（RCE）</h1><h2 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h2><p>php 常见的调用外部程序的函数</p>
 <p>系统命令执行</p>
 <ol>
 <li>system(args)–有回显</li>
@@ -625,7 +624,11 @@ shell_exec(args)">
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                    <span class="chip bg-color">web安全</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -678,9 +681,9 @@ shell_exec(args)">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="命令执行漏洞总结">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">命令执行漏洞总结</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -702,6 +705,14 @@ shell_exec(args)">
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
