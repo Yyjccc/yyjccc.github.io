@@ -192,7 +192,9 @@
     };
     loaded();
 })()
- </script><meta name="generator" content="Hexo 6.3.0"></head>
+ </script><meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
 
 
 
@@ -240,17 +242,6 @@
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
       <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
     </a>
     
   </li>
@@ -346,17 +337,6 @@
 			    <i class="fa-fw fas fa-tags"></i>
 			
 			标签
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
 		</a>
           
         </li>
@@ -484,7 +464,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -545,6 +525,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
 
         
         <!-- 代码块折行 -->
@@ -559,14 +542,27 @@
 <ul>
 <li><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>​	Web 使用一种名为 HTTP（超文本传输协议 ）的协议作为规范，完成从客户端到服务器端等一系列运作流 程。而协议是指规则的约定。Web 是建立在 HTTP 协议上通 信的。 http协议主要是计算机网络系统上的应   用层。</p>
 </li>
-<li><h4 id="TCP-IP协议族"><a href="#TCP-IP协议族" class="headerlink" title="TCP&#x2F;IP协议族"></a>TCP&#x2F;IP协议族</h4><h5 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h5></li>
+<li><h4 id="TCP-IP协议族"><a href="#TCP-IP协议族" class="headerlink" title="TCP/IP协议族"></a>TCP/IP协议族</h4><h5 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h5></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">应用层：FTP（文件传输协议）和DNS（域名系统）和http协议</span><br><span class="line"></span><br><span class="line">传输层：TCP（传输控制协议）和UDP（用户数据报协议）</span><br><span class="line"></span><br><span class="line">网络层：处理在网络上流动的数据包 </span><br><span class="line"></span><br><span class="line">链路层：处理连接网络的硬件部分 </span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">应用层：FTP（文件传输协议）和DNS（域名系统）和http协议
+
+传输层：TCP（传输控制协议）和UDP（用户数据报协议）
+
+网络层：处理在网络上流动的数据包 
+
+链路层：处理连接网络的硬件部分 </code></pre>
 
 <ul>
 <li><h4 id="IP、TCP和DNS："><a href="#IP、TCP和DNS：" class="headerlink" title="IP、TCP和DNS："></a>IP、TCP和DNS：</h4></li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">**IP**</span><br><span class="line">IP地址：指明被分配的地址</span><br><span class="line">MAC地址：指网卡所属固定的地址</span><br><span class="line">运作方式：利用IP指明目标，中转时利用下一站中转设备的MAC地址搜素下一个中转目标。利用ARP协议可以根据IP地址解析出MAC地址。</span><br><span class="line">**TCP**</span><br><span class="line">TCP提供字节流服务，把数据分割，并通过带SYN/ACK的数据包（三次）确定是否最终传送到对方。</span><br><span class="line">**DNS**</span><br><span class="line">提供域名和IP之间解析服务</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">**IP**
+IP地址：指明被分配的地址
+MAC地址：指网卡所属固定的地址
+运作方式：利用IP指明目标，中转时利用下一站中转设备的MAC地址搜素下一个中转目标。利用ARP协议可以根据IP地址解析出MAC地址。
+**TCP**
+TCP提供字节流服务，把数据分割，并通过带SYN/ACK的数据包（三次）确定是否最终传送到对方。
+**DNS**
+提供域名和IP之间解析服务</code></pre>
 
 <ul>
 <li><h4 id="URI和URL"><a href="#URI和URL" class="headerlink" title="URI和URL"></a>URI和URL</h4><p>​	URI：是由某个协议方案表示的资源的定位标识符</p>
@@ -580,7 +576,27 @@
 <p>HTTP 协议规定，请求从客户端发出，最后服务器端响应该请求并返回。</p>
 <p>​	 <strong>请求报文</strong>：主要由请求方法、请求URI、协议版本、可选的请求首部字段和内容实体构成。</p>
 <p>​	<strong>响应报文</strong>：基本由协议版本、状态码（表示请求成功或失败的数字代码）、用以解释状态码的原因短语、可选的响应首部字段以及实体构成。 </p>
-<h5 id="HTTP方法"><a href="#HTTP方法" class="headerlink" title="HTTP方法"></a>HTTP方法</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">**GET: 获取资源**</span><br><span class="line">GET方法用来请求访问已被 URI 识别的资源</span><br><span class="line"></span><br><span class="line">**POST: 传输实体主体**</span><br><span class="line"></span><br><span class="line">**PUT： 传输文件**</span><br><span class="line">由于PUT方法自身不带验证机制，存在安全性问题，一般的 Web 网站不使用该方法</span><br><span class="line"></span><br><span class="line">**HEARD ：获取报文首部**</span><br><span class="line">不返回报文主体部分。用于确认URI的有效性及资源更新的日期时间等</span><br><span class="line"></span><br><span class="line">**DELETE： 删除文件**</span><br><span class="line"></span><br><span class="line">**OPTIONS： 查询支持方法**</span><br><span class="line">用来查询针对URI指定的资源支持的方法</span><br><span class="line"></span><br><span class="line">**TRACE: 追踪路径**</span><br><span class="line">让 Web 服务器端将之前的请求通信环回给客户端的方法。客户端通过 TRACE 方法可以查询发送出去的请求是怎样被加工修改/篡改的。容易引发XST攻击</span><br><span class="line"></span><br><span class="line">**CONNECT：要求用隧道协议连接代理**</span><br><span class="line">方法要求在与代理服务器通信时建立隧道，实现用隧道协议进行 TCP 通信。主要使用 SSL（安全套接层）和 TLS（传输层安全）协议把通信内容加密后经网络隧道传输。	</span><br></pre></td></tr></table></figure>
+<h5 id="HTTP方法"><a href="#HTTP方法" class="headerlink" title="HTTP方法"></a>HTTP方法</h5><pre class="language-none"><code class="language-none">**GET: 获取资源**
+GET方法用来请求访问已被 URI 识别的资源
+
+**POST: 传输实体主体**
+
+**PUT： 传输文件**
+由于PUT方法自身不带验证机制，存在安全性问题，一般的 Web 网站不使用该方法
+
+**HEARD ：获取报文首部**
+不返回报文主体部分。用于确认URI的有效性及资源更新的日期时间等
+
+**DELETE： 删除文件**
+
+**OPTIONS： 查询支持方法**
+用来查询针对URI指定的资源支持的方法
+
+**TRACE: 追踪路径**
+让 Web 服务器端将之前的请求通信环回给客户端的方法。客户端通过 TRACE 方法可以查询发送出去的请求是怎样被加工修改/篡改的。容易引发XST攻击
+
+**CONNECT：要求用隧道协议连接代理**
+方法要求在与代理服务器通信时建立隧道，实现用隧道协议进行 TCP 通信。主要使用 SSL（安全套接层）和 TLS（传输层安全）协议把通信内容加密后经网络隧道传输。	</code></pre>
 
 <p>​	管线化：利用持久化连接，发送请求后不用等待回应就可直接发送下一个请求。</p>
 <p>​	<strong>Cookie</strong>:通常用于判断两个请求是否来自同一浏览器，Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态 。</p>
@@ -590,10 +606,10 @@
 <p>​	实体：作为请求或响应的有效载荷数据（补充项）被传输，其内容由实 体首部和实体主体组成。 </p>
 <p>​	常见压缩传输的内容编码：gzip、compress、deflate、identity</p>
 <h5 id="多部分对象集合"><a href="#多部分对象集合" class="headerlink" title="多部分对象集合"></a>多部分对象集合</h5><ul>
-<li><p>multipart&#x2F;form-data</p>
+<li><p>multipart/form-data</p>
 <p>​	web表单文件上传时使用</p>
 </li>
-<li><p>multipart&#x2F;byteranges</p>
+<li><p>multipart/byteranges</p>
 <p>​	状态码206响应报文包含了多个范围的内容时使用</p>
 <p>获取部分内容的范围请求：用到首部字段Range来指定资源的byte范围</p>
 <p>内容协商技术：服务器驱动协商、客户端驱动协商、透明协商</p>
@@ -634,12 +650,64 @@
 <td>服务器处理出错</td>
 </tr>
 </tbody></table>
-<h5 id="14种常见的状态码"><a href="#14种常见的状态码" class="headerlink" title="14种常见的状态码"></a>14种常见的状态码</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">**200 OK**</span><br><span class="line">请求被正常处理</span><br><span class="line"></span><br><span class="line">**204 No Content**</span><br><span class="line">请求已成功处理，但响应报文中不含实体的主体部分，也不允许返回任何实体的主体</span><br><span class="line"></span><br><span class="line">**206 Partial Content**</span><br><span class="line">客户端进行了范围请求，服务器成功执行请求，响应报文中包含由Content-Range指定范围的实体范围</span><br><span class="line"></span><br><span class="line">**301 Moved Permanently**</span><br><span class="line">永久性定向。--请求的资源已经被分配到了新的URI</span><br><span class="line"></span><br><span class="line">**302 Found**</span><br><span class="line">临时性重定向。</span><br><span class="line"></span><br><span class="line">**303 See Other**</span><br><span class="line">表示请求对应的资源存在另一个URI，应使用GET方法定向获取请求资源</span><br><span class="line"></span><br><span class="line">**304 Not Modified**</span><br><span class="line">无需再次传输请求的内容，可以使用缓存的内容。</span><br><span class="line"></span><br><span class="line">**307 Temporary Redirect**</span><br><span class="line">临时重定向,保持原有信息</span><br><span class="line"></span><br><span class="line">**400 Bad Request**</span><br><span class="line">报文中存在语法错误，需要修改请求重新发送</span><br><span class="line"></span><br><span class="line">**401 Unauthorized**</span><br><span class="line">表示发送请求需要有通过HTTP认证的认证信息，若之前进行过1次请求，则表示用户认证失败</span><br><span class="line"></span><br><span class="line">**403 Forbidden</span><br><span class="line">请求资源的访问被服务器拒绝</span><br><span class="line"></span><br><span class="line">**404 Not Found**</span><br><span class="line">服务器上无法找到请求的资源</span><br><span class="line"></span><br><span class="line">**500 Internal Server Error**</span><br><span class="line">服务器在执行请求时发生了错误，也有可能是Web应用存在的bug或临时的故障</span><br><span class="line"></span><br><span class="line">**503 Service Unavailable**</span><br><span class="line">服务器暂时处于超负载或正在进行停机维护，现在无法处理请求</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="14种常见的状态码"><a href="#14种常见的状态码" class="headerlink" title="14种常见的状态码"></a>14种常见的状态码</h5><pre class="language-none"><code class="language-none">**200 OK**
+请求被正常处理
+
+**204 No Content**
+请求已成功处理，但响应报文中不含实体的主体部分，也不允许返回任何实体的主体
+
+**206 Partial Content**
+客户端进行了范围请求，服务器成功执行请求，响应报文中包含由Content-Range指定范围的实体范围
+
+**301 Moved Permanently**
+永久性定向。--请求的资源已经被分配到了新的URI
+
+**302 Found**
+临时性重定向。
+
+**303 See Other**
+表示请求对应的资源存在另一个URI，应使用GET方法定向获取请求资源
+
+**304 Not Modified**
+无需再次传输请求的内容，可以使用缓存的内容。
+
+**307 Temporary Redirect**
+临时重定向,保持原有信息
+
+**400 Bad Request**
+报文中存在语法错误，需要修改请求重新发送
+
+**401 Unauthorized**
+表示发送请求需要有通过HTTP认证的认证信息，若之前进行过1次请求，则表示用户认证失败
+
+**403 Forbidden
+请求资源的访问被服务器拒绝
+
+**404 Not Found**
+服务器上无法找到请求的资源
+
+**500 Internal Server Error**
+服务器在执行请求时发生了错误，也有可能是Web应用存在的bug或临时的故障
+
+**503 Service Unavailable**
+服务器暂时处于超负载或正在进行停机维护，现在无法处理请求
+</code></pre>
 
 
 
 <h3 id="web服务器"><a href="#web服务器" class="headerlink" title="web服务器"></a>web服务器</h3><hr>
-<h4 id="通信数据转发程序"><a href="#通信数据转发程序" class="headerlink" title="通信数据转发程序"></a>通信数据转发程序</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">**代理**</span><br><span class="line">作为客户端和服务器的‘中间人’</span><br><span class="line">缓存代理：会预先把资源的副本（缓存）保存在代理服务器上</span><br><span class="line">透明代理：转发请求或响应时，不对报文做任何加工代理</span><br><span class="line"></span><br><span class="line">**网关**</span><br><span class="line">转发来自其他服务器通信数据的服务器，对客户端的请求进行处理</span><br><span class="line">网关可以使通信线路上的服务器提供非HTTP协议服务，提高安全性。</span><br><span class="line"></span><br><span class="line">**隧道**</span><br><span class="line">是在相隔甚远的客户端和服务器之间进行中转，并保持双方通信连接的应用程序</span><br><span class="line">目的是为了进行安全的通信</span><br></pre></td></tr></table></figure>
+<h4 id="通信数据转发程序"><a href="#通信数据转发程序" class="headerlink" title="通信数据转发程序"></a>通信数据转发程序</h4><pre class="language-none"><code class="language-none">**代理**
+作为客户端和服务器的‘中间人’
+缓存代理：会预先把资源的副本（缓存）保存在代理服务器上
+透明代理：转发请求或响应时，不对报文做任何加工代理
+
+**网关**
+转发来自其他服务器通信数据的服务器，对客户端的请求进行处理
+网关可以使通信线路上的服务器提供非HTTP协议服务，提高安全性。
+
+**隧道**
+是在相隔甚远的客户端和服务器之间进行中转，并保持双方通信连接的应用程序
+目的是为了进行安全的通信</code></pre>
 
 <h5 id="http出现之前的协议"><a href="#http出现之前的协议" class="headerlink" title="http出现之前的协议"></a>http出现之前的协议</h5><p>​	FTP:传输文件时使用的协议</p>
 <p>​	NNTP：用于 NetNews 电子会议室内传送消息的协议 </p>
@@ -647,17 +715,152 @@
 <p>​	WAIS ：以关键词检索多个数据库使用的协议 </p>
 <p>​	Gopher ：查找与互联网连接的计算机内信息的协议 </p>
 <h3 id="HTTP首部"><a href="#HTTP首部" class="headerlink" title="HTTP首部"></a>HTTP首部</h3><p>​	首部字段结构：手段字段名：字段值</p>
-<h5 id="通用首部"><a href="#通用首部" class="headerlink" title="通用首部"></a>通用首部</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">**Cache-Control 控制缓存的行为**</span><br><span class="line">指令:		public 表明其他用户也可利用缓存</span><br><span class="line">		 private 响应只能以特殊用户作为对象</span><br><span class="line">		 no-cache 用户端不接受缓存过的响应，缓存服务器不能进行缓存</span><br><span class="line">		 no-store 表明请求和响应中包含机密信息，不能进行缓存</span><br><span class="line">		 s-maxage=...（秒）    指定缓存期限和认证的指令</span><br><span class="line">		 min-fresh=...（秒）	指示客户端允许存储的响应至少 N 秒是新鲜的</span><br><span class="line">		 max-stale=...（秒）可指示缓存资源，处于指定范围内，过期也可以接受。</span><br><span class="line">		 only-if-cached	客户端仅在缓存服务器本地缓存目标资源的情况下才会要求其返回</span><br><span class="line">		 must—revalidate代理会向源服务器再次验证即将返回的响应缓存目前是否仍然有效。</span><br><span class="line">		 proxy-revalidate缓存服务器在接收到客户端带有该指令的请求返回响应之前，必须再次验证缓存的有效性</span><br><span class="line">		 no-transform 缓存都不能改变实体主体的媒体类型</span><br><span class="line">		 </span><br><span class="line">**Connection 逐跳首部、连接的管理**</span><br><span class="line">指令		close 服务器想断开连接</span><br><span class="line">		 Keep-Alive 旧版本http协议实现持久化连接</span><br><span class="line"></span><br><span class="line">**Date 创建报文的日期时间**</span><br><span class="line">格式：	如Tue, 03 Jul 2012 04:40:59 GM或者Tue Jul 03 04:40:59 2012</span><br><span class="line"></span><br><span class="line">**Pragma 报文指令**</span><br><span class="line">指令：		no-cache 只在客户端请求中，所有中间服务器不返回缓存资源</span><br><span class="line"></span><br><span class="line">**Trailer 报文末端的首部一览**</span><br><span class="line">允许发送方在分块发送的消息后面添加额外的元信息</span><br><span class="line"></span><br><span class="line">**Transfer-Encoding 指定报文主体的传输编码方式**</span><br><span class="line"></span><br><span class="line">**Upgrade 升级为其他协议**</span><br><span class="line"></span><br><span class="line">**Via 代理服务器的相关信息**</span><br><span class="line">追踪报文传输路径</span><br><span class="line"></span><br><span class="line">**Warning 错误通知**</span><br><span class="line">格式：	[警告码][警告的主机:端口号]“[警告内容]”([日期时间])</span><br></pre></td></tr></table></figure>
+<h5 id="通用首部"><a href="#通用首部" class="headerlink" title="通用首部"></a>通用首部</h5><pre class="language-none"><code class="language-none">**Cache-Control 控制缓存的行为**
+指令:		public 表明其他用户也可利用缓存
+		 private 响应只能以特殊用户作为对象
+		 no-cache 用户端不接受缓存过的响应，缓存服务器不能进行缓存
+		 no-store 表明请求和响应中包含机密信息，不能进行缓存
+		 s-maxage=...（秒）    指定缓存期限和认证的指令
+		 min-fresh=...（秒）	指示客户端允许存储的响应至少 N 秒是新鲜的
+		 max-stale=...（秒）可指示缓存资源，处于指定范围内，过期也可以接受。
+		 only-if-cached	客户端仅在缓存服务器本地缓存目标资源的情况下才会要求其返回
+		 must—revalidate代理会向源服务器再次验证即将返回的响应缓存目前是否仍然有效。
+		 proxy-revalidate缓存服务器在接收到客户端带有该指令的请求返回响应之前，必须再次验证缓存的有效性
+		 no-transform 缓存都不能改变实体主体的媒体类型
+		 
+**Connection 逐跳首部、连接的管理**
+指令		close 服务器想断开连接
+		 Keep-Alive 旧版本http协议实现持久化连接
 
-<h5 id="请求首部字段"><a href="#请求首部字段" class="headerlink" title="请求首部字段"></a>请求首部字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">首部字段名 		说明</span><br><span class="line">**Accept 用户代理可处理的媒体类型**</span><br><span class="line">q=（0-1）用来权衡优先级，默认为1，前用；间隔</span><br><span class="line"></span><br><span class="line">**Accept-Charset 优先的字符集**</span><br><span class="line"></span><br><span class="line">**Accept-Encoding 优先的内容编码**</span><br><span class="line">内容编码优先级</span><br><span class="line"></span><br><span class="line">**Accept-Language 优先的语言（自然语言）**</span><br><span class="line"></span><br><span class="line">**Authorization Web认证信息**</span><br><span class="line"></span><br><span class="line">**Expect 期待服务器的特定行为**</span><br><span class="line">错误返回状态码417 Expectation Failed</span><br><span class="line"></span><br><span class="line">**From 用户的电子邮箱地址**</span><br><span class="line"></span><br><span class="line">**Host 请求资源所在服务器**</span><br><span class="line"></span><br><span class="line">**If-Match 比较实体标记（ETag）**</span><br><span class="line">If-xxx 为条件请求，条件为真时执行</span><br><span class="line"></span><br><span class="line">*If-Modified-Since 比较资源的更新时间*</span><br><span class="line">如果请求的资源都没有过更新，则返回状态码 304 Not Modified 的响应</span><br><span class="line"></span><br><span class="line">**If-None-Match 比较实体标记（与 If-Match 相反）**</span><br><span class="line"></span><br><span class="line">**If-Range 资源未更新时发送实体 Byte 的范围请求**</span><br><span class="line"></span><br><span class="line">If-Unmodified-Since 比较资源的更新时间（与If-Modified-Since相反）</span><br><span class="line">如果在指定日期时间后发生了更新，则以状态码 412 Precondition Failed 作为响应返回。</span><br><span class="line"></span><br><span class="line">**Max-Forwards 最大传输逐跳数**</span><br><span class="line">当值为0时，经过的服务器不在进行转发，直接返回响应</span><br><span class="line"></span><br><span class="line">**Proxy-Authorization 代理服务器要求客户端的认证信息**</span><br><span class="line"></span><br><span class="line">**Range 实体的字节范围请求**</span><br><span class="line"></span><br><span class="line">**Referer 对请求中URI的原始获取方**</span><br><span class="line"></span><br><span class="line">**TE 传输编码的优先级**</span><br><span class="line"></span><br><span class="line">**User-Agent 客户端程序的信息**</span><br><span class="line">将创建的请求的浏览器和用户代理名称等信息传达给服务器</span><br></pre></td></tr></table></figure>
+**Date 创建报文的日期时间**
+格式：	如Tue, 03 Jul 2012 04:40:59 GM或者Tue Jul 03 04:40:59 2012
 
-<h5 id="响应首部字段"><a href="#响应首部字段" class="headerlink" title="响应首部字段"></a>响应首部字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">首部字段名	    	说明</span><br><span class="line">**Accept-Ranges 是否接受字节范围请求**</span><br><span class="line"></span><br><span class="line">**Age 推算资源创建经过时间**</span><br><span class="line"></span><br><span class="line">**ETag 	资源的匹配信息**</span><br><span class="line">用户端实体标识</span><br><span class="line"></span><br><span class="line">**Location 	令客户端重定向至指定URI**</span><br><span class="line"></span><br><span class="line">**Proxy-Authenticate 代理服务器对客户端的认证信息**</span><br><span class="line">服务器是安装http服务器的应用程序是信息</span><br><span class="line"></span><br><span class="line">**Retry-After 对再次发起请求的时机要求**</span><br><span class="line"></span><br><span class="line">**Server     HTTP服务器的安装信息**</span><br><span class="line">服务器是安装http服务器的应用程序是信息</span><br><span class="line"></span><br><span class="line">**Vary 	代理服务器缓存的管理信息**</span><br><span class="line"></span><br><span class="line">**WWW-Authenticate 	服务器对客户端的认证信息**</span><br><span class="line">http访问认证</span><br></pre></td></tr></table></figure>
+**Pragma 报文指令**
+指令：		no-cache 只在客户端请求中，所有中间服务器不返回缓存资源
 
-<h5 id="实体首部字段"><a href="#实体首部字段" class="headerlink" title="实体首部字段"></a>实体首部字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">首部字段名 		说明</span><br><span class="line">**Allow 资源可支持的HTTP方法**</span><br><span class="line"></span><br><span class="line">**Content-Encoding 实体主体适用的编码方式**</span><br><span class="line"></span><br><span class="line">**Content-Language 实体主体的自然语言**</span><br><span class="line"></span><br><span class="line">**Content-Length 实体主体的大小（单位：字节）**</span><br><span class="line"></span><br><span class="line">**Content-Location 替代对应资源的URI**</span><br><span class="line"></span><br><span class="line">**Content-MD5 实体主体的报文摘要**</span><br><span class="line">判断报文的准确性</span><br><span class="line"></span><br><span class="line">**Content-Range 实体主体的位置范围**</span><br><span class="line"></span><br><span class="line">**Content-Type 	实体主体的媒体类型**</span><br><span class="line"></span><br><span class="line">**Expires 实体主体过期的日期时间**</span><br><span class="line"></span><br><span class="line">**Last-Modified 资源的最后修改日期时间**</span><br></pre></td></tr></table></figure>
+**Trailer 报文末端的首部一览**
+允许发送方在分块发送的消息后面添加额外的元信息
 
-<h5 id="为-Cookie-服务的首部字段"><a href="#为-Cookie-服务的首部字段" class="headerlink" title="为 Cookie 服务的首部字段"></a>为 Cookie 服务的首部字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">**Set-Cookie**</span><br><span class="line">expires:浏览器可发送cookie的有效期</span><br><span class="line">path：限定cookie发送范围的文件目录</span><br><span class="line">domain：指定域名与结尾匹配可发送cookie</span><br><span class="line">secure：web仅在HTTPS时，才发送cookie</span><br><span class="line">HttpOnly：使JavaScript无法获取cookie，防止xss攻击对信息的窃取</span><br></pre></td></tr></table></figure>
+**Transfer-Encoding 指定报文主体的传输编码方式**
 
-<h5 id="其他首部字段"><a href="#其他首部字段" class="headerlink" title="其他首部字段"></a>其他首部字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">**X-Frame-Options 用于控制网站内容在其他 Web 网站的 Frame 标签内的显示问题 **响应首部</span><br><span class="line">DENY：拒绝</span><br><span class="line">SAMEORIGIN：仅同域名下页面匹配时许可</span><br><span class="line"></span><br><span class="line">**X-XSS-Protection 于控制浏览器 XSS 防护机制的开关**响应首部</span><br><span class="line">0：无效	1： 有效</span><br><span class="line"></span><br><span class="line">**DNT 拒绝个人信息被收集**请求首部</span><br><span class="line">0：同意被跟踪		1：拒绝被跟踪</span><br><span class="line"></span><br><span class="line">*P3P 在线隐私偏好平台**</span><br></pre></td></tr></table></figure>
+**Upgrade 升级为其他协议**
+
+**Via 代理服务器的相关信息**
+追踪报文传输路径
+
+**Warning 错误通知**
+格式：	[警告码][警告的主机:端口号]“[警告内容]”([日期时间])</code></pre>
+
+<h5 id="请求首部字段"><a href="#请求首部字段" class="headerlink" title="请求首部字段"></a>请求首部字段</h5><pre class="language-none"><code class="language-none">首部字段名 		说明
+**Accept 用户代理可处理的媒体类型**
+q=（0-1）用来权衡优先级，默认为1，前用；间隔
+
+**Accept-Charset 优先的字符集**
+
+**Accept-Encoding 优先的内容编码**
+内容编码优先级
+
+**Accept-Language 优先的语言（自然语言）**
+
+**Authorization Web认证信息**
+
+**Expect 期待服务器的特定行为**
+错误返回状态码417 Expectation Failed
+
+**From 用户的电子邮箱地址**
+
+**Host 请求资源所在服务器**
+
+**If-Match 比较实体标记（ETag）**
+If-xxx 为条件请求，条件为真时执行
+
+*If-Modified-Since 比较资源的更新时间*
+如果请求的资源都没有过更新，则返回状态码 304 Not Modified 的响应
+
+**If-None-Match 比较实体标记（与 If-Match 相反）**
+
+**If-Range 资源未更新时发送实体 Byte 的范围请求**
+
+If-Unmodified-Since 比较资源的更新时间（与If-Modified-Since相反）
+如果在指定日期时间后发生了更新，则以状态码 412 Precondition Failed 作为响应返回。
+
+**Max-Forwards 最大传输逐跳数**
+当值为0时，经过的服务器不在进行转发，直接返回响应
+
+**Proxy-Authorization 代理服务器要求客户端的认证信息**
+
+**Range 实体的字节范围请求**
+
+**Referer 对请求中URI的原始获取方**
+
+**TE 传输编码的优先级**
+
+**User-Agent 客户端程序的信息**
+将创建的请求的浏览器和用户代理名称等信息传达给服务器</code></pre>
+
+<h5 id="响应首部字段"><a href="#响应首部字段" class="headerlink" title="响应首部字段"></a>响应首部字段</h5><pre class="language-none"><code class="language-none">首部字段名	    	说明
+**Accept-Ranges 是否接受字节范围请求**
+
+**Age 推算资源创建经过时间**
+
+**ETag 	资源的匹配信息**
+用户端实体标识
+
+**Location 	令客户端重定向至指定URI**
+
+**Proxy-Authenticate 代理服务器对客户端的认证信息**
+服务器是安装http服务器的应用程序是信息
+
+**Retry-After 对再次发起请求的时机要求**
+
+**Server     HTTP服务器的安装信息**
+服务器是安装http服务器的应用程序是信息
+
+**Vary 	代理服务器缓存的管理信息**
+
+**WWW-Authenticate 	服务器对客户端的认证信息**
+http访问认证</code></pre>
+
+<h5 id="实体首部字段"><a href="#实体首部字段" class="headerlink" title="实体首部字段"></a>实体首部字段</h5><pre class="language-none"><code class="language-none">首部字段名 		说明
+**Allow 资源可支持的HTTP方法**
+
+**Content-Encoding 实体主体适用的编码方式**
+
+**Content-Language 实体主体的自然语言**
+
+**Content-Length 实体主体的大小（单位：字节）**
+
+**Content-Location 替代对应资源的URI**
+
+**Content-MD5 实体主体的报文摘要**
+判断报文的准确性
+
+**Content-Range 实体主体的位置范围**
+
+**Content-Type 	实体主体的媒体类型**
+
+**Expires 实体主体过期的日期时间**
+
+**Last-Modified 资源的最后修改日期时间**</code></pre>
+
+<h5 id="为-Cookie-服务的首部字段"><a href="#为-Cookie-服务的首部字段" class="headerlink" title="为 Cookie 服务的首部字段"></a>为 Cookie 服务的首部字段</h5><pre class="language-none"><code class="language-none">**Set-Cookie**
+expires:浏览器可发送cookie的有效期
+path：限定cookie发送范围的文件目录
+domain：指定域名与结尾匹配可发送cookie
+secure：web仅在HTTPS时，才发送cookie
+HttpOnly：使JavaScript无法获取cookie，防止xss攻击对信息的窃取</code></pre>
+
+<h5 id="其他首部字段"><a href="#其他首部字段" class="headerlink" title="其他首部字段"></a>其他首部字段</h5><pre class="language-none"><code class="language-none">**X-Frame-Options 用于控制网站内容在其他 Web 网站的 Frame 标签内的显示问题 **响应首部
+DENY：拒绝
+SAMEORIGIN：仅同域名下页面匹配时许可
+
+**X-XSS-Protection 于控制浏览器 XSS 防护机制的开关**响应首部
+0：无效	1： 有效
+
+**DNT 拒绝个人信息被收集**请求首部
+0：同意被跟踪		1：拒绝被跟踪
+
+*P3P 在线隐私偏好平台**</code></pre>
 
 
                 
@@ -700,6 +903,33 @@
     </div>
 
     
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0efb4a442bc09d1ba17e',
+        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+        repo: '',
+        owner: 'yyjccc',
+        admin: "yyjccc",
+        id: '2023-07-20T10-28-58',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
 
     
 
@@ -728,7 +958,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="JavaScript的原型链污染">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="JavaScript的原型链污染">
                         
                         <span class="card-title">JavaScript的原型链污染</span>
                     </div>
@@ -773,7 +1003,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Hello World">
                         
                         <span class="card-title">Hello World</span>
                     </div>
@@ -818,6 +1048,9 @@
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
 
 
 <!-- 代码语言 -->
@@ -1278,13 +1511,11 @@ $(function () {
     
 
     
-    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
-    
 
     
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"live2d-widget-model-epsilon2_1"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>

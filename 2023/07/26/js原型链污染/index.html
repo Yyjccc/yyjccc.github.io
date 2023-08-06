@@ -190,7 +190,9 @@
     };
     loaded();
 })()
- </script><meta name="generator" content="Hexo 6.3.0"></head>
+ </script><meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
 
 
 
@@ -238,17 +240,6 @@
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
       <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
     </a>
     
   </li>
@@ -344,17 +335,6 @@
 			    <i class="fa-fw fas fa-tags"></i>
 			
 			标签
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
 		</a>
           
         </li>
@@ -482,7 +462,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -543,6 +523,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
 
         
         <!-- 代码块折行 -->
@@ -558,7 +541,16 @@
 <p><strong>特性</strong></p>
 <p>类定义中的属性，会在创建对象时在对象中创建，类定义的方法而是存在于原型之中。当使用没有定义的属性和方法时，就会顺着原型链一直寻找，直到为undefined,用此来实现继承，子类能用父类的属性和方法</p>
 <p>示例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function Person(name) &#123;</span><br><span class="line">       this.name = name;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   Person.prototype.greet = function () &#123;</span><br><span class="line">       console.log(`Hello, my name is $&#123;this.name&#125;`);</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   const person1 = new Person(&#x27;Alice&#x27;);</span><br><span class="line">   person1.greet(); // 输出 &quot;Hello, my name is Alice&quot;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">function Person(name) {
+       this.name = name;
+   }
+
+   Person.prototype.greet = function () {
+       console.log(`Hello, my name is ${this.name}`);
+   };
+
+   const person1 = new Person('Alice');
+   person1.greet(); // 输出 "Hello, my name is Alice"</code></pre>
 
 <p><img src="/./js.jpg" alt="img"></p>
 <p>​								<em>person1对象原型对象展示</em></p>
@@ -576,33 +568,50 @@
 <p>描述</p>
 <p><code>new</code> 关键字会进行如下的操作：</p>
 <ol>
-<li>创建一个空的简单 JavaScript 对象（即 <code>&#123;&#125;</code>）；</li>
+<li>创建一个空的简单 JavaScript 对象（即 <code>{}</code>）；</li>
 <li>为步骤 1 新创建的对象添加属性 <code>__proto__</code>，将该属性链接至构造函数的原型对象；</li>
 <li>将步骤 1 新创建的对象作为 <code>this</code> 的上下文；</li>
 <li>如果该函数没有返回对象，则返回 <code>this</code>。</li>
 </ol>
 <h3 id="原型链污染"><a href="#原型链污染" class="headerlink" title="原型链污染"></a>原型链污染</h3><p>当我们添加或者修改上层原型的一些属性，子类都又调用该恶意属性时，子类调用的属性已经被我们篡改，造成原型链污染，原型链污染可能会造成命令执行(rce)或者任意文件读取,越权等等</p>
 <p>示例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function merge(target, source) &#123;</span><br><span class="line">      for (let key in source) &#123;</span><br><span class="line">          if (key in source &amp;&amp; key in target) &#123;</span><br><span class="line">              // 如果target与source有相同的键名 则让target的键值为source的键值</span><br><span class="line">              merge(target[key], source[key])</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">              target[key] = source[key]  // 如果target与source没有相通的键名 则直接在target新建键名并赋给键值</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  let o1 = &#123;&#125;</span><br><span class="line">  let o2 = JSON.parse(&#x27;&#123; &quot;a&quot;: 1, &quot;__proto__&quot;: &#123; &quot;b&quot;: 2&#125; &#125;&#x27;);</span><br><span class="line">  merge(o1, o2)</span><br><span class="line">  console.log(o1.a, o1.b)</span><br><span class="line"></span><br><span class="line">  o3 = &#123;&#125;</span><br><span class="line">  console.log(o3.b)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">function merge(target, source) {
+      for (let key in source) {
+          if (key in source &amp;&amp; key in target) {
+              // 如果target与source有相同的键名 则让target的键值为source的键值
+              merge(target[key], source[key])
+          } else {
+              target[key] = source[key]  // 如果target与source没有相通的键名 则直接在target新建键名并赋给键值
+          }
+      }
+  }
+  let o1 = {}
+  let o2 = JSON.parse('{ "a": 1, "__proto__": { "b": 2} }');
+  merge(o1, o2)
+  console.log(o1.a, o1.b)
+
+  o3 = {}
+  console.log(o3.b)</code></pre>
 
 <p>漏洞点</p>
 <p>一般对对象进行复制拷贝,如merge函数或者copy函数，会将传入的json数据拷贝至已创建对象，此时可能会产生原型链污染</p>
 <h4 id="ejs模板基于原型链污染的rce"><a href="#ejs模板基于原型链污染的rce" class="headerlink" title="ejs模板基于原型链污染的rce"></a>ejs模板基于原型链污染的rce</h4><p>直接上POC</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a; return global.process.mainModule.constructor._load(&#x27;child_process&#x27;).execSync(&#x27;whoami&#x27;); //</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">a; return global.process.mainModule.constructor._load('child_process').execSync('whoami'); //</code></pre>
 
 <p>参考学习：<a target="_blank" rel="noopener" href="https://evi0s.com/2019/08/30/expresslodashejs-%e4%bb%8e%e5%8e%9f%e5%9e%8b%e9%93%be%e6%b1%a1%e6%9f%93%e5%88%b0rce/">https://evi0s.com/2019/08/30/expresslodashejs-%e4%bb%8e%e5%8e%9f%e5%9e%8b%e9%93%be%e6%b1%a1%e6%9f%93%e5%88%b0rce/</a></p>
 <h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>对于<code>toUpperCase()</code>函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字符&quot;ı&quot;、&quot;ſ&quot; 经过toUpperCase处理后结果为 &quot;I&quot;、&quot;S&quot;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">字符"ı"、"ſ" 经过toUpperCase处理后结果为 "I"、"S"</code></pre>
 
 <p>对于<code>toLowerCase</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字符&quot;K&quot;经过toLowerCase处理后结果为&quot;k&quot;(这个K不是K)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">字符"K"经过toLowerCase处理后结果为"k"(这个K不是K)</code></pre>
 
 <p>详情可见p神的文章<a target="_blank" rel="noopener" href="https://www.leavesongs.com/HTML/javascript-up-low-ercase-tip.html">https://www.leavesongs.com</a></p>
 <p>python中也存在原型链污染</p>
 <p>可参考文章：<a target="_blank" rel="noopener" href="https://tttang.com/archive/1876">https://tttang.com/archive/1876</a></p>
 <p>ctf例题：<a target="_blank" rel="noopener" href="https://chenlvtang.top/2021/08/17/NodeJs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E7%9A%84%E5%AE%9E%E8%B7%B5">https://chenlvtang.top/2021/08/17/NodeJs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E7%9A%84%E5%AE%9E%E8%B7%B5</a></p>
 <h1 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h1><p>1.Object.freeze()冻结原型</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object.freeze(Object.prototype);</span><br><span class="line">Object.freeze(Object)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">Object.freeze(Object.prototype);
+Object.freeze(Object)</code></pre>
 
 <p>冻结原型后，无法添加新的原型至原型链</p>
 <p>2.对JSON输入验证</p>
@@ -653,6 +662,33 @@
     </div>
 
     
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0efb4a442bc09d1ba17e',
+        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+        repo: '',
+        owner: 'yyjccc',
+        admin: "yyjccc",
+        id: '2023-07-26T10-55-53',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
 
     
 
@@ -681,7 +717,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="命令执行漏洞总结">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="命令执行漏洞总结">
                         
                         <span class="card-title">命令执行漏洞总结</span>
                     </div>
@@ -711,6 +747,10 @@
                         <span class="chip bg-color">web安全</span>
                     </a>
                     
+                    <a href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
+                        <span class="chip bg-color">基础漏洞</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -726,7 +766,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="http概述">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="http概述">
                         
                         <span class="card-title">http概述</span>
                     </div>
@@ -771,6 +811,9 @@
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
 
 
 <!-- 代码语言 -->
@@ -1231,13 +1274,11 @@ $(function () {
     
 
     
-    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
-    
 
     
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"live2d-widget-model-epsilon2_1"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>
