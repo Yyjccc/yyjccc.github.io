@@ -10,9 +10,7 @@
 
 
 
-
-2.添加web模块
-先选择创建的项目">
+2.添加web模块先选择创建的项目，打">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -386,7 +384,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    482
+                    488
                 </div>
                 
 
@@ -422,13 +420,11 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="创建和配置Servlet项目"><a href="#创建和配置Servlet项目" class="headerlink" title="创建和配置Servlet项目"></a>创建和配置Servlet项目</h2><p>这里学习javaweb时候，配置Servlet项目，好像实际跟网上教程不一样(可能是idea更新了),于是就搞了一个教程,也是算入坑javaweb了</p>
-<p><strong>1.创建一个项目</strong></p>
-<img src="/img/9-8/1.png">
+<h5 id="1-创建一个项目"><a href="#1-创建一个项目" class="headerlink" title="1.创建一个项目"></a><strong>1.创建一个项目</strong></h5><img src="/img/9-8/1.png">
 
 
 
-<p><strong>2.添加web模块</strong></p>
-<p>先选择创建的项目，打开模块设置</p>
+<h5 id="2-添加web模块"><a href="#2-添加web模块" class="headerlink" title="2.添加web模块"></a><strong>2.添加web模块</strong></h5><p>先选择创建的项目，打开模块设置</p>
 <img src="/img/9-8/2.png">
 
 <p>在模块中选中自己的项目，添加web模块</p>
@@ -439,8 +435,7 @@
 
 
 
-<p><strong>3.配置web模块</strong></p>
-<p>在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件</p>
+<h5 id="3-配置web模块"><a href="#3-配置web模块" class="headerlink" title="3.配置web模块"></a><strong>3.配置web模块</strong></h5><p>在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件</p>
 <img src="/img/9-8/5.png">
 
 
@@ -462,8 +457,7 @@
 
 
 
-<p><strong>4.配置Tomcat启动项</strong></p>
-<p>打开运行配置</p>
+<h5 id="4-配置Tomcat启动项"><a href="#4-配置Tomcat启动项" class="headerlink" title="4.配置Tomcat启动项"></a><strong>4.配置Tomcat启动项</strong></h5><p>打开运行配置</p>
 <img src="/img/9-8/9.png">
 
 
@@ -490,15 +484,13 @@
 
 
 
-<p><strong>6.引入外部jar包</strong></p>
-<p>打开模块设置，添加Tomcat安装目录下的lib目录下的servlet-api.jar</p>
+<h5 id="6-引入外部jar包"><a href="#6-引入外部jar包" class="headerlink" title="6.引入外部jar包"></a><strong>6.引入外部jar包</strong></h5><p>打开模块设置，添加Tomcat安装目录下的lib目录下的servlet-api.jar</p>
 <img src="/img/9-8/14.png">
 
 
 
 <p>这里也可以在web目录下创建lib目录,来放置导入的包!</p>
-<p><strong>7.启动简单的实例</strong></p>
-<p>在web目录下，创建index.jsp,然后运行服务器</p>
+<h5 id="7-启动简单的实例"><a href="#7-启动简单的实例" class="headerlink" title="7.启动简单的实例"></a><strong>7.启动简单的实例</strong></h5><p>在web目录下，创建index.jsp,然后运行服务器</p>
 <img src="/img/9-8/15.png">
 
 
@@ -541,17 +533,22 @@ public class Helloserver extends HttpServlet implements Servlet {
 
 </code></pre>
 
-<p>然后编辑web.xml文件，如下设置</p>
 <img src="/img/9-8/17.png">
 
 
 
-<p>然后重新启动服务器访问</p>
+<p>然后编辑web.xml文件，如下设置</p>
 <img src="/img/9-8/18.png">
 
 
 
+<p>然后重新启动服务器访问</p>
+<img src="/img/9-8/19.png">
+
+
+
 <p>这里的url与我们配置的相对应</p>
+<p>继续开启javaweb之旅(^-^)</p>
 
                 
             </div>
@@ -1238,9 +1235,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
+                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>
