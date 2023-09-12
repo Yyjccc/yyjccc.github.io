@@ -384,14 +384,14 @@ http签到题一
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    390
+                    628
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -458,6 +458,70 @@ http签到题一
 <pre class="language-none"><code class="language-none">{"error": "ok", "data": {"flag": "moectf{cooKi3_is_d3licious_MA9iVff90SSJ!!M6Mrfu9ifxi9i!JGofMJ36D9cPMxro}"}}</code></pre>
 
 
+
+<h1 id="gas-gas-gas"><a href="#gas-gas-gas" class="headerlink" title="gas!gas!gas!"></a>gas!gas!gas!</h1><p>多看了几眼，根据他给的说明，要正确提交正确的表单，</p>
+<img src="/img/9-12/11.png">
+
+<p>然后根据规则，编写python脚本，注意一下Cookie(session)问题，开始还没注意到</p>
+<pre class="language-python" data-language="python"><code class="language-python">from datetime import time
+import requests
+from bs4 import BeautifulSoup
+
+#默认post参数
+data={
+    "driver": "yyj",
+"steering_control": '0',
+"throttle": '2'
+}
+#url
+url='http://localhost:60713'
+#默认cookie
+cookies={
+    'session': '.eJxtjdsKAiEURf_lPEuoo8fLr2TINKM0UQ6YJxqif0-GHntZsC_s_YZpLa2ut3hZSgMPgXSWOZDjeghkMKtA1qopUM68E6XrvjYD75Tu3OnkuNMEUsni3hTAYK7LM9W-uW3XLkt6tfh7A3_kTJ4Y1JXKDJ4zeLSxttiWewIv0CktLBp7QMlxsIrB30QJ8_kCkKs6Qw.ZQBNlg.s5GIQKXa8JudrZi3dGeeS_T699Q'
+}
+
+
+#精确爬虫，也可以不搞
+def result(res):
+    html=BeautifulSoup(res,'lxml')
+    fl=html.body.div.string
+    if(fl):
+        print('请求结果：',fl)
+    else:
+        print('请求结果：',html.body.div)
+    return res
+
+def setdata(res,data):
+    if '向右' in res:
+        data['steering_control']='-1'
+    elif '向左' in res:
+        data['steering_control']='1'
+    else:
+        print('其他')
+        data['steering_control']='0'
+    if '太小' in res:
+        data['throttle']='0'
+    elif '太大' in res:
+        data['throttle']='2'
+    else:
+        print('其他')
+        data['throttle']='1'
+    return data
+
+for i in range(20):
+    print('第'+str(i)+'次')
+    print('请求数据：',data)
+    res=requests.post(url=url,data=data,cookies=cookies)
+    fl=result(res.text)
+    if(res.cookies):
+        cookies=requests.utils.dict_from_cookiejar(res.cookies)
+    data=setdata(fl,data=data)
+    if 'moectf' in res.text:
+        break
+    print()</code></pre>
+
+<p>跑一下就可以出flag</p>
+<img src="/img/9-12/12.png">
 
 
 
