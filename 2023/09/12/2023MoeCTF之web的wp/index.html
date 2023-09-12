@@ -4,8 +4,13 @@
 
 <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="标签: 基础漏洞, yyjccc的博客">
-    <meta name="description" content="yyjccc的博客">
+    <meta name="keywords" content="2023MoeCTF之web的wp, yyjccc的博客">
+    <meta name="description" content="[2023 MoeCTF] WEB wp环境有问题，我开始还能用自己ip访问，后面突然不行了，这导致不能抓取本地的包，没关系照样做(^-^)
+http签到题一
+
+
+第一眼还没看懂，这应该满足他的条件即可拿到flag
+1和2,分别get和po">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>标签: 基础漏洞 | yyjccc的博客</title>
+    <title>2023MoeCTF之web的wp | yyjccc的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -317,247 +322,459 @@
 
 </header>
 
-            <div class="bg-cover pd-header about-cover">
-    <div class="container">
+            
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">2023MoeCTF之web的wp</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
     <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                            
-                                
-            </div>
-
-            <div class="description center-align">
-                
-                    <span id="subtitle"></span>
-                    <script src="/libs/typed/typed.js"></script>
-                    <script>
-                        var typed = new Typed("#subtitle", {
-                            strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                                "志之所向，金石为开，谁能御之？",
-                            
-                                "花开不是为了花落，而是为了开的更加灿烂。",
-                            
-                                "欲望以提升热忱，毅力以磨平高山。",
-                            
-                                "没有伞的孩子必须努力奔跑！",
-                            
-                        ],
-                            startDelay: 300,
-                            typeSpeed: 100,
-                            loop: true,
-                            backSpeed: 50,
-                            showCursor: true
-                    });
-                    </script>
-                    
-            </div>
-        </div>
-    </div>
-</div>
-
-
-    <script>
-        // 每天切换 banner 图.  Switch banner image every day.
-        var bannerUrl = "/medias/banner/" + new Date().getMinutes() + '.jpg';
-        $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-    </script>
-    <script>
-    
-      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * ) + '.jpg';
-    
-            $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
-
-    </script>
-    
-    </div>
-</div>
-
-<main class="content">
-
-    
-
-<div id="tags" class="container chip-container">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
     <div class="card">
-        <div class="card-content">
-            <div class="tag-title center-align">
-                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章标签
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/wp/">
+                                <span class="chip bg-color">wp</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
             </div>
-            <div class="tag-chips">
+
+            <div class="post-info">
                 
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-09-12
+                </div>
                 
-                <a href="/tags/ctf/" title="ctf: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="ctf" style="background-color: #F9EBEA;">ctf
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
+
                 
+
                 
-                <a href="/tags/wp/" title="wp: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="wp" style="background-color: #F5EEF8;">wp
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    390
+                </div>
                 
+
                 
-                <a href="/tags/web/" title="web: 3">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web" style="background-color: #D5F5E3;">web
-                        <span class="tag-length">3</span>
-                    </span>
-                </a>
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    1 分
+                </div>
                 
+
                 
-                <a href="/tags/web%E5%AE%89%E5%85%A8/" title="web安全: 4">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web安全" style="background-color: #E8F8F5;">web安全
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/web%E5%9F%BA%E7%A1%80/" title="web基础: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web基础" style="background-color: #FEF9E7;">web基础
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/web%E6%A1%86%E6%9E%B6/" title="web框架: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web框架" style="background-color: #F8F9F9;">web框架
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/python/" title="python: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="python" style="background-color: #82E0AA;">python
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/java/" title="java: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="java" style="background-color: #D7BDE2;">java
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/python%E5%AE%89%E5%85%A8/" title="python安全: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="python安全" style="background-color: #A3E4D7;">python安全
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" title="进阶学习: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="进阶学习" style="background-color: #85C1E9;">进阶学习
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/" title="基础漏洞: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            data-tagname="基础漏洞" style="background-color: #F8C471;">基础漏洞
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="2023-MoeCTF-WEB-wp"><a href="#2023-MoeCTF-WEB-wp" class="headerlink" title="[2023 MoeCTF] WEB wp"></a>[2023 MoeCTF] WEB wp</h1><p>环境有问题，我开始还能用自己ip访问，后面突然不行了，这导致不能抓取本地的包，没关系照样做(^-^)</p>
+<h1 id="http"><a href="#http" class="headerlink" title="http"></a>http</h1><p>签到题一</p>
+<img src="\img\9-12\7.png" height="300px">
+
+<p>第一眼还没看懂，这应该满足他的条件即可拿到flag</p>
+<p>1和2,分别get和post传参，</p>
+<p>3.修改Cookie为character为</p>
+<p>4.添加字段X-Forward-For: 127.0.0.1</p>
+<p>5.修改User-Agent内容为MoeBrowser</p>
+<p><img src="/%5Cimg%5C9-12%5C7.png%5C9-12%5C8.png"></p>
+<h1 id="Web入门指北"><a href="#Web入门指北" class="headerlink" title="Web入门指北"></a>Web入门指北</h1><p>签到题二</p>
+<p>解密：</p>
+<pre class="language-none"><code class="language-none">666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a61474673624756755a3055684958303 </code></pre>
+
+<p>对密码不是很熟悉，但对这里应该只能是md5、base64、16进制</p>
+<p>一看只能是16进制</p>
+<p>进行16进制解码：<code>flag=bW9lY3Rme3czbENvbWVfVG9fbW9lQ1RGX1cyYl9jaGFsbGVuZ0UhIX0</code></p>
+<p>这里面还加了一层base64,</p>
+<p>进行解码：<code>moectf{w3lCome_To_moeCTF_W2b_challengE!!}</code></p>
+<h1 id="彼岸的flag"><a href="#彼岸的flag" class="headerlink" title="彼岸的flag"></a>彼岸的flag</h1><p>签到题三</p>
+<p>查看源代码搜索注释(&lt;!–)就行（藏得靠后…）</p>
+<p><img src="/%5Cimg%5C9-12%5C7.png%5C9-12%5C9.png"></p>
+<h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>根据他给出的api进行注册和登录，然后获取flag</p>
+<img src="\img\9-12\7.png\9-12\10.png" height="300px">
+
+<p>提示我们不是admin用户，拿到cookie,</p>
+<p>进行base64解码，得到<code>{"username": "yyj", "password": "123456", "role": "user"}</code></p>
+<p>修改为<code>{"username": "admin", "password": "123456", "role": "admin"}</code></p>
+<p>再进行base64编码得到eyJ1c2VybmFtZSI6ICJhZG1pbiIsICJwYXNzd29yZCI6ICIxMjM0NTYiLCAicm9sZSI6ICJhZG1pbiJ9</p>
+<p>替换Cookie中的token值，再访问flag，得到flag</p>
+<pre class="language-none"><code class="language-none">{"error": "ok", "data": {"flag": "moectf{cooKi3_is_d3licious_MA9iVff90SSJ!!M6Mrfu9ifxi9i!JGofMJ36D9cPMxro}"}}</code></pre>
+
+
+
+
+
+<h1 id="meo图床"><a href="#meo图床" class="headerlink" title="meo图床"></a>meo图床</h1><p>文件上传先试下水，上传成功</p>
+<p><img src="/%5Cimg%5C9-12%5C1.png"></p>
+<p>查看一下图片</p>
+<p><img src="/%5Cimg%5C9-12%5C2.png"></p>
+<p>看这url,应该是用着文件包含，再试试，尝试包含/etc/passwd</p>
+<p><img src="/%5Cimg%5C9-12%5C3.png"></p>
+<p>这里只能显示图片，burp抓下包，这里我改成用python脚本(也一样)</p>
+<p><img src="/%5Cimg%5C9-12%5C4.png"></p>
+<p>ok,成功包含,试下flag</p>
+<p><img src="/%5Cimg%5C9-12%5C5.png"></p>
+<p>居然是个提示(…….),访问一下Fl3g_n0t_Here_dont_peek!!!!!.php</p>
+<p>这里发现是PHP的md5弱比较,不多说了</p>
+<p>最终payload</p>
+<pre class="language-text" data-language="text"><code class="language-text">http://localhost:55371/Fl3g_n0t_Here_dont_peek!!!!!.php?param1=s878926199a&amp;param2=s214587387a</code></pre>
+
+<p><img src="/%5Cimg%5C9-12%5C6.png"></p>
+
                 
             </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/ctf/">
+                                    <span class="chip bg-color">ctf</span>
+                                </a>
+                            
+                                <a href="/tags/wp/">
+                                    <span class="chip bg-color">wp</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq,wechat,weibo,twitter,facebook" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0efb4a442bc09d1ba17e',
+        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+        repo: 'yyjccc.github.io',
+        owner: 'Yyjccc',
+        admin: "Yyjccc",
+        id: '2023-09-12T15-47-46',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/09/12/2023MoeCTF%E4%B9%8Bweb%E7%9A%84wp/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="2023MoeCTF之web的wp">
+                        
+                        <span class="card-title">2023MoeCTF之web的wp</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/wp/">
+                        <span class="chip bg-color">wp</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/09/08/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="创建和配置Servlet项目">
+                        
+                        <span class="card-title">创建和配置Servlet项目</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web/">
+                        <span class="chip bg-color">web</span>
+                    </a>
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
         </div>
     </div>
 </div>
 
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
     
 
-    <article id="articles" class="container articles">
-        <div class="row tags-posts">
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="web安全, 基础漏洞" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2023/08/23/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93-mysql/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="sql注入漏洞总结">
-                            
-                            <span class="card-title">sql注入漏洞总结</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-23
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="web安全, 基础漏洞" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="命令执行漏洞总结">
-                            
-                            <span class="card-title">命令执行漏洞总结</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </article>
 </main>
 
 
