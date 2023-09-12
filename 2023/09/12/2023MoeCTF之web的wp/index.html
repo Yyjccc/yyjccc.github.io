@@ -65,8 +65,8 @@ http签到题一
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
 <meta name="generator" content="Hexo 6.3.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 
     <body>
@@ -428,7 +428,10 @@ http签到题一
 <p>3.修改Cookie为character为</p>
 <p>4.添加字段X-Forward-For: 127.0.0.1</p>
 <p>5.修改User-Agent内容为MoeBrowser</p>
-<p><img src="/%5Cimg%5C9-12%5C7.png%5C9-12%5C8.png"></p>
+<img src="\img\9-12\7.png\9-12\8.png">
+
+
+
 <h1 id="Web入门指北"><a href="#Web入门指北" class="headerlink" title="Web入门指北"></a>Web入门指北</h1><p>签到题二</p>
 <p>解密：</p>
 <pre class="language-none"><code class="language-none">666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a61474673624756755a3055684958303 </code></pre>
@@ -440,9 +443,12 @@ http签到题一
 <p>进行解码：<code>moectf{w3lCome_To_moeCTF_W2b_challengE!!}</code></p>
 <h1 id="彼岸的flag"><a href="#彼岸的flag" class="headerlink" title="彼岸的flag"></a>彼岸的flag</h1><p>签到题三</p>
 <p>查看源代码搜索注释(&lt;!–)就行（藏得靠后…）</p>
-<p><img src="/%5Cimg%5C9-12%5C7.png%5C9-12%5C9.png"></p>
+<img src="\img\9-12\7.png\9-12\9.png">
+
+
+
 <h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>根据他给出的api进行注册和登录，然后获取flag</p>
-<img src="\img\9-12\7.png\9-12\10.png" height="300px">
+<img src="\img\9-12\10.png" height="300px">
 
 <p>提示我们不是admin用户，拿到cookie,</p>
 <p>进行base64解码，得到<code>{"username": "yyj", "password": "123456", "role": "user"}</code></p>
@@ -456,22 +462,26 @@ http签到题一
 
 
 <h1 id="meo图床"><a href="#meo图床" class="headerlink" title="meo图床"></a>meo图床</h1><p>文件上传先试下水，上传成功</p>
-<p><img src="/%5Cimg%5C9-12%5C1.png"></p>
+<img src="\img\9-12\1.png">
+
 <p>查看一下图片</p>
-<p><img src="/%5Cimg%5C9-12%5C2.png"></p>
+<img src="\img\9-12\2.png">
+
 <p>看这url,应该是用着文件包含，再试试，尝试包含/etc/passwd</p>
-<p><img src="/%5Cimg%5C9-12%5C3.png"></p>
+<img src="\img\9-12\3.png">
+
 <p>这里只能显示图片，burp抓下包，这里我改成用python脚本(也一样)</p>
-<p><img src="/%5Cimg%5C9-12%5C4.png"></p>
+<img src="\img\9-12\4.png">
+
 <p>ok,成功包含,试下flag</p>
-<p><img src="/%5Cimg%5C9-12%5C5.png"></p>
+<img src="\img\9-12\5.png">
+
 <p>居然是个提示(…….),访问一下Fl3g_n0t_Here_dont_peek!!!!!.php</p>
 <p>这里发现是PHP的md5弱比较,不多说了</p>
 <p>最终payload</p>
 <pre class="language-text" data-language="text"><code class="language-text">http://localhost:55371/Fl3g_n0t_Here_dont_peek!!!!!.php?param1=s878926199a&amp;param2=s214587387a</code></pre>
 
-<p><img src="/%5Cimg%5C9-12%5C6.png"></p>
-
+<img src="\img\9-12\6.png">
                 
             </div>
             <hr/>
@@ -1153,9 +1163,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+                                                                                                                                                                    type="module"></script>
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 
 </html>
