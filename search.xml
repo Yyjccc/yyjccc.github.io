@@ -25,27 +25,6 @@
     
     
     <entry>
-      <title>创建和配置Servlet项目</title>
-      <link href="/2023/09/08/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/"/>
-      <url>/2023/09/08/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/</url>
-      
-        <content type="html"><![CDATA[<h2 id="创建和配置Servlet项目"><a href="#创建和配置Servlet项目" class="headerlink" title="创建和配置Servlet项目"></a>创建和配置Servlet项目</h2><p>这里学习javaweb时候，配置Servlet项目，好像实际跟网上教程不一样(可能是idea更新了),于是就搞了一个教程,也是算入坑javaweb了</p><h5 id="1-创建一个项目"><a href="#1-创建一个项目" class="headerlink" title="1.创建一个项目"></a><strong>1.创建一个项目</strong></h5><img src="/img/9-8/1.png"><h5 id="2-添加web模块"><a href="#2-添加web模块" class="headerlink" title="2.添加web模块"></a><strong>2.添加web模块</strong></h5><p>先选择创建的项目，打开模块设置</p><img src="/img/9-8/2.png"><p>在模块中选中自己的项目，添加web模块</p><img src="/img/9-8/3.png"><p>然后确定</p><img src="/img/9-8/4.png"><h5 id="3-配置web模块"><a href="#3-配置web模块" class="headerlink" title="3.配置web模块"></a><strong>3.配置web模块</strong></h5><p>在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件</p><img src="/img/9-8/5.png"><p>再次打开模块设置，在模块中选择我们的项目，设置输出路径，将两个路径改为刚创建好的classes目录</p><img src="/img/9-8/6.png"><p>点击修正，然后创建一个工件</p><img src="/img/9-8/7.png"><p>最后确定</p><img src="/img/9-8/8.png"><h5 id="4-配置Tomcat启动项"><a href="#4-配置Tomcat启动项" class="headerlink" title="4.配置Tomcat启动项"></a><strong>4.配置Tomcat启动项</strong></h5><p>打开运行配置</p><img src="/img/9-8/9.png"><p>添加Tomcat配置</p><img src="/img/9-8/10.png"><p>配置Tomcat,配置好Tomcat的安装路径</p><img src="/img/9-8/11.png"><p>添加部署，选择刚设置好的工件</p><img src="/img/9-8/12.png"><p>最后确定，当然也可以设置其他东西，如上下文，端口等等</p><img src="/img/9-8/13.png"><h5 id="6-引入外部jar包"><a href="#6-引入外部jar包" class="headerlink" title="6.引入外部jar包"></a><strong>6.引入外部jar包</strong></h5><p>打开模块设置，添加Tomcat安装目录下的lib目录下的servlet-api.jar</p><img src="/img/9-8/14.png"><p>这里也可以在web目录下创建lib目录,来放置导入的包!</p><h5 id="7-启动简单的实例"><a href="#7-启动简单的实例" class="headerlink" title="7.启动简单的实例"></a><strong>7.启动简单的实例</strong></h5><p>在web目录下，创建index.jsp,然后运行服务器</p><img src="/img/9-8/15.png"><p>成功输出</p><img src="/img/9-8/16.png"><p>编写Servlet程序，在src目录下创建一个软件包，编写一个java程序测试一下</p><pre class="language-java" data-language="java"><code class="language-java">package com.my;import jakarta.servlet.Servlet;import jakarta.servlet.annotation.WebServlet;import jakarta.servlet.http.HttpServlet;import jakarta.servlet.*;import jakarta.servlet.http.HttpServletRequest;import jakarta.servlet.http.HttpServletResponse;import java.io.IOException;import java.io.PrintWriter;@WebServlet(name = "test")public class Helloserver extends HttpServlet implements Servlet {    @Override    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {    }    @Override    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {        response.setContentType("text/html");        PrintWriter out = response.getWriter();        out.println("this is a test!");    }}</code></pre><img src="/img/9-8/17.png"><p>然后编辑web.xml文件，如下设置</p><img src="/img/9-8/18.png"><p>然后重新启动服务器访问</p><img src="/img/9-8/19.png"><p>这里的url与我们配置的相对应</p><p>继续开启javaweb之旅(^-^)</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> web </tag>
-            
-            <tag> java </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>入门flask框架</title>
       <link href="/2023/08/28/%E5%85%A5%E9%97%A8flask%E6%A1%86%E6%9E%B6/"/>
       <url>/2023/08/28/%E5%85%A5%E9%97%A8flask%E6%A1%86%E6%9E%B6/</url>
