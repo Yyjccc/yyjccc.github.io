@@ -386,7 +386,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.1k
+                    3k
                 </div>
                 
 
@@ -504,7 +504,8 @@
 <p>代码解析：首先获取GET传参rce，然后对我们传的参数进行了正则过滤、没有过滤字符才会把我们传的参数进行系统命令执行</p>
 <p>它过滤了cat 、more、less、ead、tac、tail、nl、od、vi、vim、sort、flag|、;|0-9、*、`、%、&gt;、&lt;、’、” 还有空格</p>
 <p>首先ls查看当前web目录下的文件</p>
-<p>&lt;img src=”/img/10-3/15.png””&gt;</p>
+<img src="/img/10-3/15.png">
+
 <p>这些就不能直接出现我们输入的参数里面。空格这里用%09代替(tab键的url编码)</p>
 <p>cat和flag 再其中加入\就行 ,?rce=c\at%09./f\lag.php		查看flag.php文件</p>
 <img src="/img/10-3/16.png">
