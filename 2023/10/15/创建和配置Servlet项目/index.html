@@ -4,8 +4,12 @@
 
 <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="标签: web安全, yyjccc的博客">
-    <meta name="description" content="yyjccc的博客">
+    <meta name="keywords" content="创建和配置Servlet项目, yyjccc的博客">
+    <meta name="description" content="创建和配置Servlet项目servlet是原生的javaweb
+这里学习javaweb时候，配置Servlet项目，idea社区版怎么手动配置Servlet项目,于是就搞了一个教程,也是算入坑javaweb了
+1.创建一个项目 
+
+2.添">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>标签: web安全 | yyjccc的博客</title>
+    <title>创建和配置Servlet项目 | yyjccc的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -317,285 +321,492 @@
 
 </header>
 
-            <div class="bg-cover pd-header about-cover">
-    <div class="container">
+            
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">创建和配置Servlet项目</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
     <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                            
-                                
-            </div>
-
-            <div class="description center-align">
-                
-                    <span id="subtitle"></span>
-                    <script src="/libs/typed/typed.js"></script>
-                    <script>
-                        var typed = new Typed("#subtitle", {
-                            strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                                "志之所向，金石为开，谁能御之？",
-                            
-                                "花开不是为了花落，而是为了开的更加灿烂。",
-                            
-                                "欲望以提升热忱，毅力以磨平高山。",
-                            
-                                "没有伞的孩子必须努力奔跑！",
-                            
-                        ],
-                            startDelay: 300,
-                            typeSpeed: 100,
-                            loop: true,
-                            backSpeed: 50,
-                            showCursor: true
-                    });
-                    </script>
-                    
-            </div>
-        </div>
-    </div>
-</div>
-
-
-    <script>
-        // 每天切换 banner 图.  Switch banner image every day.
-        var bannerUrl = "/medias/banner/" + new Date().getMinutes() + '.jpg';
-        $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-    </script>
-    <script>
-    
-      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * ) + '.jpg';
-    
-            $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
-
-    </script>
-    
-    </div>
-</div>
-
-<main class="content">
-
-    
-
-<div id="tags" class="container chip-container">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
     <div class="card">
-        <div class="card-content">
-            <div class="tag-title center-align">
-                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章标签
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
             </div>
-            <div class="tag-chips">
+
+            <div class="post-info">
                 
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-10-15
+                </div>
                 
-                <a href="/tags/web/" title="web: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web" style="background-color: #F9EBEA;">web
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
+
                 
+
                 
-                <a href="/tags/web%E5%9F%BA%E7%A1%80/" title="web基础: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web基础" style="background-color: #F5EEF8;">web基础
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    486
+                </div>
                 
+
                 
-                <a href="/tags/web%E5%AE%89%E5%85%A8/" title="web安全: 4">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            data-tagname="web安全" style="background-color: #D5F5E3;">web安全
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    1 分
+                </div>
                 
+
                 
-                <a href="/tags/web%E6%A1%86%E6%9E%B6/" title="web框架: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="web框架" style="background-color: #E8F8F5;">web框架
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/python/" title="python: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="python" style="background-color: #FEF9E7;">python
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/java/" title="java: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="java" style="background-color: #F8F9F9;">java
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/" title="基础漏洞: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="基础漏洞" style="background-color: #82E0AA;">基础漏洞
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/python%E5%AE%89%E5%85%A8/" title="python安全: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="python安全" style="background-color: #D7BDE2;">python安全
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" title="进阶学习: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="进阶学习" style="background-color: #A3E4D7;">进阶学习
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
             </div>
         </div>
-    </div>
-</div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="创建和配置Servlet项目"><a href="#创建和配置Servlet项目" class="headerlink" title="创建和配置Servlet项目"></a>创建和配置Servlet项目</h2><p>servlet是原生的javaweb</p>
+<p>这里学习javaweb时候，配置Servlet项目，idea社区版怎么手动配置Servlet项目,于是就搞了一个教程,也是算入坑javaweb了</p>
+<h5 id="1-创建一个项目"><a href="#1-创建一个项目" class="headerlink" title="1.创建一个项目"></a><strong>1.创建一个项目</strong></h5><img src="/img/9-8/1.png"> 
+
+<h5 id="2-添加web模块"><a href="#2-添加web模块" class="headerlink" title="2.添加web模块"></a><strong>2.添加web模块</strong></h5><p>先选择创建的项目，打开模块设置</p>
+<img src="/img/9-8/2.png"> 
+
+
+
+<p>在模块中选中自己的项目，添加web模块</p>
+<img src="/img/9-8/3.png"> 
+
+<p>然后确定</p>
+<img src="/img/9-8/4.png"> 
+
+<h5 id="3-配置web模块"><a href="#3-配置web模块" class="headerlink" title="3.配置web模块"></a><strong>3.配置web模块</strong></h5><p>在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件</p>
+<img src="/img/9-8/5.png"> 
+
+<p>再次打开模块设置，在模块中选择我们的项目，设置输出路径，将两个路径改为刚创建好的classes目录</p>
+<img src="/img/9-8/6.png"> 
+
+<p>点击修正，然后创建一个工件</p>
+<img src="/img/9-8/7.png"> 
+
+<p>最后确定</p>
+<img src="/img/9-8/8.png"> 
+
+<h5 id="4-配置Tomcat启动项"><a href="#4-配置Tomcat启动项" class="headerlink" title="4.配置Tomcat启动项"></a><strong>4.配置Tomcat启动项</strong></h5><p>打开运行配置</p>
+<img src="/img/9-8/9.png"> 
+
+<p>添加Tomcat配置</p>
+<img src="/img/9-8/10.png"> 
+
+<p>配置Tomcat,配置好Tomcat的安装路径</p>
+<img src="/img/9-8/11.png"> 
+
+<p>添加部署，选择刚设置好的工件</p>
+<img src="/img/9-8/12.png"> 
+
+<p>最后确定，当然也可以设置其他东西，如上下文，端口等等</p>
+<img src="/img/9-8/13.png"> 
+
+<h5 id="6-引入外部jar包"><a href="#6-引入外部jar包" class="headerlink" title="6.引入外部jar包"></a><strong>6.引入外部jar包</strong></h5><p>打开模块设置，添加Tomcat安装目录下的lib目录下的servlet-api.jar</p>
+<p>这里也可以在web目录下创建lib目录,来放置导入的包!</p>
+<img src="/img/9-8/14.png"> 
+
+<h5 id="7-启动简单的实例"><a href="#7-启动简单的实例" class="headerlink" title="7.启动简单的实例"></a><strong>7.启动简单的实例</strong></h5><p>在web目录下，创建index.jsp,然后运行服务器</p>
+<img src="/img/9-8/15.png"> 
+
+<p>成功输出</p>
+<img src="/img/9-8/16.png"> 
+
+<p>编写Servlet程序，在src目录下创建一个软件包，编写一个java程序测试一下</p>
+<pre class="language-none"><code class="language-none">package com.my;
+
+import jakarta.servlet.Servlet;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet(name = "test")
+public class Helloserver extends HttpServlet implements Servlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
+
+        response.setContentType("text/html");
+
+        PrintWriter out = response.getWriter();
+
+        out.println("this is a test!");
+    }
+
+}</code></pre>
+
+<img src="/img/9-8/17.png"> 
+
+<p>然后编辑web.xml文件，如下设置</p>
+<img src="/img/9-8/18.png"> 
+
+<p>然后重新启动服务器访问</p>
+<p>这里的url与我们配置的相对应</p>
+<img src="/img/9-8/19.png"> 
+
+<p>继续开启javaweb之旅(^-^)</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq,wechat,weibo,twitter,facebook" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
 
     
 
-    <article id="articles" class="container articles">
-        <div class="row tags-posts">
+</div>
+
+                </div>
+            </div>
             
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="web安全, python安全, 进阶学习" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2023/08/28/%E5%88%9D%E6%8E%A2python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/">
-                        <div class="card-image tag-image">
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0efb4a442bc09d1ba17e',
+        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+        repo: 'yyjccc.github.io',
+        owner: 'Yyjccc',
+        admin: "Yyjccc",
+        id: '2023-10-15T11-45-12',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/10/15/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="创建和配置Servlet项目">
+                        
+                        <span class="card-title">创建和配置Servlet项目</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
                             
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-10-15
+                            </span>
+                        <span class="publish-author">
                             
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="初探python沙箱逃逸">
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
                             
-                            <span class="card-title">初探python沙箱逃逸</span>
-                        </div>
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
                     </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/08/28/%E5%85%A5%E9%97%A8flask%E6%A1%86%E6%9E%B6/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="入门flask框架">
+                        
+                        <span class="card-title">入门flask框架</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
                             <span class="publish-date">
                                 <i class="far fa-clock fa-fw icon-date"></i>2023-08-28
                             </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
+                            
+                        </span>
                     </div>
                 </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="web安全, 基础漏洞" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2023/08/23/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93-mysql/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="sql注入漏洞总结">
-                            
-                            <span class="card-title">sql注入漏洞总结</span>
-                        </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web/">
+                        <span class="chip bg-color">web</span>
                     </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-23
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="web安全, 基础漏洞" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="命令执行漏洞总结">
-                            
-                            <span class="card-title">命令执行漏洞总结</span>
-                        </div>
+                    
+                    <a href="/tags/web%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">web框架</span>
                     </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="article tag-post col s12 m6 l4" data-tags="web安全" data-aos="fade-up">
-                <div class="card">
-                    <a href="/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="JavaScript的原型链污染">
-                            
-                            <span class="card-title">JavaScript的原型链污染</span>
-                        </div>
+                    
+                    <a href="/tags/python/">
+                        <span class="chip bg-color">python</span>
                     </a>
-                    <div class="card-content article-content">
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-26
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
+                    
                 </div>
+                
             </div>
-            
         </div>
-    </article>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
 </main>
 
 
