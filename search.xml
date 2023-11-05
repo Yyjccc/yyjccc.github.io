@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>IDA的使用与re浅浅入门</title>
+      <link href="/2023/11/06/IDA%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8Ere%E6%B5%85%E6%B5%85%E5%85%A5%E9%97%A8/"/>
+      <url>/2023/11/06/IDA%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8Ere%E6%B5%85%E6%B5%85%E5%85%A5%E9%97%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="IDA的使用与re浅浅入门"><a href="#IDA的使用与re浅浅入门" class="headerlink" title="IDA的使用与re浅浅入门"></a>IDA的使用与re浅浅入门</h1><h2 id="界面介绍"><a href="#界面介绍" class="headerlink" title="界面介绍"></a>界面介绍</h2><ul><li>左侧是函数窗口，显示一些函数，可以crtf+f寻找main函数,找到主程序</li></ul><img src="/img/11-6/2.png" height="500px"><ul><li>主体是汇编代码，可以通过空格切换查看视图</li></ul><img src="/img/11-6/3.png"><ul><li>内存分段，直接明了看所在内存的位置</li></ul><img src="./img/11-6/4.png"><h2 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h2><ul><li>F5键–反汇编，，转化为伪C代码</li></ul><img src="/img/11-6/5.png"> <ul><li>shift+F12 切换到字符串展示界面(String Window)所有字符串在这里显示</li></ul><img src="/img/11-6/6.png"> <ul><li>crtf+X 交叉引用 寻找数据被引用的地方</li></ul><img src="/img/11-6/7.png"> <ul><li>g键 跳转到地址处</li></ul><img src="/img/11-6/8.png"> <ul><li>alt+t  搜索指令</li></ul><img src="/img/11-6/9.png"> <img src="/img/11-6/10.png"> <ul><li>n键对函数进行重命名</li></ul><img src="/img/11-6/11.png"> <ul><li>ctrl+z撤销操作</li></ul><p><strong>数据操作</strong></p><ul><li>d键转化数据格式，h结尾代表十六进制</li></ul><img src="/img/11-6/1.png"> <ul><li>a键转化为字符串</li><li>c键转化为汇编代码</li><li>u键转化为原始形式</li><li>shift+e导出选定数据</li><li>对在程序中一些数据右键可以改变其数据类型，原始的char是数字的形式</li></ul><img src="/img/11-6/12.png"> <ul><li>ctrl+e进入程序起始位置</li></ul><h2 id="BUUCTF-re前三题"><a href="#BUUCTF-re前三题" class="headerlink" title="BUUCTF re前三题"></a>BUUCTF re前三题</h2><h3 id="easyre1"><a href="#easyre1" class="headerlink" title="easyre1"></a><strong>easyre1</strong></h3><p>将程序拖入IDA,很好进来就是main函数</p><p>&lt;img src=./img/11-6/13.png”&gt;</p><p>F5,反汇编一下，得到flag ,flag{this_Is_a_EaSyRe}</p><img src="./img/11-6/14.png"><h3 id="reverse1"><a href="#reverse1" class="headerlink" title="reverse1"></a><strong>reverse1</strong></h3><p>一进来不是主函数，尝试在左边找到main，没找到 (</p><p>shift+F12 查看所有字符串，找到关键字符串this is the right flag!</p><img src="/img/11-6/15.png"><p>双击进入</p><img src="/img/11-6/16.png"><p>ctrl+x找到引用函数 ，再F5反汇编</p><img src="/img/11-6/18.png"><p>右键hide cast，隐藏标记以防看不懂</p><p>可以对一些熟悉的函数进行重命名，如sub_1400111D1就是printf函数</p><p>这里主要是对我们输入的字符串与Str2对比，如果一样就输出this is the right flag!，表明我们输入了正确的flag</p><p>那我们就看看此时的Str2是什么，他就是flag</p><img src="/img/11-6/19.png"> <p>双击进入，发现是{hello_world}</p><p>但返回刚才代码发现，程序对原始的Str2进行了修改</p><p>将某些数字改为字符类型，更为直白</p><img src="/img/11-6/20.png"><p>最后看这程序，是把Str2中的o改为0</p><img src="/img/11-6/21.png">  <p>因此最后flag为flag{hell0_w0rld}</p><h3 id="reverse2"><a href="#reverse2" class="headerlink" title="reverse2"></a><strong>reverse2</strong></h3><p>这个题目和上面的类似，不过一进来就是main函数，不要找了)</p><p>F5反汇编，跟上面的一样的逻辑</p><img src="/img/11-6/22.png"> <p>这里主要是flag变量</p><p>将前面修改flag的代码中的字符类型数据转化一下</p><img src="/img/11-6/23.png"> <p>这里主要是将flag中的i和r改为1</p><p>双击flag变量，查看内容</p><p>发现这里没有显示全</p><img src="/img/11-6/24.png"> <p>选中按下a，变为字符串</p><img src="/img/11-6/25.png"> <p>更改字符</p><p>得到最后flag,flag{hack1ng_fo1_fun}</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 二进制 </tag>
+            
+            <tag> re入门 </tag>
+            
+            <tag> 工具使用 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>创建和配置Servlet项目</title>
       <link href="/2023/10/15/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/"/>
       <url>/2023/10/15/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/</url>
