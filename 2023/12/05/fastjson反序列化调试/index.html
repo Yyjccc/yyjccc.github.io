@@ -6,15 +6,8 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta name="keywords" content="fastjson反序列化解析过程调试, yyjccc的博客">
     <meta name="description" content="fastjson反序列化解析过程调试简单水一下fastjson反序列化解析过程的调试
-调式的代码环境：
-
-jdk8
-fastjson 1.2.24
-
-自定义的恶意类
-package org.example.enity;
-
-import ja">
+介绍fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化速度很快
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -396,14 +389,14 @@ import ja">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -432,11 +425,26 @@ import ja">
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="fastjson反序列化解析过程调试"><a href="#fastjson反序列化解析过程调试" class="headerlink" title="fastjson反序列化解析过程调试"></a>fastjson反序列化解析过程调试</h1><p>简单水一下fastjson反序列化解析过程的调试</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化速度很快</p>
+<p>但fastjson多个版本都爆出反序列化漏洞，因此当遇到json时，可以看是否用了fastjson，再测是否存在漏洞</p>
+<p>当json中含有@type字段时，fastjson会将json解析为对应类的对象</p>
+<p>本篇文章主要是fastjson在反序列化解析的调试</p>
 <h2 id="调式的代码"><a href="#调式的代码" class="headerlink" title="调式的代码"></a>调式的代码</h2><p><strong>环境</strong>：</p>
 <ul>
 <li>jdk8</li>
 <li>fastjson 1.2.24</li>
 </ul>
+<p>导入（pom.xml）</p>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>com.alibaba<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>fastjson<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>1.2.24<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+
+
+
+
 <p>自定义的恶意类</p>
 <pre class="language-none"><code class="language-none">package org.example.enity;
 
