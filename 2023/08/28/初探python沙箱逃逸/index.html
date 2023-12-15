@@ -63,7 +63,7 @@
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -433,7 +433,7 @@
 <li>bdb：<code>bdb.os</code>、<code>cgi.sys</code></li>
 <li>cgi：<code>cgi.os</code>、<code>cgi.sys</code></li>
 </ul>
-<pre class="language-none"><code class="language-none">print(os.system('whoami'))
+<pre class="language-python" data-language="python"><code class="language-python">print(os.system('whoami'))
 print(os.popen('whoami').read()) 
 print(os.popen2('whoami').read()) # 2.x
 print(os.popen3('whoami').read()) # 2.x
@@ -463,7 +463,7 @@ print(os.popen4('whoami').read()) # 2.x
 <p>生命周期：</p>
 <p>对于一个函数的local namespace，它在函数每次被调用的时候创建，函数返回的时候被删除。</p>
 <p>注意： 命名空间的生命周期取决于对象的作用域，如果对象执行完成，则该命名空间的生命周期就结束。 因此，我们无法从外部命名空间访问内部命名空间的对象。例如：</p>
-<pre class="language-none"><code class="language-none"># var1 是全局名称
+<pre class="language-python" data-language="python"><code class="language-python"># var1 是全局名称
 var1 = 5
 def some_func(): 
   
@@ -539,7 +539,7 @@ def some_func():
 <p>注意在 Python 3.4 之前 finder 会直接返回 loader 而不是 module spec，后者实际上已经包含了 loader 。</p>
 </blockquote>
 <p>我们可以打印来看一下这三个 Importer 和 Finder ：</p>
-<pre class="language-none"><code class="language-none">import sys
+<pre class="language-python" data-language="python"><code class="language-python">import sys
 import pprint
 pprint.pprint(sys.meta_path)
 # [&lt;class '_frozen_importlib.BuiltinImporter'&gt;,
@@ -569,7 +569,7 @@ pprint.pprint(sys.meta_path)
 <p>Python 3.4 之后 finder 的 <code>find_module()</code> 已被 <code>find_spec()</code> 所替代并弃用。</p>
 </blockquote>
 <h2 id="import加载机制"><a href="#import加载机制" class="headerlink" title="import加载机制"></a>import加载机制</h2><p>源代码</p>
-<pre class="language-none"><code class="language-none">module = None
+<pre class="language-python" data-language="python"><code class="language-python">module = None
 if spec.loader is not None and hasattr(spec.loader, 'create_module'):
     # It is assumed 'exec_module' will also be defined on the loader.
     # 假定 loader 中已经定义了 `exec_module` 模块
@@ -629,7 +629,7 @@ return sys.modules[spec.name]</code></pre>
 <li>模板(boilerplate)构建 —— 导入机制可以根据 module spec 执行模板加载操作，没有 module spec 则 loader 需要负责完成这个工作。</li>
 </ol>
 <p>module spec 通过 module 对象的 <strong>spec</strong> 属性得以公开，可以查看 <em>ModuleSpec</em> 获取更多信息。</p>
-<pre class="language-none"><code class="language-none"> import requests
+<pre class="language-python" data-language="python"><code class="language-python"> import requests
 requests.__spec__
 ModuleSpec(name='requests', loader=&lt;_frozen_importlib_external.SourceFileLoader object at 0x000002EE4EBBF7B8&gt;, origin='C:\\Python37\\lib\\site-packages\\requests\\__init__.py', submodule_search_locations=['C:\\Python37\\lib\\site-packages\\requests'])</code></pre>
 
@@ -1173,7 +1173,7 @@ PYTHON</code></pre>
 <p> 关注每次版本增加的新特性，或许能淘到点宝贝。</p>
 <h3 id="利用反序列化攻击"><a href="#利用反序列化攻击" class="headerlink" title="利用反序列化攻击"></a><strong>利用反</strong>序列化<strong>攻击</strong></h3><p>反序列化攻击也是能用来逃逸，但是关于反序列化攻击的安全问题还挺多的，见这篇文章，见：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2022/02/03/SecMap-unserialize-python/">传送门🚪</a></p>
 <h2 id="🌰"><a href="#🌰" class="headerlink" title="🌰"></a><strong>🌰</strong></h2><p>这个例子来自<code>iscc 2016</code>的<code>Pwn300 pycalc</code>，相当有趣：</p>
-<pre class="language-none"><code class="language-none">#!/usr/bin/env python2
+<pre class="language-python" data-language="python"><code class="language-python">#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 

@@ -62,7 +62,7 @@
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -416,16 +416,16 @@
 <p><strong>特性</strong></p>
 <p>类定义中的属性，会在创建对象时在对象中创建，类定义的方法而是存在于原型之中。当使用没有定义的属性和方法时，就会顺着原型链一直寻找，直到为undefined,用此来实现继承，子类能用父类的属性和方法</p>
 <p>示例</p>
-<pre class="language-none"><code class="language-none">function Person(name) {
-       this.name = name;
-   }
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
 
-   Person.prototype.greet = function () {
-       console.log(`Hello, my name is ${this.name}`);
-   };
+   <span class="token class-name">Person</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">greet</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Hello, my name is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-   const person1 = new Person('Alice');
-   person1.greet(); // 输出 "Hello, my name is Alice"</code></pre>
+   <span class="token keyword">const</span> person1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">'Alice'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   person1<span class="token punctuation">.</span><span class="token function">greet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出 "Hello, my name is Alice"</span></code></pre>
 
 <p><img src="/./js.jpg" alt="img"></p>
 <p>​								<em>person1对象原型对象展示</em></p>
@@ -450,28 +450,28 @@
 </ol>
 <h3 id="原型链污染"><a href="#原型链污染" class="headerlink" title="原型链污染"></a>原型链污染</h3><p>当我们添加或者修改上层原型的一些属性，子类都又调用该恶意属性时，子类调用的属性已经被我们篡改，造成原型链污染，原型链污染可能会造成命令执行(rce)或者任意文件读取,越权等等</p>
 <p>示例</p>
-<pre class="language-none"><code class="language-none">function merge(target, source) {
-      for (let key in source) {
-          if (key in source &amp;&amp; key in target) {
-              // 如果target与source有相同的键名 则让target的键值为source的键值
-              merge(target[key], source[key])
-          } else {
-              target[key] = source[key]  // 如果target与source没有相通的键名 则直接在target新建键名并赋给键值
-          }
-      }
-  }
-  let o1 = {}
-  let o2 = JSON.parse('{ "a": 1, "__proto__": { "b": 2} }');
-  merge(o1, o2)
-  console.log(o1.a, o1.b)
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">merge</span><span class="token punctuation">(</span><span class="token parameter">target<span class="token punctuation">,</span> source</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> source<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token keyword">in</span> source <span class="token operator">&amp;&amp;</span> key <span class="token keyword">in</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token comment">// 如果target与source有相同的键名 则让target的键值为source的键值</span>
+              <span class="token function">merge</span><span class="token punctuation">(</span>target<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span> source<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span>
+          <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+              target<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> source<span class="token punctuation">[</span>key<span class="token punctuation">]</span>  <span class="token comment">// 如果target与source没有相通的键名 则直接在target新建键名并赋给键值</span>
+          <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">let</span> o1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token keyword">let</span> o2 <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">'{ "a": 1, "__proto__": { "b": 2} }'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">merge</span><span class="token punctuation">(</span>o1<span class="token punctuation">,</span> o2<span class="token punctuation">)</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>o1<span class="token punctuation">.</span>a<span class="token punctuation">,</span> o1<span class="token punctuation">.</span>b<span class="token punctuation">)</span>
 
-  o3 = {}
-  console.log(o3.b)</code></pre>
+  o3 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>o3<span class="token punctuation">.</span>b<span class="token punctuation">)</span></code></pre>
 
 <p>漏洞点</p>
 <p>一般对对象进行复制拷贝,如merge函数或者copy函数，会将传入的json数据拷贝至已创建对象，此时可能会产生原型链污染</p>
 <h4 id="ejs模板基于原型链污染的rce"><a href="#ejs模板基于原型链污染的rce" class="headerlink" title="ejs模板基于原型链污染的rce"></a>ejs模板基于原型链污染的rce</h4><p>直接上POC</p>
-<pre class="language-none"><code class="language-none">a; return global.process.mainModule.constructor._load('child_process').execSync('whoami'); //</code></pre>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript">a<span class="token punctuation">;</span> <span class="token keyword">return</span> global<span class="token punctuation">.</span>process<span class="token punctuation">.</span>mainModule<span class="token punctuation">.</span>constructor<span class="token punctuation">.</span><span class="token function">_load</span><span class="token punctuation">(</span><span class="token string">'child_process'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">execSync</span><span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//</span></code></pre>
 
 <p>参考学习：<a target="_blank" rel="noopener" href="https://evi0s.com/2019/08/30/expresslodashejs-%e4%bb%8e%e5%8e%9f%e5%9e%8b%e9%93%be%e6%b1%a1%e6%9f%93%e5%88%b0rce/">https://evi0s.com/2019/08/30/expresslodashejs-%e4%bb%8e%e5%8e%9f%e5%9e%8b%e9%93%be%e6%b1%a1%e6%9f%93%e5%88%b0rce/</a></p>
 <h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>对于<code>toUpperCase()</code>函数</p>
@@ -485,8 +485,8 @@
 <p>可参考文章：<a target="_blank" rel="noopener" href="https://tttang.com/archive/1876">https://tttang.com/archive/1876</a></p>
 <p>ctf例题：<a target="_blank" rel="noopener" href="https://chenlvtang.top/2021/08/17/NodeJs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E7%9A%84%E5%AE%9E%E8%B7%B5">https://chenlvtang.top/2021/08/17/NodeJs%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E7%9A%84%E5%AE%9E%E8%B7%B5</a></p>
 <h1 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h1><p>1.Object.freeze()冻结原型</p>
-<pre class="language-none"><code class="language-none">Object.freeze(Object.prototype);
-Object.freeze(Object)</code></pre>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript">Object<span class="token punctuation">.</span><span class="token function">freeze</span><span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Object<span class="token punctuation">.</span><span class="token function">freeze</span><span class="token punctuation">(</span>Object<span class="token punctuation">)</span></code></pre>
 
 <p>冻结原型后，无法添加新的原型至原型链</p>
 <p>2.对JSON输入验证</p>

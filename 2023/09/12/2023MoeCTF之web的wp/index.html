@@ -66,7 +66,7 @@ http签到题一
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -434,7 +434,7 @@ http签到题一
 
 <h1 id="Web入门指北"><a href="#Web入门指北" class="headerlink" title="Web入门指北"></a>Web入门指北</h1><p>签到题二</p>
 <p>解密：</p>
-<pre class="language-none"><code class="language-none">666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a61474673624756755a3055684958303 </code></pre>
+<pre class="language-text" data-language="text"><code class="language-text">666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a61474673624756755a3055684958303 </code></pre>
 
 <p>对密码不是很熟悉，但对这里应该只能是md5、base64、16进制</p>
 <p>一看只能是16进制</p>
@@ -455,7 +455,7 @@ http签到题一
 <p>修改为<code>{"username": "admin", "password": "123456", "role": "admin"}</code></p>
 <p>再进行base64编码得到eyJ1c2VybmFtZSI6ICJhZG1pbiIsICJwYXNzd29yZCI6ICIxMjM0NTYiLCAicm9sZSI6ICJhZG1pbiJ9</p>
 <p>替换Cookie中的token值，再访问flag，得到flag</p>
-<pre class="language-none"><code class="language-none">{"error": "ok", "data": {"flag": "moectf{cooKi3_is_d3licious_MA9iVff90SSJ!!M6Mrfu9ifxi9i!JGofMJ36D9cPMxro}"}}</code></pre>
+<pre class="language-json" data-language="json"><code class="language-json">{"error": "ok", "data": {"flag": "moectf{cooKi3_is_d3licious_MA9iVff90SSJ!!M6Mrfu9ifxi9i!JGofMJ36D9cPMxro}"}}</code></pre>
 
 
 
@@ -594,13 +594,13 @@ print(res.text)</code></pre>
 <img src="/img/9-12/13.png">
 
 <p>所以先写出要逃逸的字符串：	</p>
-<pre class="language-none"><code class="language-none">";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
+<pre class="language-text" data-language="text"><code class="language-text">";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
 
 <p>然后要逃逸的字符总数为35个，</p>
 <p>发现：di_qi_qiang 替换后增加5个字符，di_jiu_qiang 替换后增加20个字符</p>
 <p>因此加入di_qi_qiang 3个，di_jiu_qiang个；序列化后替换后会恰好增加35个字符，然后后面的字符就能逃逸出去，进行反序列化到}结束，就此覆盖了他构造函数对Spear_Owner 赋值，拿到flag</p>
 <p>最终payload</p>
-<pre class="language-none"><code class="language-none">http://localhost:53192/?chant=di_qi_qiangdi_qi_qiangdi_qi_qiangdi_jiu_qiang";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
+<pre class="language-text" data-language="text"><code class="language-text">http://localhost:53192/?chant=di_qi_qiangdi_qi_qiangdi_qi_qiangdi_jiu_qiang";s:11:"Spear_Owner";s:6:"MaoLei";}</code></pre>
 
 <img src="/img/9-12/14.png">
 
@@ -732,16 +732,16 @@ print(res.text)</code></pre>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">web安全</span>
-                    </a>
-                    
                     <a href="/tags/ctf%E5%85%A5%E9%97%A8/">
                         <span class="chip bg-color">ctf入门</span>
                     </a>
                     
                     <a href="/tags/%E6%96%B0%E7%94%9F%E8%B5%9Bwp/">
                         <span class="chip bg-color">新生赛wp</span>
+                    </a>
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
                     </a>
                     
                 </div>

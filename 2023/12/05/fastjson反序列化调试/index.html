@@ -6,8 +6,7 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta name="keywords" content="fastjson反序列化解析过程调试, yyjccc的博客">
     <meta name="description" content="fastjson反序列化解析过程调试简单水一下fastjson反序列化解析过程的调试
-介绍fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化速度很快
-">
+介绍​    fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -63,7 +62,7 @@
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -389,14 +388,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    6 分
                 </div>
                 
 
@@ -425,10 +424,10 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="fastjson反序列化解析过程调试"><a href="#fastjson反序列化解析过程调试" class="headerlink" title="fastjson反序列化解析过程调试"></a>fastjson反序列化解析过程调试</h1><p>简单水一下fastjson反序列化解析过程的调试</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化速度很快</p>
-<p>但fastjson多个版本都爆出反序列化漏洞，因此当遇到json时，可以看是否用了fastjson，再测是否存在漏洞</p>
-<p>当json中含有@type字段时，fastjson会将json解析为对应类的对象</p>
-<p>本篇文章主要是fastjson在反序列化解析的调试</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>​    fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化速度很快</p>
+<p>​     但fastjson多个版本都爆出反序列化漏洞，因此当遇到json时，可以看是否用了fastjson，再测是否存在漏洞</p>
+<p>​	当json中含有@type字段时，fastjson会将json解析为对应类的对象</p>
+<p>​	本篇文章主要是fastjson在反序列化解析的调试</p>
 <h2 id="调式的代码"><a href="#调式的代码" class="headerlink" title="调式的代码"></a>调式的代码</h2><p><strong>环境</strong>：</p>
 <ul>
 <li>jdk8</li>
@@ -446,22 +445,42 @@
 
 
 <p>自定义的恶意类</p>
-<pre class="language-none"><code class="language-none">package org.example.enity;
+<pre class="language-java" data-language="java"><code class="language-java">package org.example.enity;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Test {
+    private Map mymap;
+    public Test(){
+        System.out.println("调用了构造方法");
+    }
+    static {
+        System.out.println("调用了静态代码块");
+    }
     public void setCmd(String cmd) throws IOException {
+        System.out.println("调用了set方法");
         Runtime.getRuntime().exec(cmd);
+    }
+
+
+    public String getCmd(){
+        System.out.println("调用了get方法");
+        return "get";
+    }
+
+    public Map getMymap() {
+        return mymap;
     }
 }</code></pre>
 
-<p>这里并不是标准的JavaBean,没有cmd属性，但有setCmd方法</p>
+<p>​      这里并不是标准的JavaBean,没有cmd属性，但有setCmd方法</p>
 <p>调试代码</p>
-<pre class="language-none"><code class="language-none">String s="{\"@type\":\"org.example.enity.Test\",\"cmd\":\"calc\"}";
+<pre class="language-java" data-language="java"><code class="language-java">String s="{\"@type\":\"org.example.enity.Test\",\"cmd\":\"calc\"}";
 JSONObject student=JSON.parseObject(s);</code></pre>
 
-<h2 id="JSON-parseObject方法"><a href="#JSON-parseObject方法" class="headerlink" title="JSON.parseObject方法"></a>JSON.<em>parseObject方法</em></h2><p>具体代码</p>
+<h2 id="JSON-parseObject方法"><a href="#JSON-parseObject方法" class="headerlink" title="JSON.parseObject方法"></a>JSON.<em>parseObject方法</em></h2><p>   这次是以<em>parseObject的过程。parse方法稍微有些不同</em> </p>
+<p>具体代码</p>
 <img src="/img/12-4/2.png">
 
 <ol>
@@ -489,7 +508,8 @@ JSONObject student=JSON.parseObject(s);</code></pre>
 <p>首先会进行类加载</p>
 <img src="/img/12-4/4.png">
 
-<p>类加载的时候，会判断是否是一些特殊的类，然后在从从默认加载的类中寻找，如果没有才会用类加载器加载，如下</p>
+<pre><code>   类加载的时候，会判断是否是一些特殊的类，然后在从从默认加载的类中寻找，如果没有才会用类加载器加载，如下
+</code></pre>
 <img src="/img/12-4/5.png">
 
 <img src="/img/12-4/6.png">
@@ -513,7 +533,7 @@ JSONObject student=JSON.parseObject(s);</code></pre>
 <li><h4 id="进入createJavaBeanDeserializer方法："><a href="#进入createJavaBeanDeserializer方法：" class="headerlink" title="进入createJavaBeanDeserializer方法："></a>进入createJavaBeanDeserializer方法：</h4></li>
 </ol>
 <p>在里面会创建一个JavaBeanInfo对象</p>
-<p>其实这一个函数才是本次调试的核心方法</p>
+<h3 id="获取getter和setter"><a href="#获取getter和setter" class="headerlink" title="获取getter和setter"></a>获取getter和setter</h3><p>其实这一个函数才是本次调试的核心方法</p>
 <img src="/img/12-4/11.png">
 
 <p>跟进build方法，首先可以看到使用反射获取我们给的类的方法属性和方法</p>
@@ -522,7 +542,7 @@ JSONObject student=JSON.parseObject(s);</code></pre>
 <ul>
 <li>获取所有setXXX(标准javaBean中存在的方法)</li>
 </ul>
-<p>遍历方法数组，选取出符合条件的方法</p>
+<p>​         遍历方法数组，选取出符合条件的方法</p>
 <p>下图为部分代码截图</p>
 <img src="/img/12-4/13.png">
 
@@ -535,31 +555,95 @@ JSONObject student=JSON.parseObject(s);</code></pre>
 <li>方法名必须以set开头</li>
 <li>不能有注解</li>
 </ul>
-<p>根据这些条件能够选出setXXX，不一定是javaBean中的setXXX，只要满足条件就行（比如我定义的恶意类setCmd函数）</p>
-<p>根据这点，后面的fastjson反序列漏洞寻找能利用的方法。</p>
+<p>​        根据这些条件能够选出setXXX，不一定是javaBean中的setXXX，只要满足条件就行（比如我定义的恶意类setCmd函数）</p>
+<p>​    根据这点，后面的fastjson反序列漏洞寻找能利用的方法。</p>
 <p>然后根据方法推断出属性名</p>
-<p>类似的获取getXXX</p>
+<p>​    类似的获取getXXX</p>
 <img src="/img/12-4/14.png">
 
-<p>最后根据前面获取的东西，构造JavaBeanInfo对象（会把一些构造器啥的丢进去）</p>
+
+
+<p>筛选条件</p>
+<ul>
+<li>非静态方法</li>
+<li>无参数</li>
+<li>返回值类型继承自Collection或Map或AtomicBoolean或AtomicInteger或AtomicLong</li>
+</ul>
+<p>如果按照普通的类（没有像调式代码的类一样）就会进入下面方法 </p>
+<p><em>最后根据前面获取的东西，构造JavaBeanInfo对象（会把一些构造器啥的丢进去）</em></p>
 <img src="/img/12-4/15.png">
 
-<p>然后会根据JavaBeanInfo对象构造反序列化器</p>
-<p>进入ASMDeserializerFactory类中的createJavaBeanDeserializer：</p>
-<p>这就是最后构造反序列化器的函数(晕</p>
+<p>​        <em>然后会根据JavaBeanInfo对象构造反序列化器</em></p>
+<p><em>进入ASMDeserializerFactory类中的createJavaBeanDeserializer：</em></p>
+<p>​        这就是最后构造反序列化器的函数(晕*</p>
 <img src="/img/12-4/16.png">
 
-<p>这里开始会进行初始化操作，对象类名设置为fastjson自定义的类名</p>
-<p>然后反射newInstance构造一个实例返回</p>
-<p>至此原来的createJavaBeanDeserializer函数结束。</p>
+<p><em>这里开始会进行初始化操作，对象类名设置为fastjson自定义的类名</em></p>
+<p><em>然后反射newInstance构造一个实例返回</em></p>
+<p><em>至此原来的createJavaBeanDeserializer函数结束。</em></p>
 <p>整个获取反序列器的步骤结束</p>
 <ol start="7">
 <li><h4 id="利用反序列化器进行反序列化"><a href="#利用反序列化器进行反序列化" class="headerlink" title="利用反序列化器进行反序列化"></a>利用反序列化器进行反序列化</h4></li>
 </ol>
 <img src="/img/12-4/17.png">
 
-<p>这步好像是不能调试的。但也差不多了。成功调用了setCmd函数，弹出了计算器。说明反序列化的时候会调用setXXX方法</p>
+<p>​        发现后面代码调试不了，这是因为前面<em>ASMDeserializerFactory</em>  是用利用ASM重新生成类(ASM操作字节码),因为这个反序列化器类是代码生成的，在内存中，所以无法使用idea调试后面的反序列化操作 </p>
 <img src="/img/12-4/18.png">
+
+
+
+<h3 id="解决不能调试"><a href="#解决不能调试" class="headerlink" title="解决不能调试"></a>解决不能调试</h3><p>查看在最后之前的代码</p>
+<img src="/img/12-4/20.png">
+
+
+
+<p>​          起初asmEnable为 true,会走下面代码（也就是前面不能调式的代码）。如果asmEnable是false,就会直接创建一个JavaBean反序列化器（就不需要使用ASM创建一个临时的类了）。这样，后面代码可以继续调试。 </p>
+<p>这里有几种方式 </p>
+<img src="/img/12-4/21.png">
+
+
+
+<p>​         发现getOnly为true更适合（其他的是要求 ： 类是非public、要是一个接口、属性个数大于200）</p>
+<p>查找getOnly，发现只有一处为false</p>
+<p>是一个Feildinfo的构造方法</p>
+<img src="/img/12-4/22.png">
+
+
+
+<p>  这里看出方法的参数个数不能为1</p>
+<p>发现只有在前面JaavaBean.build的时候</p>
+<p>  遍历获取getter方法的时候，才满足条件</p>
+<img src="/img/12-4/23.png">
+
+<p>进入if后，会调用这个new FeildInfo时进入上面的设置getOnly为true </p>
+<pre class="language-java" data-language="java"><code class="language-java">add(fieldList, new FieldInfo(propertyName, method, null, clazz, type, 0, 0, 0, annotation, null, null));</code></pre>
+
+<p>这里进入if就行了</p>
+<p>​      这里是要方法的返回值是这些类中的其中一个，只有前面两个好实现,collection类和map类</p>
+<p>​     除此之外，也不能有之对应的setxxx，如果存在，就不会在getxxx(第二次循环时候)被解析</p>
+<p><strong>综上</strong>：</p>
+<p>​         类中需要一个返回类型是map类型getxxx方法（且不能有对应的setxxx），才能对后续代码进行调试</p>
+<p>因此调试代码中有mymap属性和getMymap方法</p>
+<p><strong>然后继续</strong></p>
+<p>进入默认的反序列化器JavaBeanDeserializer中进行反序列化，其中下面代码会触发setXXX方法</p>
+<img src="/img/12-4/24.png">
+
+<p>后面也没什么了，出反序列化方法</p>
+<p>如果是parseObject方法。 最后会进行json对象的序列化</p>
+<img src="/img/12-4/25.png">
+
+
+
+<p>   然后使用JavaBeanSerializer序列化成json对象</p>
+<p>在其中，会调用所有属性的getter方法</p>
+<img src="/img/12-4/26.png">
+
+
+
+<p>这里是使用反射调用的getter方法 </p>
+<img src="/img/12-4/27.png">
+
+
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过调试可以发现</p>
 <p>JSON.<em>parseObject方法是</em></p>
@@ -567,10 +651,12 @@ JSONObject student=JSON.parseObject(s);</code></pre>
 <li>会先会获取反序列化器，同时通过反射获取所有的setXXX和getXXX</li>
 <li>将所有属性和值放入反序列化器</li>
 <li>反序列化的时候会调用该属性的setXXX设置对象属性</li>
+<li>若是parseObject方法（除去parse方法），会转为json对象时会调用getter方法</li>
 </ul>
 <p>因此上面我们的代码中</p>
-<p>我们定义的类没有cmd属性，但我们传入cmd键时，反序列化时触发setcmd方法，因此造成了命令执行。</p>
-<p>最后，想说好久没更新了文章了。主要是最近好一段时间都没怎么深入投入学习，并有各种事情忙。（我想立flag了</p>
+<p>​            我们定义的类没有cmd属性，但我们传入cmd键时，反序列化时触发setcmd方法，因此造成了命令执行。</p>
+<p>除此，也要区分parse和parseObject，前者不会触发getXXX </p>
+<p>​         最后，想说好久没更新了文章了。主要是最近好一段时间都没怎么深入投入学习，并有各种事情忙。（我想立flag了</p>
 <p>初识java安全，确实我也是小白</p>
 
                 

@@ -65,7 +65,7 @@
 
 <meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
     <body>
@@ -439,7 +439,7 @@
 <p>后面两个是可选参数，分别表示是否进行类初始化，指定类加载器</p>
 <h2 id="Java类动态加载方式"><a href="#Java类动态加载方式" class="headerlink" title="Java类动态加载方式"></a><strong>Java类动态加载方式</strong></h2><p>Java类加载方式分为<code>显式</code>和<code>隐式</code>,<code>显式</code>即我们通常使用<code>Java反射</code>或者<code>ClassLoader</code>来动态加载一个类对象，而<code>隐式</code>指的是<code>类名.方法名()</code>或<code>new</code>类实例。<code>显式</code>类加载方式也可以理解为类动态加载，我们可以自定义类加载器去加载任意的类。</p>
 <p><strong>常用的类动态加载方式：</strong></p>
-<pre class="language-none"><code class="language-none">// 反射加载TestHelloWorld示例
+<pre class="language-java" data-language="java"><code class="language-java">// 反射加载TestHelloWorld示例
 Class.forName("com.anbai.sec.classloader.TestHelloWorld");
 
 // ClassLoader加载TestHelloWorld示例this.getClass().getClassLoader().loadClass("com.anbai.sec.classloader.TestHelloWorld");</code></pre>
@@ -462,12 +462,12 @@ Class.forName("com.anbai.sec.classloader.TestHelloWorld");
 </ol>
 <h2 id="自定义ClassLoader"><a href="#自定义ClassLoader" class="headerlink" title="自定义ClassLoader"></a><strong>自定义ClassLoader</strong></h2><p><code>java.lang.ClassLoader</code>是所有的类加载器的父类，<code>java.lang.ClassLoader</code>有非常多的子类加载器，比如我们用于加载jar包的<code>java.net``.URLClassLoader</code>其本身通过继承<code>java.lang.ClassLoader</code>类，重写了<code>findClass</code>方法从而实现了加载目录class文件甚至是远程资源文件。</p>
 <p>如果<code>com.anbai.sec.classloader.TestHelloWorld</code>类存在的情况下，我们可以使用如下代码即可实现调用<code>hello</code>方法并输出：</p>
-<pre class="language-none"><code class="language-none">TestHelloWorld t = new TestHelloWorld();
+<pre class="language-java" data-language="java"><code class="language-java">TestHelloWorld t = new TestHelloWorld();
         String str = t.hello();
         System.out.println(str);</code></pre>
 
 <p>但是如果<code>com.anbai.sec.classloader.TestHelloWorld</code>根本就不存在于我们的<code>classpath</code>，那么我们可以使用自定义类加载器重写<code>findClass</code>方法，然后在调用<code>defineClass</code>方法的时候传入<code>TestHelloWorld</code>类的字节码的方式来向JVM中定义一个<code>TestHelloWorld</code>类，最后通过反射机制就可以调用<code>TestHelloWorld</code>类的<code>hello</code>方法了。</p>
-<pre class="language-none"><code class="language-none">package com.anbai.sec.classloader;
+<pre class="language-java" data-language="java"><code class="language-java">package com.anbai.sec.classloader;
 import java.lang.reflect.Method;
 public class TestClassLoader extends ClassLoader {
     // TestHelloWorld类名
@@ -528,7 +528,7 @@ public class TestClassLoader extends ClassLoader {
 <p>利用自定义类加载器我们可以在webshell中实现加载并调用自己编译的类对象，比如本地命令执行漏洞调用自定义类字节码</p>
 <h2 id="URLClassLoader"><a href="#URLClassLoader" class="headerlink" title="URLClassLoader"></a><strong>URLClassLoader</strong></h2><p><code>URLClassLoader</code>继承了<code>ClassLoader</code>，<code>URLClassLoader</code>提供了加载远程资源的能力，在写漏洞利用的<code>payload</code>或者<code>webshell</code>的时候我们可以使用这个特性来加载远程的jar来实现远程的类方法调用。</p>
 <p>一般用来加载jar文件，加载本地的使用file协议，远程的http</p>
-<pre class="language-none"><code class="language-none">package com.anbai.sec.classloader;
+<pre class="language-java" data-language="java"><code class="language-java">package com.anbai.sec.classloader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -575,7 +575,7 @@ import java.net.URLClassLoader;
 }</code></pre>
 
 <p>远程的<code>cmd.jar</code>中就一个<code>CMD.class</code>文件，对应的编译之前的代码片段如下：</p>
-<pre class="language-none"><code class="language-none">import java.io.IOException;
+<pre class="language-java" data-language="java"><code class="language-java">import java.io.IOException;
 public class CMD {
 
     public static Process exec(String cmd) throws IOException {
@@ -588,7 +588,7 @@ public class CMD {
 <p>也就是同级类加载器不能使用另外一个类加载器load的类。只能通过反射调用</p>
 <p><strong>跨类加载</strong></p>
 <p>  跨类加载器调用类方法时需要特别注意一个基本原则：<code>ClassLoader A和ClassLoader B可以加载相同类名的类，但是ClassLoader A中的Class A和ClassLoader B中的Class A是完全不同的对象，两者之间调用只能通过反射</code></p>
-<pre class="language-none"><code class="language-none">package com.anbai.sec.classloader;
+<pre class="language-java" data-language="java"><code class="language-java">package com.anbai.sec.classloader;
 import java.lang.reflect.Method;
 import static com.anbai.sec.classloader.TestClassLoader.TEST_CLASS_BYTES;
 import static com.anbai.sec.classloader.TestClassLoader.TEST_CLASS_NAME;
@@ -642,7 +642,7 @@ public class TestCrossClassLoader {
 }</code></pre>
 
 <p>输出结果</p>
-<pre class="language-none"><code class="language-none">aClass == aaClass：true
+<pre class="language-text" data-language="text"><code class="language-text">aClass == aaClass：true
         aClass == bClass：false
 
         com.anbai.sec.classloader.TestHelloWorld方法清单：
