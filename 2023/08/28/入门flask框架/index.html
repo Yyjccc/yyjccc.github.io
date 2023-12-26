@@ -432,27 +432,27 @@ WSGI工具箱采用Werkze">
 <p>**路由(route)**：简单来说，路由就是URL到视图函数的映射。当访问某个URL时，就会执行对应的函数</p>
 <p>如：/usersu        -&gt;  getAllUsers()</p>
 <p> router 可以理解为一个容器，或者说一种机制，它管理了一组 route。简单来说，route 只是进行了URL和函数的映射，而在当接收到一个URL之后，去路由映射表中查找相应的函数，这个过程是由 router 来处理的。</p>
-<h2 id="构成"><a href="#构成" class="headerlink" title="构成"></a>构成</h2><pre class="language-python" data-language="python"><code class="language-python">from flask import Flask        #1.导入
-app=Flask(__name__)            #2.创建Flask对象，管理全局路由，配置信息
+<h2 id="构成"><a href="#构成" class="headerlink" title="构成"></a>构成</h2><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask        <span class="token comment">#1.导入</span>
+app<span class="token operator">=</span>Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>            <span class="token comment">#2.创建Flask对象，管理全局路由，配置信息</span>
 
-@app.route('/')            #3.设置装饰器，将路由映射到视图函数
-def index():                #4.定义触发函数
-    return 'Hello world'
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>            <span class="token comment">#3.设置装饰器，将路由映射到视图函数</span>
+<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>                <span class="token comment">#4.定义触发函数</span>
+    <span class="token keyword">return</span> <span class="token string">'Hello world'</span>
 
-if __name__=='__main__':
-    app.run()                #5.Flask对象调用run方法,启动服务器</code></pre>
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    app<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>                <span class="token comment">#5.Flask对象调用run方法,启动服务器</span></code></pre>
 
 <p>目录结构：app.py主程序,templates存放模板文件，static存放静态文件</p>
 <p><strong>装饰器</strong></p>
 <p>装饰器的一般语法结构如下：</p>
-<pre class="language-python" data-language="python"><code class="language-python">def decorator(func): 
-# 定义装饰器函数，接收一个函数作为参数
-    def wrapper(*args, kwargs):
-         # 定义包装函数，接收任意数量的参数
-         # 在这里可以添加一些代码，在原函数执行前后执行
-         return func(*args, kwargs) 
-     # 调用原函数，并返回结果
-    return wrapper # 返回包装函数</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">decorator</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span> 
+<span class="token comment"># 定义装饰器函数，接收一个函数作为参数</span>
+    <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+         <span class="token comment"># 定义包装函数，接收任意数量的参数</span>
+         <span class="token comment"># 在这里可以添加一些代码，在原函数执行前后执行</span>
+         <span class="token keyword">return</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> kwargs<span class="token punctuation">)</span> 
+     <span class="token comment"># 调用原函数，并返回结果</span>
+    <span class="token keyword">return</span> wrapper <span class="token comment"># 返回包装函数</span></code></pre>
 
 <p>要使用装饰器，可以在要被装饰的函数上方使用@符号，后面跟着装饰器的名称。</p>
 <pre class="language-none"><code class="language-none">@decorator # 使用@符号应用装饰器def my_func(): # 定义要被装饰的函数pass # 函数体</code></pre>
@@ -508,13 +508,13 @@ app.config.from_object(DefaultConfig)</code></pre>
 <li>一个应用初始化时，就应该注册需要使用Blueprint，蓝图并不是一个完整应用，必须要注册到某一应用中</li>
 </ul>
 <h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>1.创建蓝图对象</p>
-<pre class="language-python" data-language="python"><code class="language-python">from flask import Blueprint
-user_bp=Blueprint('user',__name__)</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> Blueprint
+user_bp<span class="token operator">=</span>Blueprint<span class="token punctuation">(</span><span class="token string">'user'</span><span class="token punctuation">,</span>__name__<span class="token punctuation">)</span></code></pre>
 
 <p>2.在这个蓝图对象上进行操作，注册路由，指定静态文件，注册模板过滤器</p>
-<pre class="language-python" data-language="python"><code class="language-python">@user_bp.route('/')
-def user_profile():
-    return 'usee_profile'</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@user_bp<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">user_profile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string">'usee_profile'</span></code></pre>
 
 <p>3.在应用对象上注册蓝图对象</p>
 <pre class="language-none"><code class="language-none">app.register_blueprint(user_bp)</code></pre>
@@ -586,32 +586,32 @@ def user_profile():
 
 <p>参数已经封装成字典，在字典前添加**,如**data</p>
 <p>render_template_string()将字符串当作模板文件内容进行渲染</p>
-<h5 id="2-重定向"><a href="#2-重定向" class="headerlink" title="2.重定向"></a>2.重定向</h5><pre class="language-python" data-language="python"><code class="language-python">from flask import redirect
-...
-    return redirect(url)</code></pre>
+<h5 id="2-重定向"><a href="#2-重定向" class="headerlink" title="2.重定向"></a>2.重定向</h5><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> redirect
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token keyword">return</span> redirect<span class="token punctuation">(</span>url<span class="token punctuation">)</span></code></pre>
 
-<h5 id="3-返回JSON"><a href="#3-返回JSON" class="headerlink" title="3.返回JSON"></a>3.返回JSON</h5><pre class="language-python" data-language="python"><code class="language-python">from flask import jsonify
-    return jsonify(json_dict)</code></pre>
+<h5 id="3-返回JSON"><a href="#3-返回JSON" class="headerlink" title="3.返回JSON"></a>3.返回JSON</h5><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> jsonify
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span>json_dict<span class="token punctuation">)</span></code></pre>
 
 <p><strong>自定义状态码和响应头</strong></p>
 <p>make_respone(其中一种方式)</p>
-<pre class="language-python" data-language="python"><code class="language-python">resp=make_respone('test')
-resp.headers['Itcast']='Test'
-resp.status="404  not found"
-return resp</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">resp<span class="token operator">=</span>make_respone<span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">)</span>
+resp<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">'Itcast'</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token string">'Test'</span>
+resp<span class="token punctuation">.</span>status<span class="token operator">=</span><span class="token string">"404  not found"</span>
+<span class="token keyword">return</span> resp</code></pre>
 
 <h3 id="cookie和session"><a href="#cookie和session" class="headerlink" title="cookie和session"></a>cookie和session</h3><p>response.setcookie( )</p>
 <p>response.delete_cookie()–删除cookie</p>
-<pre class="language-python" data-language="python"><code class="language-python">from flask import session
-session['test']='test'</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> session
+session<span class="token punctuation">[</span><span class="token string">'test'</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token string">'test'</span></code></pre>
 
 <h2 id="请求钩子与上下文"><a href="#请求钩子与上下文" class="headerlink" title="请求钩子与上下文"></a>请求钩子与上下文</h2><h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>abort(code)</p>
 <p>http异常主动抛出，抛出一个状态码code</p>
 <h5 id="捕获错误"><a href="#捕获错误" class="headerlink" title="捕获错误"></a>捕获错误</h5><p>errorhandler装饰器</p>
 <p>注册一个错误处理程序，当程序抛出异常时，就会执行装饰器的方法</p>
-<pre class="language-python" data-language="python"><code class="language-python">@app.errorhandler(500(状态码或异常的类型))
-def server_error(e):
-...</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>errorhandler</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">(</span>状态码或异常的类型<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">server_error</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
 
 <h3 id="请求钩子"><a href="#请求钩子" class="headerlink" title="请求钩子"></a>请求钩子</h3><p>请求钩子是一种在Flask框架中实现请求前后执行一些操作的方法，比如打印日志、验证身份、处理异常等。请求钩子是通过<strong>装饰器</strong>的形式实现，Flask支持如下四种请求钩子：</p>
 <ul>
@@ -621,9 +621,9 @@ def server_error(e):
 <li><code>teardown_request</code>：在每次请求之后执行，无论视图函数是否出现异常，可以用于记录异常信息、释放资源等。</li>
 </ul>
 <p>示例</p>
-<pre class="language-python" data-language="python"><code class="language-python">@app.before_first_request
-def init_db():
-    print("初始化数据库连接")</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>before_first_request</span>
+<span class="token keyword">def</span> <span class="token function">init_db</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"初始化数据库连接"</span><span class="token punctuation">)</span></code></pre>
 
 <h3 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h3><p>Flask中的上下文是指在处理请求时，Flask会创建一些对象，如request, session, current_app, g等，这些对象保存了请求相关的信息或程序的状态。上下文可以让视图函数直接访问这些对象，而不需要通过参数传递。</p>
 <p>Flask中有两种上下文：请求上下文和程序上下文。</p>
@@ -635,9 +635,9 @@ def init_db():
 <p>request、session</p>
 <h5 id="程序上下文"><a href="#程序上下文" class="headerlink" title="程序上下文"></a>程序上下文</h5><p>不同文件下调用对象</p>
 <p><strong>current_app</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python">from flask import current_app
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> current_app
 引用current_app相当于主程序中的app对象
-current_app.config.get('Itcast')</code></pre>
+current_app<span class="token punctuation">.</span>config<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'Itcast'</span><span class="token punctuation">)</span></code></pre>
 
 <p><strong>g对象</strong></p>
 <p>g作为flask程序全局的一个临时变量，便于函数之间的参数传递</p>

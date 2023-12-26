@@ -445,39 +445,39 @@
 
 
 <p>自定义的恶意类</p>
-<pre class="language-java" data-language="java"><code class="language-java">package org.example.enity;
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">org<span class="token punctuation">.</span>example<span class="token punctuation">.</span>enity</span><span class="token punctuation">;</span>
 
-import java.io.IOException;
-import java.util.Map;
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Map</span></span><span class="token punctuation">;</span>
 
-public class Test {
-    private Map mymap;
-    public Test(){
-        System.out.println("调用了构造方法");
-    }
-    static {
-        System.out.println("调用了静态代码块");
-    }
-    public void setCmd(String cmd) throws IOException {
-        System.out.println("调用了set方法");
-        Runtime.getRuntime().exec(cmd);
-    }
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">Map</span> mymap<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"调用了构造方法"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"调用了静态代码块"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCmd</span><span class="token punctuation">(</span><span class="token class-name">String</span> cmd<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"调用了set方法"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span>cmd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
 
-    public String getCmd(){
-        System.out.println("调用了get方法");
-        return "get";
-    }
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getCmd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"调用了get方法"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token string">"get"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    public Map getMymap() {
-        return mymap;
-    }
-}</code></pre>
+    <span class="token keyword">public</span> <span class="token class-name">Map</span> <span class="token function">getMymap</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> mymap<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
 
 <p>​      这里并不是标准的JavaBean,没有cmd属性，但有setCmd方法</p>
 <p>调试代码</p>
-<pre class="language-java" data-language="java"><code class="language-java">String s="{\"@type\":\"org.example.enity.Test\",\"cmd\":\"calc\"}";
-JSONObject student=JSON.parseObject(s);</code></pre>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> s<span class="token operator">=</span><span class="token string">"{\"@type\":\"org.example.enity.Test\",\"cmd\":\"calc\"}"</span><span class="token punctuation">;</span>
+<span class="token class-name">JSONObject</span> student<span class="token operator">=</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">parseObject</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
 <h2 id="JSON-parseObject方法"><a href="#JSON-parseObject方法" class="headerlink" title="JSON.parseObject方法"></a>JSON.<em>parseObject方法</em></h2><p>   这次是以<em>parseObject的过程。parse方法稍微有些不同</em> </p>
 <p>具体代码</p>
@@ -616,7 +616,7 @@ JSONObject student=JSON.parseObject(s);</code></pre>
 <img src="/img/12-4/23.png">
 
 <p>进入if后，会调用这个new FeildInfo时进入上面的设置getOnly为true </p>
-<pre class="language-java" data-language="java"><code class="language-java">add(fieldList, new FieldInfo(propertyName, method, null, clazz, type, 0, 0, 0, annotation, null, null));</code></pre>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token function">add</span><span class="token punctuation">(</span>fieldList<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FieldInfo</span><span class="token punctuation">(</span>propertyName<span class="token punctuation">,</span> method<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> clazz<span class="token punctuation">,</span> type<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> annotation<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
 <p>这里进入if就行了</p>
 <p>​      这里是要方法的返回值是这些类中的其中一个，只有前面两个好实现,collection类和map类</p>

