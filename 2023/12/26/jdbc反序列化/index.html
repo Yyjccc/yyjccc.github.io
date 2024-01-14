@@ -423,6 +423,10 @@
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><blockquote>
 <p>JDBC定义了一个叫<strong>java.sql.Driver</strong>的接口类负责实现对数据库的连接，所有的数据库驱动包都必须实现这个接口才能够完成数据库的连接操作。<strong>java.sql.DriverManager.getConnection(xxx)<strong>其实就是间接的调用了</strong>java.sql.Driver</strong>类的<strong>connect</strong>方法实现数据库连接的。数据库连接成功后会返回一个叫做<strong>java.sql.Connection</strong>的数据库连接对象，一切对数据库的查询操作都将依赖于这个<strong>Connection</strong>对象。</p>
 </blockquote>
+<p>当连接数据库的时候会执行内置的sql语句来确保连接成功</p>
+<img src="/img/12-26/5.png">
+
+<p>当我们伪造返回数据为序列化数据时，使服务器触发反序列化</p>
 <p>入口点是<code>com.mysql.cj.jdbc.result.ResultSetImpl.getObject()</code></p>
 <p>很明显这里触发了反序列化</p>
 <img src="/img/12-26/1.png">
@@ -945,7 +949,7 @@ response_ok_data<span class="token operator">=</span><span class="token string">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2023</span>
+                <span id="year">2023-2024</span>
             
             <a href="/about" target="_blank">Yyjccc</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
