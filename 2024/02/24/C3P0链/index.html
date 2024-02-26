@@ -4,7 +4,7 @@
 
 <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="yyjccc的博客">
+    <meta name="keywords" content="C3P0链, yyjccc的博客">
     <meta name="description" content="参考：Java安全学习——C3P0链 - 枫のBlog
 
 C3P0介绍C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑定，支持JDBC3规范和JDBC2的标准扩展。目前使用它的开源项目有Hibernate，Spring等。
@@ -21,7 +21,7 @@ C3P0介绍C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>yyjccc的博客</title>
+    <title>C3P0链 | yyjccc的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -325,12 +325,12 @@ C3P0介绍C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title"></h1>
+                    <h1 class="description center-align post-title">C3P0链</h1>
                 </div>
             </div>
         </div>
@@ -352,9 +352,21 @@ C3P0介绍C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑�
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                <span class="chip bg-color">web安全</span>
+                            </a>
+                        
+                            <a href="/tags/java%E5%AE%89%E5%85%A8/">
+                                <span class="chip bg-color">java安全</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                                <span class="chip bg-color">反序列化</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -412,8 +424,8 @@ C3P0介绍C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑�
             <div id="articleContent">
                 <p>参考：<a target="_blank" rel="noopener" href="https://goodapple.top/archives/1749">Java安全学习——C3P0链 - 枫のBlog</a></p>
 <p><a name="BScjw"></a></p>
-<h1 id="C3P0介绍"><a href="#C3P0介绍" class="headerlink" title="C3P0介绍"></a>C3P0介绍</h1><pre><code>C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑定，支持JDBC3规范和JDBC2的标准扩展。目前使用它的开源项目有Hibernate，Spring等。
-</code></pre>
+<h1 id="C3P0介绍"><a href="#C3P0介绍" class="headerlink" title="C3P0介绍"></a>C3P0介绍</h1><pre class="language-text" data-language="text"><code class="language-text">C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑定，支持JDBC3规范和JDBC2的标准扩展。目前使用它的开源项目有Hibernate，Spring等。</code></pre>
+
 <p>JDBC是Java DataBase Connectivity的缩写，它是Java程序访问数据库的标准接口。<br>使用Java程序访问数据库时，Java代码并不是直接通过TCP连接去访问数据库，而是通过JDBC接口来访问，而JDBC接口则通过JDBC驱动来实现真正对数据库的访问。<br>连接池类似于线程池，在一些情况下我们会频繁地操作数据库，此时Java在连接数据库时会频繁地创建或销毁句柄，增大资源的消耗。为了避免这样一种情况，我们可以提前创建好一些连接句柄，需要使用时直接使用句柄，不需要时可将其放回连接池中，准备下一次的使用。类似这样一种能够复用句柄的技术就是池技术。</p>
 <br>
 <a name="vDNj8"></a>
@@ -707,7 +719,19 @@ public class C3P0_Tomcat8 <span class="token punctuation">{</span>
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                    <span class="chip bg-color">web安全</span>
+                                </a>
+                            
+                                <a href="/tags/java%E5%AE%89%E5%85%A8/">
+                                    <span class="chip bg-color">java安全</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                                    <span class="chip bg-color">反序列化</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -787,9 +811,9 @@ public class C3P0_Tomcat8 <span class="token punctuation">{</span>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="C3P0链">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">C3P0链</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -811,6 +835,22 @@ public class C3P0_Tomcat8 <span class="token punctuation">{</span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
+                    </a>
+                    
+                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">java安全</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                        <span class="chip bg-color">反序列化</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1364,9 +1404,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
+                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>
