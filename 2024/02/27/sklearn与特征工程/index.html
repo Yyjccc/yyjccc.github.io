@@ -459,8 +459,8 @@
 </ol>
 <p>获取大规模数据集，需要从网络上下载，函数的第一个参数表示数据集下载路径，默认是~/scikit_learn_data/</p>
 <p>示例</p>
-<pre class="language-none"><code class="language-none">import sklearn.datasets
-data=sklearn.datasets.load_iris()</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sklearn<span class="token punctuation">.</span>datasets
+data<span class="token operator">=</span>sklearn<span class="token punctuation">.</span>datasets<span class="token punctuation">.</span>load_iris<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
 
 <p><strong>数据集对象</strong></p>
 <p>load和fatch返回的数据类型是datasets.base.Bunch(继承于字典)</p>
@@ -484,10 +484,10 @@ data=sklearn.datasets.load_iris()</code></pre>
 <li>random_state：随机数种子</li>
 </ol>
 <p>返回值: 训练集特征值，测试集特征值，训练集目标值，测试集目标值</p>
-<pre class="language-none"><code class="language-none">import sklearn.datasets
-from sklearn.model_selection import  train_test_split
-iris=sklearn.datasets.load_iris()
-x_train,x_test,y_train,y_test=train_test_split(iris.data,iris.target,test_size=0.2,random_state=18)</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sklearn<span class="token punctuation">.</span>datasets
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>model_selection <span class="token keyword">import</span>  train_test_split
+iris<span class="token operator">=</span>sklearn<span class="token punctuation">.</span>datasets<span class="token punctuation">.</span>load_iris<span class="token punctuation">(</span><span class="token punctuation">)</span>
+x_train<span class="token punctuation">,</span>x_test<span class="token punctuation">,</span>y_train<span class="token punctuation">,</span>y_test<span class="token operator">=</span>train_test_split<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span>iris<span class="token punctuation">.</span>target<span class="token punctuation">,</span>test_size<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">,</span>random_state<span class="token operator">=</span><span class="token number">18</span><span class="token punctuation">)</span></code></pre>
 
 <h2 id="特征提取"><a href="#特征提取" class="headerlink" title="特征提取"></a>特征提取</h2><p>概念：将任意数据（如文本或图像）转化为可用于机器学习的数字特征</p>
 <p>分类：</p>
@@ -521,18 +521,18 @@ x_train,x_test,y_train,y_test=train_test_split(iris.data,iris.target,test_size=0
 <li>get_feature_names_out(X)</li>
 </ul>
 <p>X:前面得到的特征矩阵,返回类别名称</p>
-<pre class="language-none"><code class="language-none">from sklearn.feature_extraction import DictVectorizer
-data=[
-    {"city":"北京","temperature":23},
-    {"city":"上海","temperature":21},
-    {"city":"广州","temperature":30},
-      ]
-dictVector=DictVectorizer(sparse=False)
-new_data=dictVector.fit_transform(data)
-names=dictVector.get_feature_names_out(new_data)
-print(names)
-print(new_data)
-print(dictVector.inverse_transform(new_data))</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_extraction <span class="token keyword">import</span> DictVectorizer
+data<span class="token operator">=</span><span class="token punctuation">[</span>
+    <span class="token punctuation">{</span><span class="token string">"city"</span><span class="token punctuation">:</span><span class="token string">"北京"</span><span class="token punctuation">,</span><span class="token string">"temperature"</span><span class="token punctuation">:</span><span class="token number">23</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"city"</span><span class="token punctuation">:</span><span class="token string">"上海"</span><span class="token punctuation">,</span><span class="token string">"temperature"</span><span class="token punctuation">:</span><span class="token number">21</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"city"</span><span class="token punctuation">:</span><span class="token string">"广州"</span><span class="token punctuation">,</span><span class="token string">"temperature"</span><span class="token punctuation">:</span><span class="token number">30</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">]</span>
+dictVector<span class="token operator">=</span>DictVectorizer<span class="token punctuation">(</span>sparse<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+new_data<span class="token operator">=</span>dictVector<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+names<span class="token operator">=</span>dictVector<span class="token punctuation">.</span>get_feature_names_out<span class="token punctuation">(</span>new_data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>names<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>new_data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dictVector<span class="token punctuation">.</span>inverse_transform<span class="token punctuation">(</span>new_data<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <p>应用场景：</p>
 <p>若数据集类别多，先将数据集转为字典，再进行特征提权</p>
@@ -546,12 +546,12 @@ print(dictVector.inverse_transform(new_data))</code></pre>
 <p>toarray()–将结果对象转为二维数组</p>
 <p>将每条数据（句子）统计单词数</p>
 <p>英文</p>
-<pre class="language-none"><code class="language-none">from sklearn.feature_extraction.text import CountVectorizer
-data="I like to have a book.I like go to like good college and eat beef.I am a student of computer science".split(".")
-count_vector = CountVectorizer()
-new_data=count_vector.fit_transform(data)
-print(new_data.toarray())
-print(count_vector.get_feature_names_out(new_data))</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_extraction<span class="token punctuation">.</span>text <span class="token keyword">import</span> CountVectorizer
+data<span class="token operator">=</span><span class="token string">"I like to have a book.I like go to like good college and eat beef.I am a student of computer science"</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">)</span>
+count_vector <span class="token operator">=</span> CountVectorizer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+new_data<span class="token operator">=</span>count_vector<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>new_data<span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>count_vector<span class="token punctuation">.</span>get_feature_names_out<span class="token punctuation">(</span>new_data<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 
 <p>中文需要进行词组间加空格</p>
 <p>使用第三方库：jieba.cut()</p>
@@ -598,14 +598,14 @@ print(count_vector.get_feature_names_out(new_data))</code></pre>
 <ul>
 <li>fit_transform(X) :返回处理后相同形状的数组</li>
 </ul>
-<pre class="language-none"><code class="language-none">import sklearn.datasets as datasets
-from sklearn.preprocessing import MinMaxScaler
-iris=datasets.load_iris()
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sklearn<span class="token punctuation">.</span>datasets <span class="token keyword">as</span> datasets
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>preprocessing <span class="token keyword">import</span> MinMaxScaler
+iris<span class="token operator">=</span>datasets<span class="token punctuation">.</span>load_iris<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-def for_one():
-    scaler=MinMaxScaler()
-    new_data=scaler.fit_transform(iris.data)
-    print(new_data)</code></pre>
+<span class="token keyword">def</span> <span class="token function">for_one</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    scaler<span class="token operator">=</span>MinMaxScaler<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    new_data<span class="token operator">=</span>scaler<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>new_data<span class="token punctuation">)</span></code></pre>
 
 <ol>
 <li>特点</li>
@@ -657,7 +657,7 @@ def for_one():
 <ol>
 <li>模块</li>
 </ol>
-<pre class="language-none"><code class="language-none">sklearn.feature_selection</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">sklearn<span class="token punctuation">.</span>feature_selection</code></pre>
 
 <ol>
 <li>过滤式</li>
@@ -674,13 +674,13 @@ def for_one():
 </ul>
 <p>X:numpy数组</p>
 <p>返回值：训练集差异低于threshold的特征将会被删除，默认是保持所有的特征，即方差非零特征，即删除所有样本中具有相同值的特征。</p>
-<pre class="language-none"><code class="language-none">import sklearn.datasets as datasets
-from  sklearn.feature_selection import VarianceThreshold
-iris=datasets.load_iris()
-def low_std():
-    select=VarianceThreshold(threshold=0.5)
-    new_data = select.fit_transform(iris.data)
-    print(new_data)</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sklearn<span class="token punctuation">.</span>datasets <span class="token keyword">as</span> datasets
+<span class="token keyword">from</span>  sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> VarianceThreshold
+iris<span class="token operator">=</span>datasets<span class="token punctuation">.</span>load_iris<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">low_std</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    select<span class="token operator">=</span>VarianceThreshold<span class="token punctuation">(</span>threshold<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+    new_data <span class="token operator">=</span> select<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>new_data<span class="token punctuation">)</span></code></pre>
 
 <p><strong>相关系数</strong></p>
 <p>皮尔逊相关系数</p>
@@ -702,8 +702,8 @@ def low_std():
 <p>scipy.stats.pearsonr(x,y)</p>
 <p>X,Y为数组</p>
 <p>返回值中的statistic属性为相关系数，pvalue属性为p 值（表示观察到的统计量在零假设成立的情况下（即两个变量之间没有线性关系）出现的概率）</p>
-<pre class="language-none"><code class="language-none">r=pearsonr(iris.data[:,0],iris.data[:,1])
-print(r)</code></pre>
+<pre class="language-python" data-language="python"><code class="language-python">r<span class="token operator">=</span>pearsonr<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span></code></pre>
 
 <h3 id="主成分分析"><a href="#主成分分析" class="headerlink" title="主成分分析"></a>主成分分析</h3><p>（PCA）</p>
 <ol>
@@ -826,18 +826,17 @@ print(r)</code></pre>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/02/27/sklearn%E4%B8%8E%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">
+                <a href="/2024/03/06/Tomcat%E5%86%85%E5%AD%98%E9%A9%AC/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="sklearn与特征工程">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Tomcat内存马">
                         
-                        <span class="card-title">sklearn与特征工程</span>
+                        <span class="card-title">Tomcat内存马</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -847,9 +846,9 @@ print(r)</code></pre>
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-27
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-03-06
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -858,24 +857,19 @@ print(r)</code></pre>
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">机器学习</span>
+                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">java安全</span>
                     </a>
                     
-                    <a href="/tags/sklearn/">
-                        <span class="chip bg-color">sklearn</span>
+                    <a href="/tags/%E5%86%85%E5%AD%98%E9%A9%AC/">
+                        <span class="chip bg-color">内存马</span>
                     </a>
                     
-                    <a href="/tags/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">
-                        <span class="chip bg-color">特征工程</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
-                        <span class="chip bg-color">数据处理</span>
+                    <a href="/tags/Tomcat/">
+                        <span class="chip bg-color">Tomcat</span>
                     </a>
                     
                 </div>
@@ -1428,9 +1422,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
+                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>
