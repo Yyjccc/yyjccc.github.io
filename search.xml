@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>反向传播</title>
+      <link href="/2024/03/25/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"/>
+      <url>/2024/03/25/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</url>
+      
+        <content type="html"><![CDATA[<h1 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h1><p><a name="SMMHj"></a></p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95">反向传播</a>（英语：Backpropagation，缩写为BP）是“误差反向传播”的简称，是一种与最优化方法（如梯度下降法）结合使用的，用来<strong>训练人工神经网络</strong>的常见方法。该方法对网络中所有权重<strong>计算损失函数的梯度</strong>。这个梯度会反馈给最优化方法，用来更新权值以最小化损失函数。<br>反向传播要求有对每个输入值想得到的已知输出，来计算损失函数梯度。因此，它通常被认为是一种监督式学习方法，虽然它也用在一些无监督网络（如自动编码器）中。它是多层前馈网络的Delta规则的推广，可以用<strong>链式法则</strong>对每层迭代计算梯度。反向传播要求人工神经元（或“节点”）的<strong>激励函数</strong>可微。</p><p><a name="RbIqB"></a></p><h2 id="梯度下降与损失函数"><a href="#梯度下降与损失函数" class="headerlink" title="梯度下降与损失函数"></a>梯度下降与损失函数</h2><pre><code> 损失函数，(Loss Function）在机器学习中的每一种算法中都很重要，因为训练模型的过程就是优化损失函数的过程，损失函数对每个参数的偏导数就是梯度下降中提到的梯度，防止过拟合时添加的正则化项也是加在损失函数后面的。&lt;br /&gt;损失函数非常好理解，我觉得其实就是，反映神经网络输出的结果与训练样本的y之间的差别的函数（其中输入变量是神经网络的权重参数）。这个函数要具有一些特性，一般情况下，我们要尽可能的最小化损失函数，寻找损失函数的全局最小值，</code></pre><p>为了完成梯度下降<br><img src="/img/3-25/1.svg"><br>我们需要求偏导</p><p><a name="epX0a"></a></p><h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>数学原理：基于复合函数求导的链式法则–<br>如果某个函数由复合函数表示，则该复合函数的导数可以用构成复合函数的各个函数的导数的乘积表示；</p><p><a name="Lqqst"></a></p><h3 id="简单线性回归"><a href="#简单线性回归" class="headerlink" title="简单线性回归"></a>简单线性回归</h3><p>假设是 y=wx+b<br>其损失函数为<br><img src="/img/3-25/2.svg"></p><ul><li>随机初始化参数 w,b</li><li>将w,b视为变量，x,y为常量</li><li>根据梯度下降,更新w,b</li></ul><p><img src="/img/3-25/3.svg">、<br><img src="/img/3-25/4.svg"><br>因此需计算出<img src="/img/3-25/5.svg">、<img src="/img/3-25/6.svg"><br>易得<img src="/img/3-25/7.svg">= x  ,  <img src="/img/3-25/8.svg"> = 1<br>上面其实是现在的需求，根据链式法则<br><img src="/img/3-25/9.svg"><br><img src="/img/3-25/10.svg"></p><p>如下图，已知数据(1.5,0.8)，初始化参数w=0.8,b=0.2<br>一轮运算后得到预测值y=1.4<br>如果先得出<img src="/img/3-25/11.svg">,接着往下运算得到目标结果<br><img src="/img/3-25/12.png"><br>根据上图，<img src="/img/3-25/13.svg">= y - <img src="/img/3-25/14.svg">其中<img src="/img/3-25/15.svg">为真实值，y是预测值，根据上面一轮的正向传播（即根据给定的模型计算得出），得到<img src="/img/3-25/16.svg">=1.4 -0.8 = 0.6<br><img src="/img/3-25/17.png"><br>然后<img src="/img/3-25/18.svg">=0.6 x 1.5= 0.9   <img src="/img/3-25/19.svg">=0.6<br>然后设置学习率<img src="/img/3-25/20.svg">=0.1 <br>更新w,b   w=0.8-0.1 x 0.9 = 0.71    b=0.2-0.1 x 0.6=0.14<br>然后照此迭代模型<br>这样由后往前地求偏导就是反向传播的过程，</p><p><a name="Qta8E"></a></p><h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><p>在一个神经网络中，其实就是上面简单线性回归变得稍微复杂，多加上了几层<br><img src="/img/3-25/21.png"><br>反向传播，根据上面一步的运算求出下一层次的偏导<br>就如上图，黄色部分其实都是已经由之前的运算得出<br>反向传播算法就是神经网络中加快计算梯度值的方法<br><a name="jHjGe"></a></p><h2 id="计算图"><a href="#计算图" class="headerlink" title="计算图"></a>计算图</h2><p>计算机中的运算并非就是上面图示的过程，因为很难对一个式子求偏导<br>，所以需要将式子拆开，由一个运算符连接得到计算图</p><p>计算图将计算过程用图形表示出来，这里的图形是指数据结构图，通过多个节点和边表示<br>用计算图解题时，需要按如下流程进行:</p><ul><li>构建计算图；</li><li>在计算图上从左到右进行计算(正向传播, forward propagation)；</li><li>在计算图上从右到左进行计算(反向传播, backward propagation)；<ul><li>将上游传过来的值E乘以节点的局部导数 <img src="/img/3-25/22.svg">，然后将结果传递给下一个节点</li></ul></li></ul><p>计算图的优点:</p><ul><li>局部计算；<ul><li>无论全局多么复杂的计算，都可以通过局部计算使各个节点致力于简单的计算，从而简化问题；</li></ul></li><li>利用计算图可以将中间的计算结果保存起来；</li><li>可以通过反向传播高效计算导数；</li><li>综上:可以通过正向传播和反向传播高效地计算各个变量的导数值；</li></ul><img src="/img/3-25/23.png"><p>由计算图，可以定义每中运算的数据结构<br>如在Pytourch中乘法运算可以如下定义：</p><pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch<span class="token punctuation">.</span>autograd<span class="token keyword">class</span> <span class="token class-name">Multiply</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>autograd<span class="token punctuation">.</span>Function<span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token decorator annotation punctuation">@staticmethod</span>    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token punctuation">:</span>        ctx<span class="token punctuation">.</span>save_for_backward<span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span>        z <span class="token operator">=</span> x <span class="token operator">*</span> y        <span class="token keyword">return</span> z        <span class="token decorator annotation punctuation">@staticmethod</span>    <span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span>grad_z<span class="token punctuation">)</span><span class="token punctuation">:</span>        x<span class="token punctuation">,</span>y<span class="token operator">=</span>ctx<span class="token punctuation">.</span>save_tensors        grad_x <span class="token operator">=</span> grad_z <span class="token operator">*</span> y        grad_y <span class="token operator">=</span> grad_z <span class="token operator">*</span> x        <span class="token keyword">return</span> grad_x<span class="token punctuation">,</span>grad_y</code></pre><p>forward函数是前向传播，计算 z =x * y<br>backward函数是反向传播 ，由参数grad_z （由上一级的梯度<img src="/img/3-25/24.svg">）计算对x,y的偏导<br>由于z= x*y<br>因此<br><img src="/img/3-25/25.svg"><br><img src="/img/3-25/26.svg"><br></p><p><img src="/img/3-25/27.png"><br></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 机器学习 </tag>
+            
+            <tag> 深度学习 </tag>
+            
+            <tag> 神经网络 </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>RMI机制</title>
       <link href="/2024/03/18/RMI%E6%9C%BA%E5%88%B6/"/>
       <url>/2024/03/18/RMI%E6%9C%BA%E5%88%B6/</url>
@@ -62,9 +87,9 @@
             
             <tag> 机器学习 </tag>
             
-            <tag> 线性回归 </tag>
-            
             <tag> 算法 </tag>
+            
+            <tag> 线性回归 </tag>
             
         </tags>
       
