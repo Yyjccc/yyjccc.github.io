@@ -382,7 +382,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    29 分
+                    30 分
                 </div>
                 
 
@@ -918,10 +918,20 @@ ctConstructor<span class="token punctuation">.</span><span class="token function
 
 <h3 id="静态代码块"><a href="#静态代码块" class="headerlink" title="静态代码块"></a>静态代码块</h3><p>修改已有静态代码块（如不存在则返回null）</p>
 <pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">CtConstructor</span> ctConstructor <span class="token operator">=</span>  ctClass<span class="token punctuation">.</span><span class="token function">getClassInitializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <p>新增静态代码块（如存在则返回已有静态代码块）</p>
 <pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">CtConstructor</span> ctConstructor <span class="token operator">=</span>  ctClass<span class="token punctuation">.</span><span class="token function">makeClassInitializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <p>静态代码块其他使用方式与构造方法相同</p>
-<h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><p>得到注解<br>得到类注解</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">CtConstructor</span> ctConstructor <span class="token operator">=</span> ctClass<span class="token punctuation">.</span><span class="token function">makeClassInitializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		ctConstructor<span class="token punctuation">.</span><span class="token function">setBody</span><span class="token punctuation">(</span><span class="token string">"Runtime.getRuntime().exec(\"calc\");"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p>另外一种方式：</p>
+<p>将静态代码块作为静态方法添加到类中，然后在类的静态初始方法 <strong><clinit></clinit></strong> 中调用这个静态方法</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">CtMethod</span> clinit <span class="token operator">=</span> <span class="token class-name">CtNewMethod</span><span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span><span class="token string">"public static void $clinit() {Runtime.getRuntime().exec(\"calc\");}"</span><span class="token punctuation">,</span> ctClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ctClass<span class="token punctuation">.</span><span class="token function">addMethod</span><span class="token punctuation">(</span>clinit<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><p>得到注解<br>得到类注解</p>
 <pre class="language-java" data-language="java"><code class="language-java">
 <span class="token class-name">Deprecated</span> annotation <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Deprecated</span><span class="token punctuation">)</span>ctClass<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">Deprecated</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token class-name">Deprecated</span> annotation <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Deprecated</span><span class="token punctuation">)</span>ctClass<span class="token punctuation">.</span><span class="token function">getAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
@@ -1250,18 +1260,17 @@ jshell<span class="token operator">&gt;</span> <span class="token operator">/</s
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/04/12/Javassist/">
+                <a href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5-md-yyj/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="javassist">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="JNDI注入">
                         
-                        <span class="card-title">javassist</span>
+                        <span class="card-title">JNDI注入</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1271,23 +1280,34 @@ jshell<span class="token operator">&gt;</span> <span class="token operator">/</s
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-12
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-04-24
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Yyjccc
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
+                                    java安全
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/java/">
-                        <span class="chip bg-color">java</span>
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
+                    </a>
+                    
+                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">java安全</span>
+                    </a>
+                    
+                    <a href="/tags/jndi/">
+                        <span class="chip bg-color">jndi</span>
                     </a>
                     
                 </div>
@@ -1840,9 +1860,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+                                                                                                                                                                    type="module"></script>
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 
 </html>
