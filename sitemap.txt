@@ -1,4 +1,5 @@
-https://yyjccc.github.io/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Common-Collections6%E8%B0%83%E8%AF%95/
+https://yyjccc.github.io/2024/06/02/Elasticsearch/
+https://yyjccc.github.io/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Commons-Collections6%E8%B0%83%E8%AF%95/
 https://yyjccc.github.io/2024/05/13/Tomcat-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E9%9B%86%E5%90%88/
 https://yyjccc.github.io/2024/05/06/shiro550-md-yyj/
 https://yyjccc.github.io/2024/05/04/java-Agent/
@@ -83,6 +84,9 @@ https://yyjccc.github.io/tags/web%E4%B8%AD%E9%97%B4%E4%BB%B6/
 https://yyjccc.github.io/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/
 https://yyjccc.github.io/tags/life/
 https://yyjccc.github.io/tags/cc%E9%93%BE/
+https://yyjccc.github.io/tags/%E5%BC%80%E5%8F%91/
+https://yyjccc.github.io/tags/Elasticsearch/
+https://yyjccc.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/
 https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/categories/%E8%93%9D%E9%98%9F/
 https://yyjccc.github.io/categories/web%E5%AE%89%E5%85%A8/

@@ -4,10 +4,10 @@
 
 <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="幽默的Common-Collections6调试, yyjccc的博客">
-    <meta name="description" content="幽默的Common-Collections6调试事情是在考完期中之后，同学在调式cc6链的时候发现了奇怪问题。
+    <meta name="keywords" content="幽默的Commons-Collections6调试, yyjccc的博客">
+    <meta name="description" content="幽默的Commons-Collections6调试事情是在考完期中之后，同学在调式cc6链的时候发现了奇怪问题。
 （下面写的过于详细了。。。）
-问题发现（在尝试找出cc6中 为什么LazyMap 最后要使用remove的时候）就是lazyMa">
+问题发现（在尝试找出cc6中 为什么LazyMap 最后要使用remove的时候）就是lazyM">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>幽默的Common-Collections6调试 | yyjccc的博客</title>
+    <title>幽默的Commons-Collections6调试 | yyjccc的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -345,12 +345,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">幽默的Common-Collections6调试</h1>
+                    <h1 class="description center-align post-title">幽默的Commons-Collections6调试</h1>
                 </div>
             </div>
         </div>
@@ -451,7 +451,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="幽默的Common-Collections6调试"><a href="#幽默的Common-Collections6调试" class="headerlink" title="幽默的Common-Collections6调试"></a>幽默的Common-Collections6调试</h1><p>事情是在考完期中之后，同学在调式cc6链的时候发现了奇怪问题。</p>
+                <h1 id="幽默的Commons-Collections6调试"><a href="#幽默的Commons-Collections6调试" class="headerlink" title="幽默的Commons-Collections6调试"></a>幽默的Commons-Collections6调试</h1><p>事情是在考完期中之后，同学在调式cc6链的时候发现了奇怪问题。</p>
 <p>（下面写的过于详细了。。。）</p>
 <h2 id="问题发现"><a href="#问题发现" class="headerlink" title="问题发现"></a>问题发现</h2><p>（在尝试找出cc6中 为什么LazyMap 最后要使用remove的时候）<br><img src="/img/24-5-14/1.png"><br>就是lazyMap中放的是空的HashMap<br>之前代码并没有向hashMap中写入任何东西，为什么在这里却必须要remove掉’aaa’才能触发链子呢</p>
 <p>于是调试<br><img src="/img/24-5-14/2.png"><br>在创建TiedMapEntry的地方打上断点，跟进<br><img src="/img/24-5-14/3.png"><br>赋值完map的时候还算是正常<br>可是到下一步<br><img src="/img/24-5-14/4.png"><br>参数map的size大小怎么突然由1变成2了？又没有对map进行任何操作<br>这里LazyMap为什么多了且是什么时候多了一个键值对的？<br><img src="/img/24-5-14/5.png"><br>难道后面remove移除的键值对是这个时候添加上去的吗？</p>
@@ -611,18 +611,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Common-Collections6%E8%B0%83%E8%AF%95/">
+                <a href="/2024/06/02/Elasticsearch/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="幽默的Common-Collections6调试">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="Elasticsearch">
                         
-                        <span class="card-title">幽默的Common-Collections6调试</span>
+                        <span class="card-title">Elasticsearch</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -632,35 +631,34 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-05-14
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-06-02
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Life/" class="post-category">
-                                    Life
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Yyjccc
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">java安全</span>
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
                     </a>
                     
-                    <a href="/tags/life/">
-                        <span class="chip bg-color">life</span>
+                    <a href="/tags/%E5%BC%80%E5%8F%91/">
+                        <span class="chip bg-color">开发</span>
                     </a>
                     
-                    <a href="/tags/cc%E9%93%BE/">
-                        <span class="chip bg-color">cc链</span>
+                    <a href="/tags/Elasticsearch/">
+                        <span class="chip bg-color">Elasticsearch</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <span class="chip bg-color">数据库</span>
                     </a>
                     
                 </div>
@@ -1217,9 +1215,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
+                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>
