@@ -1,3 +1,4 @@
+https://yyjccc.github.io/2024/07/08/Apache-Commons-JXPath/
 https://yyjccc.github.io/2024/06/07/Hessian/
 https://yyjccc.github.io/2024/06/06/Groovy/
 https://yyjccc.github.io/2024/06/02/Elasticsearch/
@@ -91,6 +92,8 @@ https://yyjccc.github.io/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/
 https://yyjccc.github.io/tags/life/
 https://yyjccc.github.io/tags/cc%E9%93%BE/
 https://yyjccc.github.io/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/
+https://yyjccc.github.io/tags/apache-commons/
+https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/
 https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/categories/%E8%93%9D%E9%98%9F/
 https://yyjccc.github.io/categories/web%E5%AE%89%E5%85%A8/
