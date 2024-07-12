@@ -1,3 +1,4 @@
+https://yyjccc.github.io/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/
 https://yyjccc.github.io/2024/07/08/GeoServer%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/
 https://yyjccc.github.io/2024/07/08/Apache-Commons-JXPath/
 https://yyjccc.github.io/2024/06/07/Hessian/
@@ -96,6 +97,7 @@ https://yyjccc.github.io/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/
 https://yyjccc.github.io/tags/apache-commons/
 https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/
 https://yyjccc.github.io/tags/geoserver/
+https://yyjccc.github.io/tags/springcloud/
 https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/categories/%E8%93%9D%E9%98%9F/
 https://yyjccc.github.io/categories/web%E5%AE%89%E5%85%A8/
