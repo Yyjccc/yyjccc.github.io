@@ -295,7 +295,7 @@
       
       <categories>
           
-          <category> cve复现 </category>
+          <category> java安全 </category>
           
       </categories>
       
@@ -304,7 +304,7 @@
             
             <tag> web安全 </tag>
             
-            <tag> springcloud </tag>
+            <tag> fastjson </tag>
             
         </tags>
       
