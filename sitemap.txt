@@ -1,3 +1,4 @@
+https://yyjccc.github.io/2024/08/09/Apache-OFBiz%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E5%AF%BC%E8%87%B4RCE-CVE-2024-38856/
 https://yyjccc.github.io/2024/01/22/SnakeYaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/
 https://yyjccc.github.io/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/
 https://yyjccc.github.io/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/
@@ -98,6 +99,10 @@ https://yyjccc.github.io/tags/python%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/
 https://yyjccc.github.io/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/
 https://yyjccc.github.io/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/
+https://yyjccc.github.io/tags/Apache/
+https://yyjccc.github.io/tags/cve/
+https://yyjccc.github.io/tags/Govvy/
+https://yyjccc.github.io/tags/%E8%B7%AF%E5%BE%84%E9%81%8D%E5%8E%86/
 https://yyjccc.github.io/categories/Life/
 https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/categories/cve%E5%A4%8D%E7%8E%B0/
