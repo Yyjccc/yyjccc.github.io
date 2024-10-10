@@ -1,483 +1,242 @@
-<!DOCTYPE HTML>
-<html lang="zh-CN">
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
 
 
-<head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="Linux应急响应, yyjccc的博客">
-    <meta name="description" content="Linux应急响应概述关键目录思路：账号安全 -&amp;gt; 历史命令 -&amp;gt; 检查异常端口 -&amp;gt; 检查异常进程 -&amp;gt; 检查开机启动项 -&amp;gt; 检查定时任务 -&amp;gt; 检查服务 -&amp;gt; 检查异常文件
-主机排查常见指令端">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="renderer" content="webkit|ie-stand|ie-comp">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
 
 
-    <title>Linux应急响应 | yyjccc的博客</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    Linux应急响应 |
     
-    <style>
-        body{
-            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
-            background-repeat:no-repeat;
-            background-size: 100% 100%;
-            background-attachment:fixed;
-        }
-    </style>
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
 
+  
+  <meta name="description" content="Linux应急响应概述关键目录思路：账号安全 -&gt; 历史命令 -&gt; 检查异常端口 -&gt; 检查异常进程 -&gt; 检查开机启动项 -&gt; 检查定时任务 -&gt; 检查服务 -&gt; 检查异常文件 主机排查常见指令端口# 查找不常用的监听端口 :netstat -anpiftop# 运行的进程监听了端口 :lsof -ilsof -nPi tcp:443# 使用ss命令查看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux应急响应">
+<meta property="og:url" content="https://yyjccc.github.io/2024/04/25/Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="Linux应急响应概述关键目录思路：账号安全 -&gt; 历史命令 -&gt; 检查异常端口 -&gt; 检查异常进程 -&gt; 检查开机启动项 -&gt; 检查定时任务 -&gt; 检查服务 -&gt; 检查异常文件 主机排查常见指令端口# 查找不常用的监听端口 :netstat -anpiftop# 运行的进程监听了端口 :lsof -ilsof -nPi tcp:443# 使用ss命令查看">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/4-25/1.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/4-25/2.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/4-25/3.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/4-25/4.png">
+<meta property="article:published_time" content="2024-04-25T07:23:34.915Z">
+<meta property="article:modified_time" content="2024-04-25T16:53:44.090Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="Liunx">
+<meta property="article:tag" content="应急响应">
+<meta property="article:tag" content="蓝队">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/4-25/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-
-    <!-- bg-cover style     -->
-
-
-
-<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
-<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
-<link rel="stylesheet" type="text/css" href="/css/matery.css">
-<link rel="stylesheet" type="text/css" href="/css/my.css">
-<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
-
-
-
-
-    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
-    <link rel="stylesheet" href="/css/post.css">
-
-
-
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
 
     
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
 
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
 
-
-    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
-
+  
 <meta name="generator" content="Hexo 6.3.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
-
-    <body>
-        <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="navbar-fixed">
-    <nav id="headNav" class="bg-color nav-transparent">
-        <div id="navContainer" class="nav-wrapper container">
-            <div class="brand-logo">
-                <a href="/" class="waves-effect waves-light">
-                    
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
-                    
-                    <span class="logo-span">yyjccc的博客</span>
-                </a>
-            </div>
-            
-
-<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
-<ul class="right nav-menu">
-  
-  <li class="hide-on-med-and-down nav-item">
+  <body>
     
-    <a href="/" class="waves-effect waves-light">
-      
-      <i class="fas fa-home" style="zoom: 0.6;"></i>
-      
-      <span>首页</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/tags" class="waves-effect waves-light">
-      
-      <i class="fas fa-tags" style="zoom: 0.6;"></i>
-      
-      <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/archives" class="waves-effect waves-light">
-      
-      <i class="fas fa-archive" style="zoom: 0.6;"></i>
-      
-      <span>归档</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/about" class="waves-effect waves-light">
-      
-      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
-      
-      <span>关于</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/contact" class="waves-effect waves-light">
-      
-      <i class="fas fa-comments" style="zoom: 0.6;"></i>
-      
-      <span>留言板</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
-      
-      <span>友情链接</span>
-    </a>
-    
-  </li>
-  
-  <li>
-    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-  <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
-      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-</ul>
-
-
-<div id="mobile-nav" class="side-nav sidenav">
-
-    <div class="mobile-head bg-color">
-        
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
-        
-        <div class="logo-name">yyjccc的博客</div>
-        <div class="logo-desc">
-            
-            Never really desperate, only the lost of the soul.
-            
-        </div>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
     </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
 
-    <ul class="menu-list mobile-menu-list">
-        
-        <li class="m-nav-item">
-	  
-		<a href="/" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-home"></i>
-			
-			首页
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/tags" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-tags"></i>
-			
-			标签
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/archives" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-archive"></i>
-			
-			归档
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/about" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-user-circle"></i>
-			
-			关于
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/contact" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-comments"></i>
-			
-			留言板
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/friends" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-address-book"></i>
-			
-			友情链接
-		</a>
-          
-        </li>
-        
-        
-        <li><div class="divider"></div></li>
-        <li>
-            <a href="https://github.com/Yyjccc" class="waves-effect waves-light" target="_blank">
-                <i class="fab fa-github-square fa-fw"></i>Fork Me
-            </a>
-        </li>
-        
-    </ul>
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
 </div>
 
 
-        </div>
-
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="Linux应急响应">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
         
-            <style>
-    .nav-transparent .github-corner {
-        display: none !important;
-    }
-
-    .github-corner {
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        border: 0;
-        transform: scale(1.1);
-    }
-
-    .github-corner svg {
-        color: #0f9d58;
-        fill: #fff;
-        height: 64px;
-        width: 64px;
-    }
-
-    .github-corner:hover .octo-arm {
-        animation: a 0.56s ease-in-out;
-    }
-
-    .github-corner .octo-arm {
-        animation: none;
-    }
-
-    @keyframes a {
-        0%,
-        to {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
-    }
-</style>
-
-<a href="https://github.com/Yyjccc" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
-   data-tooltip="Fork Me" data-position="left" data-delay="50">
-    <svg viewBox="0 0 250 250" aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
-              fill="currentColor" class="octo-body"></path>
-    </svg>
-</a>
         
-    </nav>
-
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">Linux应急响应</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
 </header>
 
-            
-
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">Linux应急响应</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div id="content">
+          
+          <section id="main"><article id="post-Linux应急响应" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2024/04/25/Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2024-04-25T07:23:34.915Z" itemprop="datePublished">2024-04-25</time>
+    <time style="display: none;" id="post-update-time">2024-04-26</time>
+  </a>
 </div>
 
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%93%9D%E9%98%9F/" data-aos="zoom-in">蓝队</a>
+  </div>
 
 
-
-<main class="post-container content">
-
+    </div>
+    <div class="hr-line"></div>
     
-    <div class="row">
-    <div id="main-content" class="col s12 m12 l9">
-        <!-- 文章内容详情 -->
-<div id="artDetail">
-    <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Liunx/">
-                                <span class="chip bg-color">Liunx</span>
-                            </a>
-                        
-                            <a href="/tags/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">
-                                <span class="chip bg-color">应急响应</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%93%9D%E9%98%9F/">
-                                <span class="chip bg-color">蓝队</span>
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%93%9D%E9%98%9F/" class="post-category">
-                                蓝队
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
 
-            <div class="post-info">
-                
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2024-04-25
-                </div>
-                
-
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
-                </div>
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
-                </div>
-                
-
-                
-                    <div id="busuanzi_container_page_pv" class="info-break-policy">
-                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
-                        <span id="busuanzi_value_page_pv"></span>
-                    </div>
-				
-            </div>
-        </div>
-        <hr class="clearfix">
-
-        
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
-        
-
-        
-        <!-- 代码块折行 -->
-        <style type="text/css">
-            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
-        </style>
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <h1 id="Linux应急响应"><a href="#Linux应急响应" class="headerlink" title="Linux应急响应"></a>Linux应急响应</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>关键目录<br><img src="/img/4-25/1.png"><br>思路：<br>账号安全 -&gt; 历史命令 -&gt; 检查异常端口 -&gt; 检查异常进程 -&gt; 检查开机启动项 -&gt; 检查定时任务 -&gt; 检查服务 -&gt; 检查异常文件</p>
-<h2 id="主机排查"><a href="#主机排查" class="headerlink" title="主机排查"></a>主机排查</h2><h3 id="常见指令"><a href="#常见指令" class="headerlink" title="常见指令"></a>常见指令</h3><h4 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h4><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查找不常用的监听端口 :</span>
-<span class="token function">netstat</span> <span class="token parameter variable">-anp</span>
-iftop
-
-<span class="token comment"># 运行的进程监听了端口 :</span>
-<span class="token function">lsof</span> <span class="token parameter variable">-i</span>
-<span class="token function">lsof</span> <span class="token parameter variable">-nPi</span> tcp:443
-
-<span class="token comment"># 使用ss命令查看TCP协议：</span>
-ss <span class="token parameter variable">-anpt</span>
-
-<span class="token comment"># 使用ss命令查看UDP协议：</span>
-ss <span class="token parameter variable">-anpu</span>
-
-<span class="token comment"># 使用 tcpdump 分析：</span>
-tcpdump <span class="token parameter variable">-i</span> <span class="token punctuation">{</span>网卡名<span class="token punctuation">}</span> <span class="token function">host</span> <span class="token punctuation">{</span>本地IP<span class="token punctuation">}</span> and udp port <span class="token punctuation">{</span>本地端口号<span class="token punctuation">}</span>
-
-<span class="token comment"># ARP表 :</span>
-arp <span class="token parameter variable">-a</span>
-
-<span class="token comment"># 查找监听模式的网卡 :</span>
-<span class="token function">ip</span> <span class="token function">link</span> <span class="token operator">|</span> <span class="token function">grep</span> PROMISC
-
-<span class="token comment"># 提取所有活跃的连接 tcp ip</span>
-$ <span class="token function">netstat</span> <span class="token parameter variable">-ant</span> <span class="token operator">|&amp;</span> <span class="token function">grep</span> <span class="token parameter variable">-Po</span> <span class="token string">'(\d{1,3}\.){3}\d{1,3}'</span> <span class="token operator">|</span> <span class="token function">sort</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-v</span> <span class="token number">10.187</span>.0 <span class="token operator">|</span> <span class="token function">uniq</span> <span class="token parameter variable">-c</span>
-</code></pre>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <h1 id="Linux应急响应"><a href="#Linux应急响应" class="headerlink" title="Linux应急响应"></a>Linux应急响应</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>关键目录<br><img src="/img/4-25/1.png"><br>思路：<br>账号安全 -&gt; 历史命令 -&gt; 检查异常端口 -&gt; 检查异常进程 -&gt; 检查开机启动项 -&gt; 检查定时任务 -&gt; 检查服务 -&gt; 检查异常文件</p>
+<h2 id="主机排查"><a href="#主机排查" class="headerlink" title="主机排查"></a>主机排查</h2><h3 id="常见指令"><a href="#常见指令" class="headerlink" title="常见指令"></a>常见指令</h3><h4 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找不常用的监听端口 :</span></span><br><span class="line">netstat -anp</span><br><span class="line">iftop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行的进程监听了端口 :</span></span><br><span class="line">lsof -i</span><br><span class="line">lsof -nPi tcp:443</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用ss命令查看TCP协议：</span></span><br><span class="line">ss -anpt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用ss命令查看UDP协议：</span></span><br><span class="line">ss -anpu</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用 tcpdump 分析：</span></span><br><span class="line">tcpdump -i {网卡名} host {本地IP} and udp port {本地端口号}</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ARP表 :</span></span><br><span class="line">arp -a</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找监听模式的网卡 :</span></span><br><span class="line">ip link | grep PROMISC</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提取所有活跃的连接 tcp ip</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">netstat -ant |&amp; grep -Po <span class="string">'(\d{1,3}\.){3}\d{1,3}'</span> | <span class="built_in">sort</span> | grep -v 10.187.0 | <span class="built_in">uniq</span> -c</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>netstat参数</p>
 <ul>
 <li>-t或–tcp 显示TCP传输协议的连线状况</li>
@@ -489,65 +248,32 @@ $ <span class="token function">netstat</span> <span class="token parameter varia
 <li>-e或–extend 显示网络其他相关信息</li>
 </ul>
 <p>组合使用</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">netstat</span> <span class="token parameter variable">-antp</span>
-<span class="token function">netstat</span> <span class="token parameter variable">-antpu</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">netstat -antp</span><br><span class="line">netstat -antpu</span><br></pre></td></tr></tbody></table></figure>
 <h4 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h4><p>操作系统中，关闭/查看系统进程，删除/新建系统服务。<br>典型场景：在应急响应过程中，排查发现可疑系统进程服务，应即时关闭恶意进程或者删除恶意服务，防止被持续控制。<br>注意事项：需要联系管理员确认进程服务是否为重要业务，防止错误关闭和删除了重要业务的进程服务。</p>
 <p><strong>ps命令</strong><br><strong>查看全部的进程</strong></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> <span class="token parameter variable">-aux</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -aux</span><br></pre></td></tr></tbody></table></figure>
 <p>查看相关进程</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> <span class="token parameter variable">-ef</span> <span class="token operator">|</span> <span class="token function">grep</span> 进程关键字</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef | grep 进程关键字</span><br></pre></td></tr></tbody></table></figure>
 <p>显示指定用户相关进程</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> <span class="token parameter variable">-u</span> root //显示root进程用户信息</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -u root //显示root进程用户信息</span><br></pre></td></tr></tbody></table></figure>
 <p>查找隐藏进程<br>查找显示的进程</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> <span class="token parameter variable">-ef</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print}'</span> <span class="token operator">|</span> <span class="token function">sort</span> <span class="token parameter variable">-n</span> <span class="token operator">|</span><span class="token function">uniq</span> <span class="token operator">&gt;</span><span class="token number">1</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef | awk '{print}' | sort -n |uniq &gt;1</span><br></pre></td></tr></tbody></table></figure>
 <p>然后查看/proc目录，查看是否存在对应进程</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> /proc <span class="token operator">|</span> <span class="token function">sort</span> <span class="token parameter variable">-n</span> <span class="token operator">|</span><span class="token function">uniq</span> <span class="token operator">&gt;</span><span class="token number">2</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls /proc | sort -n |uniq &gt;2</span><br></pre></td></tr></tbody></table></figure>
 <p>参数</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">netstat</span> <span class="token parameter variable">-antlop</span>      <span class="token comment">#查看  </span>
-<span class="token function">ps</span> <span class="token parameter variable">-ef</span>               <span class="token comment">#查看异常连接和对应的文件  </span>
-<span class="token function">ps</span> aux               <span class="token comment">#查看那进程详细信息  </span>
-<span class="token function">lsof</span> <span class="token parameter variable">-p</span> pid          <span class="token comment">#查看进程关联账户信息  </span>
-  
-附录：ps命令常用用法（方便查看系统进程）  
-<span class="token function">ps</span> a  	<span class="token comment">#显示现行终端机下的所有程序，包括其他用户的程序。  </span>
-<span class="token function">ps</span> <span class="token parameter variable">-A</span> 	<span class="token comment">#显示所有进程。  </span>
-<span class="token function">ps</span> c 	<span class="token comment">#列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。  </span>
-<span class="token function">ps</span> <span class="token parameter variable">-e</span> 	<span class="token comment">#此参数的效果和指定"A"参数相同。  </span>
-<span class="token function">ps</span> e 	<span class="token comment">#列出程序时，显示每个程序所使用的环境变量。  </span>
-<span class="token function">ps</span> f 	<span class="token comment">#用ASCII字符显示树状结构，表达程序间的相互关系。  </span>
-<span class="token function">ps</span> <span class="token parameter variable">-H</span> 	<span class="token comment">#显示树状结构，表示程序间的相互关系。  </span>
-<span class="token function">ps</span> <span class="token parameter variable">-N</span> 	<span class="token comment">#显示所有的程序，除了执行ps指令终端机下的程序之外。  </span>
-<span class="token function">ps</span> s 	<span class="token comment">#采用程序信号的格式显示程序状况。  </span>
-<span class="token function">ps</span> S 	<span class="token comment">#列出程序时，包括已中断的子程序资料。  </span>
-<span class="token function">ps</span> -t<span class="token operator">&lt;</span>终端机编号<span class="token operator">&gt;</span> 　<span class="token comment">#指定终端机编号，并列出属于该终端机的程序的状况。  </span>
-<span class="token function">ps</span> u 　 <span class="token comment">#显示所有程序，不以终端机来区分。以用户为主的格式来显示程序状况。  </span>
-<span class="token function">ps</span> x 　	<span class="token comment">#显示所有程序，不以终端机来区分。</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">netstat -antlop      #查看  </span><br><span class="line">ps -ef               #查看异常连接和对应的文件  </span><br><span class="line">ps aux               #查看那进程详细信息  </span><br><span class="line">lsof -p pid          #查看进程关联账户信息  </span><br><span class="line">  </span><br><span class="line">附录：ps命令常用用法（方便查看系统进程）  </span><br><span class="line">ps a  	#显示现行终端机下的所有程序，包括其他用户的程序。  </span><br><span class="line">ps -A 	#显示所有进程。  </span><br><span class="line">ps c 	#列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。  </span><br><span class="line">ps -e 	#此参数的效果和指定"A"参数相同。  </span><br><span class="line">ps e 	#列出程序时，显示每个程序所使用的环境变量。  </span><br><span class="line">ps f 	#用ASCII字符显示树状结构，表达程序间的相互关系。  </span><br><span class="line">ps -H 	#显示树状结构，表示程序间的相互关系。  </span><br><span class="line">ps -N 	#显示所有的程序，除了执行ps指令终端机下的程序之外。  </span><br><span class="line">ps s 	#采用程序信号的格式显示程序状况。  </span><br><span class="line">ps S 	#列出程序时，包括已中断的子程序资料。  </span><br><span class="line">ps -t&lt;终端机编号&gt; 　#指定终端机编号，并列出属于该终端机的程序的状况。  </span><br><span class="line">ps u 　 #显示所有程序，不以终端机来区分。以用户为主的格式来显示程序状况。  </span><br><span class="line">ps x 　	#显示所有程序，不以终端机来区分。</span><br></pre></td></tr></tbody></table></figure>
 
 <p><strong>lsof指令</strong><br>查看什么文件占用的该端口</p>
-<pre class="language-none"><code class="language-none">lsof -i :[port]</code></pre>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">lsof -i :[port]</span><br></pre></td></tr></tbody></table></figure>
 <p>查看什么文件占用的该pid</p>
-<pre class="language-none"><code class="language-none">lsof -p [pid]</code></pre>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">lsof -p [pid]</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h3 id="lsattr和chattr"><a href="#lsattr和chattr" class="headerlink" title="lsattr和chattr"></a>lsattr和chattr</h3><h4 id="chattr"><a href="#chattr" class="headerlink" title="chattr"></a>chattr</h4><p>修改属性能够提高系统的安全 性，但是它并不适合所有的目录。chattr命令不能保护/、/dev、/tmp、/var目录<br>a：即append，设定该参数后，只能向文件中添加数据，而不能删除，多用于服务器日志文件安全，只有root才能设定这个属性。<br>i：设定文件不能被删除、改名、设定链接关系，同时不能写入或新增内容。i参数对于文件 系统的安全设置有很大帮助。<br>s：保密性地删除文件或目录，即硬盘空间被全部收回。<br>u：与s相反，当设定为u时，数据内容其实还存在磁盘中，可以用于undeletion。<br>例子：<br>设置/etc/resolv.conf为不可修改</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@vincent tmp<span class="token punctuation">]</span><span class="token comment"># chattr +i /etc/resolv.conf </span>
-<span class="token punctuation">[</span>root@vincent tmp<span class="token punctuation">]</span><span class="token comment"># lsattr /etc/resolv.conf </span>
-----i--------e- /etc/resolv.conf
-<span class="token punctuation">[</span>root@vincent tmp<span class="token punctuation">]</span><span class="token comment"># echo "" &gt; /etc/resolv.conf </span>
--bash: /etc/resolv.conf: 权限不够</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">[root@vincent tmp]# chattr +i /etc/resolv.conf </span><br><span class="line">[root@vincent tmp]# lsattr /etc/resolv.conf </span><br><span class="line">----i--------e- /etc/resolv.conf</span><br><span class="line">[root@vincent tmp]# echo "" &gt; /etc/resolv.conf </span><br><span class="line">-bash: /etc/resolv.conf: 权限不够</span><br></pre></td></tr></tbody></table></figure>
 <h4 id="lsattr"><a href="#lsattr" class="headerlink" title="lsattr"></a>lsattr</h4><p>查看文件权限</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@vincent tmp<span class="token punctuation">]</span><span class="token comment"># lsattr 1.txt </span>
------a-------e- <span class="token number">1</span>.txt</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">[root@vincent tmp]# lsattr 1.txt </span><br><span class="line">-----a-------e- 1.txt</span><br></pre></td></tr></tbody></table></figure>
 <h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>在Linux做的操作都会被记录到系统日志中，对于登录也可以查看日志信息查看是否有异常登录<br>last命令记录着所有用户登录系统的日志，可以用来查找非授权用户的登录事件，而last命令的输出结果来源于**/var/log/wtmp**文件，稍有经验的入侵者都会删掉<br><img src="/img/4-25/2.png"><br>常见日志</p>
-<pre class="language-powershell" data-language="powershell"><code class="language-powershell">内核及公共消息日志:<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/messages
-计划任务日志：<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/cron
-系统引导日志：<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/dmesg
-邮件系统日志:<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/maillog
-用户登录日志：<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/lastlog
-<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/boot<span class="token punctuation">.</span>log（记录系统在引导过程中发生的时间）
-<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/secure <span class="token punctuation">(</span>用户验证相关的安全性事件<span class="token punctuation">)</span>
-<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/wtmp<span class="token punctuation">(</span>当前登录用户详细信息<span class="token punctuation">)</span>
-<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>log/btmp（记录失败的的记录）
-<span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>run/utmp（用户登录、注销及系统开、关等事件）</code></pre>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">内核及公共消息日志:/var/log/messages</span><br><span class="line">计划任务日志：/var/log/cron</span><br><span class="line">系统引导日志：/var/log/dmesg</span><br><span class="line">邮件系统日志:/var/log/maillog</span><br><span class="line">用户登录日志：/var/log/lastlog</span><br><span class="line">/var/log/boot.log（记录系统在引导过程中发生的时间）</span><br><span class="line">/var/log/secure (用户验证相关的安全性事件)</span><br><span class="line">/var/log/wtmp(当前登录用户详细信息)</span><br><span class="line">/var/log/btmp（记录失败的的记录）</span><br><span class="line">/var/run/utmp（用户登录、注销及系统开、关等事件）</span><br></pre></td></tr></tbody></table></figure>
 
 <ol>
 <li>/var/log/secure</li>
@@ -562,32 +288,16 @@ $ <span class="token function">netstat</span> <span class="token parameter varia
 </ol>
 <p>有关当前用户登陆的信息</p>
 <h3 id="账号"><a href="#账号" class="headerlink" title="账号"></a>账号</h3><p>1、用户信息文件 /etc/passwd</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">root:x<span class="token punctuation">\</span>:0:0:root:/root:/bin/bash
-account:password:<span class="token environment constant">UID</span>:GID:GECOS:directory:shell</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">root:x\:0:0:root:/root:/bin/bash</span><br><span class="line">account:password:UID:GID:GECOS:directory:shell</span><br></pre></td></tr></tbody></table></figure>
 <p>用户名：密码：用户ID：组ID：用户说明：家目录：登陆之后shell<br>注意：无密码只允许本机登陆，远程不允许登陆<br><strong>2、密码文件 /etc/shadow</strong></p>
-<pre class="language-powershell" data-language="powershell"><code class="language-powershell">root:<span class="token variable">$6</span><span class="token variable">$oGs1PqhL2p3ZetrE</span><span class="token variable">$X7o7bzoouHQVSEmSgsYN5UD4</span><span class="token punctuation">.</span>kMHx6qgbTqwNVC5oOAouXvcjQSt<span class="token punctuation">.</span>Ft7ql1WpkopY0UV9ajBwUt1DpYxTCVvI/:16809:0:99999:7::: 
-<span class="token operator">/</span><span class="token operator">/</span>用户名：加密密码：密码最后一次修改日期：两次密码的修改时间间隔：密码有效期：密码修改到期到的警告天数：密码过期之后的宽限天数：账号失效时间：保留</code></pre>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">root:<span class="variable">$6</span><span class="variable">$oGs1PqhL2p3ZetrE</span><span class="variable">$X7o7bzoouHQVSEmSgsYN5UD4</span>.kMHx6qgbTqwNVC5oOAouXvcjQSt.Ft7ql1WpkopY0UV9ajBwUt1DpYxTCVvI/:<span class="number">16809</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>::: </span><br><span class="line">//用户名：加密密码：密码最后一次修改日期：两次密码的修改时间间隔：密码有效期：密码修改到期到的警告天数：密码过期之后的宽限天数：账号失效时间：保留</span><br></pre></td></tr></tbody></table></figure>
 
 <p> 其他命令</p>
-<pre class="language-powershell" data-language="powershell"><code class="language-powershell">who      <span class="token operator">/</span><span class="token operator">/</span>查看当前登录用户（tty 本地登陆 pts 远程登录）
-w        <span class="token operator">/</span><span class="token operator">/</span>查看系统信息，想知道某一时刻用户的行为
-uptime   <span class="token operator">/</span><span class="token operator">/</span>查看登陆多久、多少用户，负载</code></pre>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">who      //查看当前登录用户（tty 本地登陆 pts 远程登录）</span><br><span class="line">w        //查看系统信息，想知道某一时刻用户的行为</span><br><span class="line">uptime   //查看登陆多久、多少用户，负载</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="系统启动项"><a href="#系统启动项" class="headerlink" title="系统启动项"></a>系统启动项</h3><p>一般来说，病毒在启动之后为了防止肉鸡关机重启，很有可能会设置恶意的开机启动项</p>
 <p>查看运行级别命令runlevel</p>
-<pre class="language-none"><code class="language-none">
-运行级别		含义	（七个运行模式）
-0			关机
-1			单用户模式，可以想象为windows的安全模式，主要用于系统修复
-2			不完全的命令行模式，不含NFS服务
-3			完全的命令行模式，就是标准字符界面
-4			系统保留
-5			图形模式/桌面模式（GUI界面）
-6			重启动
- 
-开机启动配置文件：
-/etc/rc.local
-/etc/rc.d/rc[0~6].d</code></pre>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line"></span><br><span class="line">运行级别		含义	（七个运行模式）</span><br><span class="line">0			关机</span><br><span class="line">1			单用户模式，可以想象为windows的安全模式，主要用于系统修复</span><br><span class="line">2			不完全的命令行模式，不含NFS服务</span><br><span class="line">3			完全的命令行模式，就是标准字符界面</span><br><span class="line">4			系统保留</span><br><span class="line">5			图形模式/桌面模式（GUI界面）</span><br><span class="line">6			重启动</span><br><span class="line"> </span><br><span class="line">开机启动配置文件：</span><br><span class="line">/etc/rc.local</span><br><span class="line">/etc/rc.d/rc[0~6].d</span><br></pre></td></tr></tbody></table></figure>
 
 
 <ol>
@@ -604,57 +314,20 @@ uptime   <span class="token operator">/</span><span class="token operator">/</sp
 <p>/etc/profile.d/*.sh是bash的全局配置文件，/etc/profile.d/下有许多shell脚本，可以在开机时启动。</p>
 <h3 id="定时计划"><a href="#定时计划" class="headerlink" title="定时计划"></a>定时计划</h3><p>在操作系统中，分析查看计划任务信息。<br>典型场景：在应急响应过程中，发现入侵者创建的异常计划任务，应即时禁用或者删除异常计划任务，防止被持续控制。<br>注意事项：需要联系系统管理员确认计划任务是否合法，防止错误禁用和删除了正常的计划任务。</p>
 <p>使用命令<br>crontab<br>列出所有的计划任务</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">crontab</span> <span class="token parameter variable">-l</span></code></pre>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Root用户定时任务 :</span>
-<span class="token function">crontab</span> <span class="token parameter variable">-u</span> root <span class="token parameter variable">-l</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Root用户定时任务 :</span></span><br><span class="line">crontab -u root -l</span><br></pre></td></tr></tbody></table></figure>
 <p>编辑cron</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">crontab</span> <span class="token parameter variable">-e</span></code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></tbody></table></figure>
 
 <p>常见计划任务位置</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">重点关注以下目录<span class="token punctuation">(</span>计划目录<span class="token punctuation">)</span>中是否存在恶意脚本：
-	/var/spool/cron/*
-	/etc/crontab
-	/etc/cron.d/*
-	/etc/cron.daily/*
-	/etc/cron.hourly/*
-	/etc/cron.monthly/*
-	/etc/cron.weekly/
-	/etc/anacrontab
-	/var/spool/anacron/*
-小技巧：
-<span class="token function">more</span> /etc/cron.daily/* 查看目录下所有文件
-</code></pre>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 系统定时任务 :</span>
-<span class="token function">cat</span> /etc/crontab
-<span class="token function">cat</span> /etc/anacrontab
-
-<span class="token comment"># 查看计划任务文件 :</span>
-<span class="token function">ls</span> <span class="token parameter variable">-la</span> /var/spool/cron/
-<span class="token function">ls</span> <span class="token parameter variable">-la</span> /var/spool/anacron/
-<span class="token function">ls</span> <span class="token parameter variable">-la</span> /var/spool/at/spool/
-
-<span class="token comment"># 系统定时任务文件 :</span>
-$ <span class="token function">find</span> /etc/cron* <span class="token parameter variable">-type</span> f
-/etc/cron.d/sysstat
-/etc/cron.d/0hourly
-/etc/cron.daily/logrotate
-/etc/cron.daily/man-db.cron
-/etc/cron.deny
-/etc/cron.hourly/0anacron</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">重点关注以下目录(计划目录)中是否存在恶意脚本：</span><br><span class="line">	/var/spool/cron/*</span><br><span class="line">	/etc/crontab</span><br><span class="line">	/etc/cron.d/*</span><br><span class="line">	/etc/cron.daily/*</span><br><span class="line">	/etc/cron.hourly/*</span><br><span class="line">	/etc/cron.monthly/*</span><br><span class="line">	/etc/cron.weekly/</span><br><span class="line">	/etc/anacrontab</span><br><span class="line">	/var/spool/anacron/*</span><br><span class="line">小技巧：</span><br><span class="line">more /etc/cron.daily/* 查看目录下所有文件</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">系统定时任务 :</span></span><br><span class="line">cat /etc/crontab</span><br><span class="line">cat /etc/anacrontab</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看计划任务文件 :</span></span><br><span class="line">ls -la /var/spool/cron/</span><br><span class="line">ls -la /var/spool/anacron/</span><br><span class="line">ls -la /var/spool/at/spool/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">系统定时任务文件 :</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">find /etc/cron* -<span class="built_in">type</span> f</span></span><br><span class="line">/etc/cron.d/sysstat</span><br><span class="line">/etc/cron.d/0hourly</span><br><span class="line">/etc/cron.daily/logrotate</span><br><span class="line">/etc/cron.daily/man-db.cron</span><br><span class="line">/etc/cron.deny</span><br><span class="line">/etc/cron.hourly/0anacron</span><br></pre></td></tr></tbody></table></figure>
 
 
 <h2 id="webshell查杀"><a href="#webshell查杀" class="headerlink" title="webshell查杀"></a>webshell查杀</h2><p><strong>思路</strong><br><img src="/img/4-25/4.png"><br>网络排查、日志排查、文件排查<br>扫描工具：<br>1、D盾<br>Webshell查杀、可疑文件隔离；端口进程查看、base64解码，以及克隆用户检测等；文件监控。</p>
 <p>2、河马Webshell查杀<br>河马Webshell查杀拥有海量Webshell样本和自主查杀技术，采用传统特征+云端大数据双引擎的查杀技术，支持多种操作系统。</p>
 <p>手工指令搜索</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">//搜索目录下适配当前应用的网页文件，查看内容是否有Webshell特征
-<span class="token function">find</span> ./ <span class="token builtin class-name">type</span> f <span class="token parameter variable">-name</span> <span class="token string">"*.jsp"</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">grep</span> <span class="token string">"exec("</span> 
-<span class="token function">find</span> ./ <span class="token builtin class-name">type</span> f <span class="token parameter variable">-name</span> <span class="token string">"*.php"</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">grep</span> <span class="token string">"eval("</span> 
-<span class="token function">find</span> ./ <span class="token builtin class-name">type</span> f <span class="token parameter variable">-name</span> <span class="token string">"*.asp"</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">grep</span> <span class="token string">"execute("</span> 
-<span class="token function">find</span> ./ <span class="token builtin class-name">type</span> f <span class="token parameter variable">-name</span> <span class="token string">"*.aspx"</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">grep</span> <span class="token string">"eval("</span> 
-
-//对于免杀Webshell，可以查看是否使用编码
-<span class="token function">find</span> ./ <span class="token builtin class-name">type</span> f <span class="token parameter variable">-name</span> <span class="token string">"*.php"</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">grep</span> <span class="token string">"base64_decode"</span> 
-</code></pre>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">//搜索目录下适配当前应用的网页文件，查看内容是否有Webshell特征</span><br><span class="line">find ./ type f -name "*.jsp" | xargs grep "exec(" </span><br><span class="line">find ./ type f -name "*.php" | xargs grep "eval(" </span><br><span class="line">find ./ type f -name "*.asp" | xargs grep "execute(" </span><br><span class="line">find ./ type f -name "*.aspx" | xargs grep "eval(" </span><br><span class="line"></span><br><span class="line">//对于免杀Webshell，可以查看是否使用编码</span><br><span class="line">find ./ type f -name "*.php" | xargs grep "base64_decode" </span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
 
 
@@ -667,712 +340,490 @@ $ <span class="token function">find</span> /etc/cron* <span class="token paramet
 <li></li>
 </ul>
 
-                
-            </div>
-            <hr/>
-
-            
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
-                            
-                                <a href="/tags/Liunx/">
-                                    <span class="chip bg-color">Liunx</span>
-                                </a>
-                            
-                                <a href="/tags/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">
-                                    <span class="chip bg-color">应急响应</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%93%9D%E9%98%9F/">
-                                    <span class="chip bg-color">蓝队</span>
-                                </a>
-                            
-                        </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="qq,wechat,weibo,twitter,facebook" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
-</div>
-
-                </div>
-            </div>
-            
-        </div>
+      
     </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Liunx/" rel="tag">Liunx</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" rel="tag">应急响应</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E8%93%9D%E9%98%9F/" rel="tag">蓝队</a></li></ul>
 
+
+    </footer>
+  </div>
+  
     
-        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
-<link rel="stylesheet" href="/css/my-gitalk.css">
-
-<div class="card gitalk-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
+  <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="https://yyjccc.github.io/images/cover/4.png" data-sizes="auto" alt="fastjson1.2.24反序列化漏洞" class="lazyload">
+          
+        
+        <a href="/2024/04/26/fastjson1-2-24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            fastjson1.2.24反序列化漏洞
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/5.png" data-sizes="auto" alt="JNDI注入" class="lazyload">
+        
+      
+      <a href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          JNDI注入
+        
+      </h3>
     </div>
-    <div id="gitalk-container" class="card-content"></div>
-</div>
-
-<script src="/libs/gitalk/gitalk.min.js"></script>
-<script>
-    let gitalk = new Gitalk({
-        clientID: '0efb4a442bc09d1ba17e',
-        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
-        repo: 'yyjccc.github.io',
-        owner: 'Yyjccc',
-        admin: "Yyjccc",
-        id: '2024-04-25T15-23-34',
-        distractionFreeMode: false  // Facebook-like distraction free mode
-    });
-
-    gitalk.render('gitalk-container');
-</script>
-
     
+  </nav>
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2024/04/26/fastjson1-2-24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="fastjson1.2.24反序列化漏洞">
-                        
-                        <span class="card-title">fastjson1.2.24反序列化漏洞</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-04-26
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">java安全</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                        <span class="chip bg-color">反序列化漏洞</span>
-                    </a>
-                    
-                    <a href="/tags/fastjson/">
-                        <span class="chip bg-color">fastjson</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="JNDI注入">
-                        
-                        <span class="card-title">JNDI注入</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-24
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">java安全</span>
-                    </a>
-                    
-                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">web安全</span>
-                    </a>
-                    
-                    <a href="/tags/jndi/">
-                        <span class="chip bg-color">jndi</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
+  
 </article>
 
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94"><span class="toc-number">1.</span> <span class="toc-text">Linux应急响应</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E6%8E%92%E6%9F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">主机排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.1.</span> <span class="toc-text">常见指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">端口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.2.2.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lsattr%E5%92%8Cchattr"><span class="toc-number">1.2.3.</span> <span class="toc-text">lsattr和chattr</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#chattr"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">chattr</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lsattr"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">lsattr</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97"><span class="toc-number">1.2.4.</span> <span class="toc-text">日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.2.5.</span> <span class="toc-text">账号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E9%A1%B9"><span class="toc-number">1.2.6.</span> <span class="toc-text">系统启动项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E8%AE%A1%E5%88%92"><span class="toc-number">1.2.7.</span> <span class="toc-text">定时计划</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webshell%E6%9F%A5%E6%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">webshell查杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">1.5.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+      
+  </div>
 </div>
-
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
-    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
-            <div id="toc-content"></div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
         </div>
+      
     </div>
-</div>
+  </div>
 
-<!-- TOC 悬浮按钮. -->
+  
+</aside>
 
-<div id="floating-toc-btn" class="hide-on-med-and-down">
-    <a class="btn-floating btn-large bg-color">
-        <i class="fas fa-list-ul"></i>
-    </a>
-</div>
-
-
-<script src="/libs/tocbot/tocbot.min.js"></script>
-<script>
-    $(function () {
-        tocbot.init({
-            tocSelector: '#toc-content',
-            contentSelector: '#articleContent',
-            headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
-        });
-
-        // Set scroll toc fixed.
-        let tocHeight = parseInt($(window).height() * 0.4 - 64);
-        let $tocWidget = $('.toc-widget');
-        $(window).scroll(function () {
-            let scroll = $(window).scrollTop();
-            /* add post toc fixed. */
-            if (scroll > tocHeight) {
-                $tocWidget.addClass('toc-fixed');
-            } else {
-                $tocWidget.removeClass('toc-fixed');
-            }
-        });
-
-        
-        /* 修复文章卡片 div 的宽度. */
-        let fixPostCardWidth = function (srcId, targetId) {
-            let srcDiv = $('#' + srcId);
-            if (srcDiv.length === 0) {
-                return;
-            }
-
-            let w = srcDiv.width();
-            if (w >= 450) {
-                w = w + 21;
-            } else if (w >= 350 && w < 450) {
-                w = w + 18;
-            } else if (w >= 300 && w < 350) {
-                w = w + 16;
-            } else {
-                w = w + 14;
-            }
-            $('#' + targetId).width(w);
-        };
-
-        // 切换TOC目录展开收缩的相关操作.
-        const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        
-    });
-</script>
-
-    
-
-</main>
-
-
-
-
-                <footer class="page-footer bg-color">
-    
-        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
-<style>
-    .aplayer .aplayer-lrc p {
-        
-        display: none;
-        
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 16px !important;
-    }
-
-    .aplayer .aplayer-lrc p.aplayer-lrc-current {
-        
-        display: none;
-        
-        font-size: 15px;
-        color: #42b983;
-    }
-
-    
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
-        left: -66px !important;
-    }
-
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
-        left: 0px !important;
-    }
-
-    
-</style>
-<div class="">
-    
-    <div class="row">
-        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
-                   server="netease"
-                   type="playlist"
-                   id="503838841"
-                   fixed='true'
-                   autoplay='false'
-                   theme='#42b983'
-                   loop='all'
-                   order='random'
-                   preload='auto'
-                   volume='0.7'
-                   list-folded='true'
-        >
-        </meting-js>
-    </div>
-</div>
-
-<script src="/libs/aplayer/APlayer.min.js"></script>
-<script src="/libs/aplayer/Meting.min.js"></script>
-
-    
-
-    <div class="container row center-align"
-         style="margin-bottom: 0px !important;">
-        <div class="col s12 m8 l8 copy-right">
-            Copyright&nbsp;&copy;
-            
-                <span id="year">2023-2024</span>
-            
-            <a href="/about" target="_blank">Yyjccc</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
-            
-            <br>
-            
-            
-            
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
-            <br>
-
-            <!-- 运行天数提醒. -->
-            
-            <br>
-            
+          
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/yyjccc" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-    <a href="mailto:yanyongjuyyj@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
-        <i class="fas fa-envelope-open"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3393867490" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3393867490" data-position="top" data-delay="50">
-        <i class="fab fa-qq"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
-
-</div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2024
+      <span class="footer-info-sep"></span>
+      Yyjccc
     </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        142.7k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        09:44
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
 </footer>
 
-<div class="progress-bar"></div>
-
-
-                    <!-- 搜索遮罩框 -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
-            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
-                   class="search-input">
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
         </div>
-        <div id="searchResult"></div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94"><span class="toc-number">1.</span> <span class="toc-text">Linux应急响应</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E6%8E%92%E6%9F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">主机排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.1.</span> <span class="toc-text">常见指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">端口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.2.2.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lsattr%E5%92%8Cchattr"><span class="toc-number">1.2.3.</span> <span class="toc-text">lsattr和chattr</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#chattr"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">chattr</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lsattr"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">lsattr</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97"><span class="toc-number">1.2.4.</span> <span class="toc-text">日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A6%E5%8F%B7"><span class="toc-number">1.2.5.</span> <span class="toc-text">账号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E9%A1%B9"><span class="toc-number">1.2.6.</span> <span class="toc-text">系统启动项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E8%AE%A1%E5%88%92"><span class="toc-number">1.2.7.</span> <span class="toc-text">定时计划</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webshell%E6%9F%A5%E6%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">webshell查杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">1.5.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
+  
 </div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
 
-<script type="text/javascript">
-$(function () {
-    var searchFunc = function (path, search_id, content_id) {
-        'use strict';
-        $.ajax({
-            url: path,
-            dataType: "xml",
-            success: function (xmlResponse) {
-                // get the contents from search data
-                var datas = $("entry", xmlResponse).map(function () {
-                    return {
-                        title: $("title", this).text(),
-                        content: $("content", this).text(),
-                        url: $("url", this).text()
-                    };
-                }).get();
-                var $input = document.getElementById(search_id);
-                var $resultContent = document.getElementById(content_id);
-                $input.addEventListener('input', function () {
-                    var str = '<ul class=\"search-result-list\">';
-                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                    $resultContent.innerHTML = "";
-                    if (this.value.trim().length <= 0) {
-                        return;
-                    }
-                    // perform local searching
-                    datas.forEach(function (data) {
-                        var isMatch = true;
-                        var data_title = data.title.trim().toLowerCase();
-                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
-                        var data_url = data.url;
-                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
-                        var index_title = -1;
-                        var index_content = -1;
-                        var first_occur = -1;
-                        // only match artiles with not empty titles and contents
-                        if (data_title !== '' && data_content !== '') {
-                            keywords.forEach(function (keyword, i) {
-                                index_title = data_title.indexOf(keyword);
-                                index_content = data_content.indexOf(keyword);
-                                if (index_title < 0 && index_content < 0) {
-                                    isMatch = false;
-                                } else {
-                                    if (index_content < 0) {
-                                        index_content = 0;
-                                    }
-                                    if (i === 0) {
-                                        first_occur = index_content;
-                                    }
-                                }
-                            });
-                        }
-                        // show search results
-                        if (isMatch) {
-                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
-                            var content = data.content.trim().replace(/<[^>]+>/g, "");
-                            if (first_occur >= 0) {
-                                // cut out 100 characters
-                                var start = first_occur - 20;
-                                var end = first_occur + 80;
-                                if (start < 0) {
-                                    start = 0;
-                                }
-                                if (start === 0) {
-                                    end = 100;
-                                }
-                                if (end > content.length) {
-                                    end = content.length;
-                                }
-                                var match_content = content.substr(start, end);
-                                // highlight all keywords
-                                keywords.forEach(function (keyword) {
-                                    var regS = new RegExp(keyword, "gi");
-                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
-                                });
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
 
-                                str += "<p class=\"search-result\">" + match_content + "...</p>"
-                            }
-                            str += "</li>";
-                        }
-                    });
-                    str += "</ul>";
-                    $resultContent.innerHTML = str;
-                });
-            }
-        });
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
     };
-
-    searchFunc('/search.xml', 'searchInput', 'searchResult');
-});
-</script>
-
-                        <!-- 白天和黑夜主题 -->
-<div class="stars-con">
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>  
-</div>
-
-<script>
-    function switchNightMode() {
-        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
-        setTimeout(function () {
-            $('body').hasClass('DarkMode') 
-            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
-            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
-            
-            setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
-                $(this).remove()
-            })
-            }, 2e3)
-        })
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
     }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
 </script>
 
-                            <!-- 回到顶部按钮 -->
-<div id="backTop" class="top-scroll">
-    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
 </div>
 
 
-                                <script
-                                    src="/libs/materialize/materialize.min.js"></script>
-                                <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-                                <script src="/libs/aos/aos.js"></script>
-                                <script
-                                    src="/libs/scrollprogress/scrollProgress.min.js"></script>
-                                <script
-                                    src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-                                <script src="/js/matery.js"></script>
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
 
-                                
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
 
-                                        
-
-                                                
-
-                                                    <script type="text/javascript">
-                                                        // 只在桌面版网页启用特效
-                                                        var windowWidth = $(window).width();
-                                                        if (windowWidth > 768) {
-                                                            document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
-                                                        }
-                                                    </script>
-                                                    
-
-                                                        <!-- 雪花特效 -->
-                                                        
-                                                            <script type="text/javascript">
-                                                                // 只在桌面版网页启用特效
-                                                                var windowWidth = $(window).width();
-                                                                if (windowWidth > 768) {
-                                                                    document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
-                                                                }
-                                                            </script>
-                                                            
-
-                                                                <!-- 鼠标星星特效 -->
-                                                                
-                                                                    <script type="text/javascript">
-                                                                        // 只在桌面版网页启用特效
-                                                                        var windowWidth = $(window).width();
-                                                                        if (windowWidth > 768) {
-                                                                            document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
-                                                                        }
-                                                                    </script>
-                                                                    
-
-                                                                        
-                                                                            <script
-                                                                                src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
-                                                                            <script
-                                                                                src="/libs/others/TencentCaptcha.js"></script>
-                                                                            <button id="TencentCaptcha"
-                                                                                data-appid="xxxxxxxxxx"
-                                                                                data-cbfn="callback" type="button"
-                                                                                hidden></button>
-                                                                            
-
-                                                                                <!-- Baidu Analytics -->
-
-                                                                                    <!-- Baidu Push -->
-
-<script>
-    (function () {
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        } else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
 </script>
 
-                                                                                        
-                                                                                            <script
-                                                                                                src="/libs/others/clicklove.js"
-                                                                                                async="async"></script>
-                                                                                            
-                                                                                                
-                                                                                                    <script async
-                                                                                                        src="/libs/others/busuanzi.pure.mini.js"></script>
-                                                                                                    
 
-                                                                                                        
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
 
-                                                                                                                
 
-                                                                                                                        <!--腾讯兔小巢-->
-                                                                                                                        
-                                                                                                                                
-                                                                                                                                    <script
-                                                                                                                                        type="text/javascript"
-                                                                                                                                        color="0,0,255"
-                                                                                                                                        pointColor="0,0,255"
-                                                                                                                                        opacity='0.7'
-                                                                                                                                        zIndex="-1"
-                                                                                                                                        count="99"
-                                                                                                                                        src="/libs/background/canvas-nest.js"></script>
-                                                                                                                                    
 
-                                                                                                                                        
 
-                                                                                                                                                    
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
 
-                                                                                                                                                            
-                                                                                                                                                                <script
-                                                                                                                                                                    src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
-                                                                                                                                                                
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
-
-</html>

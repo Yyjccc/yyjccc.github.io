@@ -1,452 +1,245 @@
-<!DOCTYPE HTML>
-<html lang="zh-CN">
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
 
 
-<head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="java Agent, yyjccc的博客">
-    <meta name="description" content="java AgentJDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="renderer" content="webkit|ie-stand|ie-comp">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
 
 
-    <title>java Agent | yyjccc的博客</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    java Agent |
     
-    <style>
-        body{
-            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
-            background-repeat:no-repeat;
-            background-size: 100% 100%;
-            background-attachment:fixed;
-        }
-    </style>
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
 
+  
+  <meta name="description" content="java AgentJDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持对已加载的class(类字节码)进行重新加载(Retransform)。利用Java Agent这一特性衍生出了APM(Application Performa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java Agent">
+<meta property="og:url" content="https://yyjccc.github.io/2024/05/04/java-Agent/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="java AgentJDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持对已加载的class(类字节码)进行重新加载(Retransform)。利用Java Agent这一特性衍生出了APM(Application Performa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/1.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/2.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/3.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/4.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/5.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/6.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/7.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/8.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/5-4/9.png">
+<meta property="article:published_time" content="2024-05-04T11:12:11.511Z">
+<meta property="article:modified_time" content="2024-05-04T11:20:00.178Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="Agent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/5-4/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-
-    <!-- bg-cover style     -->
-
-
-
-<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
-<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
-<link rel="stylesheet" type="text/css" href="/css/matery.css">
-<link rel="stylesheet" type="text/css" href="/css/my.css">
-<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
-
-
-
-
-    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
-    <link rel="stylesheet" href="/css/post.css">
-
-
-
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
 
     
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
 
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
 
-
-    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
-
+  
 <meta name="generator" content="Hexo 6.3.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
-
-    <body>
-        <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="navbar-fixed">
-    <nav id="headNav" class="bg-color nav-transparent">
-        <div id="navContainer" class="nav-wrapper container">
-            <div class="brand-logo">
-                <a href="/" class="waves-effect waves-light">
-                    
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
-                    
-                    <span class="logo-span">yyjccc的博客</span>
-                </a>
-            </div>
-            
-
-<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
-<ul class="right nav-menu">
-  
-  <li class="hide-on-med-and-down nav-item">
+  <body>
     
-    <a href="/" class="waves-effect waves-light">
-      
-      <i class="fas fa-home" style="zoom: 0.6;"></i>
-      
-      <span>首页</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/tags" class="waves-effect waves-light">
-      
-      <i class="fas fa-tags" style="zoom: 0.6;"></i>
-      
-      <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/archives" class="waves-effect waves-light">
-      
-      <i class="fas fa-archive" style="zoom: 0.6;"></i>
-      
-      <span>归档</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/about" class="waves-effect waves-light">
-      
-      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
-      
-      <span>关于</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/contact" class="waves-effect waves-light">
-      
-      <i class="fas fa-comments" style="zoom: 0.6;"></i>
-      
-      <span>留言板</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
-      
-      <span>友情链接</span>
-    </a>
-    
-  </li>
-  
-  <li>
-    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-  <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
-      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-</ul>
-
-
-<div id="mobile-nav" class="side-nav sidenav">
-
-    <div class="mobile-head bg-color">
-        
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
-        
-        <div class="logo-name">yyjccc的博客</div>
-        <div class="logo-desc">
-            
-            Never really desperate, only the lost of the soul.
-            
-        </div>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
     </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
 
-    <ul class="menu-list mobile-menu-list">
-        
-        <li class="m-nav-item">
-	  
-		<a href="/" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-home"></i>
-			
-			首页
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/tags" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-tags"></i>
-			
-			标签
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/archives" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-archive"></i>
-			
-			归档
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/about" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-user-circle"></i>
-			
-			关于
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/contact" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-comments"></i>
-			
-			留言板
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/friends" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-address-book"></i>
-			
-			友情链接
-		</a>
-          
-        </li>
-        
-        
-        <li><div class="divider"></div></li>
-        <li>
-            <a href="https://github.com/Yyjccc" class="waves-effect waves-light" target="_blank">
-                <i class="fab fa-github-square fa-fw"></i>Fork Me
-            </a>
-        </li>
-        
-    </ul>
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
 </div>
 
 
-        </div>
-
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="java Agent">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
         
-            <style>
-    .nav-transparent .github-corner {
-        display: none !important;
-    }
-
-    .github-corner {
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        border: 0;
-        transform: scale(1.1);
-    }
-
-    .github-corner svg {
-        color: #0f9d58;
-        fill: #fff;
-        height: 64px;
-        width: 64px;
-    }
-
-    .github-corner:hover .octo-arm {
-        animation: a 0.56s ease-in-out;
-    }
-
-    .github-corner .octo-arm {
-        animation: none;
-    }
-
-    @keyframes a {
-        0%,
-        to {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
-    }
-</style>
-
-<a href="https://github.com/Yyjccc" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
-   data-tooltip="Fork Me" data-position="left" data-delay="50">
-    <svg viewBox="0 0 250 250" aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
-              fill="currentColor" class="octo-body"></path>
-    </svg>
-</a>
         
-    </nav>
-
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">java Agent</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
 </header>
 
-            
-
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">java Agent</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div id="content">
+          
+          <section id="main"><article id="post-java-Agent" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2024/05/04/java-Agent/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2024-05-04T11:12:11.511Z" itemprop="datePublished">2024-05-04</time>
+    <time style="display: none;" id="post-update-time">2024-05-04</time>
+  </a>
 </div>
 
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java%E5%AE%89%E5%85%A8/" data-aos="zoom-in">java安全</a>
+  </div>
 
 
-
-<main class="post-container content">
-
+    </div>
+    <div class="hr-line"></div>
     
-    <div class="row">
-    <div id="main-content" class="col s12 m12 l9">
-        <!-- 文章内容详情 -->
-<div id="artDetail">
-    <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                    <div class="article-tag">
-                        
-                            <a href="/tags/java/">
-                                <span class="chip bg-color">java</span>
-                            </a>
-                        
-                            <a href="/tags/Agent/">
-                                <span class="chip bg-color">Agent</span>
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                java安全
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
 
-            <div class="post-info">
-                
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2024-05-04
-                </div>
-                
-
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.4k
-                </div>
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
-                </div>
-                
-
-                
-                    <div id="busuanzi_container_page_pv" class="info-break-policy">
-                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
-                        <span id="busuanzi_value_page_pv"></span>
-                    </div>
-				
-            </div>
-        </div>
-        <hr class="clearfix">
-
-        
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
-        
-
-        
-        <!-- 代码块折行 -->
-        <style type="text/css">
-            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
-        </style>
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <h1 id="java-Agent"><a href="#java-Agent" class="headerlink" title="java Agent"></a>java Agent</h1><p>JDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持对已加载的class(类字节码)进行重新加载(Retransform)。<br>利用Java Agent这一特性衍生出了APM(Application Performance Management，应用性能管理)、RASP(Runtime application self-protection，运行时应用自我保护)、IAST(Interactive Application Security Testing，交互式应用程序安全测试)等相关产品，它们都无一例外的使用了Instrumentation/JVMTI的API来实现动态修改Java类字节码并插入监控或检测代码。</p>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <h1 id="java-Agent"><a href="#java-Agent" class="headerlink" title="java Agent"></a>java Agent</h1><p>JDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持对已加载的class(类字节码)进行重新加载(Retransform)。<br>利用Java Agent这一特性衍生出了APM(Application Performance Management，应用性能管理)、RASP(Runtime application self-protection，运行时应用自我保护)、IAST(Interactive Application Security Testing，交互式应用程序安全测试)等相关产品，它们都无一例外的使用了Instrumentation/JVMTI的API来实现动态修改Java类字节码并插入监控或检测代码。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java Agent 本质上可以理解为一个插件，该插件就是一个精心提供的 Jar 包。只是启动方式和普通 Jar 包有所不同，对于普通的 Jar 包，通过指定类的 main 函数进行启动。但是 Java Agent 并不能单独启动，必须依附在一个 Java 应用程序运行，在面向切面编程方面应用比较广泛</p>
 <p>Java Agent 的 Jar 包通过 JVMTI（JVM Tool Interface）完成加载，最终借助 JPLISAgent（Java Programming Language Instrumentation Services Agent）完成对目标代码的修改。主要功能如下：</p>
 <p>可以在加载 Java 文件之前做拦截把字节码做修改<br>可以在运行期将已经加载的类的字节码做变更<br>在 JDK1.5 版本开始，Java 增加了 Instrumentation（Java Agent API）和 JVMTI（JVM Tool Interface）功能，该功能可以实现 JVM 在加载某个 class 文件对其字节码进行修改，也可以对已经加载的字节码进行一个重新的加载。而在 1.6 版本新增了 Attach（附加）方式，可以对运行中的 Java 进程插入 Agent。Java Agent 可以去实现字节码插桩、动态跟踪分析等，比如 RASP 产品和 Java Agent 内存马</p>
@@ -456,220 +249,45 @@
 <li>实现agentmain方法，在JVM启动后加载。</li>
 </ul>
 <p>premain和agentmain函数声明如下，拥有Instrumentation inst参数的方法<strong>优先级更高</strong>：</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">agentmain</span><span class="token punctuation">(</span><span class="token class-name">String</span> agentArgs<span class="token punctuation">,</span> <span class="token class-name">Instrumentation</span> inst<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">agentmain</span><span class="token punctuation">(</span><span class="token class-name">String</span> agentArgs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">premain</span><span class="token punctuation">(</span><span class="token class-name">String</span> agentArgs<span class="token punctuation">,</span> <span class="token class-name">Instrumentation</span> inst<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">premain</span><span class="token punctuation">(</span><span class="token class-name">String</span> agentArgs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span></code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs, Instrumentation inst)</span> {</span><br><span class="line">    ...</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs)</span> {</span><br><span class="line">    ...</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span> {</span><br><span class="line">    ...</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs)</span> {</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>第一个参数String agentArgs就是Java agent的参数。</p>
 <p>ava Agent还限制了我们必须以jar包的形式运行或加载，我们必须将编写好的Agent程序打包成一个jar文件。除此之外，Java Agent还强制要求了所有的jar文件中必须包含/META-INF/MANIFEST.MF文件，且该文件中必须定义好Premain-Class（Agent模式）或Agent-Class:（Agent模式）配置</p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="premain"><a href="#premain" class="headerlink" title="premain"></a>premain</h3><p><strong>构建</strong><br>编写agent项目</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>instrument<span class="token punctuation">.</span></span><span class="token class-name">Instrumentation</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PerMain</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">premain</span><span class="token punctuation">(</span><span class="token class-name">String</span> args<span class="token punctuation">,</span> <span class="token class-name">Instrumentation</span> instrumentation<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">{</span>
-		<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-			<span class="token annotation punctuation">@Override</span>
-			<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-				<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-					<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"my Agent --"</span><span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-					<span class="token keyword">try</span> <span class="token punctuation">{</span>
-						<span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-					<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-						<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-					<span class="token punctuation">}</span>
-				<span class="token punctuation">}</span>
-			<span class="token punctuation">}</span>
-		<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PerMain</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">		<span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() {</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> {</span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {</span><br><span class="line">					System.out.println(<span class="string">"my Agent --"</span>+i);</span><br><span class="line">					<span class="keyword">try</span> {</span><br><span class="line">						Thread.sleep(<span class="number">1000</span>*<span class="number">5</span>);</span><br><span class="line">					} <span class="keyword">catch</span> (InterruptedException e) {</span><br><span class="line">						<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">					}</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}).start();</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>打包成jar<br>使用idea打包<br><img src="/img/5-4/3.png"><br>agent不要选取主类，选择通过清单链接<br>在src/main/resources/目录下修改META-INF/MANIFEST.MF，需要指定Premain-Class，注意最后的换行</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Manifest</span><span class="token operator">-</span><span class="token class-name">Version</span><span class="token operator">:</span> <span class="token number">1.0</span>
-<span class="token class-name">Premain</span><span class="token operator">-</span><span class="token class-name">Class</span><span class="token operator">:</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span>PerMain</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">Manifest-Version: <span class="number">1.0</span></span><br><span class="line">Premain-Class: com.yyjccc.PerMain</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>然后idea输出构建工件<br><img src="/img/5-4/4.png"><br>最后得到需要附加的Agnet jar包<br><img src="/img/5-4/5.png"></p>
 <p><strong>使用</strong><br>测试主程序</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc</span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">{</span>
-		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-			<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {</span><br><span class="line">			System.out.println(i);</span><br><span class="line">			Thread.sleep(<span class="number">1000</span>*<span class="number">2</span>);</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>配置启动设置<br>添加虚拟机选项VM option<br>设置-javaagent  值为刚才的jar包路径</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token operator">-</span>javaagent<span class="token operator">:</span><span class="token class-name">F</span><span class="token operator">:</span>\code\java\myAgent\myAgent\target\artifacts\myAgent_jar\myAgent<span class="token punctuation">.</span>jar</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">-javaagent:F:\code\java\myAgent\myAgent\target\artifacts\myAgent_jar\myAgent.jar</span><br></pre></td></tr></tbody></table></figure>
 <p>运行程序<br><img src="/img/5-4/6.png"><br>附加的包的premain方法会在Main函数之前执行（这里是多开了一个线程）<br>还有直接使用命令</p>
-<pre class="language-java" data-language="java"><code class="language-java">java  <span class="token operator">-</span>javaagent<span class="token operator">:</span><span class="token class-name">F</span><span class="token operator">:</span>\code\java\myAgent\myAgent\target\artifacts\myAgent_jar\myAgent<span class="token punctuation">.</span>jar <span class="token operator">-</span>jar <span class="token punctuation">.</span>\common<span class="token punctuation">.</span>jar</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">java  -javaagent:F:\code\java\myAgent\myAgent\target\artifacts\myAgent_jar\myAgent.jar -jar .\common.jar</span><br></pre></td></tr></tbody></table></figure>
 <p><strong>缺陷</strong><br>这种方法存在一定的局限性——<strong>只能在启动时使用-javaagent参数指定</strong>。在实际环境中，目标的JVM通常都是已经启动的状态，无法预先加载premain。相比之下，agentmain更加实用。</p>
 <h3 id="agentmain"><a href="#agentmain" class="headerlink" title="agentmain"></a>agentmain</h3><p>写一个agentmain和premain差不多，只需要在META-INF/MANIFEST.MF中加入Agent-Class:即可，且编写的是agentmain方法</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Manifest</span><span class="token operator">-</span><span class="token class-name">Version</span><span class="token operator">:</span> <span class="token number">1.0</span>
-<span class="token class-name">Premain</span><span class="token operator">-</span><span class="token class-name">Class</span><span class="token operator">:</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span>PerMain</span>
-<span class="token class-name">Agent</span><span class="token operator">-</span><span class="token class-name">Class</span><span class="token operator">:</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span>AgentMain</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">Manifest-Version: <span class="number">1.0</span></span><br><span class="line">Premain-Class: com.yyjccc.PerMain</span><br><span class="line">Agent-Class: com.yyjccc.AgentMain</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>附加Agent的代码</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>instrument<span class="token punctuation">.</span></span><span class="token class-name">Instrumentation</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AttachAgent</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">agentmain</span><span class="token punctuation">(</span><span class="token class-name">String</span> args<span class="token punctuation">,</span> <span class="token class-name">Instrumentation</span> instrumentation<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-			<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Attach Agent --"</span><span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AttachAgent</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String args, Instrumentation instrumentation)</span> {</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {</span><br><span class="line">			System.out.println(<span class="string">"Attach Agent --"</span>+i);</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>同样的要将Agent程序打包成jar </p>
 <p>不同的是，这种方法不是通过JVM启动前的参数来指定的，官方为了实现启动后加载，提供了Attach API。Attach API 很简单，只有 2 个主要的类，都在 com.sun.tools.attach 包里面。着重关注的是VitualMachine这个类。</p>
 <h4 id="VirtualMachine"><a href="#VirtualMachine" class="headerlink" title="VirtualMachine"></a>VirtualMachine</h4><p>JDK 默认有tools.jar，JRE 默认没有。并且 Linux 和 Windows 之间是存在一个适配问题<br>字面意义表示一个Java 虚拟机，也就是程序需要监控的目标虚拟机，提供了获取系统信息、 loadAgent，Attach 和 Detach 等方法，可以实现的功能可以说非常之强大 。该类允许我们通过给attach方法传入一个jvm的pid(进程id)，远程连接到jvm上 。代理类注入操作只是它众多功能中的一个，通过loadAgent方法向jvm注册一个代理程序agent，在该agent的代理程序中会得到一个Instrumentation实例<br>（注意jdk8 , 依赖是tool.jar）在jdk安装目录中的lib目录下，idea中手动加一下<br><img src="/img/5-4/7.png"></p>
 <p>下面列几个这个类提供的方法：</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">VirtualMachine</span> <span class="token punctuation">{</span>
-    <span class="token comment">// 获得当前所有的JVM列表</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">VirtualMachineDescriptor</span><span class="token punctuation">&gt;</span></span> <span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
-
-    <span class="token comment">// 根据pid连接到JVM</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">VirtualMachine</span> <span class="token function">attach</span><span class="token punctuation">(</span><span class="token class-name">String</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
-
-    <span class="token comment">// 断开连接</span>
-    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">detach</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-
-    <span class="token comment">// 加载agent，agentmain方法靠的就是这个方法</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">loadAgent</span><span class="token punctuation">(</span><span class="token class-name">String</span> agent<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span></code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">VirtualMachine</span> {</span><br><span class="line">    <span class="comment">// 获得当前所有的JVM列表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;VirtualMachineDescriptor&gt; <span class="title function_">list</span><span class="params">()</span> { ... }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据pid连接到JVM</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> VirtualMachine <span class="title function_">attach</span><span class="params">(String id)</span> { ... }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开连接</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">detach</span><span class="params">()</span> {}</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载agent，agentmain方法靠的就是这个方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">loadAgent</span><span class="params">(String agent)</span> { ... }</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>根据提供的api，可以写出一个attacher<br>实现注入的代码</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc</span><span class="token punctuation">;</span>
-<span class="token comment">/**
- * jdk&gt;=9
- */</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token class-name">AgentInitializationException</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token class-name">AgentLoadException</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token class-name">AttachNotSupportedException</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token class-name">VirtualMachine</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AgentMain</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">AgentLoadException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">AgentInitializationException</span><span class="token punctuation">,</span> <span class="token class-name">AttachNotSupportedException</span> <span class="token punctuation">{</span>
-		<span class="token class-name">String</span> id <span class="token operator">=</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-		<span class="token class-name">String</span> jarName <span class="token operator">=</span> args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"id ==&gt; "</span> <span class="token operator">+</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"jarName ==&gt; "</span> <span class="token operator">+</span> jarName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-		<span class="token class-name">VirtualMachine</span> virtualMachine <span class="token operator">=</span> <span class="token class-name">VirtualMachine</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		virtualMachine<span class="token punctuation">.</span><span class="token function">loadAgent</span><span class="token punctuation">(</span>jarName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		virtualMachine<span class="token punctuation">.</span><span class="token function">detach</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ends"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * jdk&gt;=9</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.AgentInitializationException;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.AgentLoadException;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.AttachNotSupportedException;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AgentMain</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> AgentLoadException, IOException, AgentInitializationException, AttachNotSupportedException {</span><br><span class="line">		<span class="type">String</span> <span class="variable">id</span> <span class="operator">=</span> args[<span class="number">0</span>];</span><br><span class="line">		<span class="type">String</span> <span class="variable">jarName</span> <span class="operator">=</span> args[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"id ==&gt; "</span> + id);</span><br><span class="line">		System.out.println(<span class="string">"jarName ==&gt; "</span> + jarName);</span><br><span class="line"></span><br><span class="line">		<span class="type">VirtualMachine</span> <span class="variable">virtualMachine</span> <span class="operator">=</span> VirtualMachine.attach(id);</span><br><span class="line">		virtualMachine.loadAgent(jarName);</span><br><span class="line">		virtualMachine.detach();</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"ends"</span>);</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>通过pid向对应java程序进程注入附加Agent<br>执行这段代码，就能将jar包附加上对应的进程</p>
 <h4 id="VirtualMachineDescriptor"><a href="#VirtualMachineDescriptor" class="headerlink" title="VirtualMachineDescriptor"></a>VirtualMachineDescriptor</h4><p>com.sun.tools.attach.VirtualMachineDescriptor类是一个用来描述特定虚拟机的类，其方法可以获取虚拟机的各种信息如PID、虚拟机名称等。下面是一个获取特定虚拟机PID的示例</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>drunkbaby</span><span class="token punctuation">;</span>  
-  
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token class-name">VirtualMachine</span></span><span class="token punctuation">;</span>  
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token class-name">VirtualMachineDescriptor</span></span><span class="token punctuation">;</span>  
-  
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>  
-  
-<span class="token keyword">public</span> <span class="token keyword">class</span> get_PID <span class="token punctuation">{</span>  
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
-  
-       
-		<span class="token comment">//调用VirtualMachine.list()获取正在运行的JVM列表</span>
-		<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">VirtualMachineDescriptor</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> <span class="token class-name">VirtualMachine</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">VirtualMachineDescriptor</span> vmd <span class="token operator">:</span> list<span class="token punctuation">)</span><span class="token punctuation">{</span>
-
-			<span class="token comment">//遍历每一个正在运行的JVM，如果JVM名称为common.jar则返回其PID</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>vmd<span class="token punctuation">.</span><span class="token function">displayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"common.jar"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-				<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>vmd<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-  
-    <span class="token punctuation">}</span>  
-<span class="token punctuation">}</span></code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.drunkbaby;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;  </span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachineDescriptor;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> java.util.List;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">get_PID</span> {  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {  </span><br><span class="line">  </span><br><span class="line">       </span><br><span class="line">		<span class="comment">//调用VirtualMachine.list()获取正在运行的JVM列表</span></span><br><span class="line">		List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">		<span class="keyword">for</span>(VirtualMachineDescriptor vmd : list){</span><br><span class="line"></span><br><span class="line">			<span class="comment">//遍历每一个正在运行的JVM，如果JVM名称为common.jar则返回其PID</span></span><br><span class="line">			<span class="keyword">if</span>(vmd.displayName().equals(<span class="string">"common.jar"</span>))</span><br><span class="line">				System.out.println(vmd.id());</span><br><span class="line">		}</span><br><span class="line">  </span><br><span class="line">    }  </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>如果我们启动一个comm.jar<br>也可以使用这个类的方法,使用如下代码注入Agent，就不要手动找pid了</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span><span class="token class-name">Agent</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token operator">*</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Attacher</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">AgentLoadException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">AgentInitializationException</span><span class="token punctuation">,</span> <span class="token class-name">AttachNotSupportedException</span> <span class="token punctuation">{</span>
-		<span class="token class-name">String</span> agentJar<span class="token operator">=</span><span class="token string">"F:\\code\\java\\myAgent\\myAgent\\target\\artifacts\\myAgent_jar\\myAgent.jar"</span><span class="token punctuation">;</span>
-		<span class="token comment">//调用VirtualMachine.list()获取正在运行的JVM列表</span>
-		<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">VirtualMachineDescriptor</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> <span class="token class-name">VirtualMachine</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">VirtualMachineDescriptor</span> vmd <span class="token operator">:</span> list<span class="token punctuation">)</span><span class="token punctuation">{</span>
-
-			<span class="token comment">//遍历每一个正在运行的JVM，如果JVM名称为common.jar则返回其PID</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>vmd<span class="token punctuation">.</span><span class="token function">displayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"common.jar"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-				<span class="token class-name">VirtualMachine</span> virtualMachine <span class="token operator">=</span> <span class="token class-name">VirtualMachine</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>vmd<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				virtualMachine<span class="token punctuation">.</span><span class="token function">loadAgent</span><span class="token punctuation">(</span>agentJar<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				virtualMachine<span class="token punctuation">.</span><span class="token function">detach</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"attached pid "</span><span class="token operator">+</span>vmd<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"attached jar "</span><span class="token operator">+</span>agentJar<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token punctuation">}</span>
-
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc.Agent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Attacher</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> AgentLoadException, IOException, AgentInitializationException, AttachNotSupportedException {</span><br><span class="line">		String agentJar=<span class="string">"F:\\code\\java\\myAgent\\myAgent\\target\\artifacts\\myAgent_jar\\myAgent.jar"</span>;</span><br><span class="line">		<span class="comment">//调用VirtualMachine.list()获取正在运行的JVM列表</span></span><br><span class="line">		List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">		<span class="keyword">for</span>(VirtualMachineDescriptor vmd : list){</span><br><span class="line"></span><br><span class="line">			<span class="comment">//遍历每一个正在运行的JVM，如果JVM名称为common.jar则返回其PID</span></span><br><span class="line">			<span class="keyword">if</span>(vmd.displayName().equals(<span class="string">"common.jar"</span>)){</span><br><span class="line">				<span class="type">VirtualMachine</span> <span class="variable">virtualMachine</span> <span class="operator">=</span> VirtualMachine.attach(vmd.id());</span><br><span class="line">				virtualMachine.loadAgent(agentJar);</span><br><span class="line">				virtualMachine.detach();</span><br><span class="line">				System.out.println(<span class="string">"attached pid "</span>+vmd.id());</span><br><span class="line">				System.out.println(<span class="string">"attached jar "</span>+agentJar);</span><br><span class="line">			}</span><br><span class="line"></span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>以附加agentmain的方式可以不断使用上面程序进行注入<br><img src="/img/5-4/8.png"><br>这里就附加了三次</p>
 <h2 id="Instrumentation"><a href="#Instrumentation" class="headerlink" title="Instrumentation"></a>Instrumentation</h2><p>Instrumentation 是 JVMTIAgent（JVM Tool Interface Agent）的一部分，Java agent 通过这个类和目标 JVM 进行交互，从而达到修改数据的效果。</p>
 <p>上面的只是附加运行代码，而Instrumentation能实现读取、修改已加载的字节码操作</p>
 <p>其在 Java 中是一个接口，常用方法如下</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Instrumentation</span> <span class="token punctuation">{</span>
-    
-    <span class="token comment">//增加一个Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。</span>
-    <span class="token keyword">void</span> <span class="token function">addTransformer</span><span class="token punctuation">(</span><span class="token class-name">ClassFileTransformer</span> transformer<span class="token punctuation">,</span> <span class="token keyword">boolean</span> canRetransform<span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
-    <span class="token comment">//在类加载之前，重新定义 Class 文件，ClassDefinition 表示对一个类新的定义，如果在类加载之后，需要使用 retransformClasses 方法重新定义。addTransformer方法配置之后，后续的类加载都会被Transformer拦截。对于已经加载过的类，可以执行retransformClasses来重新触发这个Transformer的拦截。类加载的字节码被修改后，除非再次被retransform，否则不会恢复。</span>
-    <span class="token keyword">void</span> <span class="token function">addTransformer</span><span class="token punctuation">(</span><span class="token class-name">ClassFileTransformer</span> transformer<span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
-    <span class="token comment">//删除一个类转换器</span>
-    <span class="token keyword">boolean</span> <span class="token function">removeTransformer</span><span class="token punctuation">(</span><span class="token class-name">ClassFileTransformer</span> transformer<span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
- 
-    <span class="token comment">//在类加载之后，重新定义 Class。这个很重要，该方法是1.6 之后加入的，事实上，该方法是 update 了一个类。</span>
-    <span class="token keyword">void</span> <span class="token function">retransformClasses</span><span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> classes<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">UnmodifiableClassException</span><span class="token punctuation">;</span>
- 
- 
- 
-    <span class="token comment">//判断一个类是否被修改</span>
-    <span class="token keyword">boolean</span> <span class="token function">isModifiableClass</span><span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span></span> theClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
-    <span class="token comment">// 获取目标已经加载的类。</span>
-    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"rawtypes"</span><span class="token punctuation">)</span>
-    <span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">getAllLoadedClasses</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
-    <span class="token comment">//获取一个对象的大小</span>
-    <span class="token keyword">long</span> <span class="token function">getObjectSize</span><span class="token punctuation">(</span><span class="token class-name">Object</span> objectToSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
-<span class="token punctuation">}</span></code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Instrumentation</span> {</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//增加一个Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer, <span class="type">boolean</span> canRetransform)</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//在类加载之前，重新定义 Class 文件，ClassDefinition 表示对一个类新的定义，如果在类加载之后，需要使用 retransformClasses 方法重新定义。addTransformer方法配置之后，后续的类加载都会被Transformer拦截。对于已经加载过的类，可以执行retransformClasses来重新触发这个Transformer的拦截。类加载的字节码被修改后，除非再次被retransform，否则不会恢复。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//删除一个类转换器</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">removeTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    <span class="comment">//在类加载之后，重新定义 Class。这个很重要，该方法是1.6 之后加入的，事实上，该方法是 update 了一个类。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">retransformClasses</span><span class="params">(Class&lt;?&gt;... classes)</span> <span class="keyword">throws</span> UnmodifiableClassException;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    <span class="comment">//判断一个类是否被修改</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isModifiableClass</span><span class="params">(Class&lt;?&gt; theClass)</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 获取目标已经加载的类。</span></span><br><span class="line">    <span class="meta">@SuppressWarnings("rawtypes")</span></span><br><span class="line">    Class[] getAllLoadedClasses();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//获取一个对象的大小</span></span><br><span class="line">    <span class="type">long</span> <span class="title function_">getObjectSize</span><span class="params">(Object objectToSize)</span>;</span><br><span class="line"> </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="ClassFileTransformer"><a href="#ClassFileTransformer" class="headerlink" title="ClassFileTransformer"></a>ClassFileTransformer</h3><p>转换类文件，该接口下只有一个方法：transform，重写该方法即可转换任意类文件，并返回新的被取代的类文件，在 java agent 内存马中便是在该方法下重写恶意代码，从而修改原有类文件代码逻辑，与 addTransformer 搭配使用。</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token comment">//增加一个Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。  </span>
-    <span class="token keyword">void</span> <span class="token function">addTransformer</span><span class="token punctuation">(</span><span class="token class-name">ClassFileTransformer</span> transformer<span class="token punctuation">,</span> <span class="token keyword">boolean</span> canRetransform<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//增加一个Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。  </span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer, <span class="type">boolean</span> canRetransform)</span>;</span><br></pre></td></tr></tbody></table></figure>
 
 <p>简单概括一下：</p>
 <ol>
@@ -678,130 +296,18 @@
 <li>对于没有加载的类，会使用ClassLoader.defineClass()定义它；对于已经加载的类，会使用ClassLoader.redefineClasses()重新定义，并配合Instrumentation.retransformClasses进行转换。</li>
 </ol>
 <p>下面给出一个修改已加载类的例子<br>程序运行下面代码</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span><span class="token class-name">Agent</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token import static"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token static">sleep</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SayHello</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">{</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello world "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc.Agent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.Thread.sleep;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SayHello</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException {</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>) {</span><br><span class="line">            hello();</span><br><span class="line">            sleep(<span class="number">3000</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> {</span><br><span class="line">        System.out.println(<span class="string">"hello world "</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
 
 <p>编写agent：<br>编写一个ClassFileTransformer的实现类，重写transform方法，然后使用javassist修改方法体</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span>transformer</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javassist<span class="token punctuation">.</span></span><span class="token class-name">ClassClassPath</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javassist<span class="token punctuation">.</span></span><span class="token class-name">ClassPool</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javassist<span class="token punctuation">.</span></span><span class="token class-name">CtClass</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">javassist<span class="token punctuation">.</span></span><span class="token class-name">CtMethod</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>instrument<span class="token punctuation">.</span></span><span class="token class-name">ClassFileTransformer</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>instrument<span class="token punctuation">.</span></span><span class="token class-name">IllegalClassFormatException</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span></span><span class="token class-name">ProtectionDomain</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Hello_Transform</span> <span class="token keyword">implements</span> <span class="token class-name">ClassFileTransformer</span> <span class="token punctuation">{</span>
-	<span class="token annotation punctuation">@Override</span>
-	<span class="token keyword">public</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">transform</span><span class="token punctuation">(</span><span class="token class-name">ClassLoader</span> loader<span class="token punctuation">,</span> <span class="token class-name">String</span> className<span class="token punctuation">,</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span></span> classBeingRedefined<span class="token punctuation">,</span> <span class="token class-name">ProtectionDomain</span> protectionDomain<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classfileBuffer<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IllegalClassFormatException</span> <span class="token punctuation">{</span>
-		<span class="token keyword">try</span> <span class="token punctuation">{</span>
-			<span class="token comment">//获取CtClass 对象的容器 ClassPool</span>
-			<span class="token class-name">ClassPool</span> classPool <span class="token operator">=</span> <span class="token class-name">ClassPool</span><span class="token punctuation">.</span><span class="token function">getDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token comment">//添加额外的类搜索路径</span>
-			<span class="token keyword">if</span> <span class="token punctuation">(</span>classBeingRedefined <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-				<span class="token class-name">ClassClassPath</span> ccp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassClassPath</span><span class="token punctuation">(</span>classBeingRedefined<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				classPool<span class="token punctuation">.</span><span class="token function">insertClassPath</span><span class="token punctuation">(</span>ccp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token punctuation">}</span>
-
-			<span class="token comment">//获取目标类</span>
-			<span class="token class-name">CtClass</span> ctClass <span class="token operator">=</span> classPool<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"com.yyjccc.Agent.SayHello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token comment">//获取目标方法</span>
-			<span class="token class-name">CtMethod</span> ctMethod <span class="token operator">=</span> ctClass<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-			<span class="token comment">//设置方法体</span>
-			<span class="token class-name">String</span> body <span class="token operator">=</span> <span class="token string">"{System.out.println(\"Hacker!\");}"</span><span class="token punctuation">;</span>
-			ctMethod<span class="token punctuation">.</span><span class="token function">setBody</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-			<span class="token comment">//返回目标类字节码</span>
-			<span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> ctClass<span class="token punctuation">.</span><span class="token function">toBytecode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token keyword">return</span> bytes<span class="token punctuation">;</span>
-
-		<span class="token punctuation">}</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span><span class="token punctuation">{</span>
-			e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc.transformer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.ClassClassPath;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtMethod;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello_Transform</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> {</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException {</span><br><span class="line">		<span class="keyword">try</span> {</span><br><span class="line">			<span class="comment">//获取CtClass 对象的容器 ClassPool</span></span><br><span class="line">			<span class="type">ClassPool</span> <span class="variable">classPool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">			<span class="comment">//添加额外的类搜索路径</span></span><br><span class="line">			<span class="keyword">if</span> (classBeingRedefined != <span class="literal">null</span>) {</span><br><span class="line">				<span class="type">ClassClassPath</span> <span class="variable">ccp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassClassPath</span>(classBeingRedefined);</span><br><span class="line">				classPool.insertClassPath(ccp);</span><br><span class="line">			}</span><br><span class="line"></span><br><span class="line">			<span class="comment">//获取目标类</span></span><br><span class="line">			<span class="type">CtClass</span> <span class="variable">ctClass</span> <span class="operator">=</span> classPool.get(<span class="string">"com.yyjccc.Agent.SayHello"</span>);</span><br><span class="line">			<span class="comment">//获取目标方法</span></span><br><span class="line">			<span class="type">CtMethod</span> <span class="variable">ctMethod</span> <span class="operator">=</span> ctClass.getDeclaredMethod(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">			<span class="comment">//设置方法体</span></span><br><span class="line">			<span class="type">String</span> <span class="variable">body</span> <span class="operator">=</span> <span class="string">"{System.out.println(\"Hacker!\");}"</span>;</span><br><span class="line">			ctMethod.setBody(body);</span><br><span class="line"></span><br><span class="line">			<span class="comment">//返回目标类字节码</span></span><br><span class="line">			<span class="type">byte</span>[] bytes = ctClass.toBytecode();</span><br><span class="line">			<span class="keyword">return</span> bytes;</span><br><span class="line"></span><br><span class="line">		}<span class="keyword">catch</span> (Exception e){</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		}</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>agentmain</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span>transformer<span class="token punctuation">.</span></span><span class="token class-name">Hello_Transform</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>instrument<span class="token punctuation">.</span></span><span class="token class-name">Instrumentation</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>instrument<span class="token punctuation">.</span></span><span class="token class-name">UnmodifiableClassException</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EvalAgent</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">agentmain</span><span class="token punctuation">(</span><span class="token class-name">String</span> args<span class="token punctuation">,</span> <span class="token class-name">Instrumentation</span> inst<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">UnmodifiableClassException</span> <span class="token punctuation">{</span>
-		<span class="token class-name">Class</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> classes <span class="token operator">=</span> inst<span class="token punctuation">.</span><span class="token function">getAllLoadedClasses</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-		<span class="token comment">//获取目标JVM加载的全部类</span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Class</span> cls <span class="token operator">:</span> classes<span class="token punctuation">)</span><span class="token punctuation">{</span>
-			<span class="token keyword">if</span> <span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"com.yyjccc.Agent.SayHello"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-				<span class="token comment">//添加一个transformer到Instrumentation，并重新触发目标类加载</span>
-				inst<span class="token punctuation">.</span><span class="token function">addTransformer</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hello_Transform</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				inst<span class="token punctuation">.</span><span class="token function">retransformClasses</span><span class="token punctuation">(</span>cls<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token punctuation">}</span>
-		<span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yyjccc.transformer.Hello_Transform;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.UnmodifiableClassException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EvalAgent</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String args, Instrumentation inst)</span> <span class="keyword">throws</span> UnmodifiableClassException {</span><br><span class="line">		Class [] classes = inst.getAllLoadedClasses();</span><br><span class="line"></span><br><span class="line">		<span class="comment">//获取目标JVM加载的全部类</span></span><br><span class="line">		<span class="keyword">for</span>(Class cls : classes){</span><br><span class="line">			<span class="keyword">if</span> (cls.getName().equals(<span class="string">"com.yyjccc.Agent.SayHello"</span>)){</span><br><span class="line">				<span class="comment">//添加一个transformer到Instrumentation，并重新触发目标类加载</span></span><br><span class="line">				inst.addTransformer(<span class="keyword">new</span> <span class="title class_">Hello_Transform</span>(),<span class="literal">true</span>);</span><br><span class="line">				inst.retransformClasses(cls);</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>MANFIEST.MF设置运行可以重新类加载</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Manifest</span><span class="token operator">-</span><span class="token class-name">Version</span><span class="token operator">:</span> <span class="token number">1.0</span>
-<span class="token class-name">Premain</span><span class="token operator">-</span><span class="token class-name">Class</span><span class="token operator">:</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span>PerMain</span>
-<span class="token class-name">Agent</span><span class="token operator">-</span><span class="token class-name">Class</span><span class="token operator">:</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span>EvalAgent</span>
-<span class="token class-name">Can</span><span class="token operator">-</span><span class="token class-name">Redefine</span><span class="token operator">-</span><span class="token class-name">Classes</span><span class="token operator">:</span> <span class="token boolean">true</span>
-<span class="token class-name">Can</span><span class="token operator">-</span><span class="token class-name">Retransform</span><span class="token operator">-</span><span class="token class-name">Classes</span><span class="token operator">:</span> <span class="token boolean">true</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">Manifest-Version: <span class="number">1.0</span></span><br><span class="line">Premain-Class: com.yyjccc.PerMain</span><br><span class="line">Agent-Class: com.yyjccc.EvalAgent</span><br><span class="line">Can-Redefine-Classes: <span class="literal">true</span></span><br><span class="line">Can-Retransform-Classes: <span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>最后打jar包</p>
 <p>然后注入</p>
-<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>yyjccc<span class="token punctuation">.</span></span><span class="token class-name">Agent</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>attach<span class="token punctuation">.</span></span><span class="token operator">*</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Attacher</span> <span class="token punctuation">{</span>
-	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">AgentLoadException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">AgentInitializationException</span><span class="token punctuation">,</span> <span class="token class-name">AttachNotSupportedException</span> <span class="token punctuation">{</span>
-		<span class="token class-name">String</span> agentJar<span class="token operator">=</span><span class="token string">"F:\\code\\java\\myAgent\\myAgent\\target\\artifacts\\myAgent_jar\\myAgent.jar"</span><span class="token punctuation">;</span>
-		<span class="token comment">//调用VirtualMachine.list()获取正在运行的JVM列表</span>
-		<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">VirtualMachineDescriptor</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> <span class="token class-name">VirtualMachine</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">VirtualMachineDescriptor</span> vmd <span class="token operator">:</span> list<span class="token punctuation">)</span><span class="token punctuation">{</span>
-
-			<span class="token comment">//遍历每一个正在运行的JVM，如果JVM名称为common.jar则返回其PID</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>vmd<span class="token punctuation">.</span><span class="token function">displayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"common.jar"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-				<span class="token class-name">VirtualMachine</span> virtualMachine <span class="token operator">=</span> <span class="token class-name">VirtualMachine</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>vmd<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				virtualMachine<span class="token punctuation">.</span><span class="token function">loadAgent</span><span class="token punctuation">(</span>agentJar<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				virtualMachine<span class="token punctuation">.</span><span class="token function">detach</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"attached pid "</span><span class="token operator">+</span>vmd<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"attached jar "</span><span class="token operator">+</span>agentJar<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token punctuation">}</span>
-
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yyjccc.Agent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Attacher</span> {</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> AgentLoadException, IOException, AgentInitializationException, AttachNotSupportedException {</span><br><span class="line">		String agentJar=<span class="string">"F:\\code\\java\\myAgent\\myAgent\\target\\artifacts\\myAgent_jar\\myAgent.jar"</span>;</span><br><span class="line">		<span class="comment">//调用VirtualMachine.list()获取正在运行的JVM列表</span></span><br><span class="line">		List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">		<span class="keyword">for</span>(VirtualMachineDescriptor vmd : list){</span><br><span class="line"></span><br><span class="line">			<span class="comment">//遍历每一个正在运行的JVM，如果JVM名称为common.jar则返回其PID</span></span><br><span class="line">			<span class="keyword">if</span>(vmd.displayName().equals(<span class="string">"common.jar"</span>)){</span><br><span class="line">				<span class="type">VirtualMachine</span> <span class="variable">virtualMachine</span> <span class="operator">=</span> VirtualMachine.attach(vmd.id());</span><br><span class="line">				virtualMachine.loadAgent(agentJar);</span><br><span class="line">				virtualMachine.detach();</span><br><span class="line">				System.out.println(<span class="string">"attached pid "</span>+vmd.id());</span><br><span class="line">				System.out.println(<span class="string">"attached jar "</span>+agentJar);</span><br><span class="line">			}</span><br><span class="line"></span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <img src="/img/5-4/9.png">
 
 <h3 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h3><p>大多数情况下，我们使用 Instrumentation 都是使用其字节码插桩的功能，简单来说就是类重定义功能（Class Redefine），但是有以下局限性：<br>premain 和 agentmain 两种方式<strong>修改字节码</strong>的时机都是类文件加载之后，也就是说必须要带有 Class 类型的参数，不能通过字节码文件和自定义的类名重新定义一个本来不存在的类。<br>类的字节码修改称为类转换 (Class Transform)，类转换其实最终都回归到类重定义 Instrumentation#redefineClasses 方法，此方法有以下限制：</p>
@@ -813,25 +319,7 @@
 <li>可以修改方法体</li>
 </ol>
 <h2 id="Maven插件"><a href="#Maven插件" class="headerlink" title="Maven插件"></a>Maven插件</h2><p>不去手动写MANIFREST.MF文件的方式，使用maven插件：</p>
-<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.apache.maven.plugins<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>maven-jar-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>3.1.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>archive</span><span class="token punctuation">&gt;</span></span>
-      <span class="token comment">&lt;!--自动添加META-INF/MANIFEST.MF --&gt;</span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manifest</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>addClasspath</span><span class="token punctuation">&gt;</span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>addClasspath</span><span class="token punctuation">&gt;</span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manifest</span><span class="token punctuation">&gt;</span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manifestEntries</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Agent-Class</span><span class="token punctuation">&gt;</span></span>com.yyjccc.EvalAgent<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Agent-Class</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Can-Redefine-Classes</span><span class="token punctuation">&gt;</span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Can-Redefine-Classes</span><span class="token punctuation">&gt;</span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Can-Retransform-Classes</span><span class="token punctuation">&gt;</span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Can-Retransform-Classes</span><span class="token punctuation">&gt;</span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manifestEntries</span><span class="token punctuation">&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>archive</span><span class="token punctuation">&gt;</span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">&gt;</span></span>
-</code></pre>
+<figure class="highlight xml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!--自动添加META-INF/MANIFEST.MF --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">addClasspath</span>&gt;</span>true<span class="tag">&lt;/<span class="name">addClasspath</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>com.yyjccc.EvalAgent<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Redefine-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Redefine-Classes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Retransform-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Retransform-Classes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://paoka1.top/2023/04/07/Java-Agent-%E5%85%A5%E9%97%A8/">Java Agent 入门</a></li>
@@ -840,704 +328,490 @@
 <li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9450?time__1311=n4+xuDgD9Ad40lDl=oGkYD8jNeiI=NdG8eD">Java Agent 从入门到内存马 - 先知社区</a></li>
 </ul>
 
-                
-            </div>
-            <hr/>
-
-            
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
-                            
-                                <a href="/tags/java/">
-                                    <span class="chip bg-color">java</span>
-                                </a>
-                            
-                                <a href="/tags/Agent/">
-                                    <span class="chip bg-color">Agent</span>
-                                </a>
-                            
-                        </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="qq,wechat,weibo,twitter,facebook" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
-</div>
-
-                </div>
-            </div>
-            
-        </div>
+      
     </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 
+
+    </footer>
+  </div>
+  
     
-        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
-<link rel="stylesheet" href="/css/my-gitalk.css">
-
-<div class="card gitalk-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
+  <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="https://yyjccc.github.io/images/cover/3.png" data-sizes="auto" alt="shiro550" class="lazyload">
+          
+        
+        <a href="/2024/05/06/shiro550-md-yyj/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            shiro550
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/4.png" data-sizes="auto" alt="fastjson高版本补丁绕过" class="lazyload">
+        
+      
+      <a href="/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          fastjson高版本补丁绕过
+        
+      </h3>
     </div>
-    <div id="gitalk-container" class="card-content"></div>
-</div>
-
-<script src="/libs/gitalk/gitalk.min.js"></script>
-<script>
-    let gitalk = new Gitalk({
-        clientID: '0efb4a442bc09d1ba17e',
-        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
-        repo: 'yyjccc.github.io',
-        owner: 'Yyjccc',
-        admin: "Yyjccc",
-        id: '2024-05-04T19-12-11',
-        distractionFreeMode: false  // Facebook-like distraction free mode
-    });
-
-    gitalk.render('gitalk-container');
-</script>
-
     
+  </nav>
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2024/05/06/shiro550-md-yyj/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="shiro550">
-                        
-                        <span class="card-title">shiro550</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-05-06
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">java安全</span>
-                    </a>
-                    
-                    <a href="/tags/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                        <span class="chip bg-color">java反序列化漏洞</span>
-                    </a>
-                    
-                    <a href="/tags/shiro/">
-                        <span class="chip bg-color">shiro</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="fastjson高版本补丁绕过">
-                        
-                        <span class="card-title">fastjson高版本补丁绕过</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-27
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">web安全</span>
-                    </a>
-                    
-                    <a href="/tags/fastjson/">
-                        <span class="chip bg-color">fastjson</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
+  
 </article>
 
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#java-Agent"><span class="toc-number">1.</span> <span class="toc-text">java Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#premain"><span class="toc-number">1.2.1.</span> <span class="toc-text">premain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#agentmain"><span class="toc-number">1.2.2.</span> <span class="toc-text">agentmain</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VirtualMachine"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">VirtualMachine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VirtualMachineDescriptor"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">VirtualMachineDescriptor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Instrumentation"><span class="toc-number">1.3.</span> <span class="toc-text">Instrumentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ClassFileTransformer"><span class="toc-number">1.3.1.</span> <span class="toc-text">ClassFileTransformer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">局限性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven%E6%8F%92%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">Maven插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">1.5.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+      
+  </div>
 </div>
-
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
-    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
-            <div id="toc-content"></div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
         </div>
+      
     </div>
-</div>
+  </div>
 
-<!-- TOC 悬浮按钮. -->
+  
+</aside>
 
-<div id="floating-toc-btn" class="hide-on-med-and-down">
-    <a class="btn-floating btn-large bg-color">
-        <i class="fas fa-list-ul"></i>
-    </a>
-</div>
-
-
-<script src="/libs/tocbot/tocbot.min.js"></script>
-<script>
-    $(function () {
-        tocbot.init({
-            tocSelector: '#toc-content',
-            contentSelector: '#articleContent',
-            headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
-        });
-
-        // Set scroll toc fixed.
-        let tocHeight = parseInt($(window).height() * 0.4 - 64);
-        let $tocWidget = $('.toc-widget');
-        $(window).scroll(function () {
-            let scroll = $(window).scrollTop();
-            /* add post toc fixed. */
-            if (scroll > tocHeight) {
-                $tocWidget.addClass('toc-fixed');
-            } else {
-                $tocWidget.removeClass('toc-fixed');
-            }
-        });
-
-        
-        /* 修复文章卡片 div 的宽度. */
-        let fixPostCardWidth = function (srcId, targetId) {
-            let srcDiv = $('#' + srcId);
-            if (srcDiv.length === 0) {
-                return;
-            }
-
-            let w = srcDiv.width();
-            if (w >= 450) {
-                w = w + 21;
-            } else if (w >= 350 && w < 450) {
-                w = w + 18;
-            } else if (w >= 300 && w < 350) {
-                w = w + 16;
-            } else {
-                w = w + 14;
-            }
-            $('#' + targetId).width(w);
-        };
-
-        // 切换TOC目录展开收缩的相关操作.
-        const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        
-    });
-</script>
-
-    
-
-</main>
-
-
-
-
-                <footer class="page-footer bg-color">
-    
-        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
-<style>
-    .aplayer .aplayer-lrc p {
-        
-        display: none;
-        
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 16px !important;
-    }
-
-    .aplayer .aplayer-lrc p.aplayer-lrc-current {
-        
-        display: none;
-        
-        font-size: 15px;
-        color: #42b983;
-    }
-
-    
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
-        left: -66px !important;
-    }
-
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
-        left: 0px !important;
-    }
-
-    
-</style>
-<div class="">
-    
-    <div class="row">
-        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
-                   server="netease"
-                   type="playlist"
-                   id="503838841"
-                   fixed='true'
-                   autoplay='false'
-                   theme='#42b983'
-                   loop='all'
-                   order='random'
-                   preload='auto'
-                   volume='0.7'
-                   list-folded='true'
-        >
-        </meting-js>
-    </div>
-</div>
-
-<script src="/libs/aplayer/APlayer.min.js"></script>
-<script src="/libs/aplayer/Meting.min.js"></script>
-
-    
-
-    <div class="container row center-align"
-         style="margin-bottom: 0px !important;">
-        <div class="col s12 m8 l8 copy-right">
-            Copyright&nbsp;&copy;
-            
-                <span id="year">2023-2024</span>
-            
-            <a href="/about" target="_blank">Yyjccc</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
-            
-            <br>
-            
-            
-            
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
-            <br>
-
-            <!-- 运行天数提醒. -->
-            
-            <br>
-            
+          
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/yyjccc" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-    <a href="mailto:yanyongjuyyj@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
-        <i class="fas fa-envelope-open"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3393867490" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3393867490" data-position="top" data-delay="50">
-        <i class="fab fa-qq"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
-
-</div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2024
+      <span class="footer-info-sep"></span>
+      Yyjccc
     </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        142.7k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        09:44
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
 </footer>
 
-<div class="progress-bar"></div>
-
-
-                    <!-- 搜索遮罩框 -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
-            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
-                   class="search-input">
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
         </div>
-        <div id="searchResult"></div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#java-Agent"><span class="toc-number">1.</span> <span class="toc-text">java Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#premain"><span class="toc-number">1.2.1.</span> <span class="toc-text">premain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#agentmain"><span class="toc-number">1.2.2.</span> <span class="toc-text">agentmain</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VirtualMachine"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">VirtualMachine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VirtualMachineDescriptor"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">VirtualMachineDescriptor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Instrumentation"><span class="toc-number">1.3.</span> <span class="toc-text">Instrumentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ClassFileTransformer"><span class="toc-number">1.3.1.</span> <span class="toc-text">ClassFileTransformer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">局限性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven%E6%8F%92%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">Maven插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">1.5.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
+  
 </div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
 
-<script type="text/javascript">
-$(function () {
-    var searchFunc = function (path, search_id, content_id) {
-        'use strict';
-        $.ajax({
-            url: path,
-            dataType: "xml",
-            success: function (xmlResponse) {
-                // get the contents from search data
-                var datas = $("entry", xmlResponse).map(function () {
-                    return {
-                        title: $("title", this).text(),
-                        content: $("content", this).text(),
-                        url: $("url", this).text()
-                    };
-                }).get();
-                var $input = document.getElementById(search_id);
-                var $resultContent = document.getElementById(content_id);
-                $input.addEventListener('input', function () {
-                    var str = '<ul class=\"search-result-list\">';
-                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                    $resultContent.innerHTML = "";
-                    if (this.value.trim().length <= 0) {
-                        return;
-                    }
-                    // perform local searching
-                    datas.forEach(function (data) {
-                        var isMatch = true;
-                        var data_title = data.title.trim().toLowerCase();
-                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
-                        var data_url = data.url;
-                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
-                        var index_title = -1;
-                        var index_content = -1;
-                        var first_occur = -1;
-                        // only match artiles with not empty titles and contents
-                        if (data_title !== '' && data_content !== '') {
-                            keywords.forEach(function (keyword, i) {
-                                index_title = data_title.indexOf(keyword);
-                                index_content = data_content.indexOf(keyword);
-                                if (index_title < 0 && index_content < 0) {
-                                    isMatch = false;
-                                } else {
-                                    if (index_content < 0) {
-                                        index_content = 0;
-                                    }
-                                    if (i === 0) {
-                                        first_occur = index_content;
-                                    }
-                                }
-                            });
-                        }
-                        // show search results
-                        if (isMatch) {
-                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
-                            var content = data.content.trim().replace(/<[^>]+>/g, "");
-                            if (first_occur >= 0) {
-                                // cut out 100 characters
-                                var start = first_occur - 20;
-                                var end = first_occur + 80;
-                                if (start < 0) {
-                                    start = 0;
-                                }
-                                if (start === 0) {
-                                    end = 100;
-                                }
-                                if (end > content.length) {
-                                    end = content.length;
-                                }
-                                var match_content = content.substr(start, end);
-                                // highlight all keywords
-                                keywords.forEach(function (keyword) {
-                                    var regS = new RegExp(keyword, "gi");
-                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
-                                });
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
 
-                                str += "<p class=\"search-result\">" + match_content + "...</p>"
-                            }
-                            str += "</li>";
-                        }
-                    });
-                    str += "</ul>";
-                    $resultContent.innerHTML = str;
-                });
-            }
-        });
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
     };
-
-    searchFunc('/search.xml', 'searchInput', 'searchResult');
-});
-</script>
-
-                        <!-- 白天和黑夜主题 -->
-<div class="stars-con">
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>  
-</div>
-
-<script>
-    function switchNightMode() {
-        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
-        setTimeout(function () {
-            $('body').hasClass('DarkMode') 
-            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
-            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
-            
-            setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
-                $(this).remove()
-            })
-            }, 2e3)
-        })
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
     }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
 </script>
 
-                            <!-- 回到顶部按钮 -->
-<div id="backTop" class="top-scroll">
-    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
 </div>
 
 
-                                <script
-                                    src="/libs/materialize/materialize.min.js"></script>
-                                <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-                                <script src="/libs/aos/aos.js"></script>
-                                <script
-                                    src="/libs/scrollprogress/scrollProgress.min.js"></script>
-                                <script
-                                    src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-                                <script src="/js/matery.js"></script>
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
 
-                                
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
 
-                                        
-
-                                                
-
-                                                    <script type="text/javascript">
-                                                        // 只在桌面版网页启用特效
-                                                        var windowWidth = $(window).width();
-                                                        if (windowWidth > 768) {
-                                                            document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
-                                                        }
-                                                    </script>
-                                                    
-
-                                                        <!-- 雪花特效 -->
-                                                        
-                                                            <script type="text/javascript">
-                                                                // 只在桌面版网页启用特效
-                                                                var windowWidth = $(window).width();
-                                                                if (windowWidth > 768) {
-                                                                    document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
-                                                                }
-                                                            </script>
-                                                            
-
-                                                                <!-- 鼠标星星特效 -->
-                                                                
-                                                                    <script type="text/javascript">
-                                                                        // 只在桌面版网页启用特效
-                                                                        var windowWidth = $(window).width();
-                                                                        if (windowWidth > 768) {
-                                                                            document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
-                                                                        }
-                                                                    </script>
-                                                                    
-
-                                                                        
-                                                                            <script
-                                                                                src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
-                                                                            <script
-                                                                                src="/libs/others/TencentCaptcha.js"></script>
-                                                                            <button id="TencentCaptcha"
-                                                                                data-appid="xxxxxxxxxx"
-                                                                                data-cbfn="callback" type="button"
-                                                                                hidden></button>
-                                                                            
-
-                                                                                <!-- Baidu Analytics -->
-
-                                                                                    <!-- Baidu Push -->
-
-<script>
-    (function () {
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        } else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
 </script>
 
-                                                                                        
-                                                                                            <script
-                                                                                                src="/libs/others/clicklove.js"
-                                                                                                async="async"></script>
-                                                                                            
-                                                                                                
-                                                                                                    <script async
-                                                                                                        src="/libs/others/busuanzi.pure.mini.js"></script>
-                                                                                                    
 
-                                                                                                        
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
 
-                                                                                                                
 
-                                                                                                                        <!--腾讯兔小巢-->
-                                                                                                                        
-                                                                                                                                
-                                                                                                                                    <script
-                                                                                                                                        type="text/javascript"
-                                                                                                                                        color="0,0,255"
-                                                                                                                                        pointColor="0,0,255"
-                                                                                                                                        opacity='0.7'
-                                                                                                                                        zIndex="-1"
-                                                                                                                                        count="99"
-                                                                                                                                        src="/libs/background/canvas-nest.js"></script>
-                                                                                                                                    
 
-                                                                                                                                        
 
-                                                                                                                                                    
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
 
-                                                                                                                                                            
-                                                                                                                                                                <script
-                                                                                                                                                                    src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
-                                                                                                                                                                
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
-
-</html>

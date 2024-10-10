@@ -1,1517 +1,1035 @@
-<!DOCTYPE HTML>
-<html lang="zh-CN">
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
 
 
-<head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="yyjccc的博客">
-    <meta name="description" content="yyjccc的博客">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="renderer" content="webkit|ie-stand|ie-comp">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
 
 
-    <title>yyjccc的博客</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
     
-    <style>
-        body{
-            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
-            background-repeat:no-repeat;
-            background-size: 100% 100%;
-            background-attachment:fixed;
-        }
-    </style>
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
 
+  
+  <meta property="og:type" content="website">
+<meta property="og:title" content="yyjccc的博客">
+<meta property="og:url" content="https://yyjccc.github.io/page/2/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Yyjccc">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      <link rel="preload" href="https://npm.webcache.cn/gitalk/dist/gitalk.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
 
-    <!-- bg-cover style     -->
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
 
-
-
-<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
-<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
-<link rel="stylesheet" type="text/css" href="/css/matery.css">
-<link rel="stylesheet" type="text/css" href="/css/my.css">
-<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
-
-
-
-
-    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
-    <link rel="stylesheet" href="/css/post.css">
-
-
-
-
-
-
-    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
-
+  
 <meta name="generator" content="Hexo 6.3.0">
-<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
-
-    <body>
-        <!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="navbar-fixed">
-    <nav id="headNav" class="bg-color nav-transparent">
-        <div id="navContainer" class="nav-wrapper container">
-            <div class="brand-logo">
-                <a href="/" class="waves-effect waves-light">
-                    
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
-                    
-                    <span class="logo-span">yyjccc的博客</span>
-                </a>
-            </div>
-            
-
-<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
-<ul class="right nav-menu">
-  
-  <li class="hide-on-med-and-down nav-item">
+  <body>
     
-    <a href="/" class="waves-effect waves-light">
-      
-      <i class="fas fa-home" style="zoom: 0.6;"></i>
-      
-      <span>首页</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/tags" class="waves-effect waves-light">
-      
-      <i class="fas fa-tags" style="zoom: 0.6;"></i>
-      
-      <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/archives" class="waves-effect waves-light">
-      
-      <i class="fas fa-archive" style="zoom: 0.6;"></i>
-      
-      <span>归档</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/about" class="waves-effect waves-light">
-      
-      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
-      
-      <span>关于</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/contact" class="waves-effect waves-light">
-      
-      <i class="fas fa-comments" style="zoom: 0.6;"></i>
-      
-      <span>留言板</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
-      
-      <span>友情链接</span>
-    </a>
-    
-  </li>
-  
-  <li>
-    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-  <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
-      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-</ul>
-
-
-<div id="mobile-nav" class="side-nav sidenav">
-
-    <div class="mobile-head bg-color">
-        
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
-        
-        <div class="logo-name">yyjccc的博客</div>
-        <div class="logo-desc">
-            
-            Never really desperate, only the lost of the soul.
-            
-        </div>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
     </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
 
-    <ul class="menu-list mobile-menu-list">
-        
-        <li class="m-nav-item">
-	  
-		<a href="/" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-home"></i>
-			
-			首页
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/tags" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-tags"></i>
-			
-			标签
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/archives" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-archive"></i>
-			
-			归档
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/about" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-user-circle"></i>
-			
-			关于
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/contact" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-comments"></i>
-			
-			留言板
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/friends" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-address-book"></i>
-			
-			友情链接
-		</a>
-          
-        </li>
-        
-        
-        <li><div class="divider"></div></li>
-        <li>
-            <a href="https://github.com/Yyjccc" class="waves-effect waves-light" target="_blank">
-                <i class="fab fa-github-square fa-fw"></i>Fork Me
-            </a>
-        </li>
-        
-    </ul>
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
 </div>
 
 
-        </div>
-
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
         
-            <style>
-    .nav-transparent .github-corner {
-        display: none !important;
-    }
-
-    .github-corner {
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        border: 0;
-        transform: scale(1.1);
-    }
-
-    .github-corner svg {
-        color: #0f9d58;
-        fill: #fff;
-        height: 64px;
-        width: 64px;
-    }
-
-    .github-corner:hover .octo-arm {
-        animation: a 0.56s ease-in-out;
-    }
-
-    .github-corner .octo-arm {
-        animation: none;
-    }
-
-    @keyframes a {
-        0%,
-        to {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
-    }
-</style>
-
-<a href="https://github.com/Yyjccc" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
-   data-tooltip="Fork Me" data-position="left" data-delay="50">
-    <svg viewBox="0 0 250 250" aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
-              fill="currentColor" class="octo-body"></path>
-    </svg>
-</a>
         
-    </nav>
-
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">yyjccc的博客</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+            <a href="/" id="subtitle">yyjccc的博客</a>
+          
+        </h2>
+      
+    </div>
+  </div>
 </header>
 
-            
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
-    <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                    yyjccc的博客
-                        
-            </div>
-
-            <div class="description center-align">
-                
-                    <span id="subtitle"></span>
-                    <script src="/libs/typed/typed.js"></script>
-                    <script>
-                        var typed = new Typed("#subtitle", {
-                            strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                                "志之所向，金石为开，谁能御之？",
-                            
-                                "花开不是为了花落，而是为了开的更加灿烂。",
-                            
-                                "欲望以提升热忱，毅力以磨平高山。",
-                            
-                                "没有伞的孩子必须努力奔跑！",
-                            
-                        ],
-                            startDelay: 300,
-                            typeSpeed: 100,
-                            loop: true,
-                            backSpeed: 50,
-                            showCursor: true
-                    });
-                    </script>
-                    
-            </div>
-        </div>
+        <div id="content">
+          
+          <section id="main">
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/05/04/java-Agent/" aria-label="java Agent"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/1.png" data-sizes="auto" alt="java Agent" class="lazyload">
+        
+      
     </div>
-</div>
-
-
-    <script>
-        // 每天切换 banner 图.  Switch banner image every day.
-        var bannerUrl = "/medias/banner/" + new Date().getMinutes() + '.jpg';
-        $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-    </script>
-    <script>
-    
-      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * ) + '.jpg';
-    
-            $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
-
-    </script>
-    
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-05-04</span>
+        <span><span class="icon-pencil"></span>3.4k 字</span>
+        <span><span class="icon-clock"></span>14 分钟</span>
+      </div>
+      <h2 class="post-title">java Agent</h2>
+      <article class="post-article">
+        
+          java AgentJDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持对已加载的class(类字节码)进行重新加载(Retransform)。利用Java Agent这一特性衍生出了APM(Application Performance Management，应用性能管理)、RASP(Runtime application self-protection，运行时应用自我保护)、IAST(Interactive Applicat
+        
+      </article>
     </div>
-</div>
+  </div>
+  </div>
 
 
-<main class="content">
-
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-
+    <a class="post-link" href="/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/" aria-label="fastjson高版本补丁绕过"></a>
     
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/4.png" data-sizes="auto" alt="fastjson高版本补丁绕过" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-27</span>
+        <span><span class="icon-pencil"></span>3.1k 字</span>
+        <span><span class="icon-clock"></span>12 分钟</span>
+      </div>
+      <h2 class="post-title">fastjson高版本补丁绕过</h2>
+      <article class="post-article">
+        
+          fastjson高版本补丁绕过补丁分析1.2.25在 Fastjson1.2.25 中使用了 checkAutoType 来修复1.2.22-1.2.24中的漏洞，其中有个 autoTypeSupport 默认为 False。当 autoTypeSupport 为 False 时，先黑名单过滤，再白名单过滤，若白名单匹配上则直接加载该类，否则报错。当 autoTypeSupport 为 True 时，先白名单过滤，匹配成功即可加载该类，否则再黑名单过滤。对于开启或者不开启，都有相应的绕过方法。
+在获取@type的值后，1.2.24以后的版本新增函数checkAutoType,在类加载之前检查是
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-    <!-- 所有文章卡片 -->
-    <article id="articles" class="container articles">
-        <div class="row article-row">
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="fastjson高版本补丁绕过">
-                            
-                            <span class="card-title">fastjson高版本补丁绕过</span>
-                        </div>
-                    </a>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                fastjson高版本补丁绕过补丁分析1.2.25在 Fastjson1.2.25 中使用了 checkAutoType 来修复1.2.22-1.2.24中的漏洞，其中有个 autoTypeSupport 默认为 False。当 autoT
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">web安全</span>
-                        </a>
-                        
-                        <a href="/tags/fastjson/">
-                            <span class="chip bg-color">fastjson</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/04/26/fastjson1-2-24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="fastjson1.2.24反序列化漏洞">
-                            
-                            <span class="card-title">fastjson1.2.24反序列化漏洞</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                fastjson1.2.24反序列化漏洞影响版本Fastjson 1.2.x系列的1.2.22-1.2.24版本。
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/04/26/fastjson1-2-24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="fastjson1.2.24反序列化漏洞"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/1.png" data-sizes="auto" alt="fastjson1.2.24反序列化漏洞" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-26</span>
+        <span><span class="icon-pencil"></span>2k 字</span>
+        <span><span class="icon-clock"></span>10 分钟</span>
+      </div>
+      <h2 class="post-title">fastjson1.2.24反序列化漏洞</h2>
+      <article class="post-article">
+        
+          fastjson1.2.24反序列化漏洞影响版本Fastjson 1.2.x系列的1.2.22-1.2.24版本。
 TemplateImpl的利用链条件
-服务端使用parseObject()时，必须使用如下格式才能触发漏洞： JSON.pa
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-26
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+服务端使用parseObject()时，必须使用如下格式才能触发漏洞： JSON.parseObject(input, Object.class, Feature.SupportNonPublicField);
+服务端使用parse()时，需要 JSON.parse(text1,Feature.SupportNonPublicField)
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-                            <span class="chip bg-color">反序列化漏洞</span>
-                        </a>
-                        
-                        <a href="/tags/fastjson/">
-                            <span class="chip bg-color">fastjson</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/04/25/Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Linux应急响应">
-                            
-                            <span class="card-title">Linux应急响应</span>
-                        </div>
-                    </a>
+流程
+pocString evilCode = Base64.encodeBase64String(C
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Linux应急响应概述关键目录思路：账号安全 -&gt; 历史命令 -&gt; 检查异常端口 -&gt; 检查异常进程 -&gt; 检查开机启动项 -&gt; 检查定时任务 -&gt; 检查服务 -&gt; 检查异常文件
-主机排查常见指令端
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-25
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E8%93%9D%E9%98%9F/" class="post-category">
-                                    蓝队
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Liunx/">
-                            <span class="chip bg-color">Liunx</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">
-                            <span class="chip bg-color">应急响应</span>
-                        </a>
-                        
-                        <a href="/tags/%E8%93%9D%E9%98%9F/">
-                            <span class="chip bg-color">蓝队</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="JNDI注入">
-                            
-                            <span class="card-title">JNDI注入</span>
-                        </div>
-                    </a>
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/04/25/Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" aria-label="Linux应急响应"></a>
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Linux应急响应" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-25</span>
+        <span><span class="icon-pencil"></span>2.5k 字</span>
+        <span><span class="icon-clock"></span>9 分钟</span>
+      </div>
+      <h2 class="post-title">Linux应急响应</h2>
+      <article class="post-article">
+        
+          Linux应急响应概述关键目录思路：账号安全 -&amp;gt; 历史命令 -&amp;gt; 检查异常端口 -&amp;gt; 检查异常进程 -&amp;gt; 检查开机启动项 -&amp;gt; 检查定时任务 -&amp;gt; 检查服务 -&amp;gt; 检查异常文件
+主机排查常见指令端口# 查找不常用的监听端口 :netstat -anpiftop# 运行的进程监听了端口 :lsof -ilsof -nPi tcp:443# 使用ss命令查看TCP协议：ss -anpt# 使用ss命令查看UDP协议：ss -anpu# 使用 tcpdump 分析：tcpdump -i {网卡名} host {本地IP} and udp port {本地端
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                JNDI注入JNDI(Java Naming and Directory Interface)是Java提供的Java命名和目录接口。通过调用JNDI的API可以定位资源和其他程序对象。JNDI是Java EE的重要部分，JNDI可访问的现
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-24
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">web安全</span>
-                        </a>
-                        
-                        <a href="/tags/jndi/">
-                            <span class="chip bg-color">jndi</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/04/12/Javassist/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="javassist">
-                            
-                            <span class="card-title">javassist</span>
-                        </div>
-                    </a>
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5/" aria-label="JNDI注入"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/3.png" data-sizes="auto" alt="JNDI注入" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-24</span>
+        <span><span class="icon-pencil"></span>4.2k 字</span>
+        <span><span class="icon-clock"></span>16 分钟</span>
+      </div>
+      <h2 class="post-title">JNDI注入</h2>
+      <article class="post-article">
+        
+          JNDI注入JNDI(Java Naming and Directory Interface)是Java提供的Java命名和目录接口。通过调用JNDI的API可以定位资源和其他程序对象。JNDI是Java EE的重要部分，JNDI可访问的现有的目录及服务有:JDBC、LDAP、RMI、DNS、NIS、CORBA
+简介JNDI提供统一的客户端API，并由管理者将JNDI API映射为特定的命名服务和目录服务，为开发人员查找和访问各种资源提供了统一的通用接口，可以用来定义用户、网络、机器、对象和服务等各种资源。简单来说，开发人员通过合理的使用JNDI，能够让用户通过统一的方式访问获取网络上的各种资
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Javassist介绍Javassist（Java 编程助手）使 Java 字节码操作变得简单。它是一个用于在 Java 中编辑字节码的类库。它使 Java 程序可以在运行时定义新类，并在 JVM 加载它时修改类文件。与其他类似的字节码编辑
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-12
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java/">
-                            <span class="chip bg-color">java</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/04/11/Rome%E9%93%BE/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Rome链">
-                            
-                            <span class="card-title">Rome链</span>
-                        </div>
-                    </a>
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/04/12/Javassist/" aria-label="javassist"></a>
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/5.png" data-sizes="auto" alt="javassist" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-12</span>
+        <span><span class="icon-pencil"></span>6.7k 字</span>
+        <span><span class="icon-clock"></span>29 分钟</span>
+      </div>
+      <h2 class="post-title">javassist</h2>
+      <article class="post-article">
+        
+          Javassist介绍Javassist（Java 编程助手）使 Java 字节码操作变得简单。它是一个用于在 Java 中编辑字节码的类库。它使 Java 程序可以在运行时定义新类，并在 JVM 加载它时修改类文件。与其他类似的字节码编辑器不同，Javassist 提供了两个级别的 API：源级别和字节代码级别。如果用户使用源代码级 API，则他们可以在不了解 Java 字节码规范的情况下编辑类文件。整个 API 仅使用 Java 语言的词汇表进行设计。甚至可以以源文本的形式指定插入的字节码。Javassist 可以即时对其进行编译。另一方面，字节码级别的 API 允许用户像其他编辑器一样直
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Rome反序列化
-简介ROME 是一个可以兼容多种格式的 feeds 解析器，可以从一种格式转换成另一种格式，也可返回指定格式或 Java 对象。ROME 兼容了 RSS (0.90, 0.91, 0.92, 0.93, 0.94, 1.0
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-11
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
-                            <span class="chip bg-color">反序列化</span>
-                        </a>
-                        
-                        <a href="/tags/rome/">
-                            <span class="chip bg-color">rome</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/03/25/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="反向传播">
-                            
-                            <span class="card-title">反向传播</span>
-                        </div>
-                    </a>
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/04/11/Rome%E9%93%BE/" aria-label="Rome链"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/1.png" data-sizes="auto" alt="Rome链" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-11</span>
+        <span><span class="icon-pencil"></span>1.5k 字</span>
+        <span><span class="icon-clock"></span>6 分钟</span>
+      </div>
+      <h2 class="post-title">Rome链</h2>
+      <article class="post-article">
+        
+          Rome反序列化
+简介ROME 是一个可以兼容多种格式的 feeds 解析器，可以从一种格式转换成另一种格式，也可返回指定格式或 Java 对象。ROME 兼容了 RSS (0.90, 0.91, 0.92, 0.93, 0.94, 1.0, 2.0), Atom 0.3 以及 Atom 1.0 feeds 格式。Rome 提供了 ToStringBean 这个类，提供深入的 toString 方法对JavaBean进行操作。
+漏洞原理漏洞核心应该是ROME框架里的com.sun.syndication.feed.impl.ToStringBean类利用反射执行了invoke方法，并且参数可控
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                反向传播
-简介反向传播（英语：Backpropagation，缩写为BP）是“误差反向传播”的简称，是一种与最优化方法（如梯度下降法）结合使用的，用来训练人工神经网络的常见方法。该方法对网络中所有权重计算损失函数的梯度。这个梯度会反馈给最优
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-25
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
-                            <span class="chip bg-color">机器学习</span>
-                        </a>
-                        
-                        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-                            <span class="chip bg-color">深度学习</span>
-                        </a>
-                        
-                        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
-                            <span class="chip bg-color">神经网络</span>
-                        </a>
-                        
-                        <a href="/tags/%E7%AE%97%E6%B3%95/">
-                            <span class="chip bg-color">算法</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/03/18/RMI%E6%9C%BA%E5%88%B6/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="RMI机制">
-                            
-                            <span class="card-title">RMI机制</span>
-                        </div>
-                    </a>
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/03/25/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" aria-label="反向传播"></a>
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/3.png" data-sizes="auto" alt="反向传播" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-03-25</span>
+        <span><span class="icon-pencil"></span>1.3k 字</span>
+        <span><span class="icon-clock"></span>4 分钟</span>
+      </div>
+      <h2 class="post-title">反向传播</h2>
+      <article class="post-article">
+        
+          反向传播
+简介反向传播（英语：Backpropagation，缩写为BP）是“误差反向传播”的简称，是一种与最优化方法（如梯度下降法）结合使用的，用来训练人工神经网络的常见方法。该方法对网络中所有权重计算损失函数的梯度。这个梯度会反馈给最优化方法，用来更新权值以最小化损失函数。反向传播要求有对每个输入值想得到的已知输出，来计算损失函数梯度。因此，它通常被认为是一种监督式学习方法，虽然它也用在一些无监督网络（如自动编码器）中。它是多层前馈网络的Delta规则的推广，可以用链式法则对每层迭代计算梯度。反向传播要求人工神经元（或“节点”）的激励函数可微。
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                RMI机制
-简介 RMI（Remote Method Invocation）为远程方法调用，是允许运行在一个Java虚拟机的对象调用运行在另一个Java虚拟机上的对象的方法。 这两个虚拟机可以是运行在相同计算机上的不同进程中，也可以是运行在
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+梯度下降与损失函数  损失函数，(Loss
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">web安全</span>
-                        </a>
-                        
-                        <a href="/tags/RMI/">
-                            <span class="chip bg-color">RMI</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/03/16/%E5%86%85%E5%AD%98%E9%A9%ACTomcat%E5%9B%9E%E6%98%BE/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="内存马Tomcat回显">
-                            
-                            <span class="card-title">内存马Tomcat回显</span>
-                        </div>
-                    </a>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                内存马Tomcat回显所谓回显，其实就是获取命令执行的结果，这种技术常用于目标机器不出网，无法反弹shell的情况。其实关键就是获取request和response对象。
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/03/18/RMI%E6%9C%BA%E5%88%B6/" aria-label="RMI机制"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/1.png" data-sizes="auto" alt="RMI机制" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-03-18</span>
+        <span><span class="icon-pencil"></span>3.1k 字</span>
+        <span><span class="icon-clock"></span>11 分钟</span>
+      </div>
+      <h2 class="post-title">RMI机制</h2>
+      <article class="post-article">
+        
+          RMI机制
+简介 RMI（Remote Method Invocation）为远程方法调用，是允许运行在一个Java虚拟机的对象调用运行在另一个Java虚拟机上的对象的方法。 这两个虚拟机可以是运行在相同计算机上的不同进程中，也可以是运行在网络上的不同计算机中,它的底层是由socket和java序列化和反序列化支撑起来的。  它使客户机上运行的程序可以调用远程服务器上的对象。远程方法调用特性使Java编程人员能够在网络环境中分布操作。RMI全部的宗旨就是尽可能简化远程接口对象的使用。
+我们知道远程过程调用（Remote Procedure Call, RPC）可以用于一个进程调用另一个进程（很
+        
+      </article>
+    </div>
+  </div>
+  </div>
+
+
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/03/16/%E5%86%85%E5%AD%98%E9%A9%ACTomcat%E5%9B%9E%E6%98%BE/" aria-label="内存马Tomcat回显"></a>
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/4.png" data-sizes="auto" alt="内存马Tomcat回显" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-03-16</span>
+        <span><span class="icon-pencil"></span>3.3k 字</span>
+        <span><span class="icon-clock"></span>15 分钟</span>
+      </div>
+      <h2 class="post-title">内存马Tomcat回显</h2>
+      <article class="post-article">
+        
+          内存马Tomcat回显所谓回显，其实就是获取命令执行的结果，这种技术常用于目标机器不出网，无法反弹shell的情况。其实关键就是获取request和response对象。
 参考：
 
 Java安全学习——内存马 - 枫のBlog
-https:
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+https://johnfrod.top/%e5%ae%89%e5%85%a8/java-%e5%9b%9e%e6%98%be%e6%8a%80%e6%9c%af/
+https://xz.aliyun.com/t/12494
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%86%85%E5%AD%98%E9%A9%AC/">
-                            <span class="chip bg-color">内存马</span>
-                        </a>
-                        
-                        <a href="/tags/Tomcat/">
-                            <span class="chip bg-color">Tomcat</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/03/12/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="线性回归">
-                            
-                            <span class="card-title">线性回归</span>
-                        </div>
-                    </a>
+示例我们以上文提到的Tomcat Filter内存马为例，获取对应的回显，关键代码如下
+&amp;lt;%! public class Shell_Fi
+        
+      </article>
+    </div>
+  </div>
+  </div>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                线性回归（Linear Regression）机器学习中的两大类问题：回归问题和分类问题
+
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/03/12/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" aria-label="线性回归"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/4.png" data-sizes="auto" alt="线性回归" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-03-12</span>
+        <span><span class="icon-pencil"></span>2k 字</span>
+        <span><span class="icon-clock"></span>7 分钟</span>
+      </div>
+      <h2 class="post-title">线性回归</h2>
+      <article class="post-article">
+        
+          线性回归（Linear Regression）机器学习中的两大类问题：回归问题和分类问题
 
 回归问题就是进行预测，如股票、房价预测分类问题就是将多个事物进行分类
 
-线性回归是一种用于预测连续数值输出的监督学习算法，它通过建立一个线性方程来描
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-12
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                Yyjccc
-                                
-                            </span>
-                        </div>
-                    </div>
+线性回归是一种用于预测连续数值输出的监督学习算法，它通过建立一个线性方程来描述输入变量与输出变量之间的关系。该算法的目标是使预测值与真实值之间的差异最小化。
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
-                            <span class="chip bg-color">机器学习</span>
-                        </a>
-                        
-                        <a href="/tags/%E7%AE%97%E6%B3%95/">
-                            <span class="chip bg-color">算法</span>
-                        </a>
-                        
-                        <a href="/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
-                            <span class="chip bg-color">线性回归</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/03/12/Spring%E5%86%85%E5%AD%98%E9%A9%AC/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Spring内存马">
-                            
-                            <span class="card-title">Spring内存马</span>
-                        </div>
-                    </a>
+概述线性回归是通过一个或多个自变量与因变量之间进行建模的回归分析，其特点为一个或多个称为回归系数的模型参数的线性组合。样本点为历史数据，回归曲线要能最贴切的模拟样本点的趋势，将误差降到最小。
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Spring内存马参考：
+线性回归方程 线形回归方程，就是有 n 个特征，然后每个特征 **Xi **都有相
+        
+      </article>
+    </div>
+  </div>
+  </div>
+
+
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/03/12/Spring%E5%86%85%E5%AD%98%E9%A9%AC/" aria-label="Spring内存马"></a>
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://yyjccc.github.io/images/cover/5.png" data-sizes="auto" alt="Spring内存马" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-03-12</span>
+        <span><span class="icon-pencil"></span>6.1k 字</span>
+        <span><span class="icon-clock"></span>28 分钟</span>
+      </div>
+      <h2 class="post-title">Spring内存马</h2>
+      <article class="post-article">
+        
+          Spring内存马参考：
 
 Java安全学习——内存马 - 枫のBlog
 Spring内存马——Controller/Interceptor构造 - 先知社区
-Java内存马-SpringMVC篇_”expected lookuppath 
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-12
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/web%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">web安全</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%86%85%E5%AD%98%E9%A9%AC/">
-                            <span class="chip bg-color">内存马</span>
-                        </a>
-                        
-                        <a href="/tags/Spring/">
-                            <span class="chip bg-color">Spring</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2024/03/06/Tomcat%E5%86%85%E5%AD%98%E9%A9%AC/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Tomcat内存马">
-                            
-                            <span class="card-title">Tomcat内存马</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Tomcat内存马前置知识：Tomcat架构
-参考：Java安全学习——内存马 - 枫のBlogJava内存马系列-04-Tomcat 之 Listener 型内存马 | Drunkbaby’s Bloghttps://su18.org/p
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-06
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/java%E5%AE%89%E5%85%A8/" class="post-category">
-                                    java安全
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/java%E5%AE%89%E5%85%A8/">
-                            <span class="chip bg-color">java安全</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%86%85%E5%AD%98%E9%A9%AC/">
-                            <span class="chip bg-color">内存马</span>
-                        </a>
-                        
-                        <a href="/tags/Tomcat/">
-                            <span class="chip bg-color">Tomcat</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-        </div>
-    </article>
-
-</main>
+Java内存马-SpringMVC篇_”expected lookuppath in request attribute \“org.sp-CSDN博客
 
 
-<div class="container paging">
-    <div class="row">
-        <div class="col s6 m4 l4">
-            
-            <a href="/"
-               class="left btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-left"></i>
-            </a>
-            
-        </div>
-        <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">2 / 4</div>
-        </div>
-        <div class="col s6 m4 l4">
-            
-            <a href="/page/3/"
-               class="right btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-right"></i>
-            </a>
-            
-        </div>
+在学习spring内存马的时候，最好知道spring、springmvc、springboot的开发知识和基本使用，下面就不多介绍基础的开发知识
+
+基础知识依赖
+&amp;lt;dependency&amp;gt;          &amp;lt;groupId&amp;gt;org.springframewo
+        
+      </article>
     </div>
+  </div>
+  </div>
+
+
+  
+
+
+  <nav id="page-nav" data-aos="fade-up">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
+  </nav>
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper ">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
 </div>
 
-
-
-
-                <footer class="page-footer bg-color">
-    
-        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
-<style>
-    .aplayer .aplayer-lrc p {
-        
-        display: none;
-        
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 16px !important;
-    }
-
-    .aplayer .aplayer-lrc p.aplayer-lrc-current {
-        
-        display: none;
-        
-        font-size: 15px;
-        color: #42b983;
-    }
-
-    
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
-        left: -66px !important;
-    }
-
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
-        left: 0px !important;
-    }
-
-    
-</style>
-<div class="">
-    
-    <div class="row">
-        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
-                   server="netease"
-                   type="playlist"
-                   id="503838841"
-                   fixed='true'
-                   autoplay='false'
-                   theme='#42b983'
-                   loop='all'
-                   order='random'
-                   preload='auto'
-                   volume='0.7'
-                   list-folded='true'
-        >
-        </meting-js>
+      
+      
     </div>
-</div>
+  </div>
 
-<script src="/libs/aplayer/APlayer.min.js"></script>
-<script src="/libs/aplayer/Meting.min.js"></script>
+  
+</aside>
 
-    
-
-    <div class="container row center-align"
-         style="margin-bottom: 0px !important;">
-        <div class="col s12 m8 l8 copy-right">
-            Copyright&nbsp;&copy;
-            
-                <span id="year">2023-2024</span>
-            
-            <a href="/about" target="_blank">Yyjccc</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
-            
-            <br>
-            
-            
-            
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
-            <br>
-
-            <!-- 运行天数提醒. -->
-            
-            <br>
-            
+          
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/yyjccc" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-    <a href="mailto:yanyongjuyyj@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
-        <i class="fas fa-envelope-open"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3393867490" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3393867490" data-position="top" data-delay="50">
-        <i class="fab fa-qq"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
-
-</div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2024
+      <span class="footer-info-sep"></span>
+      Yyjccc
     </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        142.7k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        09:44
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
 </footer>
 
-<div class="progress-bar"></div>
-
-
-                    <!-- 搜索遮罩框 -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
-            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
-                   class="search-input">
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
         </div>
-        <div id="searchResult"></div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">42</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">64</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
     </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
 </div>
 
-<script type="text/javascript">
-$(function () {
-    var searchFunc = function (path, search_id, content_id) {
-        'use strict';
-        $.ajax({
-            url: path,
-            dataType: "xml",
-            success: function (xmlResponse) {
-                // get the contents from search data
-                var datas = $("entry", xmlResponse).map(function () {
-                    return {
-                        title: $("title", this).text(),
-                        content: $("content", this).text(),
-                        url: $("url", this).text()
-                    };
-                }).get();
-                var $input = document.getElementById(search_id);
-                var $resultContent = document.getElementById(content_id);
-                $input.addEventListener('input', function () {
-                    var str = '<ul class=\"search-result-list\">';
-                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                    $resultContent.innerHTML = "";
-                    if (this.value.trim().length <= 0) {
-                        return;
-                    }
-                    // perform local searching
-                    datas.forEach(function (data) {
-                        var isMatch = true;
-                        var data_title = data.title.trim().toLowerCase();
-                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
-                        var data_url = data.url;
-                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
-                        var index_title = -1;
-                        var index_content = -1;
-                        var first_occur = -1;
-                        // only match artiles with not empty titles and contents
-                        if (data_title !== '' && data_content !== '') {
-                            keywords.forEach(function (keyword, i) {
-                                index_title = data_title.indexOf(keyword);
-                                index_content = data_content.indexOf(keyword);
-                                if (index_title < 0 && index_content < 0) {
-                                    isMatch = false;
-                                } else {
-                                    if (index_content < 0) {
-                                        index_content = 0;
-                                    }
-                                    if (i === 0) {
-                                        first_occur = index_content;
-                                    }
-                                }
-                            });
-                        }
-                        // show search results
-                        if (isMatch) {
-                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
-                            var content = data.content.trim().replace(/<[^>]+>/g, "");
-                            if (first_occur >= 0) {
-                                // cut out 100 characters
-                                var start = first_occur - 20;
-                                var end = first_occur + 80;
-                                if (start < 0) {
-                                    start = 0;
-                                }
-                                if (start === 0) {
-                                    end = 100;
-                                }
-                                if (end > content.length) {
-                                    end = content.length;
-                                }
-                                var match_content = content.substr(start, end);
-                                // highlight all keywords
-                                keywords.forEach(function (keyword) {
-                                    var regS = new RegExp(keyword, "gi");
-                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
-                                });
+    
+  </div>
+  
+</nav>
 
-                                str += "<p class=\"search-result\">" + match_content + "...</p>"
-                            }
-                            str += "</li>";
-                        }
-                    });
-                    str += "</ul>";
-                    $resultContent.innerHTML = str;
-                });
-            }
-        });
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
     };
-
-    searchFunc('/search.xml', 'searchInput', 'searchResult');
-});
-</script>
-
-                        <!-- 白天和黑夜主题 -->
-<div class="stars-con">
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>  
-</div>
-
-<script>
-    function switchNightMode() {
-        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
-        setTimeout(function () {
-            $('body').hasClass('DarkMode') 
-            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
-            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
-            
-            setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
-                $(this).remove()
-            })
-            }, 2e3)
-        })
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
     }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
 </script>
 
-                            <!-- 回到顶部按钮 -->
-<div id="backTop" class="top-scroll">
-    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
 </div>
 
 
-                                <script
-                                    src="/libs/materialize/materialize.min.js"></script>
-                                <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-                                <script src="/libs/aos/aos.js"></script>
-                                <script
-                                    src="/libs/scrollprogress/scrollProgress.min.js"></script>
-                                <script
-                                    src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-                                <script src="/js/matery.js"></script>
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
 
-                                
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
 
-                                        
-
-                                                
-
-                                                    <script type="text/javascript">
-                                                        // 只在桌面版网页启用特效
-                                                        var windowWidth = $(window).width();
-                                                        if (windowWidth > 768) {
-                                                            document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
-                                                        }
-                                                    </script>
-                                                    
-
-                                                        <!-- 雪花特效 -->
-                                                        
-                                                            <script type="text/javascript">
-                                                                // 只在桌面版网页启用特效
-                                                                var windowWidth = $(window).width();
-                                                                if (windowWidth > 768) {
-                                                                    document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
-                                                                }
-                                                            </script>
-                                                            
-
-                                                                <!-- 鼠标星星特效 -->
-                                                                
-                                                                    <script type="text/javascript">
-                                                                        // 只在桌面版网页启用特效
-                                                                        var windowWidth = $(window).width();
-                                                                        if (windowWidth > 768) {
-                                                                            document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
-                                                                        }
-                                                                    </script>
-                                                                    
-
-                                                                        
-                                                                            <script
-                                                                                src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
-                                                                            <script
-                                                                                src="/libs/others/TencentCaptcha.js"></script>
-                                                                            <button id="TencentCaptcha"
-                                                                                data-appid="xxxxxxxxxx"
-                                                                                data-cbfn="callback" type="button"
-                                                                                hidden></button>
-                                                                            
-
-                                                                                <!-- Baidu Analytics -->
-
-                                                                                    <!-- Baidu Push -->
-
-<script>
-    (function () {
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        } else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
 </script>
 
-                                                                                        
-                                                                                            <script
-                                                                                                src="/libs/others/clicklove.js"
-                                                                                                async="async"></script>
-                                                                                            
-                                                                                                
-                                                                                                    <script async
-                                                                                                        src="/libs/others/busuanzi.pure.mini.js"></script>
-                                                                                                    
 
-                                                                                                        
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
 
-                                                                                                                
 
-                                                                                                                        <!--腾讯兔小巢-->
-                                                                                                                        
-                                                                                                                                
-                                                                                                                                    <script
-                                                                                                                                        type="text/javascript"
-                                                                                                                                        color="0,0,255"
-                                                                                                                                        pointColor="0,0,255"
-                                                                                                                                        opacity='0.7'
-                                                                                                                                        zIndex="-1"
-                                                                                                                                        count="99"
-                                                                                                                                        src="/libs/background/canvas-nest.js"></script>
-                                                                                                                                    
 
-                                                                                                                                        
 
-                                                                                                                                                    
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
 
-                                                                                                                                                            
-                                                                                                                                                                <script
-                                                                                                                                                                    src="/libs/instantpage/instantpage.js"
-                                                                                                                                                                    type="module"></script>
-                                                                                                                                                                
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
 
-    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
-
-</html>

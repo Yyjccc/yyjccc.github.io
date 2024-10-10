@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2024-09-19T09:26:11.726Z</updated>
+  <updated>2024-10-10T15:09:36.161Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LLMNR&#92;NBT-NS&#92;MDNS欺骗</title>
+    <link href="https://yyjccc.github.io/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/"/>
+    <id>https://yyjccc.github.io/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/</id>
+    <published>2024-10-10T10:58:28.596Z</published>
+    <updated>2024-10-10T15:09:36.161Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;LLMNR、NetBIOS、MDNS 本质是对DNS的扩充，应用在内网中的DNS解析(局域网内未得到DNS响应等场景)&lt;/p&gt;
+&lt;p&gt;LLMNR&#92;NetBIOS&#92;MDNS欺骗是中间人攻击，适合来获取凭证，如Net-NTLM Hash的获取 ,所以单独&lt;/p&gt;
+&lt;p&gt;开了一篇来学习，不过Responder 已经集成了各种服务场景下的LLMNR&#92;NetBIOS&#92;MDNS 欺骗&lt;/p&gt;
+&lt;h2 id=&quot;LLMNR&quot;&gt;&lt;a href=&quot;#LLMNR&quot; class=&quot;headerlink&quot; title=&quot;LLMNR&quot;&gt;&lt;/a&gt;LLMNR&lt;/h2&gt;&lt;p&gt;​	LLMNR(Link-Local Multicast Name Resolution) 是用于同一本地链路上的，基于DNS协议的一个协议，同一局域网中的主机可通过该协议去解析其他主机名&lt;/p&gt;
+&lt;p&gt;是一种用于在局域网中解析主机名到IP地址的协议。它通常用于替代基于DNS的主机名解析，特别是在没有DNS服务器或者DNS服务器不可用的情况下。（如小型局域网没有搭建专门的DNS服务器）&lt;/p&gt;
+&lt;p&gt;​	从 Windows Vista 开始支持 LLMNR ，Linux 系统也通过 systemd 实现了此协议，同时 LLMNR 也支持 IPv6。&lt;/p&gt;
+&lt;p&gt;现在机器解析域名，查询顺序如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;本地hosts 文件解析&lt;/li&gt;
+&lt;li&gt;使用DNS解析&lt;/li&gt;
+&lt;li&gt;使用LLMNR解析&lt;/li&gt;
+&lt;li&gt;NetBIOS名称服务（NBT-NS）&lt;/li&gt;
+&lt;li&gt;mDNS解析&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;LLMNR解析过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先检查本地NetBios缓存&lt;/li&gt;
+&lt;li&gt;没有则向IPv4的组播地址224.0.0.252(IPv6的组播地址ff02::fb)组播LLMNR协议数据包&lt;/li&gt;
+&lt;li&gt;收到该广播的数据包，若是要找的主机，则向广播主机单播一个返回数据包&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;组播：224.0.0.0/4 是保留给多播通信的地址范围，其中 224.0.0.0 到 224.0.0.255 是局部网络控制多播地址，它们用于在本地网络中传输控制消息，不能被路由器转发到其他网络&lt;/p&gt;
+&lt;p&gt;LLMNR协议工作在UDP 5355端口&lt;/p&gt;
+&lt;p&gt;LLMNR</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/categories/Windows/"/>
+    
+    
+    <category term="域渗透" scheme="https://yyjccc.github.io/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/"/>
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/tags/Windows/"/>
+    
+    <category term="协议" scheme="https://yyjccc.github.io/tags/%E5%8D%8F%E8%AE%AE/"/>
+    
+    <category term="网络安全" scheme="https://yyjccc.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>Windows认证机制</title>
@@ -39,7 +89,7 @@
 
 
 
-&lt;pre class=&quot;language-python&quot; data-language=&quot;python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token </summary>
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; passlib.&lt;span class=&quot;built_in&quot;&gt;hash&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; nthash&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;h=nthash.&lt;span class=&quot;built_in&quot;&gt;hash&lt;/span&gt;(&lt;span class=&quot;str</summary>
       
     
     
@@ -67,7 +117,11 @@
       
     <summary type="html">&lt;h1 id=&quot;Apache-OFBiz目录遍历导致RCE-CVE-2024-38856&quot;&gt;&lt;a href=&quot;#Apache-OFBiz目录遍历导致RCE-CVE-2024-38856&quot; class=&quot;headerlink&quot; title=&quot;Apache OFBiz目录遍历导致RCE(CVE-2024-38856)&quot;&gt;&lt;/a&gt;Apache OFBiz目录遍历导致RCE(CVE-2024-38856)&lt;/h1&gt;&lt;h3 id=&quot;环境搭建&quot;&gt;&lt;a href=&quot;#环境搭建&quot; class=&quot;headerlink&quot; title=&quot;环境搭建&quot;&gt;&lt;/a&gt;环境搭建&lt;/h3&gt;&lt;p&gt;下载地址： &lt;a href=&quot;https://ofbiz.apache.org/download.html&quot;&gt;https://ofbiz.apache.org/download.html&lt;/a&gt;&lt;br&gt;下载的是17.02版本（下载的是17.02版本（代码有点区别但是能复现漏洞，建议还是18版本） &lt;/p&gt;
 &lt;p&gt;然后在build.gradle 中设置jvm 调式参数&lt;/p&gt;
-&lt;pre class=&quot;language-java&quot; data-language=&quot;java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token class-name&quot;&gt;List&lt;/span&gt; jvmArguments &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&#39;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Xms128M&lt;/span&gt;&lt;span class=&quot;token char&quot;&gt;&#39;, &#39;&lt;/span</summary>
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;type&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;jvmArguments&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; [&lt;span class=&quot;string&quot;&gt;&#39;-Xms128M&#39;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&#39;-Xmx1024M&#39;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&#39;-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005&#39;&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;img src=&quot;/img/24-8-9/1.png&quot;&gt;
+
+&lt;p&gt; 构建项目：&lt;/p&gt;
+&lt;figure class=&quot;highlight powershell&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;</summary>
       
     
     
@@ -75,11 +129,11 @@
     <category term="cve复现" scheme="https://yyjccc.github.io/categories/cve%E5%A4%8D%E7%8E%B0/"/>
     
     
+    <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
     <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
     
     <category term="Apache" scheme="https://yyjccc.github.io/tags/Apache/"/>
-    
-    <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
     
     <category term="cve" scheme="https://yyjccc.github.io/tags/cve/"/>
     
@@ -99,7 +153,8 @@
     
       
       
-    <summary type="html">&lt;h1 id=&quot;springcloud-dataflow任意文件写入（CVE-2024-22263）&quot;&gt;&lt;a href=&quot;#springcloud-dataflow任意文件写入（CVE-2024-22263）&quot; class=&quot;headerlink&quot; title=&quot;springcloud dataflow任意文件写入（CVE-2024-22263）&quot;&gt;&lt;/a&gt;springcloud dataflow任意文件写入（CVE-2024-22263）&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;信息参考&lt;/strong&gt;：&lt;a href=&quot;https://spring.io/security/cve-2024-22263&quot;&gt;https://spring.io/security/cve-2024-22263&lt;/a&gt;&lt;br&gt;&lt;strong&gt;披露时间&lt;/strong&gt;： 2024.5.23&lt;br&gt;&lt;strong&gt;分析时间&lt;/strong&gt;：2024.6.18&lt;br&gt;&lt;strong&gt;github源码&lt;/strong&gt;：&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-dataflow&quot;&gt;https://github.com/spring-cloud/spring-cloud-dataflow&lt;/a&gt;&lt;br&gt;&lt;strong&gt;github 修复 commit&lt;/strong&gt; ：&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-dataflow/commit/2ac9bfa5c2f7cdcc86938ce036283a37008add31&quot;&gt;Improved va</summary>
+    <summary type="html">&lt;h1 id=&quot;springcloud-dataflow任意文件写入（CVE-2024-22263）&quot;&gt;&lt;a href=&quot;#springcloud-dataflow任意文件写入（CVE-2024-22263）&quot; class=&quot;headerlink&quot; title=&quot;springcloud dataflow任意文件写入（CVE-2024-22263）&quot;&gt;&lt;/a&gt;springcloud dataflow任意文件写入（CVE-2024-22263）&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;信息参考&lt;/strong&gt;：&lt;a href=&quot;https://spring.io/security/cve-2024-22263&quot;&gt;https://spring.io/security/cve-2024-22263&lt;/a&gt;&lt;br&gt;&lt;strong&gt;披露时间&lt;/strong&gt;： 2024.5.23&lt;br&gt;&lt;strong&gt;分析时间&lt;/strong&gt;：2024.6.18&lt;br&gt;&lt;strong&gt;github源码&lt;/strong&gt;：&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-dataflow&quot;&gt;https://github.com/spring-cloud/spring-cloud-dataflow&lt;/a&gt;&lt;br&gt;&lt;strong&gt;github 修复 commit&lt;/strong&gt; ：&lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-dataflow/commit/2ac9bfa5c2f7cdcc86938ce036283a37008add31&quot;&gt;Improved validateUploadRequest and applied after tmp directory was cr… · spring-cloud/spring-cloud-dataflow@2ac9bfa&lt;/a&gt;&lt;br&gt;&lt;strong&gt;分析版本&lt;/strong&gt;：2.11.2&lt;br&gt;&lt;strong&gt;其余信息&lt;/strong&gt;：分析时候暂无公开poc&lt;/p&gt;
+&lt;h2 id=&quot;环境搭建&quot;&gt;&lt;a h</summary>
       
     
     
@@ -124,7 +179,7 @@
       
       
     <summary type="html">&lt;h1 id=&quot;GeoServer表达式注入代码执行漏洞&quot;&gt;&lt;a href=&quot;#GeoServer表达式注入代码执行漏洞&quot; class=&quot;headerlink&quot; title=&quot;GeoServer表达式注入代码执行漏洞&quot;&gt;&lt;/a&gt;GeoServer表达式注入代码执行漏洞&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;信息参考&lt;/strong&gt;：&lt;a href=&quot;https://avd.aliyun.com/detail?id=AVD-2024-36401&quot;&gt;https://avd.aliyun.com/detail?id=AVD-2024-36401&lt;/a&gt;&lt;br&gt;&lt;strong&gt;披露时间&lt;/strong&gt;： 2024.7.2&lt;br&gt;&lt;strong&gt;github源码&lt;/strong&gt;：&lt;a href=&quot;https://github.com/geoserver/geoserver&quot;&gt;https://github.com/geoserver/geoserver&lt;/a&gt;&lt;br&gt;&lt;strong&gt;分析版本&lt;/strong&gt;：2.25.0&lt;br&gt;&lt;strong&gt;漏洞版本&lt;/strong&gt;：&lt;br&gt;2.25.0 &amp;lt;= GeoServer &amp;lt; 2.25.2&lt;br&gt;2.24.0 &amp;lt;= GeoServer &amp;lt; 2.24.4&lt;br&gt;GeoServer &amp;lt; 2.23.6&lt;/p&gt;
-&lt;p&gt;阐述：GeoServer由于GeoTool组件使用了含有漏洞的commons-jxpath组件导致表达式注入漏洞&lt;br&gt;相关信息：&lt;br&gt;漏洞通告：&lt;a href=&quot;https://github.com/geoserver/geoserver/security/adviso</summary>
+&lt;p&gt;阐述：GeoServer由于GeoTool组件使用了含有漏洞的commons-jxpath组件导致表达式注入漏洞&lt;br&gt;相关信息：&lt;br&gt;漏洞通告：&lt;a href=&quot;https://github.com/geoserver/geoserver/security/advisories/GHSA-6jj6-gm7p-fcvv&quot;&gt;https://github.com/geoserver/geoserver/security/advisories/GHSA-6jj6-gm7p-fcvv&lt;/a&gt;&lt;br&gt;GeoTool组件通告：&lt;a href=&quot;https://github.com/geotools/geotools/security/advisories/GHSA-w3pj-</summary>
       
     
     
@@ -152,8 +207,7 @@
       
     <summary type="html">&lt;h1 id=&quot;Apache-Commons-JXPath&quot;&gt;&lt;a href=&quot;#Apache-Commons-JXPath&quot; class=&quot;headerlink&quot; title=&quot;Apache Commons JXPath&quot;&gt;&lt;/a&gt;Apache Commons JXPath&lt;/h1&gt;&lt;p&gt;Apache Commons JXPath是美国阿帕奇（Apache）基金会的一种 XPath 1.0 的基于 Java 的实现。JXPath 为使用 XPath 语法遍历 JavaBeans、DOM 和其他类型的对象的图形提供了 API。&lt;/p&gt;
 &lt;p&gt;依赖&lt;/p&gt;
-&lt;pre class=&quot;language-markup&quot; data-language=&quot;markup&quot;&gt;&lt;code class=&quot;language-markup&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;dependency&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;groupId&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;commons-jxpath&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;groupId&lt;/span&gt;&lt;</summary>
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;commons-jxpath&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;commons-jxpath&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;1.3&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;</summary>
       
     
     
@@ -161,9 +215,9 @@
     <category term="Life" scheme="https://yyjccc.github.io/categories/Life/"/>
     
     
-    <category term="apache commons" scheme="https://yyjccc.github.io/tags/apache-commons/"/>
-    
     <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="apache commons" scheme="https://yyjccc.github.io/tags/apache-commons/"/>
     
     <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
     
@@ -187,7 +241,13 @@
 &lt;li&gt;服务端接收到流后，将其转换为二进制格式文件，并按照RPC协议格式获取请求的信息并进行处理&lt;/li&gt;
 &lt;li&gt;处理完毕后将结果按照RPC协议格式写入二进制格式文件中并返回&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;各种反序列化机制&quot;&gt;&lt;a href=&quot;#各种反序列化机制&quot; class=&quot;headerlink&quot; title=&quot;各种反序列化机制&quot;&gt;&lt;/a&gt;各种反序列化机制&lt;/h2&gt;&lt;p&gt;在网络通信过程中，我们想传输的内容肯定不止局限于文本或二进制信息，假如我们想要传递给远端一个特定的对象，那么这时就需要用到序列化和反序列化这种技术了。&lt;br&gt;在Java中，序列化能够将一个Java对象转换为一串&lt;strong&gt;便于传输&lt;/strong&gt;的字节序列。而反序列化与之相反，能够从字节序列中恢复出一个对象。参考&lt;a href=&quot;https://www.github.com/mbechler/marshalsec/blob/master/marshalsec.pdf?raw=true&quot;&gt;marshalsec.pdf&lt;/a&gt;，我们可以将</summary>
+&lt;h2 id=&quot;各种反序列化机制&quot;&gt;&lt;a href=&quot;#各种反序列化机制&quot; class=&quot;headerlink&quot; title=&quot;各种反序列化机制&quot;&gt;&lt;/a&gt;各种反序列化机制&lt;/h2&gt;&lt;p&gt;在网络通信过程中，我们想传输的内容肯定不止局限于文本或二进制信息，假如我们想要传递给远端一个特定的对象，那么这时就需要用到序列化和反序列化这种技术了。&lt;br&gt;在Java中，序列化能够将一个Java对象转换为一串&lt;strong&gt;便于传输&lt;/strong&gt;的字节序列。而反序列化与之相反，能够从字节序列中恢复出一个对象。参考&lt;a href=&quot;https://www.github.com/mbechler/marshalsec/blob/master/marshalsec.pdf?raw=true&quot;&gt;marshalsec.pdf&lt;/a&gt;，我们可以将序列化/反序列化机制分大体分为两类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于Bean属性访问机制&lt;/li&gt;
+&lt;li&gt;基于Field机制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;基于Bean属性访问机制&quot;&gt;&lt;a href=&quot;#基于Bean属性访问机制&quot; class=&quot;headerlink&quot; title=&quot;基于Bean属性访问机制&quot;&gt;&lt;/a&gt;基于Bean属性访问机制&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;SnakeYAML&lt;</summary>
       
     
     
@@ -215,7 +275,7 @@
       
     <summary type="html">&lt;h1 id=&quot;Groovy&quot;&gt;&lt;a href=&quot;#Groovy&quot; class=&quot;headerlink&quot; title=&quot;Groovy&quot;&gt;&lt;/a&gt;Groovy&lt;/h1&gt;&lt;p&gt;Groovy 是一种基于 JVM 的开发语言，具有类似于 Python，Ruby，Perl 和 Smalltalk 的功能。Groovy 既可以用作 Java 平台的编程语言，也可以用作脚本语言。groovy 编译之后生成 .class 文件，与 Java 编译生成的无异，因此可以在 JVM 上运行。&lt;/p&gt;
 &lt;h2 id=&quot;前置知识&quot;&gt;&lt;a href=&quot;#前置知识&quot; class=&quot;headerlink&quot; title=&quot;前置知识&quot;&gt;&lt;/a&gt;前置知识&lt;/h2&gt;&lt;h3 id=&quot;MethodClosure&quot;&gt;&lt;a href=&quot;#MethodClosure&quot; class=&quot;headerlink&quot; title=&quot;MethodClosure&quot;&gt;&lt;/a&gt;MethodClosure&lt;/h3&gt;&lt;p&gt;org.codehaus.groovy.runtime.MethodClosure 是方法闭包，使用闭包代表了一个对象的一个方法，可以很方便的调用。&lt;br&gt;MethodClosure 初始化时接收两个参数，一个是对象，一个是对象的方法名称。&lt;br&gt;&lt;img src=&quot;/img/24-6-6/1.png&quot;&gt;&lt;br&gt;MethodClosure 中有一个 doCall 方法，调用 InvokerHelper.invokeMethod() 方法进行方法调用&lt;br&gt;&lt;img src=&quot;/img/24-6-6/2.png&quot;&gt;&lt;br&gt;这样就可以执行系统命令&lt;/p&gt;
-&lt;pre class=&quot;language-java&quot; data-language=&quot;java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;t</summary>
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;type&quot;&gt;MethodClosure&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;mc&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;MethodClosure&lt;/span&gt;(Runtime.getRun</summary>
       
     
     
@@ -251,7 +311,13 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;物理设计&lt;/strong&gt;：&lt;br&gt;        elasticsearch 在后台把每个索引划分成多个分片，每份分片可以在集群中的不同服务器间迁移&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;逻辑设计&lt;/strong&gt;：&lt;br&gt;        一个索引类型中，包含多个文档，比如说文档1，文档2。 当我们索引一篇文档时，可以通过这样的一个顺序找到 它: 索引 ▷ 类型 ▷ 文档ID ，通过这个组合我们就能索引到某个具体的文档。 注意 : ID不必是整数，实际上它是个字符串。&lt;/p&gt;
-&lt;h3 id=&quot;文档&quot;&gt;&lt;a href=&quot;#文档&quot; class=&quot;headerlink&quot; title=&quot;文档&quot;&gt;&lt;/a&gt;文档&lt;/h3&gt;&lt;p&gt;&lt;em&gt;文档就是一条一条的数据&lt;/em&gt;&lt;br&gt;         elasticsearch 是面向文档的，那么就意味着索引和搜索数据的最小单位是文档，elasticsearch 中，文档有几个 重要属性 :&lt;/</summary>
+&lt;h3 id=&quot;文档&quot;&gt;&lt;a href=&quot;#文档&quot; class=&quot;headerlink&quot; title=&quot;文档&quot;&gt;&lt;/a&gt;文档&lt;/h3&gt;&lt;p&gt;&lt;em&gt;文档就是一条一条的数据&lt;/em&gt;&lt;br&gt;         elasticsearch 是面向文档的，那么就意味着索引和搜索数据的最小单位是文档，elasticsearch 中，文档有几个 重要属性 :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;自我包含&lt;/strong&gt;，一篇文档同时包含字段和对应的值，也就是同时包含 key:value！&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;可以是层次型的&lt;/strong&gt;，一个文档中包含自文档，复杂的逻辑实体就是这么来的！其实就是个JSON对象&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;灵活的结构&lt;/strong&gt;，文档不依赖预先定义</summary>
       
     
     
@@ -281,7 +347,8 @@
 &lt;p&gt;（下面写的过于详细了。。。）&lt;/p&gt;
 &lt;h2 id=&quot;问题发现&quot;&gt;&lt;a href=&quot;#问题发现&quot; class=&quot;headerlink&quot; title=&quot;问题发现&quot;&gt;&lt;/a&gt;问题发现&lt;/h2&gt;&lt;p&gt;（在尝试找出cc6中 为什么LazyMap 最后要使用remove的时候）&lt;br&gt;&lt;img src=&quot;/img/24-5-14/1.png&quot;&gt;&lt;br&gt;就是lazyMap中放的是空的HashMap&lt;br&gt;之前代码并没有向hashMap中写入任何东西，为什么在这里却必须要remove掉’aaa’才能触发链子呢&lt;/p&gt;
 &lt;p&gt;于是调试&lt;br&gt;&lt;img src=&quot;/img/24-5-14/2.png&quot;&gt;&lt;br&gt;在创建TiedMapEntry的地方打上断点，跟进&lt;br&gt;&lt;img src=&quot;/img/24-5-14/3.png&quot;&gt;&lt;br&gt;赋值完map的时候还算是正常&lt;br&gt;可是到下一步&lt;br&gt;&lt;img src=&quot;/img/24-5-14/4.png&quot;&gt;&lt;br&gt;参数map的size大小怎么突然由1变成2了？又没有对map进行任何操作&lt;br&gt;这里LazyMap为什么多了且是什么时候多了一个键值对的？&lt;br&gt;&lt;img src=&quot;/img/24-5-14/5.png&quot;&gt;&lt;br&gt;难道后面remove移除的键值对是这个时候添加上去的吗？&lt;/p&gt;
-&lt;p&gt;上面发现这个问题的时候，我去翻了翻以前的笔记：&lt;br&gt;&lt;img</summary>
+&lt;p&gt;上面发现这个问题的时候，我去翻了翻以前的笔记：&lt;br&gt;&lt;img src=&quot;/img/24-5-14/6.png&quot;&gt;&lt;br&gt;当时其实也是没搞懂，就描述了情况，并没有想明白&lt;br&gt;（好像也是在网上没找到提到过的文章）&lt;/p&gt;
+&lt;h2 id=&quot;问题调试&quot;&gt;&lt;a href=&quot;#问题调试&quot; class=&quot;headerlink&quot; title=&quot;问题调试&quot;&gt;&lt;/a&gt;问题调试&lt;/h2&gt;&lt;p&gt;可能对于刚学java反序列化漏洞不久的来说，可能对这种情况就毫无头绪&lt;br&gt;但凭着我</summary>
       
     
     
@@ -308,7 +375,8 @@
       
       
     <summary type="html">&lt;h1 id=&quot;Tomcat-漏洞复现集合&quot;&gt;&lt;a href=&quot;#Tomcat-漏洞复现集合&quot; class=&quot;headerlink&quot; title=&quot;Tomcat 漏洞复现集合&quot;&gt;&lt;/a&gt;Tomcat 漏洞复现集合&lt;/h1&gt;&lt;p&gt;&lt;em&gt;Tomcat是常见的web中间间，常用于javaweb&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta 项目中的一个核心项目，由Apache、Sun 和其他一些公司及个人共同开发而成。由于有了Sun 的参与和支持，最新的Servlet 和JSP 规范总是能在Tomcat 中得到体现，Tomcat 5支持最新的Servlet 2.4 和JSP 2.0 规范。因为Tomcat 技术先进、性能稳定，而且免费，因而深受Java 爱好者的喜爱并得到了部分软件开发商的认可，成为目前比较流行的Web 应用服务器。&lt;br&gt;Tomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应用服务器，在中小型系统和并发访问用户不是很多的场合下被普遍使用，是开发和调试JSP 程序的首选。对于一个初学者来说，可以这样认为，当在一台机器上配置好Apache 服务器，可利用它响应HTML（标准通用标记语言下的一个应用）页面的访问请求。实际上Tomcat是Apache 服务器的扩展，但运行时它是独立运行的，所以当你运行tomcat 时，它实际上作为一个与Apache 独立的进程单独运行的。&lt;br&gt;诀窍是，当配置正确时，Apache 为HTML页面服务，而Tomcat 实际上运行JSP 页面和Servlet。另外，Tomcat和IIS等Web服务器一样，具有处理HTML页面的功能，另外它还是一个Servlet和JSP容器，独立的Servlet容器是Tomcat的默认模式。不过，</summary>
+&lt;p&gt;Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta 项目中的一个核心项目，由Apache、Sun 和其他一些公司及个人共同开发而成。由于有了Sun 的参与和支持，最新的Servlet 和JSP 规范总是能在Tomcat 中得到体现，Tomcat 5支持最新的Servlet 2.4 和JSP 2.0 规范。因为Tomcat 技术先进、性能稳定，而且免费，因而深受Java 爱好者的喜爱并得到了部分软件开发商的认可，成为目前比较流行的Web 应用服务器。&lt;br&gt;Tomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应用服务器，在中小型系统和并发访问用户不是很多的场合下被普遍使用，是开发和调试JSP 程序的首选。对于一个初学者来说，可以这样认为，当在一台机器上配置好Apache 服务器，可利用它响应HTML（标准通用标记语言下的一个应用）页面的访问请求。实际上Tomcat是Apache 服务器的扩展，但运行时它是独立运行的，所以当你运行tomcat 时，它实际上作为一个与Apache 独立的进程单独运行的。&lt;br&gt;诀窍是，当配置正确时，Apache 为HTML页面服务，而Tomcat 实际上运行JSP 页面和Servlet。另外，Tomcat和IIS等Web服务器一样，具有处理HTML页面的功能，另外它还是一个Servlet和JSP容器，独立的Servlet容器是Tomcat的默认模式。不过，Tomcat处理静态HTML的能力不如Apache服务器。&lt;/p&gt;
+&lt;h2 id=&quot;Tomcat-任意文件写入（CVE-2017-12615&quot;&gt;&lt;a href=&quot;#Tomcat-任意文件写入（CVE-2017-12615&quot; class=&quot;headerlink&quot; title=&quot;Tomcat 任意文件写入（CVE-2017-12615&quot;&gt;&lt;/a&gt;Tomcat 任意文件写入（CVE-2017-12615</summary>
       
     
     
@@ -316,9 +384,9 @@
     <category term="web安全" scheme="https://yyjccc.github.io/categories/web%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="web中间件" scheme="https://yyjccc.github.io/tags/web%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
     <category term="Tomcat" scheme="https://yyjccc.github.io/tags/Tomcat/"/>
+    
+    <category term="web中间件" scheme="https://yyjccc.github.io/tags/web%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
     
     <category term="漏洞复现" scheme="https://yyjccc.github.io/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
     
@@ -341,7 +409,10 @@
 &lt;li&gt;&lt;strong&gt;Session&lt;/strong&gt; &lt;strong&gt;Management&lt;/strong&gt;：会话管理，即用户登录后就是一次会话，在没有退出之前，它的所有信息都在会话中；会话可以是普通 JavaSE 环境的，也可以是如 Web 环境的；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Cryptography&lt;/strong&gt;：加密，保护数据的安全性，如密码加密存储到数据库，而不是明文存储；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Web Support&lt;/strong&gt;：Web 支持，可以非常容易的集成到 Web 环境；&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Caching&lt;/strong&gt;：缓存</summary>
+&lt;li&gt;&lt;strong&gt;Caching&lt;/strong&gt;：缓存，比如用户登录后，其用户信息、拥有的角色 / 权限不必每次去查，这样可以提高效率；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt;：shiro 支持多线程应用的并发验证，即如在一个线程中开启另一个线程，能把权限自动传播过去；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Testing&lt;/strong&gt;：提供测试支持；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Run As&lt;/strong</summary>
       
     
     
@@ -369,7 +440,8 @@
       
     <summary type="html">&lt;h1 id=&quot;java-Agent&quot;&gt;&lt;a href=&quot;#java-Agent&quot; class=&quot;headerlink&quot; title=&quot;java Agent&quot;&gt;&lt;/a&gt;java Agent&lt;/h1&gt;&lt;p&gt;JDK1.5开始，Java新增了Instrumentation(Java Agent API)和JVMTI(JVM Tool Interface)功能，允许JVM在加载某个class文件之前对其字节码进行修改，同时也支持对已加载的class(类字节码)进行重新加载(Retransform)。&lt;br&gt;利用Java Agent这一特性衍生出了APM(Application Performance Management，应用性能管理)、RASP(Runtime application self-protection，运行时应用自我保护)、IAST(Interactive Application Security Testing，交互式应用程序安全测试)等相关产品，它们都无一例外的使用了Instrumentation/JVMTI的API来实现动态修改Java类字节码并插入监控或检测代码。&lt;/p&gt;
 &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Java Agent 本质上可以理解为一个插件，该插件就是一个精心提供的 Jar 包。只是启动方式和普通 Jar 包有所不同，对于普通的 Jar 包，通过指定类的 main 函数进行启动。但是 Java Agent 并不能单独启动，必须依附在一个 Java 应用程序运行，在面向切面编程方面应用比较广泛&lt;/p&gt;
-&lt;p&gt;Java Agent 的 Jar 包通过 JVMTI（JVM Tool Interface）完成加载，最终借助 JPLISAgent（Ja</summary>
+&lt;p&gt;Java Agent 的 Jar 包通过 JVMTI（JVM Tool Interface）完成加载，最终借助 JPLISAgent（Java Programming Language Instrumentation Services Agent）完成对目标代码的修改。主要功能如下：&lt;/p&gt;
+&lt;p&gt;可以在加载 Java 文件之前做拦截把字节码做修改&lt;br&gt;可以在运行期将已经加载的类的字节码做变更&lt;br&gt;在 JDK1.5 版本开始，Java 增加了 Instrumentation（Java Agent API）和 JVMTI（JVM </summary>
       
     
     
@@ -394,7 +466,8 @@
       
       
     <summary type="html">&lt;h1 id=&quot;fastjson高版本补丁绕过&quot;&gt;&lt;a href=&quot;#fastjson高版本补丁绕过&quot; class=&quot;headerlink&quot; title=&quot;fastjson高版本补丁绕过&quot;&gt;&lt;/a&gt;fastjson高版本补丁绕过&lt;/h1&gt;&lt;h2 id=&quot;补丁分析&quot;&gt;&lt;a href=&quot;#补丁分析&quot; class=&quot;headerlink&quot; title=&quot;补丁分析&quot;&gt;&lt;/a&gt;补丁分析&lt;/h2&gt;&lt;h3 id=&quot;1-2-25&quot;&gt;&lt;a href=&quot;#1-2-25&quot; class=&quot;headerlink&quot; title=&quot;1.2.25&quot;&gt;&lt;/a&gt;1.2.25&lt;/h3&gt;&lt;p&gt;在 Fastjson1.2.25 中使用了 checkAutoType 来修复1.2.22-1.2.24中的漏洞，其中有个 autoTypeSupport 默认为 False。当 autoTypeSupport 为 False 时，先黑名单过滤，再白名单过滤，若白名单匹配上则直接加载该类，否则报错。当 autoTypeSupport 为 True 时，先白名单过滤，匹配成功即可加载该类，否则再黑名单过滤。对于开启或者不开启，都有相应的绕过方法。&lt;/p&gt;
-&lt;p&gt;在获取@type的值后，1.2.24以后的版本新增函数checkAutoType,在类加载之前检查是否允许加载&lt;br&gt;&lt;img src=&quot;/img/24-7-18/1.png&quot;&gt;&lt;br&gt;进入ParseConfig#checkAutoType&lt;br&gt;在尝试取缓存无法取到的时候，&lt;br&gt;先进行黑名单过滤，类名不能是以黑名单的开头&lt;br&gt;&lt;img src=&quot;/img/24-7-18/2.png&quot;&gt;&lt;br&gt;黑名单&lt;br&gt;&lt;img src=&quot;/img/24-7-18/3.png&quot;&gt;&lt;br&gt;那基本就是被黑名单限制了，导致异常提前退出异常&lt;br&gt;若是手动开启了AutoType，那么就</summary>
+&lt;p&gt;在获取@type的值后，1.2.24以后的版本新增函数checkAutoType,在类加载之前检查是否允许加载&lt;br&gt;&lt;img src=&quot;/img/24-7-18/1.png&quot;&gt;&lt;br&gt;进入ParseConfig#checkAutoType&lt;br&gt;在尝试取缓存无法取到的时候，&lt;br&gt;先进行黑名单过滤，类名不能是以黑名单的开头&lt;br&gt;&lt;img src=&quot;/img/24-7-18/2.png&quot;&gt;&lt;br&gt;黑名单&lt;br&gt;&lt;img src=&quot;/img/24-7-18/3.png&quot;&gt;&lt;br&gt;那基本就是被黑名单限制了，导致异常提前退出异常&lt;br&gt;若是手动开启了AutoType，那么就是先白名单，再黑名单，再取缓存&lt;br&gt;&lt;img src=&quot;/img/24-7-18/4.png&quot;&gt;&lt;br&gt;流程图&lt;br&gt;&lt;img src=&quot;/img/24-7-18/5.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;1-2-42&quot;&gt;&lt;a href=&quot;#1-2-42&quot; class=&quot;headerlink&quot; title=&quot;1.2.42&quot;&gt;&lt;/a&gt;1.2.42&lt;/h3&gt;&lt;p&gt;1.2.42相较于之前的版本，关键是在</summary>
       
     
     
@@ -424,7 +497,7 @@
 &lt;li&gt;服务端使用parse()时，需要 JSON.parse(text1,Feature.SupportNonPublicField)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;流程&lt;br&gt;&lt;img src=&quot;/img/4-26/1.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;poc&quot;&gt;&lt;a href=&quot;#poc&quot; class=&quot;headerlink&quot; title=&quot;poc&quot;&gt;&lt;/a&gt;poc&lt;/h3&gt;&lt;pre class=&quot;language-java&quot; data-language=&quot;j</summary>
+&lt;h3 id=&quot;poc&quot;&gt;&lt;a href=&quot;#poc&quot; class=&quot;headerlink&quot; title=&quot;poc&quot;&gt;&lt;/a&gt;poc&lt;/h3&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;type&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;evilCode&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; Base64.encodeBase64String(Calc.getCodeByte());&lt;/s</summary>
       
     
     
@@ -451,11 +524,7 @@
       
       
     <summary type="html">&lt;h1 id=&quot;Linux应急响应&quot;&gt;&lt;a href=&quot;#Linux应急响应&quot; class=&quot;headerlink&quot; title=&quot;Linux应急响应&quot;&gt;&lt;/a&gt;Linux应急响应&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;关键目录&lt;br&gt;&lt;img src=&quot;/img/4-25/1.png&quot;&gt;&lt;br&gt;思路：&lt;br&gt;账号安全 -&amp;gt; 历史命令 -&amp;gt; 检查异常端口 -&amp;gt; 检查异常进程 -&amp;gt; 检查开机启动项 -&amp;gt; 检查定时任务 -&amp;gt; 检查服务 -&amp;gt; 检查异常文件&lt;/p&gt;
-&lt;h2 id=&quot;主机排查&quot;&gt;&lt;a href=&quot;#主机排查&quot; class=&quot;headerlink&quot; title=&quot;主机排查&quot;&gt;&lt;/a&gt;主机排查&lt;/h2&gt;&lt;h3 id=&quot;常见指令&quot;&gt;&lt;a href=&quot;#常见指令&quot; class=&quot;headerlink&quot; title=&quot;常见指令&quot;&gt;&lt;/a&gt;常见指令&lt;/h3&gt;&lt;h4 id=&quot;端口&quot;&gt;&lt;a href=&quot;#端口&quot; class=&quot;headerlink&quot; title=&quot;端口&quot;&gt;&lt;/a&gt;端口&lt;/h4&gt;&lt;pre class=&quot;language-bash&quot; data-language=&quot;bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 查找不常用的监听端口 :&lt;/span&gt;
-&lt;span class=&quot;token function&quot;&gt;netstat&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-anp&lt;/span&gt;
-iftop
-
-&lt;span class=&quot;token comment&quot;&gt;# 运行的进程监听了端口 :&lt;/spa</summary>
+&lt;h2 id=&quot;主机排查&quot;&gt;&lt;a href=&quot;#主机排查&quot; class=&quot;headerlink&quot; title=&quot;主机排查&quot;&gt;&lt;/a&gt;主机排查&lt;/h2&gt;&lt;h3 id=&quot;常见指令&quot;&gt;&lt;a href=&quot;#常见指令&quot; class=&quot;headerlink&quot; title=&quot;常见指令&quot;&gt;&lt;/a&gt;常见指令&lt;/h3&gt;&lt;h4 id=&quot;端口&quot;&gt;&lt;a href=&quot;#端口&quot; class=&quot;headerlink&quot; title=&quot;端口&quot;&gt;&lt;/a&gt;端口&lt;/h4&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta prompt_&quot;&gt;# &lt;/span&gt;&lt;span class=&quot;language-bash&quot;&gt;查找不常用的监听端口 :&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;netstat -anp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;iftop&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta prompt_&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta prompt_&quot;&gt;# &lt;/span&gt;&lt;span class=&quot;language-bash&quot;&gt;运行的进程监听了端口 :&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;lsof -i&lt;/span&gt;&lt;br</summary>
       
     
     
@@ -483,7 +552,8 @@ iftop
       
     <summary type="html">&lt;h1 id=&quot;JNDI注入&quot;&gt;&lt;a href=&quot;#JNDI注入&quot; class=&quot;headerlink&quot; title=&quot;JNDI注入&quot;&gt;&lt;/a&gt;JNDI注入&lt;/h1&gt;&lt;p&gt;JNDI(Java Naming and Directory Interface)是Java提供的Java命名和目录接口。通过调用JNDI的API可以定位资源和其他程序对象。&lt;br&gt;JNDI是Java EE的重要部分，JNDI可访问的现有的目录及服务有:JDBC、LDAP、RMI、DNS、NIS、CORBA&lt;/p&gt;
 &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;JNDI提供统一的客户端API，并由管理者将JNDI API映射为特定的&lt;strong&gt;命名服务&lt;/strong&gt;和&lt;strong&gt;目录服务&lt;/strong&gt;，为开发人员查找和访问各种资源提供了统一的通用接口，可以用来定义用户、网络、机器、对象和服务等各种资源。简单来说，开发人员通过合理的使用JNDI，能够让用户通过统一的方式访问获取网络上的各种资源和服务。如下图所示&lt;br&gt;&lt;img src=&quot;/img/4-24/1.png&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;命名服务&quot;&gt;&lt;a href=&quot;#命名服务&quot; class=&quot;headerlink&quot; title=&quot;命名服务&quot;&gt;&lt;/a&gt;命名服务&lt;/h3&gt;&lt;p&gt;(Naming server)&lt;br&gt;命名服务将名称和对象进行关联，提供通过名称找到对象的操作，例如：DNS系统将计算机名和IP地址进行关联、文件系统将文件名和文件句柄进行关联等等。&lt;br&gt;在一些命名服务系统中，系统并不是直接将对象存储在系统中，而是保持对象的引用。引用包含了如何访问实际对象的信息。&lt;br&gt;    其中另一个值得一提的名称服务为 LDAP，全称为 Lig</summary>
+&lt;h3 id=&quot;命名服务&quot;&gt;&lt;a href=&quot;#命名服务&quot; class=&quot;headerlink&quot; title=&quot;命名服务&quot;&gt;&lt;/a&gt;命名服务&lt;/h3&gt;&lt;p&gt;(Naming server)&lt;br&gt;命名服务将名称和对象进行关联，提供通过名称找到对象的操作，例如：DNS系统将计算机名和IP地址进行关联、文件系统将文件名和文件句柄进行关联等等。&lt;br&gt;在一些命名服务系统中，系统并不是直接将对象存储在系统中，而是保持对象的引用。引用包含了如何访问实际对象的信息。&lt;br&gt;    其中另一个值得一提的名称服务为 LDAP，全称为 Lightweight Directory Access Protocol，即轻量级目录访问协议，其名称也是从右到左进行逐级定义，各级以逗号分隔，每级为一个 name/value 对，以等号分隔。比如一个 LDAP 名称如下:&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span cla</summary>
       
     
     
@@ -491,9 +561,9 @@ iftop
     <category term="java安全" scheme="https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="jndi" scheme="https://yyjccc.github.io/tags/jndi/"/>
     
@@ -512,7 +582,7 @@ iftop
     <summary type="html">&lt;h1 id=&quot;Javassist&quot;&gt;&lt;a href=&quot;#Javassist&quot; class=&quot;headerlink&quot; title=&quot;Javassist&quot;&gt;&lt;/a&gt;Javassist&lt;/h1&gt;&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;Javassist（Java 编程助手）使 Java 字节码操作变得简单。它是一个用于在 Java 中编辑字节码的类库。它使 Java 程序可以在运行时定义新类，并在 JVM 加载它时修改类文件。与其他类似的字节码编辑器不同，Javassist 提供了两个级别的 API：源级别和字节代码级别。如果用户使用源代码级 API，则他们可以在不了解 Java 字节码规范的情况下编辑类文件。整个 API 仅使用 Java 语言的词汇表进行设计。甚至可以以源文本的形式指定插入的字节码。Javassist 可以即时对其进行编译。另一方面，字节码级别的 API 允许用户像其他编辑器一样直接编辑类文件&lt;/p&gt;
 &lt;p&gt;Javassist 是用于编辑（创建，修改）.class字节码文件的 Java 库，一般情况下我们都是在.java文件中写代码，然后编译成.class文件，在加载进 Java 虚拟机中执行代码，如果要修改已编译好的文件，要使用010 Editor去手动的计算一些偏移值进行修改，但是 Javassist 的出现，使得我们操作.class文件变得简单，并且可以在 Java 虚拟机 JVM 运行时动态地改变.class文件&lt;/p&gt;
 &lt;p&gt;依赖&lt;/p&gt;
-&lt;pre class=&quot;language-markup&quot; data-language=&quot;markup&quot;&gt;&lt;code class=&quot;language-markup&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;</summary>
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependencies&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=</summary>
       
     
     
@@ -536,8 +606,7 @@ iftop
 &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;ROME 是一个可以兼容多种格式的 feeds 解析器，可以从一种格式转换成另一种格式，也可返回指定格式或 Java 对象。ROME 兼容了 RSS (0.90, 0.91, 0.92, 0.93, 0.94, 1.0, 2.0), Atom 0.3 以及 Atom 1.0 feeds 格式。&lt;br&gt;Rome 提供了 &lt;strong&gt;ToStringBean&lt;/strong&gt; 这个类，提供深入的 toString 方法对JavaBean进行操作。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;漏洞原理&lt;/strong&gt;&lt;br&gt;漏洞核心应该是ROME框架里的&lt;strong&gt;com.sun.syndication.feed.impl.ToStringBean&lt;/strong&gt;类利用反射执行了invoke方法，并且参数可控&lt;br&gt;&lt;img src=&quot;/img/4-11/1.png&quot;&gt;&lt;/p&gt;
 &lt;p&gt;依赖&lt;/p&gt;
-&lt;pre class=&quot;language-java&quot; data-language=&quot;java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt; &lt;span class=&quot;token generics&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;dependency&lt;span class=&quot;token punctuation&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-</summary>
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &amp;lt;groupId&amp;gt;rome&amp;lt;/groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &amp;lt;artifactId&amp;gt;rome&amp;lt;/artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &amp;lt;version&amp;gt;&lt;span class=&quot;number&quot;&gt;1.0&lt;/span&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;&lt;b</summary>
       
     
     
@@ -566,7 +635,8 @@ iftop
     <summary type="html">&lt;h1 id=&quot;反向传播&quot;&gt;&lt;a href=&quot;#反向传播&quot; class=&quot;headerlink&quot; title=&quot;反向传播&quot;&gt;&lt;/a&gt;反向传播&lt;/h1&gt;&lt;p&gt;&lt;a name=&quot;SMMHj&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95&quot;&gt;反向传播&lt;/a&gt;（英语：Backpropagation，缩写为BP）是“误差反向传播”的简称，是一种与最优化方法（如梯度下降法）结合使用的，用来&lt;strong&gt;训练人工神经网络&lt;/strong&gt;的常见方法。该方法对网络中所有权重&lt;strong&gt;计算损失函数的梯度&lt;/strong&gt;。这个梯度会反馈给最优化方法，用来更新权值以最小化损失函数。&lt;br&gt;反向传播要求有对每个输入值想得到的已知输出，来计算损失函数梯度。因此，它通常被认为是一种监督式学习方法，虽然它也用在一些无监督网络（如自动编码器）中。它是多层前馈网络的Delta规则的推广，可以用&lt;strong&gt;链式法则&lt;/strong&gt;对每层迭代计算梯度。反向传播要求人工神经元（或“节点”）的&lt;strong&gt;激励函数&lt;/strong&gt;可微。&lt;/p&gt;
 &lt;p&gt;&lt;a name=&quot;RbIqB&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;梯度下降与损失函数&quot;&gt;&lt;a href=&quot;#梯度下降与损失函数&quot; class=&quot;headerlink&quot; title=&quot;梯度下降与损失函数&quot;&gt;&lt;/a&gt;梯度下降与损失函数&lt;/h2&gt;&lt;p&gt;  损失函数，(Loss Function）在机器学习中的每一种算法中都很重要，因为训练模型的过程就是优化损失</summary>
+&lt;h2 id=&quot;梯度下降与损失函数&quot;&gt;&lt;a href=&quot;#梯度下降与损失函数&quot; class=&quot;headerlink&quot; title=&quot;梯度下降与损失函数&quot;&gt;&lt;/a&gt;梯度下降与损失函数&lt;/h2&gt;&lt;p&gt;  损失函数，(Loss Function）在机器学习中的每一种算法中都很重要，因为训练模型的过程就是优化损失函数的过程，损失函数对每个参数的偏导数就是梯度下降中提到的梯度，防止过拟合时添加的正则化项也是加在损失函数后面的。&lt;br&gt;损失函数非常好理解，我觉得其实就是，反映神经网络输出的结果与训练样本的y之间的差别的函数（其中输入变量是神经网络的权重参数）。这个函数要具有一些特性，一般情况下，我们要尽可能的最小化损失函数，寻找损失函数的全局最小值，&lt;/p&gt;
+&lt;p&gt;为了完成梯度下降&lt;br&gt;&lt;img src=&quot;</summary>
       
     
     
@@ -597,7 +667,9 @@ iftop
 &lt;p&gt;我们知道远程过程调用（Remote Procedure Call, RPC）可以用于一个进程调用另一个进程（很可能在另一个远程主机上）中的过程，从而提供了过程的分布能力。Java 的 RMI 则在 RPC 的基础上向前又迈进了一步，即提供分布式对象间的通讯。&lt;/p&gt;
 &lt;p&gt;RMI依赖的通信协议为JRMP(Java Remote Message Protocol ，Java 远程消息交换协议)，该协议为Java定制，要求服务端与客户端都为Java编写。这个协议就像HTTP协议一样，规定了客户端和服务端通信要满足的规范。在RMI中对象是通过序列化方式进行编码传输的。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Client-客户端：客户端调用服务端的方法&lt;/li</summary>
+&lt;li&gt;Client-客户端：客户端调用服务端的方法&lt;/li&gt;
+&lt;li&gt;Server-服务端：远程调用方法对象的提供者，也是代码真正执行的地方，执行结束会返回给客户端一个方法执行的结果&lt;/li&gt;
+&lt;li&gt;Registry-注册中心：其实本质就是一个map，相当于是字典一样，用于客户端查询要调用的方法的引用（在低版本的JDK中，Server与Registry是可以不在一台服务器上的，而在高版本的JDK中，Server与Registry只能在一台服务器上，否则</summary>
       
     
     
@@ -605,9 +677,9 @@ iftop
     <category term="java安全" scheme="https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="RMI" scheme="https://yyjccc.github.io/tags/RMI/"/>
     
@@ -631,7 +703,7 @@ iftop
 &lt;li&gt;&lt;a href=&quot;https://xz.aliyun.com/t/12494&quot;&gt;https://xz.aliyun.com/t/12494&lt;/a&gt;&lt;br&gt;&lt;a name=&quot;MpGXn&quot;&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;示例&quot;&gt;&lt;a href=&quot;#示例&quot; class=&quot;headerlink&quot; title=&quot;示例&quot;&gt;&lt;/a&gt;示例&lt;/h2&gt;&lt;p&gt;我们以上文提到的Tomcat Filter内存马为例，获取对应的回显，关键代码如下&lt;/p&gt;
-&lt;pre class=&quot;language-java&quot; data-language=&quot;java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span </summary>
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;%! &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;Shell_Filter&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;</summary>
       
     
     
@@ -665,7 +737,11 @@ iftop
 &lt;p&gt;&lt;a name=&quot;u4Zwx&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;线性回归是通过&lt;strong&gt;一个或多个自变量与因变量&lt;/strong&gt;之间进行建模的回归分析，其特点为一个或多个称为回归系数的模型参数的线性组合。样本点为历史数据，&lt;strong&gt;回归曲线要能最贴切的模拟样本点的趋势，将误差降到最小&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;a name=&quot;Inoua&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;线性回归方程&quot;&gt;&lt;a href=&quot;#线性回归方程&quot; class=&quot;headerlink&quot; title=&quot;线性回归方程&quot;&gt;&lt;/a&gt;线性回归方程&lt;/h3&gt;&lt;p&gt; 线形回归方程，就是有 &lt;strong&gt;n&lt;/strong&gt; 个特征，然后每个特征 **Xi **都有相应的系数 **Wi **，并且在所有特征值为0的情况下，目标值有一个默认值 **W0 **，因此：&lt;br&gt;&lt;img src=&quot;/i</summary>
+&lt;h3 id=&quot;线性回归方程&quot;&gt;&lt;a href=&quot;#线性回归方程&quot; class=&quot;headerlink&quot; title=&quot;线性回归方程&quot;&gt;&lt;/a&gt;线性回归方程&lt;/h3&gt;&lt;p&gt; 线形回归方程，就是有 &lt;strong&gt;n&lt;/strong&gt; 个特征，然后每个特征 **Xi **都有相应的系数 **Wi **，并且在所有特征值为0的情况下，目标值有一个默认值 **W0 **，因此：&lt;br&gt;&lt;img src=&quot;/img/3-13/1.svg&quot;&gt;&lt;br&gt;&lt;strong&gt;整合后的公式为&lt;/strong&gt;：&lt;/p&gt;
+&lt;img src=&quot;/img/3-13/2.svg&quot;&gt;
+
+&lt;p&gt;&lt;a name=&quot;ETAVk&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;损失函数&quot;&gt;&lt;a href=&quot;#损失函数&quot; class=&quot;headerlink&quot; title=&quot;损失函数&quot;&gt;&lt;/a&gt;损失函数&lt;/h2&gt;&lt;p&gt;&lt;a name=&quot;NmYVp&quot;&gt;</summary>
       
     
     
@@ -699,7 +775,7 @@ iftop
 &lt;p&gt;在学习spring内存马的时候，最好知道spring、springmvc、springboot的开发知识和基本使用，下面就不多介绍基础的开发知识&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;p&gt;依赖&lt;/p&gt;
-&lt;pre class=&quot;language-java&quot; data-language=&quot;java&quot;&gt;&lt;code class=&quot;language-ja</summary>
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &amp;lt;artifactId&amp;gt;spring-context&amp;l</summary>
       
     
     
@@ -707,9 +783,9 @@ iftop
     <category term="java安全" scheme="https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="内存马" scheme="https://yyjccc.github.io/tags/%E5%86%85%E5%AD%98%E9%A9%AC/"/>
     
@@ -729,7 +805,8 @@ iftop
       
     <summary type="html">&lt;h1 id=&quot;Tomcat内存马&quot;&gt;&lt;a href=&quot;#Tomcat内存马&quot; class=&quot;headerlink&quot; title=&quot;Tomcat内存马&quot;&gt;&lt;/a&gt;Tomcat内存马&lt;/h1&gt;&lt;p&gt;前置知识：&lt;a href=&quot;https://www.yuque.com/yyjccc/pk74ko/ksyiwpex52m9tkdi?view=doc_embed&quot;&gt;Tomcat架构&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;参考：&lt;br&gt;&lt;a href=&quot;https://goodapple.top/archives/1355&quot;&gt;Java安全学习——内存马 - 枫のBlog&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://drun1baby.top/2022/08/27/Java%E5%86%85%E5%AD%98%E9%A9%AC%E7%B3%BB%E5%88%97-04-Tomcat-%E4%B9%8B-Listener-%E5%9E%8B%E5%86%85%E5%AD%98%E9%A9%AC/&quot;&gt;Java内存马系列-04-Tomcat 之 Listener 型内存马 | Drunkbaby’s Blog&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://su18.org/post/memory-shell/&quot;&gt;https://su18.org/post/memory-shell/&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;就是根据Tomcat的三大件servlet、linstener、filter注入内存马，Servlet在3.0版本之后能够支持动态注册组件。而Tomcat直到7.x才支持Servlet3.0，因此通过动态添加恶意组件注入内存马的方式适合Tomcat7.x及以上&lt;br&gt;</summary>
+&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;就是根据Tomcat的三大件servlet、linstener、filter注入内存马，Servlet在3.0版本之后能够支持动态注册组件。而Tomcat直到7.x才支持Servlet3.0，因此通过动态添加恶意组件注入内存马的方式适合Tomcat7.x及以上&lt;br&gt;调式时候需要导入对应tomcat版本的jar包&lt;br&gt;&lt;strong&gt;依赖&lt;/strong&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;g</summary>
       
     
     
@@ -765,7 +842,10 @@ iftop
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;主要模块&lt;/strong&gt;：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;skle</summary>
+&lt;li&gt;sklearn.datasets： 包含了一些标准数据集，可以用于练习和测试机器学习算法。&lt;/li&gt;
+&lt;li&gt;sklearn.preprocessing： 提供了数据预处理功能，如标准化、归一化、缺失值处理等。&lt;/li&gt;
+&lt;li&gt;sklearn.feature_extraction： 提供了特征提取功能，如文本特征提取、图像特征提取等。&lt;/li&gt;
+&lt;li&gt;sklearn.model_selection： </summary>
       
     
     
@@ -793,7 +873,7 @@ iftop
       
     <summary type="html">&lt;p&gt;参考：&lt;a href=&quot;https://goodapple.top/archives/1749&quot;&gt;Java安全学习——C3P0链 - 枫のBlog&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a name=&quot;BScjw&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;C3P0介绍&quot;&gt;&lt;a href=&quot;#C3P0介绍&quot; class=&quot;headerlink&quot; title=&quot;C3P0介绍&quot;&gt;&lt;/a&gt;C3P0介绍&lt;/h1&gt;&lt;pre class=&quot;language-text&quot; data-language=&quot;text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑定，支持JDBC3规范和JDBC2的标准扩展。目前使用它的开源项目有Hibernate，Spring等。&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&quot;C3P0介绍&quot;&gt;&lt;a href=&quot;#C3P0介绍&quot; class=&quot;headerlink&quot; title=&quot;C3P0介绍&quot;&gt;&lt;/a&gt;C3P0介绍&lt;/h1&gt;&lt;figure class=&quot;highlight text&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;C3P0是一个开源的JDBC连接池，它实现了数据源和JNDI绑定，支持JDBC3规范和JDBC2的标准扩展。目前使用它的开源项目有Hibernate，Spring等。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
 
 &lt;p&gt;JDBC是Java DataBase Connectivity的缩写，它是Java程序访问数据库的标准接口。&lt;br&gt;使用Java程序访问数据库时，Java代码并不是直接通过TCP连接去访问数据库，而是通过JDBC接口来访问，而JDBC接口则通过JDBC驱动来实现真正对数据库的访问。&lt;br&gt;连接池类似于线程池，在一些情况下我们会频繁地操作数据库，此时Java在连接数据库时会频繁地创建或销毁句柄，增大资源的消耗。为了避免这样一种情况，我们可以提前创建好一些连接句柄，需要使用时直接使用句柄，不需要时可将其放回连接池中，准备下一次的使用。类似这样一种能够复用句柄的技术就是池技术。&lt;/p&gt;
 &lt;br&gt;
@@ -801,7 +881,7 @@ iftop
 # Gadget
 &amp;gt; 导入依赖
 
-&lt;pre class=&quot;language-markup&quot; data-language=&quot;markup&quot;&gt;&lt;code class=&quot;language-markup&quot;&gt;&lt;span</summary>
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;gro</summary>
       
     
     
@@ -809,9 +889,9 @@ iftop
     <category term="java安全" scheme="https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="反序列化" scheme="https://yyjccc.github.io/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
     
@@ -846,7 +926,9 @@ iftop
 &lt;/ul&gt;
 &lt;p&gt;SnakeYaml 解析的时候看到的数据类型名字是mapping（映射）,sequence（序列）,scalars（纯量），而不是对象和数组&lt;/p&gt;
 &lt;p&gt;在数据前添加   !!全类名 。表示强制转化数据类型。类似于fastjson中的 @type&lt;/p&gt;
-&lt;p&gt;&lt;a n</summary>
+&lt;p&gt;&lt;a name=&quot;tgSBe&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;SnakeYaml使用&quot;&gt;&lt;a href=&quot;#SnakeYaml使用&quot; class=&quot;headerlink&quot; title=&quot;SnakeYaml使用&quot;&gt;&lt;/a&gt;SnakeYaml使用&lt;/h2&gt;&lt;p&gt;导入依赖，springboot项目中自带依赖&lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;t</summary>
       
     
     
@@ -877,7 +959,13 @@ iftop
     <summary type="html">&lt;h1 id=&quot;JDBC反序列化攻击&quot;&gt;&lt;a href=&quot;#JDBC反序列化攻击&quot; class=&quot;headerlink&quot; title=&quot;JDBC反序列化攻击&quot;&gt;&lt;/a&gt;JDBC反序列化攻击&lt;/h1&gt;&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;JDBC（Java DataBase Connectivity）是一种用于执行Sql语句的Java Api，即Java数据库连接，是Java语言中用来规范客户端程序如何来访问数据库的应用程序接口，可以为多种关系数据库提供统一访问，提供了诸如查询和更新数据库中数据的方法，是Java访问数据库的标准规范。简单理解为链接数据库、对数据库操作都需要通过jdbc来实现。&lt;/p&gt;
 &lt;p&gt;Mysql JDBC 中包含一个危险的扩展参数： “autoDeserialize”。这个参数配置为 true 时，JDBC 客户端将会自动反序列化服务端返回的数据，造成RCE漏洞。&lt;/p&gt;
 &lt;h2 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;JDBC定义了一个叫&lt;strong&gt;java.sql.Driver&lt;/strong&gt;的接口类负责实现对数据库的连接，所有的数据库驱动包都必须实现这个接口才能够完成数据库的连接操作。&lt;strong&gt;java.sql.DriverManager.getConnection(xxx)&lt;strong&gt;其实就是间接的调用了&lt;/strong&gt;java.sql.Driver&lt;/strong&gt;类的&lt;strong&gt;connect&lt;/strong&gt;方法实现数据库连接的。数据库连接成功后会返回一个叫做&lt;strong&gt;java.sql.Conn</summary>
+&lt;p&gt;JDBC定义了一个叫&lt;strong&gt;java.sql.Driver&lt;/strong&gt;的接口类负责实现对数据库的连接，所有的数据库驱动包都必须实现这个接口才能够完成数据库的连接操作。&lt;strong&gt;java.sql.DriverManager.getConnection(xxx)&lt;strong&gt;其实就是间接的调用了&lt;/strong&gt;java.sql.Driver&lt;/strong&gt;类的&lt;strong&gt;connect&lt;/strong&gt;方法实现数据库连接的。数据库连接成功后会返回一个叫做&lt;strong&gt;java.sql.Connection&lt;/strong&gt;的数据库连接对象，一切对数据库的查询操作都将依赖于这个&lt;strong&gt;Connection&lt;/strong&gt;对象。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;当连接数据库的时候会执行内置的sql语句来确保连接成功&lt;/p&gt;
+&lt;img src=&quot;/img/12-26/5.png&quot;&gt;
+
+&lt;p&gt;当我们伪造返回数据为序列化数据时，使服务器触发反序列化&lt;/p&gt;
+&lt;p&gt;入口点是&lt;c</summary>
       
     
     
@@ -885,9 +973,9 @@ iftop
     <category term="java安全" scheme="https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="反序列化漏洞" scheme="https://yyjccc.github.io/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/"/>
     
@@ -909,15 +997,15 @@ iftop
 &lt;p&gt;我的感受：&lt;/p&gt;
 &lt;p&gt;   开始学java时候学这些东西的时候，我确实搞得一脸懵。当学过一些java反序列化后。学到fastjson反序列化的时候，就是这里没搞好，也搞搞得懵逼了。但又回来学习这个类加载的时候，就感觉刚刚好&lt;/p&gt;
 &lt;p&gt;Java是一个依赖于&lt;code&gt;JVM&lt;/code&gt;（Java虚拟机）实现的跨平台的开发语言。Java程序在运行前需要先编译成&lt;code&gt;class文件&lt;/code&gt;，Java类初始化的时候会调用&lt;code&gt;java.lang.ClassLoader&lt;/code&gt;加载类字节码，&lt;code&gt;ClassLoader&lt;/code&gt;会调用JVM的native方法（&lt;code&gt;defineClass0/1/2&lt;/code&gt;）来定义一个&lt;code&gt;java.lang.Class&lt;/code&gt;实例。&lt;/p&gt;
-&lt;h2 id=&quot;ClassLoader&quot;&gt;&lt;a href=&quot;#ClassLoader&quot; class=&quot;headerlink&quot; title=&quot;ClassLoader&quot;&gt;&lt;/a&gt;&lt;strong&gt;ClassLoader&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;一切的Java类都必须经过JVM加载后才能运</summary>
+&lt;h2 id=&quot;ClassLoader&quot;&gt;&lt;a href=&quot;#ClassLoader&quot; class=&quot;headerlink&quot; title=&quot;ClassLoader&quot;&gt;&lt;/a&gt;&lt;strong&gt;ClassLoader&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;一切的Java类都必须经过JVM加载后才能运行，而&lt;code&gt;ClassLoader&lt;/code&gt;的主要作用就是Java类文件的加载。在JVM类加载器中最顶层的是&lt;code&gt;Bootstrap ClassLoader（引导类加载器）&lt;/code&gt;、&lt;code&gt;Extension ClassLoader（扩展类加载器）&lt;/code&gt;、&lt;code&gt;App ClassLoader（系统类加载器）&lt;/code&gt;，&lt;code&gt;AppClassLoad</summary>
       
     
     
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -942,7 +1030,7 @@ iftop
 &lt;li&gt;fastjson 1.2.24&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;导入（pom.xml）&lt;/p&gt;
-&lt;pre class=&quot;language-markup&quot; data-language=&quot;markup&quot;&gt;&lt;code class=&quot;language-markup&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token p</summary>
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;com.alibaba&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span</summary>
       
     
     
@@ -950,9 +1038,9 @@ iftop
     <category term="java安全" scheme="https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="反序列化" scheme="https://yyjccc.github.io/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
     
@@ -1005,7 +1093,22 @@ iftop
 &lt;/ul&gt;
 &lt;img src=&quot;/img/11-6/8.png&quot;&gt; 
 
-</summary>
+&lt;ul&gt;
+&lt;li&gt;alt+t  搜索指令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;img src=&quot;/img/11-6/9.png&quot;&gt; 
+
+&lt;img src=&quot;/img/11-6/10.png&quot;&gt; 
+
+&lt;ul&gt;
+&lt;li&gt;n键对函数进行重命名&lt;/li&gt;
+&lt;/ul&gt;
+&lt;img src=&quot;/img/11-6/11.png&quot;&gt; 
+
+&lt;ul&gt;
+&lt;li&gt;ctrl+z撤销操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;数据操</summary>
       
     
     
@@ -1045,7 +1148,18 @@ iftop
 &lt;img src=&quot;/img/9-8/4.png&quot;&gt; 
 
 &lt;h5 id=&quot;3-配置web模块&quot;&gt;&lt;a href=&quot;#3-配置web模块&quot; class=&quot;headerlink&quot; title=&quot;3.配置web模块&quot;&gt;&lt;/a&gt;&lt;strong&gt;3.配置web模块&lt;/strong&gt;&lt;/h5&gt;&lt;p&gt;在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件&lt;/p&gt;
-&lt;img src=&quot;/img/9</summary>
+&lt;img src=&quot;/img/9-8/5.png&quot;&gt; 
+
+&lt;p&gt;再次打开模块设置，在模块中选择我们的项目，设置输出路径，将两个路径改为刚创建好的classes目录&lt;/p&gt;
+&lt;img src=&quot;/img/9-8/6.png&quot;&gt; 
+
+&lt;p&gt;点击修正，然后创建一个工件&lt;/p&gt;
+&lt;img src=&quot;/img/9-8/7.png&quot;&gt; 
+
+&lt;p&gt;最后确定&lt;/p&gt;
+&lt;img src=&quot;/img/9-8/8.png&quot;&gt; 
+
+&lt;h5 id=&quot;4-</summary>
       
     
     
@@ -1069,17 +1183,20 @@ iftop
 &lt;h1 id=&quot;2023-SHCTF-web-wp-week-1&quot;&gt;&lt;a href=&quot;#2023-SHCTF-web-wp-week-1&quot; class=&quot;headerlink&quot; title=&quot;2023 SHCTF web wp[week 1]&quot;&gt;&lt;/a&gt;2023 SHCTF web wp[week 1]&lt;/h1&gt;&lt;p&gt;说明：可能稍微啰嗦了亿点,面向新生，放心慢慢食用,&lt;/p&gt;
 &lt;p&gt;下面前言可跳过（纯多bb了一下）&lt;/p&gt;
 &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;首先说web的话是应用层，所以会基本看不到底层的东西(包括c语言/c++)。对于ctf的话，web这块的内容，熟悉HTTP协议（知道计算机质之间是如何传递数据的），html.javaScript（前端语言）是必须要会一点，然后入门级的PHP也要会(比java简单多了)，然后就是Top10漏洞（其中还会涉及数据库mysql），也要知道一些常用的编码和加解密手段(Unicode、md5、base64),会这些后web也算入门了(看到这，要是我，已经当场去世)&lt;/p&gt;
-&lt;p&gt;这里再说说why（hihi,装一下）：为什么要搞web 安全，在这互联网的世界，我们能享受各种各样的服务(qq聊天、刷视频)，都离不开web技术，所以web里面也有很多技术（常听的前端和后端），所以就会有许多的漏洞存在，对于企业、学校等等来说web服务器就是面向大伙大门，想要攻入内部系统，首先要拿下web服务器(bushi) ,所以web这块对于整个渗透攻击或者安全防御都重要，企业看重web这块的安全比内网多多了，这里再插一条：2021爆出的史诗级漏洞–log4j2远程代码执行漏洞(CVE-2</summary>
+&lt;p&gt;这里再说说why（hihi,装一下）：为什么要搞web 安全，在这互联网的世界，我们能享受各种各样的服务(qq聊天、刷视频)，都离不开web技术，所以web里面也有很多技术（常听的前端和后端），所以就会有许多的漏洞存在，对于企业、学校等等来说web服务器就是面向大伙大门，想要攻入内部系统，首先要拿下web服务器(bushi) ,所以web这块对于整个渗透攻击或者安全防御都重要，企业看重web这块的安全比内网多多了，这里再插一条：2021爆出的史诗级漏洞–log4j2远程代码执行漏洞(CVE-2021-44228)&lt;/p&gt;
+&lt;p&gt;从易到难（前三个不好排），题解可能会不唯一，拿到flag就行，下面题目若是看不懂题解，也不要紧，把涉及的知识点记下来，以后慢慢学(hhhh)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;前几题不一定要有编程基础！&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;WEEK1-登录就给flag&quot;&gt;&lt;a href=&quot;#WEEK1-登录就给flag&quot; class=&quot;headerlink&quot; </summary>
       
     
     
     
     
-    <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
-    
     <category term="ctf入门" scheme="https://yyjccc.github.io/tags/ctf%E5%85%A5%E9%97%A8/"/>
     
     <category term="新生赛wp" scheme="https://yyjccc.github.io/tags/%E6%96%B0%E7%94%9F%E8%B5%9Bwp/"/>
+    
+    <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -1108,7 +1225,11 @@ iftop
 
 &lt;h1 id=&quot;Web入门指北&quot;&gt;&lt;a href=&quot;#Web入门指北&quot; class=&quot;headerlink&quot; title=&quot;Web入门指北&quot;&gt;&lt;/a&gt;Web入门指北&lt;/h1&gt;&lt;p&gt;签到题二&lt;/p&gt;
 &lt;p&gt;解密：&lt;/p&gt;
-&lt;pre class=&quot;language-text&quot; data-language=&quot;text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a614</summary>
+&lt;figure class=&quot;highlight text&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;666c61673d6257396c5933526d6533637a62454e7662575666564739666257396c513152475831637959 6c396a61474673624756755a3055684958303 &lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;对密码不是很熟悉，但对这里应该只能是md5、base64、16进制&lt;/p&gt;
+&lt;p&gt;一看只能是16进制&lt;/p&gt;
+&lt;p&gt;进行16进制解码：&lt;code&gt;flag=bW9lY3Rme3czbENvbWVfVG</summary>
       
     
     
@@ -1140,7 +1261,9 @@ iftop
 &lt;p&gt;模板引擎的核心原理就是两个字：&lt;strong&gt;替换&lt;/strong&gt;。将预先定义的标签字符替换为指定的业务数据，或者根据某种定义好的流程进行输出&lt;/p&gt;
 &lt;p&gt;模板：模板是一种文件，它可以包含固定的和动态的内容。动态的内容通常是用一种特定的语法来表示的，&lt;/p&gt;
 &lt;p&gt;**路由(route)**：简单来说，路由就是URL到视图函数的映射。当访问某个URL时，就会执行对应的函数&lt;/p&gt;
-&lt;p</summary>
+&lt;p&gt;如：/usersu        -&amp;gt;  getAllUsers()&lt;/p&gt;
+&lt;p&gt; router 可以理解为一个容器，或者说一种机制，它管理了一组 route。简单来说，route 只是进行了URL和函数的映射，而在当接收到一个URL之后，去路由映射表中查找相应的函数，这个过程是由 router 来处理的。&lt;/p&gt;
+&lt;h2 id=&quot;构成&quot;&gt;&lt;a href=&quot;#构成&quot; class=&quot;hea</summary>
       
     
     
@@ -1172,7 +1295,9 @@ iftop
 &lt;li&gt;commands：(仅限&lt;code&gt;2.x&lt;/code&gt;)&lt;code&gt;getstatusoutput&lt;/code&gt;,&lt;code&gt;getoutput&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;subprocess: &lt;code&gt;getstatusoutput&lt;/code&gt;,&lt;code&gt;getoutput&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;timeit：&lt;code&gt;timeit.sys&lt;/code&gt;、&lt;code&gt;timeit.timeit(&quot;__import__(&#39;os&#39;).system(&#39;whoami&#39;)&quot;, number=1)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;platform：&lt;code&gt;platform</summary>
+&lt;li&gt;platform：&lt;code&gt;platform.os&lt;/code&gt;、&lt;code&gt;platform.sys&lt;/code&gt;、&lt;code&gt;platform.popen(&#39;whoami&#39;, mode=&#39;r&#39;, bufsize=-1).read()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;pty：&lt;code&gt;pty.spawn(&#39;ls&#39;)&lt;/code&gt;、&lt;code&gt;pty.os&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;bdb：&lt;code&gt;bdb.os&lt;/code&gt;、&lt;</summary>
       
     
     
@@ -1214,7 +1339,8 @@ iftop
 &lt;p&gt;concat_ws(separator,str1,str2,…)——含有分隔符地连接字符串&lt;/p&gt;
 &lt;p&gt;group_concat(str1,str2,…)——连接一个组的所有字符串，并以逗号分隔每一条数据。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&quot;</summary>
+&lt;h3 id=&quot;一般用于尝试的语句&quot;&gt;&lt;a href=&quot;#一般用于尝试的语句&quot; class=&quot;headerlink&quot; title=&quot;一般用于尝试的语句&quot;&gt;&lt;/a&gt;一般用于尝试的语句&lt;/h3&gt;&lt;p&gt;–+可以用#替换，url 提交过程中Url 编码后的#为%23&lt;/p&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;spa</summary>
       
     
     
@@ -1253,7 +1379,12 @@ iftop
 &lt;li&gt;assert()a&lt;/li&gt;
 &lt;li&gt;preg_replace ( $pattern ,$replacement ,  $subject [,  $limit = -1 [, &amp;amp;$count ]] )&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;搜索subject中匹配pattern的部分， 以replacement进行替换。当使用被弃用的 e 修饰符时, 这个函数会转义一些字符，在完成替换后，引擎会将结果字符串作为ph</summary>
+&lt;p&gt;搜索subject中匹配pattern的部分， 以replacement进行替换。当使用被弃用的 e 修饰符时, 这个函数会转义一些字符，在完成替换后，引擎会将结果字符串作为php代码使用eval方式进行评估并将返回值作为最终参与替换的字符串&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;eval()&lt;/li&gt;
+&lt;li&gt;call_user_func (  $callback [, $parameter [, $… ]] )&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;第一个参数 callback 是被调用的回调函数，其余参数是回调函数的参数。 传入call_user_func()的参数不能为引用传递。&lt;/p</summary>
       
     
     
@@ -1280,7 +1411,7 @@ iftop
 &lt;p&gt;&lt;strong&gt;特性&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;类定义中的属性，会在创建对象时在对象中创建，类定义的方法而是存在于原型之中。当使用没有定义的属性和方法时，就会顺着原型链一直寻找，直到为undefined,用此来实现继承，子类能用父类的属性和方法&lt;/p&gt;
 &lt;p&gt;示例&lt;/p&gt;
-&lt;pre class=&quot;language-javascript&quot; data-language=&quot;javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;t</summary>
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title function_&quot;&gt;Person&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;name&lt;/span&gt;) {&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;variable language_&quot;&gt;this&lt;/span&gt;.&lt;span class=&quot;property&quot;&gt;name&lt;/span&gt; = name;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   }&lt;/span&gt;&lt;br&gt;&lt;span class=</summary>
       
     
     
@@ -1306,21 +1437,12 @@ iftop
 &lt;/li&gt;
 &lt;li&gt;&lt;h4 id=&quot;TCP-IP协议族&quot;&gt;&lt;a href=&quot;#TCP-IP协议族&quot; class=&quot;headerlink&quot; title=&quot;TCP/IP协议族&quot;&gt;&lt;/a&gt;TCP/IP协议族&lt;/h4&gt;&lt;h5 id=&quot;主要内容：&quot;&gt;&lt;a href=&quot;#主要内容：&quot; class=&quot;headerlink&quot; title=&quot;主要内容：&quot;&gt;&lt;/a&gt;主要内容：&lt;/h5&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;应用层：FTP（文件传输协议）和DNS（域名系统）和http协议
-
-传输层：TCP（传输控制协议）和UDP（用户数据报协议）
-
-网络层：处理在网络上流动的数据包 
-
-链路层：处理连接网络的硬件部分 &lt;/code&gt;&lt;/pre&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;应用层：FTP（文件传输协议）和DNS（域名系统）和http协议&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;传输层：TCP（传输控制协议）和UDP（用户数据报协议）&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;网络层：处理在网络上流动的数据包 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;链路层：处理连接网络的硬件部分 &lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;h4 id=&quot;IP、TCP和DNS：&quot;&gt;&lt;a href=&quot;#IP、TCP和DNS：&quot; class=&quot;headerlink&quot; title=&quot;IP、TCP和DNS：&quot;&gt;&lt;/a&gt;IP、TCP和DNS：&lt;/h4&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;**IP**
-IP地址：指明被分配的地址
-MAC地址：指网卡所属固定的地址
-运作方式：利用IP指明目标，</summary>
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;</summary>
       
     
     
