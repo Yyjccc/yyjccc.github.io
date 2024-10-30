@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2024-10-10T15:09:36.161Z</updated>
+  <updated>2024-10-30T08:51:21.835Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -15,6 +15,55 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PE文件结构</title>
+    <link href="https://yyjccc.github.io/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"/>
+    <id>https://yyjccc.github.io/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/</id>
+    <published>2024-10-30T08:23:18.788Z</published>
+    <updated>2024-10-30T08:51:21.835Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;pe文件结构只能说算一点点基础，顺带学习PE的时候再熟悉熟悉c语言和Windows API&lt;/p&gt;
+&lt;p&gt;PE文件即Portable Execute Windows下可执行文件的总称，常见的有 DLL，EXE，OCX，SYS 等，PE文件可以说是在各个领域都有涉及，特别是病毒领域，内网渗透中的免杀对抗&lt;/p&gt;
+&lt;p&gt;(免杀对抗环境从普通的杀软到edr,xdr等设备)&lt;/p&gt;
+&lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;p&gt;PE文件的结构有两种表现形式：一是存储在在硬盘中的文件，二是加载在内存中&lt;/p&gt;
+&lt;img src=&quot;/img/24-10-30/1.png&quot;&gt;
+
+&lt;p&gt;如上图可见，当PE文件加载到内存中后，DOS头到最后一个节区头的部分是一致的，而之后节区与节区之间的间隔，内存中的间隔会更大&lt;/p&gt;
+&lt;p&gt;产生差异是因为内存对齐，主要是下面两点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;操作系统通常以内存分页为单位（通常是 4 KB 或 2 MB 等）来管理内存。加载 PE 文件时，每个节会被分配到与分页边界对齐的内存地址&lt;/li&gt;
+&lt;li&gt;在 PE 文件的头信息中，SectionAlignment 字段定义了各个节(段)在内存中的对齐方式。这种对齐方式一般也选择 4 KB 或更大，以保证节在内存中符合分页要求&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在开始之前，先来点基础概念。对于学过操作系统的来说，这应该很好理解&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;地址&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一般是指虚拟地址，而非物理地址，我们知道程序运行时候是使用操作系统分配的内存空间，所以用户并不知道具体的物理地址。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;镜像文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;包含以 EXE 文件为代表的 “可执行文件”、以DLL文件为代表的“动态链接库”。因为他们常常被直接“复制”到内存，有“镜像”的某种意思。&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;RAV&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Relatively Virtual Address。偏移(又称“相对虚拟地址”)。相对镜像基址的偏移。&lt;/p&gt;
+&lt;p&gt;一般来说，PE文件在硬盘上和在内存里是不完全一样的。各个节在硬盘上是连续的，而在内存中是</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/categories/Windows/"/>
+    
+    
+    <category term="二进制" scheme="https://yyjccc.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/"/>
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/tags/Windows/"/>
+    
+  </entry>
   
   <entry>
     <title>LLMNR&#92;NBT-NS&#92;MDNS欺骗</title>

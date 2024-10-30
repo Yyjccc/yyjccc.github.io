@@ -203,10 +203,48 @@
   <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/" aria-label="LLMNR\NBT-NS\MDNS欺骗"></a>
+      <a class="post-link" href="/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" aria-label="PE文件结构"></a>
     
     
     <div class="post-cover-left">
+      
+        <img data-src="/images/cover/4.png" data-sizes="auto" alt="PE文件结构" class="lazyload">
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-10-30</span>
+        <span><span class="icon-pencil"></span>4.8k 字</span>
+        <span><span class="icon-clock"></span>19 分钟</span>
+      </div>
+      <h2 class="post-title">PE文件结构</h2>
+      <article class="post-article">
+        
+          pe文件结构只能说算一点点基础，顺带学习PE的时候再熟悉熟悉c语言和Windows API
+PE文件即Portable Execute Windows下可执行文件的总称，常见的有 DLL，EXE，OCX，SYS 等，PE文件可以说是在各个领域都有涉及，特别是病毒领域，内网渗透中的免杀对抗
+(免杀对抗环境从普通的杀软到edr,xdr等设备)
+基础知识PE文件的结构有两种表现形式：一是存储在在硬盘中的文件，二是加载在内存中
+
+
+如上图可见，当PE文件加载到内存中后，DOS头到最后一个节区头的部分是一致的，而之后节区与节区之间的间隔，内存中的间隔会更大
+产生差异是因为内存对齐，主要是下面两点：
+
+操
+        
+      </article>
+    </div>
+  </div>
+  </div>
+
+
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/" aria-label="LLMNR\NBT-NS\MDNS欺骗"></a>
+    
+    <div class="post-cover-right">
       
         <img data-src="/images/banner.png" data-sizes="auto" alt="LLMNR\NBT-NS\MDNS欺骗" class="lazyload">
       
@@ -235,15 +273,16 @@ LLMNR​	LLMNR(Link-Local Multicast Name Resolution) 是用于同一本地链路
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" aria-label="Windows认证机制"></a>
+      <a class="post-link" href="/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" aria-label="Windows认证机制"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/3.jpg" data-sizes="auto" alt="Windows认证机制" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="Windows认证机制" class="lazyload">
         
       
     </div>
@@ -273,16 +312,15 @@ Windows本身不存储用户的明文密码
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/08/09/Apache-OFBiz%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E5%AF%BC%E8%87%B4RCE-CVE-2024-38856/" aria-label="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)"></a>
+    <a class="post-link" href="/2024/08/09/Apache-OFBiz%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E5%AF%BC%E8%87%B4RCE-CVE-2024-38856/" aria-label="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/2.jpg" data-sizes="auto" alt="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)" class="lazyload">
+          <img data-src="http://img.netbian.com/file/2024/0924/small231854HguEV1727191134.jpg" data-sizes="auto" alt="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)" class="lazyload">
         
       
     </div>
@@ -312,15 +350,16 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/" aria-label="springcloud dataflow任意文件写入（CVE-2024-22263）"></a>
+      <a class="post-link" href="/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/" aria-label="springcloud dataflow任意文件写入（CVE-2024-22263）"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/1.jpg" data-sizes="auto" alt="springcloud dataflow任意文件写入（CVE-2024-22263）" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/4.jpg" data-sizes="auto" alt="springcloud dataflow任意文件写入（CVE-2024-22263）" class="lazyload">
         
       
     </div>
@@ -344,16 +383,15 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/07/08/GeoServer%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" aria-label="GeoServer表达式注入代码执行漏洞"></a>
+    <a class="post-link" href="/2024/07/08/GeoServer%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" aria-label="GeoServer表达式注入代码执行漏洞"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/4.jpg" data-sizes="auto" alt="GeoServer表达式注入代码执行漏洞" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploads/20231128/afb73976f07fe2c24c3480fd495895f6.jpg" data-sizes="auto" alt="GeoServer表达式注入代码执行漏洞" class="lazyload">
         
       
     </div>
@@ -378,15 +416,16 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/07/08/Apache-Commons-JXPath/" aria-label="Apache Commons JXPath"></a>
+      <a class="post-link" href="/2024/07/08/Apache-Commons-JXPath/" aria-label="Apache Commons JXPath"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/3.jpg" data-sizes="auto" alt="Apache Commons JXPath" class="lazyload">
+          <img data-src="https://cdn.pixabay.com/photo/2024/01/22/10/49/ai-generated-8524877_1280.jpg" data-sizes="auto" alt="Apache Commons JXPath" class="lazyload">
         
       
     </div>
@@ -412,16 +451,15 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/06/07/Hessian/" aria-label="Hessian"></a>
+    <a class="post-link" href="/2024/06/07/Hessian/" aria-label="Hessian"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/5.jpg" data-sizes="auto" alt="Hessian" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploads/20231128/afb73976f07fe2c24c3480fd495895f6.jpg" data-sizes="auto" alt="Hessian" class="lazyload">
         
       
     </div>
@@ -453,15 +491,16 @@ RPC协议的一次远程通信过程如下
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/06/06/Groovy/" aria-label="Groovy"></a>
+      <a class="post-link" href="/2024/06/06/Groovy/" aria-label="Groovy"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/4.jpg" data-sizes="auto" alt="Groovy" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/5.jpg" data-sizes="auto" alt="Groovy" class="lazyload">
         
       
     </div>
@@ -486,16 +525,15 @@ RPC协议的一次远程通信过程如下
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/06/02/Elasticsearch/" aria-label="Elasticsearch"></a>
+    <a class="post-link" href="/2024/06/02/Elasticsearch/" aria-label="Elasticsearch"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Elasticsearch" class="lazyload">
+          <img data-src="http://img.netbian.com/file/2024/0916/small172138YgcAU1726478498.jpg" data-sizes="auto" alt="Elasticsearch" class="lazyload">
         
       
     </div>
@@ -528,15 +566,16 @@ fields:  对应mysql中的字段
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Commons-Collections6%E8%B0%83%E8%AF%95/" aria-label="幽默的Commons-Collections6调试"></a>
+      <a class="post-link" href="/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Commons-Collections6%E8%B0%83%E8%AF%95/" aria-label="幽默的Commons-Collections6调试"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://yyjccc.github.io/images/cover/4.jpg" data-sizes="auto" alt="幽默的Commons-Collections6调试" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/2.jpg" data-sizes="auto" alt="幽默的Commons-Collections6调试" class="lazyload">
         
       
     </div>
@@ -563,16 +602,15 @@ fields:  对应mysql中的字段
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/05/13/Tomcat-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E9%9B%86%E5%90%88/" aria-label="Tomcat 漏洞复现集合"></a>
+    <a class="post-link" href="/2024/05/13/Tomcat-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E9%9B%86%E5%90%88/" aria-label="Tomcat 漏洞复现集合"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Tomcat 漏洞复现集合" class="lazyload">
+          <img data-src="http://img.netbian.com/file/2024/0924/small231854HguEV1727191134.jpg" data-sizes="auto" alt="Tomcat 漏洞复现集合" class="lazyload">
         
       
     </div>
@@ -587,42 +625,6 @@ fields:  对应mysql中的字段
         
           Tomcat 漏洞复现集合Tomcat是常见的web中间间，常用于javaweb
 Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta 项目中的一个核心项目，由Apache、Sun 和其他一些公司及个人共同开发而成。由于有了Sun 的参与和支持，最新的Servlet 和JSP 规范总是能在Tomcat 中得到体现，Tomcat 5支持最新的Servlet 2.4 和JSP 2.0 规范。因为Tomcat 技术先进、性能稳定，而且免费，因而深受Java 爱好者的喜爱并得到了部分软件开发商的认可，成为目前比较流行的Web 应用服务器。Tom
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
-  
-  <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-    <a class="post-link" href="/2024/05/06/shiro550-md-yyj/" aria-label="shiro550"></a>
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="shiro550" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-05-06</span>
-        <span><span class="icon-pencil"></span>2.7k 字</span>
-        <span><span class="icon-clock"></span>12 分钟</span>
-      </div>
-      <h2 class="post-title">shiro550</h2>
-      <article class="post-article">
-        
-          shiro550简介Apache Shiro是一个强大且易用的Java安全框架，执行身份验证、授权、密码和会话管理。使用Shiro的易于理解的API，您可以快速、轻松地获得任何应用程序，从最小的移动应用程序到最大的网络和企业应用程序。Apache Shiro基本功能点如下图所示：
-
-Authentication：身份认证 / 登录，验证用户是不是拥有相应的身份；
-Authorization：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。或者细粒度的验证某个用户对某个资源是否具有某个权限；
-Session Manageme
         
       </article>
     </div>
@@ -653,7 +655,7 @@ Session Manageme
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">42</div>
+    <div class="sidebar-state-number">43</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -717,7 +719,7 @@ Session Manageme
     
     <div>
       <span class="icon-copyright"></span>
-      2020-2024
+      2023-2024
       <span class="footer-info-sep"></span>
       Yyjccc
     </div>
@@ -730,10 +732,10 @@ Session Manageme
     
       <div>
         <span class="icon-brush"></span>
-        142.7k
+        147.5k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        09:44
+        10:03
       </div>
     
     
@@ -765,7 +767,7 @@ Session Manageme
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">42</div>
+    <div class="sidebar-state-number">43</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
