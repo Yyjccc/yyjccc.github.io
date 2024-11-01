@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2024-10-30T08:57:30.143Z</updated>
+  <updated>2024-11-01T16:58:37.770Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -15,6 +15,47 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NTLM</title>
+    <link href="https://yyjccc.github.io/2024/11/02/NTLM/"/>
+    <id>https://yyjccc.github.io/2024/11/02/NTLM/</id>
+    <published>2024-11-01T16:49:12.583Z</published>
+    <updated>2024-11-01T16:58:37.770Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;NTLM 协议是 Microsoft 环境中使用的身份验证协议。特别是，它允许用户向服务器证明其身份，以便使用该服务器提供的服务。PTH在域渗透中并不陌生，hash 传递攻击 。NTLM Relay ,NTLM认证协议的中间人攻击,这些都设计到NTLM Hash 和Net-NTLM Hash 本文就来具体介绍&lt;/p&gt;
+&lt;p&gt;There are two possible scenarios:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户使用服务器本地帐户的凭据，在这种情况下，服务器在其本地数据库中拥有用户的密码，并且能够对用户进行身份验证；&lt;/li&gt;
+&lt;li&gt;在Active Directory域环境中，用户在身份验证过程中使用域帐户，在这种情况下，服务器将必须要求域控制器验证用户提供的信息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;h3 id=&quot;Local-account&quot;&gt;&lt;a href=&quot;#Local-account&quot; class=&quot;headerlink&quot; title=&quot;Local account&quot;&gt;&lt;/a&gt;Local account&lt;/h3&gt;&lt;p&gt;服务器需要存储本地用户及其密码的哈希值。该数据库的名称是SAM （安全帐户管理器）。 SAM 可以在注册表中找到，特别是使用regedit工具，但仅当以SYSTEM身份访问时。可以使用&lt;a href=&quot;https://docs.microsoft.com/en-us/sysinternals/downloads/psexec&quot;&gt;psexec&lt;/a&gt;作为SYSTEM打开它：&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;psexec.exe -i -s regedit.exe&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;psexec 是啥，先暂时跳过，之后再补&lt;/p&gt;
+&lt;p&gt;在本地磁盘上对应着文件：C:&#92;Windows&#92;System32&#92;SAM&lt;/p&gt;
+&lt;p&gt;因此它包含本地用户列表</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/tags/Windows/"/>
+    
+    <category term="协议" scheme="https://yyjccc.github.io/tags/%E5%8D%8F%E8%AE%AE/"/>
+    
+    <category term="NTLM" scheme="https://yyjccc.github.io/tags/NTLM/"/>
+    
+    <category term="横向移动" scheme="https://yyjccc.github.io/tags/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/"/>
+    
+    <category term="内网渗透" scheme="https://yyjccc.github.io/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>PE文件结构</title>

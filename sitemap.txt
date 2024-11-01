@@ -1,7 +1,8 @@
+https://yyjccc.github.io/2024/11/02/NTLM/
+https://yyjccc.github.io/friend/index.html
 https://yyjccc.github.io/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/
 https://yyjccc.github.io/about/index.html
 https://yyjccc.github.io/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/
-https://yyjccc.github.io/friend/index.html
 https://yyjccc.github.io/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/
 https://yyjccc.github.io/2024/08/09/Apache-OFBiz%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E5%AF%BC%E8%87%B4RCE-CVE-2024-38856/
 https://yyjccc.github.io/2024/01/22/SnakeYaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/
@@ -112,6 +113,9 @@ https://yyjccc.github.io/tags/%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/
 https://yyjccc.github.io/tags/life/
 https://yyjccc.github.io/tags/cc%E9%93%BE/
 https://yyjccc.github.io/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/
+https://yyjccc.github.io/tags/NTLM/
+https://yyjccc.github.io/tags/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/
+https://yyjccc.github.io/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/
 https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/categories/Life/
 https://yyjccc.github.io/categories/cve%E5%A4%8D%E7%8E%B0/
