@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2024-11-01T16:58:37.770Z</updated>
+  <updated>2024-11-09T15:50:39.050Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -17,11 +17,66 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>初始shellcode加载器（持续更新）</title>
+    <link href="https://yyjccc.github.io/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/"/>
+    <id>https://yyjccc.github.io/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/</id>
+    <published>2024-11-09T15:43:03.832Z</published>
+    <updated>2024-11-09T15:50:39.050Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;shellcode 这个概念本应来自pwn,shellcode为16进制的机器码，因为经常让攻击者获得shell而得名&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;Shellcode 是一组通常用汇编语言编写的机器代码指令，旨在由计算机处理器直接执行。因为汇编指令是特定于体系结构的，这限制了 shellcode 在不同处理器之间的可移植性&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;为什么需要shellcode 加载器&lt;/p&gt;
+&lt;p&gt;使用cs或者msf生成的exe远控木马，特征极强，当使用shellcode 加载的方式上线，更容易做免杀操作,接下来的是Windows下的shellcode加载器&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;h2 id=&quot;shellcode-生成&quot;&gt;&lt;a href=&quot;#shellcode-生成&quot; class=&quot;headerlink&quot; title=&quot;shellcode 生成&quot;&gt;&lt;/a&gt;shellcode 生成&lt;/h2&gt;&lt;p&gt;暂且现在水平有限，还不会手搓shellcode，使用工具生成shellcode&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;h4 id=&quot;cs&quot;&gt;&lt;a href=&quot;#cs&quot; class=&quot;headerlink&quot; title=&quot;cs&quot;&gt;&lt;/a&gt;cs&lt;/h4&gt;&lt;img src=&quot;/img/24-11-9/1.png&quot;&gt;
+
+&lt;p&gt;选择监听器&lt;/p&gt;
+&lt;img src=&quot;/img/24-11-9/2.png&quot;&gt;
+
+&lt;p&gt;‍&lt;/p&gt;
+&lt;h2 id=&quot;shellcode加载步骤&quot;&gt;&lt;a href=&quot;#shellcode加载步骤&quot; class=&quot;headerlink&quot; title=&quot;shellcode加载步骤&quot;&gt;&lt;/a&gt;shellcode加载步骤&lt;/h2&gt;&lt;p&gt;基本都是差不多的步骤&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;向操作系统申请一段可写可执行的内存&lt;/li&gt;
+&lt;li&gt;将shellcode 拷贝到申请的内存中&lt;/li&gt;
+&lt;li&gt;将程序的EIP指向shellcode区域，执行shellcode&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;申请虚拟内存&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;windows中最常见的Windows API就是&lt;code&gt;VirtualAlloc&lt;/code&gt;​&lt;/p&gt;
+&lt;</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/tags/Windows/"/>
+    
+    <category term="shellcode" scheme="https://yyjccc.github.io/tags/shellcode/"/>
+    
+    <category term="免杀" scheme="https://yyjccc.github.io/tags/%E5%85%8D%E6%9D%80/"/>
+    
+  </entry>
+  
+  <entry>
     <title>NTLM</title>
     <link href="https://yyjccc.github.io/2024/11/02/NTLM/"/>
     <id>https://yyjccc.github.io/2024/11/02/NTLM/</id>
     <published>2024-11-01T16:49:12.583Z</published>
-    <updated>2024-11-01T16:58:37.770Z</updated>
+    <updated>2024-11-07T17:20:34.063Z</updated>
     
     
       
@@ -161,7 +216,7 @@
     <link href="https://yyjccc.github.io/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/"/>
     <id>https://yyjccc.github.io/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/</id>
     <published>2024-09-19T09:22:47.238Z</published>
-    <updated>2024-09-19T09:26:11.726Z</updated>
+    <updated>2024-11-07T17:17:45.816Z</updated>
     
     
       

@@ -78,7 +78,7 @@
 <meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/20.png">
 <meta property="og:image" content="https://yyjccc.github.io/img/24-11-2/21.png">
 <meta property="article:published_time" content="2024-11-01T16:49:12.583Z">
-<meta property="article:modified_time" content="2024-11-01T16:58:37.770Z">
+<meta property="article:modified_time" content="2024-11-07T17:20:34.063Z">
 <meta property="article:author" content="Yyjccc">
 <meta property="article:tag" content="Windows">
 <meta property="article:tag" content="协议">
@@ -233,7 +233,7 @@
       <div class="article-date">
   <a href="/2024/11/02/NTLM/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2024-11-01T16:49:12.583Z" itemprop="datePublished">2024-11-02</time>
-    <time style="display: none;" id="post-update-time">2024-11-02</time>
+    <time style="display: none;" id="post-update-time">2024-11-08</time>
   </a>
 </div>
 
@@ -293,7 +293,7 @@
 <img src="/img/24-11-2/2.png">
 
 <p>这里面的三个包，对应着NTLM 认证的三步</p>
-<h3 id="1-协商"><a href="#1-协商" class="headerlink" title="1. 协商"></a>1. 协商</h3><p>​	由client端向server端请求</p>
+<h3 id="1-协商"><a href="#1-协商" class="headerlink" title="1. 协商"></a>1. 协商</h3><p>​	由client端向server端请求（注意，这里并没有包含要认证的用户名） </p>
 <p>​	这个过程是客户端向服务器发送type 1(协商)消息,它主要包含客户端支持和服务器请求的功能列表。</p>
 <p>主要包含以下结构：</p>
 <img src="/img/24-11-2/3.png">
@@ -305,7 +305,7 @@
 
 <p>协商的数据包可以看到，有许多的标志位，还有一些版本信息</p>
 <p>字段具体含义，见官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/b34032e5-3aae-4bc6-84c3-c6d80eadf7f2">NEGOTIATE_MESSAGE</a></p>
-<h3 id="2-质询"><a href="#2-质询" class="headerlink" title="2.质询"></a>2.质询</h3><p>​	由server端向client端响应</p>
+<h3 id="2-质询"><a href="#2-质询" class="headerlink" title="2.质询"></a>2.质询</h3><p>​	由server端向client端响应，接着第一步这里只有服务端向客户端响应 </p>
 <p>​	这个过程是服务器用type 2消息(质询)进行响应，这包含服务器支持和同意的功能列表。但是，最重要的是，它包含服务器产生的Challenge。</p>
 <p>主要 包含以下结构：</p>
 <img src="/img/24-11-2/5.png">
@@ -614,6 +614,19 @@
     
   <nav id="article-nav" data-aos="fade-up">
     
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          <img data-src="/images/cover/7.jpg" data-sizes="auto" alt="初始shellcode加载器（持续更新）" class="lazyload">
+        
+        <a href="/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            初始shellcode加载器（持续更新）
+          
+        </h3>
+      </div>
+    
     
     <div class="article-nav-link-wrap article-nav-link-right">
       
@@ -664,7 +677,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -672,7 +685,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -746,10 +759,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        153k
+        154.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        10:24
+        10:30
       </div>
     
     
@@ -790,7 +803,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -798,7 +811,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">

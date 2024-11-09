@@ -203,14 +203,49 @@
   <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/05/13/Tomcat-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E9%9B%86%E5%90%88/" aria-label="Tomcat 漏洞复现集合"></a>
+      <a class="post-link" href="/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Commons-Collections6%E8%B0%83%E8%AF%95/" aria-label="幽默的Commons-Collections6调试"></a>
     
     
     <div class="post-cover-left">
       
         
         
-          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="Tomcat 漏洞复现集合" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploads/20230911/c63af4ab3f51787272e698a737671b51.jpg" data-sizes="auto" alt="幽默的Commons-Collections6调试" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-05-14</span>
+        <span><span class="icon-pencil"></span>980 字</span>
+        <span><span class="icon-clock"></span>3 分钟</span>
+      </div>
+      <h2 class="post-title">幽默的Commons-Collections6调试</h2>
+      <article class="post-article">
+        
+          幽默的Commons-Collections6调试事情是在考完期中之后，同学在调式cc6链的时候发现了奇怪问题。
+（下面写的过于详细了。。。）
+问题发现（在尝试找出cc6中 为什么LazyMap 最后要使用remove的时候）就是lazyMap中放的是空的HashMap之前代码并没有向hashMap中写入任何东西，为什么在这里却必须要remove掉’aaa’才能触发链子呢
+于是调试在创建TiedMapEntry的地方打上断点，跟进赋值完map的时候还算是正常可是到下一步参数map的size大小怎么突然由1变成2了？又没有对map进行任何操作这里LazyMap为什么多了且是什么时候多了一个键值对
+        
+      </article>
+    </div>
+  </div>
+  </div>
+
+
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/05/13/Tomcat-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E9%9B%86%E5%90%88/" aria-label="Tomcat 漏洞复现集合"></a>
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://pic.3gbizhi.com/uploads/20231218/d4ebffa103f75be8c4a6cc87aa26a865.jpg" data-sizes="auto" alt="Tomcat 漏洞复现集合" class="lazyload">
         
       
     </div>
@@ -235,15 +270,16 @@ Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta 项目
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/05/06/shiro550-md-yyj/" aria-label="shiro550"></a>
+      <a class="post-link" href="/2024/05/06/shiro550-md-yyj/" aria-label="shiro550"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://d-sketon.top/img/_backwebp/bg28.webp" data-sizes="auto" alt="shiro550" class="lazyload">
+          <img data-src="https://cdn.pixabay.com/photo/2024/01/22/10/49/ai-generated-8524877_1280.jpg" data-sizes="auto" alt="shiro550" class="lazyload">
         
       
     </div>
@@ -271,16 +307,15 @@ Session Manageme
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/05/04/java-Agent/" aria-label="java Agent"></a>
+    <a class="post-link" href="/2024/05/04/java-Agent/" aria-label="java Agent"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2024/01/22/10/49/ai-generated-8524877_1280.jpg" data-sizes="auto" alt="java Agent" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="java Agent" class="lazyload">
         
       
     </div>
@@ -304,15 +339,16 @@ Session Manageme
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/" aria-label="fastjson高版本补丁绕过"></a>
+      <a class="post-link" href="/2024/04/27/fastjson%E9%AB%98%E7%89%88%E6%9C%AC%E8%A1%A5%E4%B8%81%E7%BB%95%E8%BF%87/" aria-label="fastjson高版本补丁绕过"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20231218/d4ebffa103f75be8c4a6cc87aa26a865.jpg" data-sizes="auto" alt="fastjson高版本补丁绕过" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="fastjson高版本补丁绕过" class="lazyload">
         
       
     </div>
@@ -337,16 +373,15 @@ Session Manageme
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/04/26/fastjson1-2-24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="fastjson1.2.24反序列化漏洞"></a>
+    <a class="post-link" href="/2024/04/26/fastjson1-2-24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="fastjson1.2.24反序列化漏洞"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2023/11/15/13/55/woman-8390124_1280.jpg" data-sizes="auto" alt="fastjson1.2.24反序列化漏洞" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploadmark/20240401/29589fd9ad7c47d7891cef79613f8b94.jpg" data-sizes="auto" alt="fastjson1.2.24反序列化漏洞" class="lazyload">
         
       
     </div>
@@ -376,15 +411,16 @@ pocString evilCode = Base64.encodeBase64String(C
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/04/25/Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" aria-label="Linux应急响应"></a>
+      <a class="post-link" href="/2024/04/25/Linux%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/" aria-label="Linux应急响应"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://blog.yyjccc.xyz/images/cover/4.jpg" data-sizes="auto" alt="Linux应急响应" class="lazyload">
+          <img data-src="https://cdn.pixabay.com/photo/2024/01/22/10/49/ai-generated-8524877_1280.jpg" data-sizes="auto" alt="Linux应急响应" class="lazyload">
         
       
     </div>
@@ -409,16 +445,15 @@ pocString evilCode = Base64.encodeBase64String(C
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5/" aria-label="JNDI注入"></a>
+    <a class="post-link" href="/2024/04/24/JNDI%E6%B3%A8%E5%85%A5/" aria-label="JNDI注入"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://blog.yyjccc.xyz/images/cover/4.jpg" data-sizes="auto" alt="JNDI注入" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/2.jpg" data-sizes="auto" alt="JNDI注入" class="lazyload">
         
       
     </div>
@@ -443,15 +478,16 @@ pocString evilCode = Base64.encodeBase64String(C
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/04/12/Javassist/" aria-label="javassist"></a>
+      <a class="post-link" href="/2024/04/12/Javassist/" aria-label="javassist"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20231218/d4ebffa103f75be8c4a6cc87aa26a865.jpg" data-sizes="auto" alt="javassist" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="javassist" class="lazyload">
         
       
     </div>
@@ -475,16 +511,15 @@ pocString evilCode = Base64.encodeBase64String(C
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/04/11/Rome%E9%93%BE/" aria-label="Rome链"></a>
+    <a class="post-link" href="/2024/04/11/Rome%E9%93%BE/" aria-label="Rome链"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20240409/d5d041d0a34a8970fff3c21578c31a9b.jpg" data-sizes="auto" alt="Rome链" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploadmark/20240401/29589fd9ad7c47d7891cef79613f8b94.jpg" data-sizes="auto" alt="Rome链" class="lazyload">
         
       
     </div>
@@ -510,15 +545,16 @@ pocString evilCode = Base64.encodeBase64String(C
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/03/25/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" aria-label="反向传播"></a>
+      <a class="post-link" href="/2024/03/25/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" aria-label="反向传播"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2023/11/15/13/55/woman-8390124_1280.jpg" data-sizes="auto" alt="反向传播" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/3.jpg" data-sizes="auto" alt="反向传播" class="lazyload">
         
       
     </div>
@@ -545,16 +581,15 @@ pocString evilCode = Base64.encodeBase64String(C
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/03/18/RMI%E6%9C%BA%E5%88%B6/" aria-label="RMI机制"></a>
+    <a class="post-link" href="/2024/03/18/RMI%E6%9C%BA%E5%88%B6/" aria-label="RMI机制"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://blog.yyjccc.xyz/images/cover/2.jpg" data-sizes="auto" alt="RMI机制" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploadmark/20240401/29589fd9ad7c47d7891cef79613f8b94.jpg" data-sizes="auto" alt="RMI机制" class="lazyload">
         
       
     </div>
@@ -570,46 +605,6 @@ pocString evilCode = Base64.encodeBase64String(C
           RMI机制
 简介 RMI（Remote Method Invocation）为远程方法调用，是允许运行在一个Java虚拟机的对象调用运行在另一个Java虚拟机上的对象的方法。 这两个虚拟机可以是运行在相同计算机上的不同进程中，也可以是运行在网络上的不同计算机中,它的底层是由socket和java序列化和反序列化支撑起来的。  它使客户机上运行的程序可以调用远程服务器上的对象。远程方法调用特性使Java编程人员能够在网络环境中分布操作。RMI全部的宗旨就是尽可能简化远程接口对象的使用。
 我们知道远程过程调用（Remote Procedure Call, RPC）可以用于一个进程调用另一个进程（很
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
-  
-  <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-    <a class="post-link" href="/2024/03/16/%E5%86%85%E5%AD%98%E9%A9%ACTomcat%E5%9B%9E%E6%98%BE/" aria-label="内存马Tomcat回显"></a>
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://pic.3gbizhi.com/uploads/20230911/c63af4ab3f51787272e698a737671b51.jpg" data-sizes="auto" alt="内存马Tomcat回显" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-03-16</span>
-        <span><span class="icon-pencil"></span>3.3k 字</span>
-        <span><span class="icon-clock"></span>15 分钟</span>
-      </div>
-      <h2 class="post-title">内存马Tomcat回显</h2>
-      <article class="post-article">
-        
-          内存马Tomcat回显所谓回显，其实就是获取命令执行的结果，这种技术常用于目标机器不出网，无法反弹shell的情况。其实关键就是获取request和response对象。
-参考：
-
-Java安全学习——内存马 - 枫のBlog
-https://johnfrod.top/%e5%ae%89%e5%85%a8/java-%e5%9b%9e%e6%98%be%e6%8a%80%e6%9c%af/
-https://xz.aliyun.com/t/12494
-
-示例我们以上文提到的Tomcat Filter内存马为例，获取对应的回显，关键代码如下
-&amp;lt;%! public class Shell_Fi
         
       </article>
     </div>
@@ -640,7 +635,7 @@ https://xz.aliyun.com/t/12494
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -648,7 +643,7 @@ https://xz.aliyun.com/t/12494
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -717,10 +712,10 @@ https://xz.aliyun.com/t/12494
     
       <div>
         <span class="icon-brush"></span>
-        153k
+        154.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        10:24
+        10:30
       </div>
     
     
@@ -752,7 +747,7 @@ https://xz.aliyun.com/t/12494
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -760,7 +755,7 @@ https://xz.aliyun.com/t/12494
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">

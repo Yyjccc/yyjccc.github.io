@@ -203,10 +203,48 @@
   <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/11/02/NTLM/" aria-label="NTLM"></a>
+      <a class="post-link" href="/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/" aria-label="初始shellcode加载器（持续更新）"></a>
     
     
     <div class="post-cover-left">
+      
+        <img data-src="/images/cover/7.jpg" data-sizes="auto" alt="初始shellcode加载器（持续更新）" class="lazyload">
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-11-09</span>
+        <span><span class="icon-pencil"></span>1.5k 字</span>
+        <span><span class="icon-clock"></span>6 分钟</span>
+      </div>
+      <h2 class="post-title">初始shellcode加载器（持续更新）</h2>
+      <article class="post-article">
+        
+          ‍
+shellcode 这个概念本应来自pwn,shellcode为16进制的机器码，因为经常让攻击者获得shell而得名
+‍
+Shellcode 是一组通常用汇编语言编写的机器代码指令，旨在由计算机处理器直接执行。因为汇编指令是特定于体系结构的，这限制了 shellcode 在不同处理器之间的可移植性
+‍
+为什么需要shellcode 加载器
+使用cs或者msf生成的exe远控木马，特征极强，当使用shellcode 加载的方式上线，更容易做免杀操作,接下来的是Windows下的shellcode加载器
+‍
+‍
+shellcode 生成暂且现在水平有限，还不会手搓shellcode，使用工具
+        
+      </article>
+    </div>
+  </div>
+  </div>
+
+
+  
+  
+  <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+    <a class="post-link" href="/2024/11/02/NTLM/" aria-label="NTLM"></a>
+    
+    <div class="post-cover-right">
       
         <img data-src="/images/cover/6.jpg" data-sizes="auto" alt="NTLM" class="lazyload">
       
@@ -214,7 +252,7 @@
     <div class="post-info">
       <div class="post-meta">
         <span><span class="icon-calendar"></span>2024-11-02</span>
-        <span><span class="icon-pencil"></span>5.5k 字</span>
+        <span><span class="icon-pencil"></span>5.6k 字</span>
         <span><span class="icon-clock"></span>21 分钟</span>
       </div>
       <h2 class="post-title">NTLM</h2>
@@ -235,11 +273,12 @@ There are two possible scenarios:
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" aria-label="PE文件结构"></a>
+      <a class="post-link" href="/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" aria-label="PE文件结构"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         <img data-src="/images/cover/4.jpg" data-sizes="auto" alt="PE文件结构" class="lazyload">
       
@@ -273,12 +312,11 @@ PE文件即Portable Execute Windows下可执行文件的总称，常见的有 DL
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/" aria-label="LLMNR\NBT-NS\MDNS欺骗"></a>
+    <a class="post-link" href="/2024/10/10/LLMNR%E4%B8%8ENBTNS%E5%92%8CMDNS%E6%AC%BA%E9%AA%97/" aria-label="LLMNR\NBT-NS\MDNS欺骗"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         <img data-src="/images/banner.png" data-sizes="auto" alt="LLMNR\NBT-NS\MDNS欺骗" class="lazyload">
       
@@ -307,15 +345,16 @@ LLMNR​	LLMNR(Link-Local Multicast Name Resolution) 是用于同一本地链路
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" aria-label="Windows认证机制"></a>
+      <a class="post-link" href="/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" aria-label="Windows认证机制"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2023/11/15/13/55/woman-8390124_1280.jpg" data-sizes="auto" alt="Windows认证机制" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="Windows认证机制" class="lazyload">
         
       
     </div>
@@ -345,16 +384,15 @@ Windows本身不存储用户的明文密码
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/08/09/Apache-OFBiz%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E5%AF%BC%E8%87%B4RCE-CVE-2024-38856/" aria-label="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)"></a>
+    <a class="post-link" href="/2024/08/09/Apache-OFBiz%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86%E5%AF%BC%E8%87%B4RCE-CVE-2024-38856/" aria-label="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2023/06/28/16/11/ai-generated-8094738_960_720.png" data-sizes="auto" alt="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)" class="lazyload">
+          <img data-src="https://cdn.pixabay.com/photo/2024/01/22/10/49/ai-generated-8524877_1280.jpg" data-sizes="auto" alt="Apache OFBiz目录遍历导致RCE(CVE-2024-38856)" class="lazyload">
         
       
     </div>
@@ -384,15 +422,16 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/" aria-label="springcloud dataflow任意文件写入（CVE-2024-22263）"></a>
+      <a class="post-link" href="/2024/07/12/springcloud-dataflow%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%EF%BC%88CVE-2024-22263%EF%BC%89/" aria-label="springcloud dataflow任意文件写入（CVE-2024-22263）"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://blog.yyjccc.xyz/images/cover/2.jpg" data-sizes="auto" alt="springcloud dataflow任意文件写入（CVE-2024-22263）" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/5.jpg" data-sizes="auto" alt="springcloud dataflow任意文件写入（CVE-2024-22263）" class="lazyload">
         
       
     </div>
@@ -416,16 +455,15 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/07/08/GeoServer%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" aria-label="GeoServer表达式注入代码执行漏洞"></a>
+    <a class="post-link" href="/2024/07/08/GeoServer%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" aria-label="GeoServer表达式注入代码执行漏洞"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2023/06/28/16/11/ai-generated-8094738_960_720.png" data-sizes="auto" alt="GeoServer表达式注入代码执行漏洞" class="lazyload">
+          <img data-src="https://d-sketon.top/img/_backwebp/bg28.webp" data-sizes="auto" alt="GeoServer表达式注入代码执行漏洞" class="lazyload">
         
       
     </div>
@@ -450,15 +488,16 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/07/08/Apache-Commons-JXPath/" aria-label="Apache Commons JXPath"></a>
+      <a class="post-link" href="/2024/07/08/Apache-Commons-JXPath/" aria-label="Apache Commons JXPath"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://blog.yyjccc.xyz/images/cover/1.jpg" data-sizes="auto" alt="Apache Commons JXPath" class="lazyload">
+          <img data-src="https://pic.3gbizhi.com/uploads/20231128/afb73976f07fe2c24c3480fd495895f6.jpg" data-sizes="auto" alt="Apache Commons JXPath" class="lazyload">
         
       
     </div>
@@ -484,12 +523,11 @@ List jvmArguments = [&#39;-Xms128M&#39;, &#39;-Xmx1024M&#39;,&#39;-agentlib:jdwp
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/06/07/Hessian/" aria-label="Hessian"></a>
+    <a class="post-link" href="/2024/06/07/Hessian/" aria-label="Hessian"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
@@ -525,15 +563,16 @@ RPC协议的一次远程通信过程如下
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2024/06/06/Groovy/" aria-label="Groovy"></a>
+      <a class="post-link" href="/2024/06/06/Groovy/" aria-label="Groovy"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20240409/d5d041d0a34a8970fff3c21578c31a9b.jpg" data-sizes="auto" alt="Groovy" class="lazyload">
+          <img data-src="https://blog.yyjccc.xyz/images/cover/2.jpg" data-sizes="auto" alt="Groovy" class="lazyload">
         
       
     </div>
@@ -558,16 +597,15 @@ RPC协议的一次远程通信过程如下
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/06/02/Elasticsearch/" aria-label="Elasticsearch"></a>
+    <a class="post-link" href="/2024/06/02/Elasticsearch/" aria-label="Elasticsearch"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20231128/afb73976f07fe2c24c3480fd495895f6.jpg" data-sizes="auto" alt="Elasticsearch" class="lazyload">
+          <img data-src="https://cdn.pixabay.com/photo/2023/08/13/13/03/girl-8187440_1280.jpg" data-sizes="auto" alt="Elasticsearch" class="lazyload">
         
       
     </div>
@@ -598,41 +636,6 @@ fields:  对应mysql中的字段
 
 
   
-  
-  <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-    <a class="post-link" href="/2024/05/14/%E5%B9%BD%E9%BB%98%E7%9A%84Commons-Collections6%E8%B0%83%E8%AF%95/" aria-label="幽默的Commons-Collections6调试"></a>
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://pic.3gbizhi.com/uploads/20231218/d4ebffa103f75be8c4a6cc87aa26a865.jpg" data-sizes="auto" alt="幽默的Commons-Collections6调试" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-05-14</span>
-        <span><span class="icon-pencil"></span>980 字</span>
-        <span><span class="icon-clock"></span>3 分钟</span>
-      </div>
-      <h2 class="post-title">幽默的Commons-Collections6调试</h2>
-      <article class="post-article">
-        
-          幽默的Commons-Collections6调试事情是在考完期中之后，同学在调式cc6链的时候发现了奇怪问题。
-（下面写的过于详细了。。。）
-问题发现（在尝试找出cc6中 为什么LazyMap 最后要使用remove的时候）就是lazyMap中放的是空的HashMap之前代码并没有向hashMap中写入任何东西，为什么在这里却必须要remove掉’aaa’才能触发链子呢
-于是调试在创建TiedMapEntry的地方打上断点，跟进赋值完map的时候还算是正常可是到下一步参数map的size大小怎么突然由1变成2了？又没有对map进行任何操作这里LazyMap为什么多了且是什么时候多了一个键值对
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
 
 
   <nav id="page-nav" data-aos="fade-up">
@@ -655,7 +658,7 @@ fields:  对应mysql中的字段
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -663,7 +666,7 @@ fields:  对应mysql中的字段
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -732,10 +735,10 @@ fields:  对应mysql中的字段
     
       <div>
         <span class="icon-brush"></span>
-        153k
+        154.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        10:24
+        10:30
       </div>
     
     
@@ -767,7 +770,7 @@ fields:  对应mysql中的字段
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -775,7 +778,7 @@ fields:  对应mysql中的字段
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">

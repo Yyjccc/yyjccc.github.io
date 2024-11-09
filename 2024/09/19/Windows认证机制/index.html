@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://yyjccc.github.io/img/24-9-19/9.png">
 <meta property="og:image" content="https://yyjccc.github.io/img/24-9-19/10.png">
 <meta property="article:published_time" content="2024-09-19T09:22:47.238Z">
-<meta property="article:modified_time" content="2024-09-19T09:26:11.726Z">
+<meta property="article:modified_time" content="2024-11-07T17:17:45.816Z">
 <meta property="article:author" content="Yyjccc">
 <meta property="article:tag" content="域渗透">
 <meta property="article:tag" content="Windows安全">
@@ -222,7 +222,7 @@
       <div class="article-date">
   <a href="/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2024-09-19T09:22:47.238Z" itemprop="datePublished">2024-09-19</time>
-    <time style="display: none;" id="post-update-time">2024-09-19</time>
+    <time style="display: none;" id="post-update-time">2024-11-08</time>
   </a>
 </div>
 
@@ -292,17 +292,16 @@
 </ol>
 <p>客户端在这一步向服务器确认协议版本，是v1还是v2 …</p>
 <ol start="2">
-<li><strong>第二步 质询</strong><ol>
-<li>客户端向服务端发送用户信息（用户名）请求</li>
-</ol>
+<li><p><strong>第二步 质询</strong></p>
+<p> 服务端向客户端发送响应包</p>
 </li>
 </ol>
-<p>(如果没有，认证失败，如果有生成Chanllenge)</p>
-<p>服务器接收到请求后生成一个16位的随机数，称之为“Challenge” 使用登录用户名对应的NTLM Hash加密加密 Challenge 生成Challenge1。同时，生成Challenge1后，将Challenge(16位随机字符）发送给客户端   // <font style="color:#DF2A3F;">Net NTLM Hash = NTLM Hash( Challenge)</font></p>
+<p>服务器接收到请求后生成一个16位的随机数，称之为“Challenge” 使用登录用户名对应的NTLM Hash加密加密 Challenge 生成Challenge1。同时，生成Challenge1后，将Challenge(16位随机字符）发送给客户端   // Net NTLM Hash = NTLM Hash( Challenge)</p>
 <p>客户端接收到Challenge后，使用将要登录到账户对应的NTLM Hash加密Challenge生成Response ,然后将Response发送到服务端,这个Response 也就是Net-NTLM Hash</p>
 <ol start="3">
 <li><strong>第三步 验证</strong></li>
 </ol>
+<p>客户端会发送一个响应包</p>
 <p>服务端收到客户端的Response后，比对Chanllenge1与Response是否相等，若相等，则认证通过</p>
 <p>注意：每一次产生的Chanllenge都不同</p>
 <p>流程如图：</p>
@@ -358,51 +357,45 @@
 </ul>
 <p>关系如图：<img src="/img/24-9-19/3.png"></p>
 <p><strong><font style="color:#DF2A3F;">域认证流程</font></strong></p>
-<p><strong><font style="color:#DF2A3F;"></font></strong></p>
-<p><em><strong><font style="color:#262626;">其中涉及 的密钥加密一般都是 使用对应机器的 NTLM Hash 加密</font></strong></em></p>
-<p><em><strong><font style="color:#262626;"></font></strong></em></p>
-<p><strong><font style="color:#262626;">第一次通信</font></strong></p>
-<p><font style="color:#262626;">概述：</font><em><font style="color:#262626;">client 向 kerberos 服务请求，希望获取访问权限，kerberos 服务器首先判断client是否可信，也就是通过白名单和黑名单，通过后AS返回TGT给client</font></em></p>
+<p><strong>其中涉及 的密钥加密一般都是 使用对应机器的 NTLM Hash 加密</strong></p>
+<p><strong>第一次通信</strong></p>
+<p>概述：client 向 kerberos 服务请求，希望获取访问权限，kerberos 服务器首先判断client是否可信，也就是通过白名单和黑名单，通过后AS返回TGT给client</p>
 <img src="/img/24-9-19/4.png">
 
 <p>具体流程：</p>
-<p><strong><font style="color:rgb(85, 85, 85);">①</font></strong><font style="color:rgb(85, 85, 85);"> 客户端用户向KDC以明文的方式发起请求。该次请求中携带了自己的</font><strong><font style="color:rgb(85, 85, 85);">用户名，主机IP，和当前时间戳</font></strong><font style="color:rgb(85, 85, 85);">；（AS_REQ）<br></font><strong><font style="color:rgb(85, 85, 85);">②</font></strong><font style="color:rgb(85, 85, 85);"> KDC当中的AS（Authentication Server）接收请求（AS是KDC中专门用来认证客户端身份的认证服务器）后去kerberos认证数据库中根据用户名查找是否存在该用户，此时只会查找是否有相同用户名的用户，并不会判断身份的可靠性；<br></font><strong><font style="color:rgb(85, 85, 85);">③</font></strong><font style="color:rgb(85, 85, 85);"> 如果没有该用户名，认证失败，服务结束；如果存在该用户名，则AS认证中心便认为用户存在，此时便会返回响应给客户端，其中包含两部分内容：</font></p>
+<p>① 客户端用户向KDC以明文的方式发起请求。该次请求中携带了自己的用户名，主机IP，和当前时间戳（AS_REQ）<br>②KDC当中的AS（Authentication Server）接收请求（AS是KDC中专门用来认证客户端身份的认证服务器）后去kerberos认证数据库中根据用户名查找是否存在该用户，此时只会查找是否有相同用户名的用户，并不会判断身份的可靠性；<br>③ 如果没有该用户名，认证失败，服务结束；如果存在该用户名，则AS认证中心便认为用户存在，此时便会返回响应给客户端，其中包含两部分内容：</p>
 <ul>
-<li><font style="color:rgb(85, 85, 85);">第一部分内容称为TGT，他叫做票据授予票据，客户端后面的流程需要使用TGT去KDC中的TGS（票据授予中心）获取访问网络服务所需的Ticket（服务授予票据），TGT中包含的内容有kerberos数据库中存在的该</font><strong><font style="color:rgb(85, 85, 85);">客户端的Name，IP，当前时间戳，客户端<br></font>****<font style="color:rgb(85, 85, 85);">即将访问的TGS的Name，TGT的有效时间以及一把用于客户端和TGS间进行通信的Session_key(CT_SK)</font></strong><font style="color:rgb(85, 85, 85);">。整个TGT使用TGS密钥加密，客户端是解密不了的，由于密钥从没有在网络中传输过，所以也不存在密钥被劫持破解的情况。</font></li>
-<li><font style="color:rgb(85, 85, 85);">第二部分内容是使用客户端密钥（域控默认存储了所有机器的密钥，client,server）加密的一段内容，其中包括用于</font><strong><font style="color:rgb(85, 85, 85);">客户端和TGS间通信的Session_key(CT_SK),客户端即将访问的TGS的Name以及TGT的有效时间，和一个当前时间戳</font></strong><font style="color:rgb(85, 85, 85);">。该部分内容使用客户端密钥加密，所以客户端在拿到该部分内容时可以通过自己的密钥解密。如果是一个假的客户端，那么他是不会拥有真正客户端的密钥的，因为该密钥也从没在网络中进行传输过。这也同时认证了客户端的身份，如果是假客户端会由于解密失败从而终端认证流程。</font></li>
+<li>第一部分内容称为TGT，他叫做票据授予票据，客户端后面的流程需要使用TGT去KDC中的TGS（票据授予中心）获取访问网络服务所需的Ticket（服务授予票据），TGT中包含的内容有kerberos数据库中存在的该客户端的Name，IP，当前时间戳，客户端<br>**即将访问的TGS的Name，TGT的有效时间以及一把用于客户端和TGS间进行通信的Session_key(CT_SK)**。整个TGT使用TGS密钥加密，客户端是解密不了的，由于密钥从没有在网络中传输过，所以也不存在密钥被劫持破解的情况。</li>
+<li>第二部分内容是使用客户端密钥（域控默认存储了所有机器的密钥，client,server）加密的一段内容，其中包括用于<strong>客户端和TGS间通信的Session_key(CT_SK),客户端即将访问的TGS的Name以及TGT的有效时间，和一个当前时间戳</strong> 。该部分内容使用客户端密钥加密，所以客户端在拿到该部分内容时可以通过自己的密钥解密。如果是一个假的客户端，那么他是不会拥有真正客户端的密钥的，因为该密钥也从没在网络中进行传输过。这也同时认证了客户端的身份，如果是假客户端会由于解密失败从而终端认证流程。</li>
 </ul>
-<p><font style="color:rgb(85, 85, 85);">至此，第一次通信完成。</font></p>
+<p>至此，第一次通信完成。</p>
 <p><strong>第二次通信</strong></p>
 <p>概述：<em>client 得到了TGT 后 继续向kerberos请求 ,希望获取server的权限，kerberos通过TGT 判断client是否拥有权限，然后给client访问server的权限的ticket</em></p>
 <img src="/img/24-9-19/5.png"> 
 
 <p>具体流程：</p>
-<p><font style="color:rgb(85, 85, 85);">客户端行为：<br></font><strong><font style="color:rgb(85, 85, 85);">	①</font></strong><font style="color:rgb(85, 85, 85);"> 客户端使用CT_SK (</font><strong><font style="color:rgb(85, 85, 85);">SessionKey</font></strong><font style="color:rgb(85, 85, 85);">)加密将自己的客户端信息发送给KDC，其中包括客户端名，IP，时间戳；<br></font><strong><font style="color:rgb(85, 85, 85);">	②</font></strong><font style="color:rgb(85, 85, 85);"> 客户端将自己想要访问的Server服务以明文的方式发送给KDC；<br></font><strong><font style="color:rgb(85, 85, 85);">	③</font></strong><font style="color:rgb(85, 85, 85);"> 客户端将使用TGS密钥加密的TGT也原封不动的也携带给KDC；</font></p>
-<font style="color:rgb(85, 85, 85);">  
-</font><font style="color:rgb(85, 85, 85);">TGS行为：  
-</font>**<font style="color:rgb(85, 85, 85);">	①</font>**<font style="color:rgb(85, 85, 85);"> 此时KDC中的TGS（票据授予服务器）收到了来自客户端的请求。他首先根据客户端明文传输过来的Server服务IP查看当前kerberos系统中是否存在可以被用户访问的该服务。如果不存在，认证失败结束。如果存在，继续接下来的认证。  
-</font>**<font style="color:rgb(85, 85, 85);">	②</font>**<font style="color:rgb(85, 85, 85);"> TGS使用自己的密钥将TGT中的内容进行解密，此时他看到了经过AS认证过后并记录的用户信息，一把Session_KEY即CT_SK，还有时间戳信息，他会现根据时间戳判断此次通信是否真是可靠有无超出时延。  
-</font>**<font style="color:rgb(85, 85, 85);">	③</font>**<font style="color:rgb(85, 85, 85);"> 如果时延正常，则TGS会使用CK_SK对客户端的第一部分内容进行解密（使用CT_SK加密的客户端信息），取出其中的用户信息和TGT中的用户信息进行比对，如果全部相同则认为客户端身份正确，方可继续进行下一步。  
-</font>**<font style="color:rgb(85, 85, 85);">④</font>**<font style="color:rgb(85, 85, 85);"> 此时KDC将返回响应给客户端，响应内容包括：</font>
-
+<p>客户端行为：<br>①客户端使用CT_SK (SessionKey加密将自己的客户端信息发送给KDC，其中包括客户端名，IP，时间戳；<br>②客户端将自己想要访问的Server服务以明文的方式发送给KDC；<br>③客户端将使用TGS密钥加密的TGT也原封不动的也携带给KDC；</p>
+<p>TGS行为：<br>    ① 此时KDC中的TGS（票据授予服务器）收到了来自客户端的请求。他首先根据客户端明文传输过来的Server服务IP查看当前kerberos系统中是否存在可以被用户访问的该服务。如果不存在，认证失败结束。如果存在，继续接下来的认证。<br>    ②TGS使用自己的密钥将TGT中的内容进行解密，此时他看到了经过AS认证过后并记录的用户信息，一把Session_KEY即CT_SK，还有时间戳信息，他会现根据时间戳判断此次通信是否真是可靠有无超出时延。<br>③如果时延正常，则TGS会使用CK_SK对客户端的第一部分内容进行解密（使用CT_SK加密的客户端信息），取出其中的用户信息和TGT中的用户信息进行比对，如果全部相同则认为客户端身份正确，方可继续进行下一步。<br>④此时KDC将返回响应给客户端，响应内容包括：</p>
 <ul>
-<li><font style="color:rgb(85, 85, 85);">第一部分：用于客户端访问网络服务的使用Server密码加密的ST（Servre Ticket），其中包括客户端的Name，IP，需要访问的网络服务的地址Server IP，ST的有效时间，时间戳以及用于客户端和服务端之间通信的CS_SK（Session Key）。</font></li>
-<li><font style="color:rgb(85, 85, 85);">第二部分：使用CT_SK加密的内容，其中包括CS_SK和时间戳，还有ST的有效时间。由于在第一次通信的过程中，AS已将CT_SK通过客户端密码加密交给了客户端，且客户端解密并缓存了CT_SK，所以该部分内容在客户端接收到时是可以自己解密的。</font></li>
+<li>第一部分：用于客户端访问网络服务的使用Server密码加密的ST（Servre Ticket），其中包括客户端的Name，IP，需要访问的网络服务的地址Server IP，ST的有效时间，时间戳以及用于客户端和服务端之间通信的CS_SK（Session Key）。</li>
+<li>第二部分：使用CT_SK加密的内容，其中包括CS_SK和时间戳，还有ST的有效时间。由于在第一次通信的过程中，AS已将CT_SK通过客户端密码加密交给了客户端，且客户端解密并缓存了CT_SK，所以该部分内容在客户端接收到时是可以自己解密的。</li>
 </ul>
-<p><font style="color:rgb(85, 85, 85);">至此，第二次通信完成。</font></p>
+<p>至此，第二次通信完成。</p>
 <p><strong>第三次通信</strong></p>
-<p>概述：_<font style="color:rgb(85, 85, 85);">此时的客户端收到了来自KDC（TGS）的响应，并使用缓存在本地的CT_SK解密了第二部分内容（第一部分内容中的ST是由Server密码加密的，客户端无法解密），检查时间戳无误后取出其中的CS_SK准备向服务端发起最后的请求。</font>_</p>
+<p>概述：_此时的客户端收到了来自KDC（TGS）的响应，并使用缓存在本地的CT_SK解密了第二部分内容（第一部分内容中的ST是由Server密码加密的，客户端无法解密），检查时间戳无误后取出其中的CS_SK准备向服务端发起最后的请求。</p>
 <img src="/img/24-9-19/6.png">
 
 
 
-<p><em><font style="color:rgb(85, 85, 85);"></font></em></p>
+
+
 <p><strong>具体流程</strong></p>
-<p><font style="color:rgb(85, 85, 85);">客户端：<br></font><strong><font style="color:rgb(85, 85, 85);">	①</font></strong><font style="color:rgb(85, 85, 85);"> 客户端使用CK_SK将自己的主机信息和时间戳进行加密作为交给服务端的第一部分内容，然后将ST（服务授予票据）作为第二部分内容都发送给服务端。<br></font></p>
-<p><font style="color:rgb(85, 85, 85);">服务端：<br></font><strong><font style="color:rgb(85, 85, 85);">	①</font></strong><font style="color:rgb(85, 85, 85);"> 服务器此时收到了来自客户端的请求，他会使用自己的密钥，即Server密钥将客户端第二部分内容进行解密，核对时间戳之后将其中的CS_SK取出，使用CS_SK将客户端发来的第一部分内容进行解密，从而获得经过TGS认证过后的客户端信息，此时他将这部分信息和客户端第二部分内容带来的自己的信息进行比对，最终确认该客户端就是经过了KDC认证的具有真实身份的客户端，是他可以提供服务的客户端。此时服务端返回一段使用CT_SK加密的表示接收请求的响应给客户端，在客户端收到请求之后，使用缓存在本地的CS_ST解密之后也确定了服务端的身份（其实服务端在通信的过程中还会使用数字证书证明自己身份）。</font></p>
-<p><font style="color:rgb(85, 85, 85);">至此，第三次通信完成。此时也代表着整个kerberos认证的完成，通信的双方都确认了对方的身份，此时便可以放心的进行整个网络通信了。</font></p>
+<p>客户端：<br>    ① 客户端使用CK_SK将自己的主机信息和时间戳进行加密作为交给服务端的第一部分内容，然后将ST（服务授予票据）作为第二部分内容都发送给服务端。  </p>
+<p>服务端：  </p>
+<p>​	① 服务器此时收到了来自客户端的请求，他会使用自己的密钥，即Server密钥将客户端第二部分内容进行解密，核对时间戳之后将其中的CS_SK取出，使用CS_SK将客户端发来的第一部分内容进行解密，从而获得经过TGS认证过后的客户端信息，此时他将这部分信息和客户端第二部分内容带来的自己的信息进行比对，最终确认该客户端就是经过了KDC认证的具有真实身份的客户端，是他可以提供服务的客户端。此时服务端返回一段使用CT_SK加密的表示接收请求的响应给客户端，在客户端收到请求之后，使用缓存在本地的CS_ST解密之后也确定了服务端的身份（其实服务端在通信的过程中还会使用数字证书证明自己身份）。</p>
+<p>​	至此，第三次通信完成。此时也代表着整个kerberos认证的完成，通信的双方都确认了对方的身份，此时便可以放心的进行整个网络通信了。</p>
 <p><strong>总结</strong></p>
-<p><font style="color:rgb(85, 85, 85);">整个kerberos认证的过程较为复杂，三次通信中都使用了密钥，且密钥的种类一直在变化，并且为了防止网络拦截密钥，这些密钥都是临时生成的Session Key，即他们只在一次Session会话中起作用，即使密钥被劫持，等到密钥被破解可能这次会话都早已结束。<br></font><font style="color:rgb(85, 85, 85);">这为整个kerberos认证过程保证了较高的安全性。以下补充两个kerberos认证的整体流图，一个是kerberos认证的时序图，一个是kerberos认证的示意图，望能加深kerberos认证印象~~<br></font><font style="color:rgb(85, 85, 85);">示意图：</font></p>
+<p>​	整个kerberos认证的过程较为复杂，三次通信中都使用了密钥，且密钥的种类一直在变化，并且为了防止网络拦截密钥，这些密钥都是临时生成的Session Key，即他们只在一次Session会话中起作用，即使密钥被劫持，等到密钥被破解可能这次会话都早已结束。<br>    这为整个kerberos认证过程保证了较高的安全性。以下补充两个kerberos认证的整体流图，一个是kerberos认证的时序图，一个是kerberos认证的示意图，望能加深kerberos认证印象~~<br><strong>示意图</strong>：</p>
 <img src="/img/24-9-19/7.png"> 
 
 <img src="/img/24-9-19/8.png"> 
@@ -583,7 +576,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -591,7 +584,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -665,10 +658,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        153k
+        154.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        10:24
+        10:30
       </div>
     
     
@@ -709,7 +702,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">44</div>
+    <div class="sidebar-state-number">45</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -717,7 +710,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">67</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
