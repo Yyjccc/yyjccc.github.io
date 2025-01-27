@@ -1,0 +1,1299 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
+
+
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
+
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    class文件结构 |
+    
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  <meta name="description" content="java字节码，class文件，二进制类型文件，类似PE文件，也有一定的文件结构 ‍ 官方文档：https:&#x2F;&#x2F;docs.oracle.com&#x2F;javase&#x2F;specs&#x2F;jvms&#x2F;se15&#x2F;html&#x2F;jvms-4.html ‍ classs文件整体结构如下： ClassFile {    u4             magic;    u2             minor_version;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="class文件结构">
+<meta property="og:url" content="https://yyjccc.github.io/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="java字节码，class文件，二进制类型文件，类似PE文件，也有一定的文件结构 ‍ 官方文档：https:&#x2F;&#x2F;docs.oracle.com&#x2F;javase&#x2F;specs&#x2F;jvms&#x2F;se15&#x2F;html&#x2F;jvms-4.html ‍ classs文件整体结构如下： ClassFile {    u4             magic;    u2             minor_version;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115214528-bqa1f08.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115215009-iprmjhq.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115215714-sd68qo1.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115220136-z7f4rmr.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115220229-tegkc44.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115220348-33kmsmg.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115220404-av99zmi.png">
+<meta property="article:published_time" content="2025-01-27T07:27:37.084Z">
+<meta property="article:modified_time" content="2025-01-27T07:31:17.303Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="class">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/25-1-27/image-20250115214528-bqa1f08.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
+
+    
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+  <body>
+    
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/cover/8.png" alt="class文件结构">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">class文件结构</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-class文件结构" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-01-27T07:27:37.084Z" itemprop="datePublished">2025-01-27</time>
+    <time style="display: none;" id="post-update-time">2025-01-27</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/" data-aos="zoom-in">java</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <p>java字节码，class文件，二进制类型文件，类似PE文件，也有一定的文件结构</p>
+<p>‍</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-4.html">https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-4.html</a></p>
+<p>‍</p>
+<p>classs文件整体结构如下：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">ClassFile {</span><br><span class="line">    u4             magic;</span><br><span class="line">    u2             minor_version;</span><br><span class="line">    u2             major_version;</span><br><span class="line">    u2             constant_pool_count;</span><br><span class="line">    cp_info        constant_pool[constant_pool_count<span class="number">-1</span>];</span><br><span class="line">    u2             access_flags;</span><br><span class="line">    u2             this_class;</span><br><span class="line">    u2             super_class;</span><br><span class="line">    u2             interfaces_count;</span><br><span class="line">    u2             interfaces[interfaces_count];</span><br><span class="line">    u2             fields_count;</span><br><span class="line">    field_info     fields[fields_count];</span><br><span class="line">    u2             methods_count;</span><br><span class="line">    method_info    methods[methods_count];</span><br><span class="line">    u2             attributes_count;</span><br><span class="line">    attribute_info attributes[attributes_count];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>大体如下图所示</p>
+<p><img src="/img/25-1-27/image-20250115214528-bqa1f08.png">​</p>
+<p>‍</p>
+<p>‍</p>
+<p><img src="/img/25-1-27/image-20250115215009-iprmjhq.png">​</p>
+<h3 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h3><p>Magic Number,固定为<code>cafebabe</code>​</p>
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><p>分为主版本号 Marjor Version  和次版本号Minor Version</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">u2             minor_version;<span class="comment">//Class 的小版本号</span></span><br><span class="line">u2             major_version;<span class="comment">//Class 的大版本号</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><p>‍</p>
+<p>常量池占据了 class 文件很大一部分数据，里面存放着各式各样的常量信息，包括数字和字符串常量、类和接口名、字段和方法名等</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">u2             constant_pool_count;<span class="comment">//常量池的数量</span></span><br><span class="line">cp_info        constant_pool[constant_pool_count<span class="number">-1</span>];<span class="comment">//常量池</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>常量池的数量是 <code>constant_pool_count-1</code>​（<strong>常量池计数器是从 1 开始计数的,索引值为 0 代表“不引用任何一个常量池项”</strong> )</p>
+<p>‍</p>
+<p>常量池主要存放两大常量：字面量和符号引用</p>
+<p>字面量就是java中最基本的数据类型，</p>
+<p>‍</p>
+<p>‍</p>
+<p>符号引用主要包括：</p>
+<ul>
+<li>类和接口的全限定名</li>
+<li>字段的名称和描述符</li>
+<li>方法的名称和描述符</li>
+</ul>
+<p>java没有像 c 语言那样有”链接”这一步,而是在加载 class 文件的时候动态加载,拿到该符号引用指向的字符串,再使用反射,加载相应的类.</p>
+<p>‍</p>
+<p>‍</p>
+<p>Java 虚拟机规范定义了一种简单的语法来描述字段和方法，可以根据下面的规则生成描述符。</p>
+<ol>
+<li><p>类型描述符。</p>
+<ul>
+<li>基本类型 byte、short、char、int、long、float 和 double 的描述符是单个字母，分别对应 B、S、C、I、J、F 和 D。注意，long 的描述符是 J 而不是 L。</li>
+<li>引用类型的描述符是“L＋类的完全限定名＋分号”</li>
+<li>数组类型的描述符是“[＋数组元素类型描述符”</li>
+</ul>
+</li>
+<li><p>字段描述符就是字段的类型描述符。</p>
+</li>
+<li><p>方法描述符格式是：“（按参数顺序的参数类型描述符）+返回值类型描述符”，其中 void 返回值由单个字母 V 表示。</p>
+</li>
+</ol>
+<p>‍</p>
+<p>‍</p>
+<p>常量池中每一项常量都是一个表，这 14 种表有一个共同的特点：<strong>开始的第一位是一个 u1 类型的标志位 -tag 来标识常量的类型，代表当前这个常量属于哪种常量类型．</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标志（tag）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONSTANT_utf8_info</td>
+<td>1</td>
+<td>UTF-8 编码的字符串</td>
+</tr>
+<tr>
+<td>CONSTANT_Integer_info</td>
+<td>3</td>
+<td>整形字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Float_info</td>
+<td>4</td>
+<td>浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Long_info</td>
+<td>5</td>
+<td>长整型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Double_info</td>
+<td>6</td>
+<td>双精度浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Class_info</td>
+<td>7</td>
+<td>类或接口的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_String_info</td>
+<td>8</td>
+<td>字符串类型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_FieldRef_info</td>
+<td>9</td>
+<td>字段的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodRef_info</td>
+<td>10</td>
+<td>类中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_InterfaceMethodRef_info</td>
+<td>11</td>
+<td>接口中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_NameAndType_info</td>
+<td>12</td>
+<td>字段或方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodType_info</td>
+<td>16</td>
+<td>标志方法类型</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodHandle_info</td>
+<td>15</td>
+<td>表示方法句柄</td>
+</tr>
+<tr>
+<td>CONSTANT_InvokeDynamic_info</td>
+<td>18</td>
+<td>表示一个动态方法调用点</td>
+</tr>
+</tbody></table>
+<p>‍</p>
+<p>‍</p>
+<h3 id="访问标志"><a href="#访问标志" class="headerlink" title="访问标志"></a>访问标志</h3><figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">u2             access_flags;<span class="comment">//Class 的访问标记</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>类访问和属性修饰符:</p>
+<p><img src="/img/25-1-27/image-20250115215714-sd68qo1.png">​</p>
+<p>‍</p>
+<h3 id="当前类、父类、接口"><a href="#当前类、父类、接口" class="headerlink" title="当前类、父类、接口"></a>当前类、父类、接口</h3><figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">u2             this_class;<span class="comment">//当前类</span></span><br><span class="line">u2             super_class;<span class="comment">//父类</span></span><br><span class="line">u2             interfaces_count;<span class="comment">//接口数量</span></span><br><span class="line">u2             interfaces[interfaces_count];<span class="comment">//一个类可以实现多个接口</span></span><br></pre></td></tr></tbody></table></figure>
+
+<pre><code>Java 类的继承关系由类索引、父类索引和接口索引集合三项确定。类索引、父类索引和接口索引集合按照顺序排在访问标志之后，
+</code></pre>
+<p>‍</p>
+<pre><code>类索引用于确定这个类的全限定名，父类索引用于确定这个类的父类的全限定名，由于 Java 语言的单继承，所以父类索引只有一个
+</code></pre>
+<p>‍</p>
+<pre><code>接口索引集合用来描述这个类实现了哪些接口，这些被实现的接口将按 `implements`​ (如果这个类本身是接口的话则是`extends`​) 后的接口顺序从左到右排列在接口索引集合中
+</code></pre>
+<p>‍</p>
+<h3 id="字段表"><a href="#字段表" class="headerlink" title="字段表"></a>字段表</h3><p>Field</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">u2             fields_count;<span class="comment">//字段数量</span></span><br><span class="line">field_info     fields[fields_count];<span class="comment">//一个类会可以有个字段</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>用于描述接口或类中声明的变量。字段包括类级变量以及实例变量，但不包括局部变量。</p>
+<p>字段结构：</p>
+<p><img src="/img/25-1-27/image-20250115220136-z7f4rmr.png">​</p>
+<ul>
+<li><strong>access_flags:</strong>  字段的作用域（<code>public</code>​ ,<code>private</code>​,<code>protected</code>​修饰符），是实例变量还是类变量（<code>static</code>​修饰符）,可否被序列化（transient 修饰符）,可变性（final）,可见性（volatile 修饰符，是否强制从主内存读写）。</li>
+<li><strong>name_index:</strong>  对常量池的引用，表示的字段的名称；</li>
+<li><strong>descriptor_index:</strong>  对常量池的引用，表示字段和方法的描述符；</li>
+<li><strong>attributes_count:</strong>  一个字段还会拥有一些额外的属性，attributes_count 存放属性的个数；</li>
+<li><strong>attributes[attributes_count]:</strong>  存放具体属性具体内容。</li>
+</ul>
+<p>‍</p>
+<p><strong>字段的 access_flag 的取值:</strong></p>
+<p><img src="/img/25-1-27/image-20250115220229-tegkc44.png">​</p>
+<p>‍</p>
+<h3 id="方法表"><a href="#方法表" class="headerlink" title="方法表"></a>方法表</h3><p>Method</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">u2             methods_count;<span class="comment">//方法数量</span></span><br><span class="line">method_info    methods[methods_count];<span class="comment">//一个类可以有个多个方法</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>methods_count 表示方法的数量，而 method_info 表示方法表。</p>
+<p>‍</p>
+<p><strong>method_info(方法表的) 结构:</strong></p>
+<p><img src="/img/25-1-27/image-20250115220348-33kmsmg.png">​</p>
+<p>‍</p>
+<p><strong>方法表的 access_flag 取值：</strong></p>
+<p><img src="/img/25-1-27/image-20250115220404-av99zmi.png">​</p>
+<p>‍</p>
+<p>‍</p>
+<h3 id="属性表"><a href="#属性表" class="headerlink" title="属性表"></a>属性表</h3><p>Attributes</p>
+<p>在 Class 文件，字段表，方法表中都可以携带自己的属性表集合，以用于描述某些场景专有的信息。与 Class 文件中其它的数据项目要求的顺序、长度和内容不同，属性表集合的限制稍微宽松一些，不再要求各个属性表具有严格的顺序，并且只要不与已有的属性名重复，任何人实现的编译器都可以向属性表中写 入自己定义的属性信息，Java 虚拟机运行时会忽略掉它不认识的属性—</p>
+<p>‍</p>
+<p>属性表也是最复杂的</p>
+<p>‍</p>
+<p>‍</p>
+<p>按照用途，有 23 种预定义属性，可以分为三组。</p>
+<ol>
+<li>第一组属性是实现 Java 虚拟机所必需的，共有 5 种；</li>
+<li>第二组属性是 Java 类库所必需的，共有 12 种；</li>
+<li>第三组属性主要提供给工具使用，共有 6 种。（这组属性是可选的，也就是说可以不出现在 class 文件中。如果 class 文件中存在第三组属性，Java 虚拟机实现或者 Java 类库也是可以利用它们的，比如使用 LineNumberTable 属性在异常堆栈中显示行号。）</li>
+</ol>
+<p>‍</p>
+<p>‍</p>
+<p>这里只介绍几个常用的属性：</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>位置</th>
+<th>含义</th>
+<th>分组</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Deprecated</td>
+<td>ClassFile, field_info, method_info</td>
+<td>被声明为 deprecated 的方法和字段</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Synthetic</td>
+<td>ClassFile, field_info, method_info</td>
+<td>标示方法或字段是由编译器自动生成的</td>
+<td>2</td>
+</tr>
+<tr>
+<td>SourceFile</td>
+<td>ClassFile</td>
+<td>记录源文件的名称</td>
+<td>3</td>
+</tr>
+<tr>
+<td>ConstantValue</td>
+<td>field_info</td>
+<td>final 关键字定义的常量值</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>method_info</td>
+<td>Java 代码编译成的字节码指令</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td>method_info</td>
+<td>方法抛出的异常</td>
+<td>1</td>
+</tr>
+<tr>
+<td>LineNumberTable</td>
+<td>Code</td>
+<td>Java 源代码的行号与字节码指令的对应关系</td>
+<td>3</td>
+</tr>
+<tr>
+<td>LocalVariableTable</td>
+<td>Code</td>
+<td>方法的局部变量描述</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>‍</p>
+<h4 id="ContanstValue"><a href="#ContanstValue" class="headerlink" title="ContanstValue"></a>ContanstValue</h4><p>ConstantValue 是定长属性，只会出现在 field_info 结构中，用于表示常量表达式的值。其作用是通知虚拟机自动为静态变量赋值。只有被 static 修饰的变量（类变量）才可以使用这项属性。</p>
+<p>‍</p>
+<p>其结构定义如下：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">ConstantValue_attribute {</span><br><span class="line">    u2 attribute_name_index;</span><br><span class="line">    u4 attribute_length;</span><br><span class="line">    u2 constantvalue_index;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>下面有三种情况：</p>
+<ul>
+<li>int a1 = 123；</li>
+<li>static int a2 = 123;</li>
+<li>final static int a3 = 123</li>
+</ul>
+<p>对于非 static 变量，eg：a1，其赋值是在实例构造器<code>&lt;init&gt;</code>​方法中完成的。</p>
+<p>而对于 static 变量，eg：a2，a3，有两种赋值方式。</p>
+<ol>
+<li>在类构造器<code>&lt;clinit&gt;</code>​方法中。</li>
+<li>使用 ConstantValue 属性。</li>
+</ol>
+<p>目前 Sun Javac 的选择是：前提都是针对于用 static 修饰的静态变量。如果是用 final static 修饰的话，并且这个变量是基本类型或者 String，那么使用 2 赋值。否则使用 1 赋值。</p>
+<p>因此这里的 constantvalue_index 是指向常量池中一个字面量类别（CONSTANT_Integer、CONSTANT_Float、CONSTANT_Long、CONSTANT_Double、CONSTANT_Utf8 五种中的一种）的索引，该常量中保存着变量的值。</p>
+<p>‍</p>
+<p>‍</p>
+<h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><p>Code 是变长属性，只存在于 method_info 结构中。Code 属性中存放字节码等方法相关信息,应该重点关注,其中存放着jvm指令。其结构定义如下：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">Code_attribute {</span><br><span class="line">    u2 attribute_name_index;</span><br><span class="line">    u4 attribute_length;</span><br><span class="line">    u2 max_stack;</span><br><span class="line">    u2 max_locals;</span><br><span class="line">    u4 code_length;</span><br><span class="line">    u1 code[code_length];</span><br><span class="line">    u2 exception_table_length;</span><br><span class="line">    exception_table[exception_table_length];</span><br><span class="line">    u2 attributes_count;</span><br><span class="line">    attribute_info attributes[attributes_count];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>关于上面的 exception_table，其结构定义如下。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">{ </span><br><span class="line">  	u2 start_pc;</span><br><span class="line">    u2 end_pc;</span><br><span class="line">    u2 handler_pc;</span><br><span class="line">    u2 catch_type;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p><strong>字节码指令</strong>存储在 Code 属性内。Code 属性出现在方法表的属性集合之中，但是并非所有的方法都必须存在 Code 这个属性。譬如接口或者抽象类中的方法就不存在 Code 属性</p>
+<p>‍</p>
+<ul>
+<li>attribute_name_index：指向 CONSTANT_Utf8_info 类型常量的索引，这个常量值固定为“Code”，代表了该属性的属性名称。</li>
+<li>attribute_length：代表该属性的长度，包括从 attribute_name_index 开始到 attributes[]数组结束。</li>
+<li>max_stack：代表操作数栈的深度的最大值。在方法执行的任意时刻，操作数栈都不能超过这个深度。</li>
+<li>max_locals：代表了局部变量表所需的存储空间大小。在这里 max_locals 的单位是 Slot，Slot 是虚拟机为局部变量分配内存所使用的最小单位。对于 byte、char、short、int、float、boolean、returnAddress 等长度不超过 32 位的数据，每个局部变量占用一个 Slot，而 double 和 long 这种 64 位的数据则需要两个 Slot 来存放。</li>
+<li>code_length：指示下面的 code 字节码数组的长度。虽然这是一个 u4 类型，理论上最大值可以达到 2^32-1，但是 Java 虚拟机明确规定一个方法中的指令不能超过 65535 条字节码指令，也就是说它实际是使用了 u2 的长度。</li>
+<li>code[code_length]：存放的是 Java 源程序编译后生成的 <strong>字节码指令</strong>, 之后会详细学习</li>
+<li>exception_table_length：指示下面的异常表数组的长度。</li>
+<li>exception_table[exception_table_length] 关于异常处理。</li>
+<li>attributes_count：指示下面的属性表数组的长度。</li>
+<li>attribute_info attributes[attributes_count]：Code 本身就已经是属性了，在这个属性的字段中还包括一些其它的属性…那么就存在这个表中。</li>
+</ul>
+<p>‍</p>
+<p>‍</p>
+<p>局部变量表中存放的内容</p>
+<ul>
+<li>方法参数（包括实例方法中隐藏参数 this）</li>
+<li>显式异常处理器的参数（catch 块所定义的异常）</li>
+<li>方法体中递归的局部变量</li>
+</ul>
+<p>但是这里要注意的是：并非在方法中用到了多少个局部变量，就把这些局部变量所占的 Slot 的数量作为 max_locals 的值，因为局部变量表中的 Slot 是可以重用的，当代码执行超出了某一局部变量的<strong>作用域</strong>之后，这个 Slot 就可以被其它局部变量所使用了，所以 Javac 编译器会根据变量的作用域来分配 Slot 给各个变量使用，然后计算出 max_locals 的大小</p>
+<p>‍</p>
+<p>‍</p>
+<p><strong>this:</strong></p>
+<p>它的实现方法是在 Javac 编译的时候把 this 添加到每个非静态方法的方法参数中，所以在方法内访问的 this 其实是本方法的参数</p>
+<p>‍</p>
+<h4 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h4><p>这里将的 Exception 属性和 Code 属性是一级的。并不是 Code 属性中的异常属性表。</p>
+<p>这里的 Exception 属性的作用是列举方法中通过<code>throws</code>​关键字后面列举的异常。其结构如下：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">Exceptions_attribute {</span><br><span class="line">    u2 attribute_name_index;</span><br><span class="line">    u4 attribute_length;</span><br><span class="line">    u2 number_of_exceptions;</span><br><span class="line">    u2 exception_index_table[number_of_exceptions];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<h4 id="局部变量表-LocalVariableTable"><a href="#局部变量表-LocalVariableTable" class="headerlink" title="局部变量表(LocalVariableTable)"></a>局部变量表(LocalVariableTable)</h4><p>字节码偏移量（Bytecode Offset）是指在 Java 字节码指令序列中的<strong>某条指令相对于方法字节码起始位置的偏移量</strong>，以字节为单位计算。它在 Java 虚拟机中用于指令定位、跳转操作以及调试信息映射,是以Code为基址的偏移。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">LocalVariableTable_attribute {</span><br><span class="line">    u2 attribute_name_index;</span><br><span class="line">    u4 attribute_length;</span><br><span class="line">    u2 local_variable_table_length;</span><br><span class="line">    {   u2 start_pc;</span><br><span class="line">        u2 length;</span><br><span class="line">        u2 name_index;</span><br><span class="line">        u2 descriptor_index;</span><br><span class="line">        u2 index;</span><br><span class="line">    } local_variable_table[local_variable_table_length];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>local_variable_table 局部变量表，其中的每一条数据代表一个变量</p>
+<p>‍</p>
+<p>‍</p>
+<p>也就是一个变量的描述信息如下：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">{   </span><br><span class="line">			u2 start_pc;		<span class="comment">//起始偏移</span></span><br><span class="line">	        u2 length;			<span class="comment">//长度</span></span><br><span class="line">	        u2 name_index;		<span class="comment">//名称</span></span><br><span class="line">	        u2 descriptor_index;<span class="comment">//类型描述符</span></span><br><span class="line">	        u2 index;	</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><p>start_pc: 局部变量生效的起始位置（字节码偏移量）</p>
+</li>
+<li><p>length：局部变量的长度，这里不是指物理上的长度，而是局部变量作用的指令的长度（从 <code>start_pc</code>​ 开始的字节数），即局部变量的生命周期</p>
+</li>
+<li><p>name_index：指向常量池中一个 <code>CONSTANT_Utf8_info</code>​ 项，表示局部变量的名称。</p>
+</li>
+<li><p>descriptor_index：指向常量池中一个 <code>CONSTANT_Utf8_info</code>​ 项，表示变量的类型描述符</p>
+</li>
+<li><p>index：表示该局部变量在局部变量表中的槽位索引</p>
+</li>
+</ul>
+<p>‍</p>
+<p>‍</p>
+<h4 id="MethodParameters"><a href="#MethodParameters" class="headerlink" title="MethodParameters"></a>MethodParameters</h4><p>MethodParameters是一个用在方法表中的变长属性。MethodParameters的作用是记录方法的各个形参名称和信息。</p>
+<p>​<code>MethodParameters</code>​ 属性表主要用于描述 Java 字节码中某些方法参数的元数据。这个属性是在 Java 8 中引入的，用于支持通过字节码存储和检索参数名及其他信息（如是否是最终参数、是否隐式等）。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>attribute_name_index</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>常量池中指向字符串<code>"MethodParameters"</code>​的索引。</td>
+</tr>
+<tr>
+<td>​<code>attribute_length</code>​</td>
+<td>​<code>u4</code>​</td>
+<td>属性内容的长度（不包括<code>attribute_name_index</code>​和<code>attribute_length</code>​本身）。</td>
+</tr>
+<tr>
+<td>​<code>parameters_count</code>​</td>
+<td>​<code>u1</code>​</td>
+<td>方法参数的数量。</td>
+</tr>
+<tr>
+<td>​<code>parameters</code>​</td>
+<td>​<code>parameter_info[]</code>​</td>
+<td>包含每个参数的元数据。</td>
+</tr>
+</tbody></table>
+<p>‍</p>
+<p>作用：反编译时还原方法参数名称</p>
+<p>‍</p>
+<p>‍</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><h5 id="InnerClasses"><a href="#InnerClasses" class="headerlink" title="InnerClasses"></a><strong>InnerClasses</strong></h5><p><strong>作用</strong>：描述内部类和嵌套类的信息。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>number_of_classes</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>内部类的数量。</td>
+</tr>
+<tr>
+<td>​<code>classes</code>​</td>
+<td>​<code>class_info[]</code>​</td>
+<td>内部类信息数组。</td>
+</tr>
+</tbody></table>
+<p><strong>class_info</strong> 结构：</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>inner_class_info_index</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>内部类的索引。</td>
+</tr>
+<tr>
+<td>​<code>outer_class_info_index</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>外部类的索引。</td>
+</tr>
+<tr>
+<td>​<code>inner_name_index</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>内部类的简单名称索引。</td>
+</tr>
+<tr>
+<td>​<code>inner_class_access_flags</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>内部类的访问标志。</td>
+</tr>
+</tbody></table>
+<hr>
+<h5 id="LineNumberTable"><a href="#LineNumberTable" class="headerlink" title="LineNumberTable"></a><strong>LineNumberTable</strong></h5><p><strong>作用</strong>：用于调试，表示字节码指令与源码行号的映射。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>line_number_table_length</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>表的长度。</td>
+</tr>
+<tr>
+<td>​<code>line_number_table</code>​</td>
+<td>​<code>line_number_info[]</code>​</td>
+<td>映射关系数组。</td>
+</tr>
+</tbody></table>
+<p><strong>line_number_info</strong> 结构：</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>start_pc</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>字节码指令的起始地址。</td>
+</tr>
+<tr>
+<td>​<code>line_number</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>源代码的行号。</td>
+</tr>
+</tbody></table>
+<h5 id="SourceFile"><a href="#SourceFile" class="headerlink" title="SourceFile"></a><strong>SourceFile</strong></h5><p><strong>作用</strong>：指示 <code>.class</code>​ 文件来源的源文件名。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>sourcefile_index</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>常量池中源文件名的索引。</td>
+</tr>
+</tbody></table>
+<hr>
+<h5 id="StackMapTable"><a href="#StackMapTable" class="headerlink" title="StackMapTable"></a><strong>StackMapTable</strong></h5><p><strong>作用</strong>：用于验证器快速验证方法字节码的类型安全性（自 Java 6 起引入）。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>number_of_entries</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>表的长度。</td>
+</tr>
+<tr>
+<td>​<code>entries</code>​</td>
+<td>​<code>stack_map_frame[]</code>​</td>
+<td>栈帧数组，用于描述字节码执行时的栈和局部变量状态。</td>
+</tr>
+</tbody></table>
+<hr>
+<h5 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a><strong>Signature</strong></h5><p><strong>作用</strong>：提供泛型和方法签名信息（比 <code>descriptor</code>​ 更详细）。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>signature_index</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>指向常量池中签名字符串的索引。</td>
+</tr>
+</tbody></table>
+<p><strong>使用场景</strong>：</p>
+<ul>
+<li>描述泛型方法或类，如 <code>List&lt;T&gt;</code>​ 或 <code>Map&lt;K, V&gt;</code>​。</li>
+</ul>
+<hr>
+<h5 id="BootstrapMethods"><a href="#BootstrapMethods" class="headerlink" title="BootstrapMethods"></a><strong>BootstrapMethods</strong></h5><p><strong>作用</strong>：支持动态调用（<code>invokedynamic</code>​ 指令）的引导方法表。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>num_bootstrap_methods</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>引导方法数量。</td>
+</tr>
+<tr>
+<td>​<code>bootstrap_methods</code>​</td>
+<td>​<code>bootstrap_method_info[]</code>​</td>
+<td>引导方法信息数组。</td>
+</tr>
+</tbody></table>
+<p><strong>bootstrap_method_info</strong> 结构：</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>bootstrap_method_ref</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>指向常量池中方法句柄的索引。</td>
+</tr>
+<tr>
+<td>​<code>num_bootstrap_arguments</code>​</td>
+<td>​<code>u2</code>​</td>
+<td>引导方法的参数数量。</td>
+</tr>
+<tr>
+<td>​<code>bootstrap_arguments</code>​</td>
+<td>​<code>u2[]</code>​</td>
+<td>参数在常量池中的索引数组。</td>
+</tr>
+</tbody></table>
+<p>‍</p>
+<p>‍</p>
+<p>当然，这里只是列举了一部分属性表，还有一些像模块化等相关的还没提及</p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="Class-文件解析"><a href="#Class-文件解析" class="headerlink" title="Class 文件解析"></a>Class 文件解析</h2><p>使用go 编写 代码对 class 文件进行解析</p>
+<p>‍</p>
+<p>reader 读取 字节流，用来读取不同的类型</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> ClassReader <span class="keyword">struct</span> {</span><br><span class="line">	BytesReader</span><br><span class="line">	cf *ClassFile</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewClassReader</span><span class="params">(data []<span class="type">byte</span>)</span></span> ClassReader {</span><br><span class="line">	br := NewBytesReader(data, binary.BigEndian)</span><br><span class="line">	<span class="keyword">return</span> ClassReader{BytesReader: br}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *ClassReader)</span></span> readUint16s() []<span class="type">uint16</span> {</span><br><span class="line">	n := reader.ReadUint16()</span><br><span class="line">	s := <span class="built_in">make</span>([]<span class="type">uint16</span>, n)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> s {</span><br><span class="line">		s[i] = reader.ReadUint16()</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// readFn: func(reader *ClassReader) XXX</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *ClassReader)</span></span> readTable(readFn <span class="keyword">interface</span>{}) <span class="keyword">interface</span>{} {</span><br><span class="line">	n := <span class="type">int</span>(reader.ReadUint16())</span><br><span class="line"></span><br><span class="line">	itemType := reflect.TypeOf(readFn).Out(<span class="number">0</span>)</span><br><span class="line">	sliceType := reflect.SliceOf(itemType)</span><br><span class="line">	s := reflect.MakeSlice(sliceType, n, n) <span class="comment">// make([]x, n, n)</span></span><br><span class="line"></span><br><span class="line">	readFnVal := reflect.ValueOf(readFn)</span><br><span class="line">	args := []reflect.Value{reflect.ValueOf(reader)}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ {</span><br><span class="line">		x := readFnVal.Call(args)[<span class="number">0</span>]</span><br><span class="line">		s.Index(i).Set(x) <span class="comment">// s[i] = x</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> s.Interface()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> BytesReader <span class="keyword">struct</span> {</span><br><span class="line">	byteOrder binary.ByteOrder</span><br><span class="line">	data      []<span class="type">byte</span></span><br><span class="line">	position  <span class="type">int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewBytesReader</span><span class="params">(data []<span class="type">byte</span>, byteOrder binary.ByteOrder)</span></span> BytesReader {</span><br><span class="line">	<span class="keyword">return</span> BytesReader{</span><br><span class="line">		byteOrder: byteOrder,</span><br><span class="line">		data:      data,</span><br><span class="line">		position:  <span class="number">0</span>,</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *BytesReader)</span></span> Position() <span class="type">int</span> {</span><br><span class="line">	<span class="keyword">return</span> reader.position</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *BytesReader)</span></span> ReadUint8() <span class="type">uint8</span> {</span><br><span class="line">	i := reader.data[reader.position]</span><br><span class="line">	reader.position++</span><br><span class="line">	<span class="keyword">return</span> i</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *BytesReader)</span></span> ReadUint16() <span class="type">uint16</span> {</span><br><span class="line">	i := reader.byteOrder.Uint16(reader.data[reader.position:])</span><br><span class="line">	reader.position += <span class="number">2</span></span><br><span class="line">	<span class="keyword">return</span> i</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *BytesReader)</span></span> ReadUint32() <span class="type">uint32</span> {</span><br><span class="line">	i := reader.byteOrder.Uint32(reader.data[reader.position:])</span><br><span class="line">	reader.position += <span class="number">4</span></span><br><span class="line">	<span class="keyword">return</span> i</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *BytesReader)</span></span> ReadUint64() <span class="type">uint64</span> {</span><br><span class="line">	i := reader.byteOrder.Uint64(reader.data[reader.position:])</span><br><span class="line">	reader.position += <span class="number">8</span></span><br><span class="line">	<span class="keyword">return</span> i</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(reader *BytesReader)</span></span> ReadBytes(n <span class="type">int</span>) []<span class="type">byte</span> {</span><br><span class="line">	bytes := reader.data[reader.position : reader.position+n]</span><br><span class="line">	reader.position += n</span><br><span class="line">	<span class="keyword">return</span> bytes</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Parse</span><span class="params">(classData []<span class="type">byte</span>)</span></span> (cf *ClassFile, err <span class="type">error</span>) {</span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {</span><br><span class="line">		<span class="keyword">if</span> r := <span class="built_in">recover</span>(); r != <span class="literal">nil</span> {</span><br><span class="line">			<span class="keyword">var</span> ok <span class="type">bool</span></span><br><span class="line">			err, ok = r.(<span class="type">error</span>)</span><br><span class="line">			<span class="keyword">if</span> !ok {</span><br><span class="line">				err = fmt.Errorf(<span class="string">"%v"</span>, r)</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	cr := NewClassReader(classData)</span><br><span class="line">	cf = &amp;ClassFile{}</span><br><span class="line">	cf.Read(&amp;cr)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>下面是主要的代码，其他结构体和 读取的方法忽略</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> ClassFile <span class="keyword">struct</span> {</span><br><span class="line">	<span class="comment">//magic      uint32</span></span><br><span class="line">	MinorVersion      <span class="type">uint16</span>         <span class="comment">//次版本</span></span><br><span class="line">	MajorVersion      <span class="type">uint16</span>         <span class="comment">//主版本</span></span><br><span class="line">	ConstantPoolCount <span class="type">uint16</span>         <span class="comment">// 常量池大小</span></span><br><span class="line">	ConstantPool      []ConstantInfo <span class="comment">//常量池</span></span><br><span class="line">	AccessFlags       <span class="type">uint16</span>         <span class="comment">//类访问控制符</span></span><br><span class="line">	ThisClass         <span class="type">uint16</span>         <span class="comment">//类名</span></span><br><span class="line">	SuperClass        <span class="type">uint16</span>         <span class="comment">//父类名</span></span><br><span class="line">	InterfacesCount   <span class="type">uint16</span>         <span class="comment">//接口数量</span></span><br><span class="line">	Interfaces        []<span class="type">uint16</span>       <span class="comment">// 类实现的接口</span></span><br><span class="line">	FieldsCount       <span class="type">uint16</span>         <span class="comment">//类属性数量</span></span><br><span class="line">	Fields            []MemberInfo   <span class="comment">//类属性表</span></span><br><span class="line">	MethodsCount      <span class="type">uint16</span>         <span class="comment">//方法数量</span></span><br><span class="line">	Methods           []MemberInfo   <span class="comment">//方法表</span></span><br><span class="line">	AttributesCount   <span class="type">uint16</span>         <span class="comment">//属性数量</span></span><br><span class="line">	AttributeTable                   <span class="comment">// 属性表</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf ClassFile)</span></span> ToByteCode() []<span class="type">byte</span> {</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">0</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> Read(reader *ClassReader) {</span><br><span class="line">	reader.cf = cf</span><br><span class="line">	<span class="comment">//读取魔数</span></span><br><span class="line">	cf.readAndCheckMagic(reader)</span><br><span class="line">	<span class="comment">//读取版本号</span></span><br><span class="line">	cf.readAndCheckVersions(reader)</span><br><span class="line">	<span class="comment">//读取常量池</span></span><br><span class="line">	cf.ConstantPool = readConstantPool(reader)</span><br><span class="line">	cf.ConstantPoolCount = <span class="type">uint16</span>(<span class="built_in">len</span>(cf.ConstantPool))</span><br><span class="line"></span><br><span class="line">	cf.AccessFlags = reader.ReadUint16()</span><br><span class="line">	cf.ThisClass = reader.ReadUint16()</span><br><span class="line">	cf.SuperClass = reader.ReadUint16()</span><br><span class="line">	cf.Interfaces = reader.readUint16s()</span><br><span class="line">	cf.InterfacesCount = <span class="type">uint16</span>(<span class="built_in">len</span>(cf.Interfaces))</span><br><span class="line">	<span class="comment">//读取field 表</span></span><br><span class="line">	cf.Fields = readMembers(reader)</span><br><span class="line">	cf.FieldsCount = <span class="type">uint16</span>(<span class="built_in">len</span>(cf.Fields))</span><br><span class="line">	<span class="comment">//读取方法表</span></span><br><span class="line">	cf.Methods = readMembers(reader)</span><br><span class="line">	cf.MethodsCount = <span class="type">uint16</span>(<span class="built_in">len</span>(cf.Methods))</span><br><span class="line">	<span class="comment">//读取属性表</span></span><br><span class="line">	cf.AttributeTable = readAttributes(reader)</span><br><span class="line">	cf.AttributesCount = <span class="type">uint16</span>(<span class="built_in">len</span>(cf.AttributeTable))</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// store 指令 存储临时变量名 , //暂时与其他变量一样，改变常量池</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> AddConstInfo(info ConstantInfo) <span class="type">int</span> {</span><br><span class="line">	cf.ConstantPoolCount++</span><br><span class="line">	cf.ConstantPool = <span class="built_in">append</span>(cf.ConstantPool, info)</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">len</span>(cf.ConstantPool) - <span class="number">1</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> readAndCheckMagic(reader *ClassReader) {</span><br><span class="line">	magic := reader.ReadUint32()</span><br><span class="line">	<span class="keyword">if</span> magic != <span class="number">0xCAFEBABE</span> {</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"Bad magic!"</span>) <span class="comment">// TODO</span></span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> readAndCheckVersions(reader *ClassReader) {</span><br><span class="line">	cf.MinorVersion = reader.ReadUint16()</span><br><span class="line">	cf.MajorVersion = reader.ReadUint16()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> cf.MajorVersion {</span><br><span class="line">	<span class="keyword">case</span> <span class="number">45</span>:</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	<span class="keyword">case</span> <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">52</span>,</span><br><span class="line">		<span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>:</span><br><span class="line">		<span class="keyword">if</span> cf.MinorVersion == <span class="number">0</span> {</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">	<span class="built_in">panic</span>(<span class="string">"java.lang.UnsupportedClassVersionError!"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetThisClassName() <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">return</span> cf.GetClassName(cf.ThisClass)</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetSuperClassName() <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">return</span> cf.GetClassName(cf.SuperClass)</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetInterfaceNames() []<span class="type">string</span> {</span><br><span class="line">	<span class="keyword">return</span> cf.GetClassNames(cf.Interfaces)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetNameAndType(cpIndex <span class="type">uint16</span>) (name, _type <span class="type">string</span>) {</span><br><span class="line">	<span class="keyword">if</span> cpIndex &gt; <span class="number">0</span> {</span><br><span class="line">		ntInfo := cf.GetConstantInfo(cpIndex).(ConstantNameAndTypeInfo)</span><br><span class="line">		name = cf.GetUTF8(ntInfo.NameIndex)</span><br><span class="line">		_type = cf.GetUTF8(ntInfo.DescriptorIndex)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetClassName(cpIndex <span class="type">uint16</span>) <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">if</span> cpIndex == <span class="number">0</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">	}</span><br><span class="line">	classInfo := cf.GetConstantInfo(cpIndex).(ConstantClassInfo)</span><br><span class="line">	<span class="keyword">return</span> cf.GetUTF8(classInfo.NameIndex)</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetPackageName(cpIndex <span class="type">uint16</span>) <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">if</span> cpIndex == <span class="number">0</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">	}</span><br><span class="line">	pkgInfo := cf.GetConstantInfo(cpIndex).(ConstantPackageInfo)</span><br><span class="line">	<span class="keyword">return</span> cf.GetUTF8(pkgInfo.NameIndex)</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetModuleName(cpIndex <span class="type">uint16</span>) <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">if</span> cpIndex == <span class="number">0</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">	}</span><br><span class="line">	modInfo := cf.GetConstantInfo(cpIndex).(ConstantModuleInfo)</span><br><span class="line">	<span class="keyword">return</span> cf.GetUTF8(modInfo.NameIndex)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetClassNames(cpIndexes []<span class="type">uint16</span>) []<span class="type">string</span> {</span><br><span class="line">	ss := <span class="built_in">make</span>([]<span class="type">string</span>, <span class="built_in">len</span>(cpIndexes))</span><br><span class="line">	<span class="keyword">for</span> i, cpIndex := <span class="keyword">range</span> cpIndexes {</span><br><span class="line">		ss[i] = cf.GetClassName(cpIndex)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> ss</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetModuleNames(cpIndexes []<span class="type">uint16</span>) []<span class="type">string</span> {</span><br><span class="line">	ss := <span class="built_in">make</span>([]<span class="type">string</span>, <span class="built_in">len</span>(cpIndexes))</span><br><span class="line">	<span class="keyword">for</span> i, cpIndex := <span class="keyword">range</span> cpIndexes {</span><br><span class="line">		ss[i] = cf.GetModuleName(cpIndex)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> ss</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetRawUTF8(cpIndex <span class="type">uint16</span>) <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">if</span> cpIndex == <span class="number">0</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">	}</span><br><span class="line">	rawBytes := cf.GetConstantInfo(cpIndex).([]<span class="type">byte</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="type">string</span>(rawBytes)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// GetUTF8 从常量池中读取字符串</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetUTF8(cpIndex <span class="type">uint16</span>) <span class="type">string</span> {</span><br><span class="line">	<span class="keyword">if</span> cpIndex == <span class="number">0</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">	}</span><br><span class="line">	bytes := cf.GetConstantInfo(cpIndex).([]<span class="type">byte</span>)</span><br><span class="line">	<span class="keyword">return</span> DecodeMUTF8(bytes)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cf *ClassFile)</span></span> GetConstantInfo(cpIndex <span class="type">uint16</span>) ConstantInfo {</span><br><span class="line">	<span class="keyword">if</span> cpInfo := cf.ConstantPool[cpIndex]; cpInfo == <span class="literal">nil</span> {</span><br><span class="line">		<span class="built_in">panic</span>(fmt.Errorf(<span class="string">"invalid constant pool index: %d"</span>, cpIndex))</span><br><span class="line">	} <span class="keyword">else</span> {</span><br><span class="line">		<span class="keyword">return</span> cpInfo</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>上面代码参考项目：jvm.go</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/zxh0/jvm.go">https://github.com/zxh0/jvm.go</a></p>
+<p>‍</p>
+<p>解析class 和解析jvm指令，即可实现反编译和编辑class字节码，后续看自己能不能实现</p>
+<p>‍</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://javaguide.cn/java/jvm/class-file-structure.html">https://javaguide.cn/java/jvm/class-file-structure.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zachaxy.github.io/2017/05/09/%E6%89%8B%E5%86%99JVM%E7%B3%BB%E5%88%97-6-%E5%88%86%E6%9E%90class%E6%96%87%E4%BB%B6-%E5%B1%9E%E6%80%A7%E8%A1%A8">https://zachaxy.github.io/2017/05/09/%E6%89%8B%E5%86%99JVM%E7%B3%BB%E5%88%97-6-%E5%88%86%E6%9E%90class%E6%96%87%E4%BB%B6-%E5%B1%9E%E6%80%A7%E8%A1%A8</a></p>
+<p>‍</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/class/" rel="tag">class</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/cover/7.jpg" data-sizes="auto" alt="初识shellcode加载器（持续更新）" class="lazyload">
+      
+      <a href="/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          初识shellcode加载器（持续更新）
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">魔数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">2.</span> <span class="toc-text">版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">常量池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%A0%87%E5%BF%97"><span class="toc-number">4.</span> <span class="toc-text">访问标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E7%B1%BB%E3%80%81%E7%88%B6%E7%B1%BB%E3%80%81%E6%8E%A5%E5%8F%A3"><span class="toc-number">5.</span> <span class="toc-text">当前类、父类、接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">字段表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%A1%A8"><span class="toc-number">7.</span> <span class="toc-text">方法表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E8%A1%A8"><span class="toc-number">8.</span> <span class="toc-text">属性表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ContanstValue"><span class="toc-number">8.1.</span> <span class="toc-text">ContanstValue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Code"><span class="toc-number">8.2.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Exception"><span class="toc-number">8.3.</span> <span class="toc-text">Exception</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8-LocalVariableTable"><span class="toc-number">8.4.</span> <span class="toc-text">局部变量表(LocalVariableTable)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MethodParameters"><span class="toc-number">8.5.</span> <span class="toc-text">MethodParameters</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">8.6.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#InnerClasses"><span class="toc-number">8.6.1.</span> <span class="toc-text">InnerClasses</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LineNumberTable"><span class="toc-number">8.6.2.</span> <span class="toc-text">LineNumberTable</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SourceFile"><span class="toc-number">8.6.3.</span> <span class="toc-text">SourceFile</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#StackMapTable"><span class="toc-number">8.6.4.</span> <span class="toc-text">StackMapTable</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Signature"><span class="toc-number">8.6.5.</span> <span class="toc-text">Signature</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#BootstrapMethods"><span class="toc-number">8.6.6.</span> <span class="toc-text">BootstrapMethods</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class-%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90"><span class="toc-number"></span> <span class="toc-text">Class 文件解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">1.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">46</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">71</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2023-2025
+      <span class="footer-info-sep"></span>
+      Yyjccc
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        159.3k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        10:49
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">魔数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">2.</span> <span class="toc-text">版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-number">3.</span> <span class="toc-text">常量池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%A0%87%E5%BF%97"><span class="toc-number">4.</span> <span class="toc-text">访问标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E7%B1%BB%E3%80%81%E7%88%B6%E7%B1%BB%E3%80%81%E6%8E%A5%E5%8F%A3"><span class="toc-number">5.</span> <span class="toc-text">当前类、父类、接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">字段表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%A1%A8"><span class="toc-number">7.</span> <span class="toc-text">方法表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E8%A1%A8"><span class="toc-number">8.</span> <span class="toc-text">属性表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ContanstValue"><span class="toc-number">8.1.</span> <span class="toc-text">ContanstValue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Code"><span class="toc-number">8.2.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Exception"><span class="toc-number">8.3.</span> <span class="toc-text">Exception</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8-LocalVariableTable"><span class="toc-number">8.4.</span> <span class="toc-text">局部变量表(LocalVariableTable)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MethodParameters"><span class="toc-number">8.5.</span> <span class="toc-text">MethodParameters</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">8.6.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#InnerClasses"><span class="toc-number">8.6.1.</span> <span class="toc-text">InnerClasses</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LineNumberTable"><span class="toc-number">8.6.2.</span> <span class="toc-text">LineNumberTable</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SourceFile"><span class="toc-number">8.6.3.</span> <span class="toc-text">SourceFile</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#StackMapTable"><span class="toc-number">8.6.4.</span> <span class="toc-text">StackMapTable</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Signature"><span class="toc-number">8.6.5.</span> <span class="toc-text">Signature</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#BootstrapMethods"><span class="toc-number">8.6.6.</span> <span class="toc-text">BootstrapMethods</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class-%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90"><span class="toc-number"></span> <span class="toc-text">Class 文件解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">1.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">46</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">71</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+  </html>
+

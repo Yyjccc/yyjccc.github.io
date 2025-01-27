@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2024-11-09T16:26:26.641Z</updated>
+  <updated>2025-01-27T07:31:17.303Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>class文件结构</title>
+    <link href="https://yyjccc.github.io/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"/>
+    <id>https://yyjccc.github.io/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/</id>
+    <published>2025-01-27T07:27:37.084Z</published>
+    <updated>2025-01-27T07:31:17.303Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;java字节码，class文件，二进制类型文件，类似PE文件，也有一定的文件结构&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;官方文档：&lt;a href=&quot;https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-4.html&quot;&gt;https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-4.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;classs文件整体结构如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight c++&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ClassFile {&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u4             magic;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             minor_version;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             major_version;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             constant_pool_count;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    cp_info        constant_pool[constant_pool_count&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             access_flags;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             this_class;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             super_class;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2             interfaces_count;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    u2        </summary>
+      
+    
+    
+    
+    <category term="java" scheme="https://yyjccc.github.io/categories/java/"/>
+    
+    
+    <category term="java" scheme="https://yyjccc.github.io/tags/java/"/>
+    
+    <category term="class" scheme="https://yyjccc.github.io/tags/class/"/>
+    
+    <category term="jvm" scheme="https://yyjccc.github.io/tags/jvm/"/>
+    
+  </entry>
   
   <entry>
     <title>初识shellcode加载器（持续更新）</title>
