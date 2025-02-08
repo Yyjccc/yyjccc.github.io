@@ -1,3 +1,4 @@
+https://yyjccc.github.io/2025/02/08/Fastjosn-Jackson-Hessian%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/
 https://yyjccc.github.io/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/
 https://yyjccc.github.io/2024/11/09/%E5%88%9D%E8%AF%86shellcode%E5%8A%A0%E8%BD%BD%E5%99%A8/
 https://yyjccc.github.io/2024/11/02/NTLM/
@@ -122,6 +123,7 @@ https://yyjccc.github.io/tags/shellcode/
 https://yyjccc.github.io/tags/%E5%85%8D%E6%9D%80/
 https://yyjccc.github.io/tags/class/
 https://yyjccc.github.io/tags/jvm/
+https://yyjccc.github.io/tags/hessian/
 https://yyjccc.github.io/categories/java%E5%AE%89%E5%85%A8/
 https://yyjccc.github.io/categories/Life/
 https://yyjccc.github.io/categories/cve%E5%A4%8D%E7%8E%B0/

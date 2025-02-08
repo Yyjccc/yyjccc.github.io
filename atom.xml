@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2025-01-27T07:31:17.303Z</updated>
+  <updated>2025-02-08T09:49:48.525Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -17,11 +17,54 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Fastjosn_Jackson_Hessian原生反序列化</title>
+    <link href="https://yyjccc.github.io/2025/02/08/Fastjosn-Jackson-Hessian%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    <id>https://yyjccc.github.io/2025/02/08/Fastjosn-Jackson-Hessian%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</id>
+    <published>2025-02-08T08:59:50.866Z</published>
+    <updated>2025-02-08T09:49:48.525Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt; 发一篇很久之前的内容，最近有接触到了一点&lt;/p&gt;
+&lt;p&gt;这里的原生反序化指的是不依赖于其他jar包的反序列化链，或者是指狭义的java反序列化readObject方法的调用&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;h2 id=&quot;Fastjson原生反序列化&quot;&gt;&lt;a href=&quot;#Fastjson原生反序列化&quot; class=&quot;headerlink&quot; title=&quot;Fastjson原生反序列化&quot;&gt;&lt;/a&gt;Fastjson原生反序列化&lt;/h2&gt;&lt;p&gt;‍&lt;/p&gt;
+&lt;h3 id=&quot;条件&quot;&gt;&lt;a href=&quot;#条件&quot; class=&quot;headerlink&quot; title=&quot;条件&quot;&gt;&lt;/a&gt;条件&lt;/h3&gt;&lt;p&gt;fastjson 版本 &amp;lt;=2.0.26&lt;/p&gt;
+&lt;p&gt;(fastjson 1所有版本通杀)&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;JSONArray与JSONObject&lt;/code&gt; 实现了序列化接口&lt;/p&gt;
+&lt;p&gt;这里的点在于toString 方法&lt;/p&gt;
+&lt;p&gt;JSONObject 和 JSONArray 的toString 方法都是父类JSON 的toString 方法&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/2025/2-8/Snipaste_2024-10-01_18-27-54-20241001182914-ng78365.png&quot;&gt;​&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;p&gt;在之前学习fastjson BCEL链的时候，就知道要用parse 方法触发，也就是套几层，时key为JSONObject 对象，调用对应的toString 方法（fastjson&amp;lt;=1.2.36），就会触发对应的getter方法，这里就再来具体看看&lt;/p&gt;
+&lt;p&gt;‍&lt;/p&gt;
+&lt;h3 id=&quot;toString-触发getter&quot;&gt;&lt;a href=&quot;#toString-触发getter&quot; class=&quot;headerlink&quot; title=&quot;toString() 触发getter&quot;&gt;&lt;/a&gt;toString() 触发getter&lt;/h3&gt;&lt;p&gt;跟进&lt;code&gt;JSONSerializer#write&lt;/code&gt;​&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;SerializeConfig#getObjectWriter&lt;/code&gt;​ 根据我们的类型获取&lt;code&gt;ObjectWriter&lt;/co</summary>
+      
+    
+    
+    
+    <category term="java" scheme="https://yyjccc.github.io/categories/java/"/>
+    
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="反序列化漏洞" scheme="https://yyjccc.github.io/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/"/>
+    
+    <category term="fastjson" scheme="https://yyjccc.github.io/tags/fastjson/"/>
+    
+    <category term="hessian" scheme="https://yyjccc.github.io/tags/hessian/"/>
+    
+  </entry>
+  
+  <entry>
     <title>class文件结构</title>
     <link href="https://yyjccc.github.io/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"/>
     <id>https://yyjccc.github.io/2025/01/27/class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/</id>
     <published>2025-01-27T07:27:37.084Z</published>
-    <updated>2025-01-27T07:31:17.303Z</updated>
+    <updated>2025-01-27T07:47:14.980Z</updated>
     
     
       
