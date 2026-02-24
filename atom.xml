@@ -6,7 +6,7 @@
   <link href="https://yyjccc.github.io/atom.xml" rel="self"/>
   
   <link href="https://yyjccc.github.io/"/>
-  <updated>2025-02-08T10:05:00.528Z</updated>
+  <updated>2026-02-24T08:05:26.074Z</updated>
   <id>https://yyjccc.github.io/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>COM组件对象模型</title>
+    <link href="https://yyjccc.github.io/2025/10/31/COM-%E7%BB%84%E4%BB%B6%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/"/>
+    <id>https://yyjccc.github.io/2025/10/31/COM-%E7%BB%84%E4%BB%B6%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/</id>
+    <published>2025-10-31T13:35:09.000Z</published>
+    <updated>2026-02-24T08:05:26.074Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;COM-组件对象模型&quot;&gt;&lt;a href=&quot;#COM-组件对象模型&quot; class=&quot;headerlink&quot; title=&quot;COM 组件对象模型&quot;&gt;&lt;/a&gt;COM 组件对象模型&lt;/h1&gt;&lt;p&gt;　　	COM （Component Object Model，即组件对象模型）它是微软提出的一套开发软件的方法与规范。它也代表了一种软件开发思想，那就是面向组件编程的思想&lt;/p&gt;
+&lt;p&gt;　　	COM 是一个平台无关、分布式、面向对象的系统  &lt;strong&gt;，&lt;/strong&gt; 用于创建可交互的二进制软件组件。COM 是微软 OLE（对象链接与嵌入）（复合文档）和 ActiveX（启用 Internet 的组件）技术的基础技术，COM 旨在促进软件互操作性；也就是说，即使两个或多个应用程序或“组件”是由不同的供应商在不同的时间用不同的编程语言编写的，或者运行在不同的机器和不同的操作系统上，它们也能轻松地相互交互&lt;/p&gt;
+&lt;p&gt;　　面向组件编程 （COP）:&lt;/p&gt;
+&lt;p&gt;　　模块分隔。这里的分隔有两层含义，第一就是要将应用程序按功能划分成多个模块；第二就是每一个模块要有相当程度的独立性&lt;/p&gt;
+&lt;p&gt;　　‍&lt;/p&gt;
+&lt;p&gt;　　COM 最初是为了使 Microsoft Office 应用程序能够在文档之间进行通信和交换数据而创建的，例如将 Excel 图表嵌入到 Word 文档或 PowerPoint 演示文稿中 &amp;lt;—这种功能称为 OLE&lt;/p&gt;
+&lt;p&gt;　　‍&lt;/p&gt;
+&lt;p&gt;　　‍&lt;/p&gt;
+&lt;h2 id=&quot;COM-组件组成&quot;&gt;&lt;a href=&quot;#COM-组件组成&quot; class=&quot;headerlink&quot; title=&quot;COM 组件组成&quot;&gt;&lt;/a&gt;COM 组件组成&lt;/h2&gt;&lt;p&gt;　　‍&lt;/p&gt;
+&lt;h3 id=&quot;对象与接口&quot;&gt;&lt;a href=&quot;#对象与接口&quot; class=&quot;headerlink&quot; title=&quot;对象与接口&quot;&gt;&lt;/a&gt;对象与接口&lt;/h3&gt;&lt;p&gt;　　一个COM组件就是一个dll文件或者一个exe文件，一个组件可以包含多个COM对象，并且每个COM对象可以实现多个接口。&lt;/p&gt;
+&lt;p&gt;　　COM对象是通过接口来进行进程间通信的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/2026/2-24/image-20251031221435-v3tuipz.png&quot;</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://yyjccc.github.io/tags/Windows/"/>
+    
+  </entry>
   
   <entry>
     <title>Fastjosn_Jackson_Hessian原生反序列化</title>
@@ -191,7 +224,7 @@
     <link href="https://yyjccc.github.io/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/"/>
     <id>https://yyjccc.github.io/2024/10/30/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/</id>
     <published>2024-10-30T08:23:18.788Z</published>
-    <updated>2024-10-30T08:57:30.143Z</updated>
+    <updated>2026-02-24T08:30:27.316Z</updated>
     
     
       
@@ -218,7 +251,7 @@
 &lt;/ol&gt;
 &lt;p&gt;包含以 EXE 文件为代表的 “可执行文件”、以DLL文件为代表的“动态链接库”。因为他们常常被直接“复制”到内存，有“镜像”的某种意思。&lt;/p&gt;
 &lt;ol start=&quot;2&quot;&gt;
-&lt;li&gt;RAV&lt;/li&gt;
+&lt;li&gt;RVA&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Relatively Virtual Address。偏移(又称“相对虚拟地址”)。相对镜像基址的偏移。&lt;/p&gt;
 &lt;p&gt;一般来说，PE文件在硬盘上和在内存里是不完全一样的。各个节在硬盘上是连续的，而在内存中是</summary>
@@ -229,9 +262,9 @@
     <category term="Windows" scheme="https://yyjccc.github.io/categories/Windows/"/>
     
     
-    <category term="二进制" scheme="https://yyjccc.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/"/>
-    
     <category term="Windows" scheme="https://yyjccc.github.io/tags/Windows/"/>
+    
+    <category term="二进制" scheme="https://yyjccc.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/"/>
     
   </entry>
   
@@ -290,7 +323,7 @@
     <link href="https://yyjccc.github.io/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/"/>
     <id>https://yyjccc.github.io/2024/09/19/Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/</id>
     <published>2024-09-19T09:22:47.238Z</published>
-    <updated>2024-11-07T17:17:45.816Z</updated>
+    <updated>2026-02-24T08:36:40.292Z</updated>
     
     
       
@@ -350,13 +383,13 @@
     
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
     
-    <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
-    
     <category term="Apache" scheme="https://yyjccc.github.io/tags/Apache/"/>
     
     <category term="cve" scheme="https://yyjccc.github.io/tags/cve/"/>
     
     <category term="Govvy" scheme="https://yyjccc.github.io/tags/Govvy/"/>
+    
+    <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
     
     <category term="路径遍历" scheme="https://yyjccc.github.io/tags/%E8%B7%AF%E5%BE%84%E9%81%8D%E5%8E%86/"/>
     
@@ -406,9 +439,9 @@
     <category term="cve复现" scheme="https://yyjccc.github.io/categories/cve%E5%A4%8D%E7%8E%B0/"/>
     
     
-    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
-    
     <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
+    
+    <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="geoserver" scheme="https://yyjccc.github.io/tags/geoserver/"/>
     
@@ -434,11 +467,11 @@
     <category term="Life" scheme="https://yyjccc.github.io/categories/Life/"/>
     
     
+    <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
+    
     <category term="java安全" scheme="https://yyjccc.github.io/tags/java%E5%AE%89%E5%85%A8/"/>
     
     <category term="apache commons" scheme="https://yyjccc.github.io/tags/apache-commons/"/>
-    
-    <category term="表达式注入" scheme="https://yyjccc.github.io/tags/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/"/>
     
   </entry>
   
@@ -1268,127 +1301,6 @@
   </entry>
   
   <entry>
-    <title>IDA的使用与re浅浅入门</title>
-    <link href="https://yyjccc.github.io/2023/11/06/IDA%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8Ere%E6%B5%85%E6%B5%85%E5%85%A5%E9%97%A8/"/>
-    <id>https://yyjccc.github.io/2023/11/06/IDA%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8Ere%E6%B5%85%E6%B5%85%E5%85%A5%E9%97%A8/</id>
-    <published>2023-11-05T16:21:39.023Z</published>
-    <updated>2023-11-06T07:14:49.166Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;IDA的使用与re浅浅入门&quot;&gt;&lt;a href=&quot;#IDA的使用与re浅浅入门&quot; class=&quot;headerlink&quot; title=&quot;IDA的使用与re浅浅入门&quot;&gt;&lt;/a&gt;IDA的使用与re浅浅入门&lt;/h1&gt;&lt;h2 id=&quot;界面介绍&quot;&gt;&lt;a href=&quot;#界面介绍&quot; class=&quot;headerlink&quot; title=&quot;界面介绍&quot;&gt;&lt;/a&gt;界面介绍&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;左侧是函数窗口，显示一些函数，可以crtf+f寻找main函数,找到主程序&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/2.png&quot; height=&quot;500px&quot;&gt;
-
-&lt;ul&gt;
-&lt;li&gt;主体是汇编代码，可以通过空格切换查看视图&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/3.png&quot;&gt;
-
-&lt;ul&gt;
-&lt;li&gt;内存分段，直接明了看所在内存的位置&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/4.png&quot;&gt;
-
-&lt;h2 id=&quot;常用快捷键&quot;&gt;&lt;a href=&quot;#常用快捷键&quot; class=&quot;headerlink&quot; title=&quot;常用快捷键&quot;&gt;&lt;/a&gt;常用快捷键&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;F5键–反汇编，，转化为伪C代码&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/5.png&quot;&gt; 
-
-&lt;ul&gt;
-&lt;li&gt;shift+F12 切换到字符串展示界面(String Window)所有字符串在这里显示&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/6.png&quot;&gt; 
-
-&lt;ul&gt;
-&lt;li&gt;crtf+X 交叉引用 寻找数据被引用的地方&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/7.png&quot;&gt; 
-
-&lt;ul&gt;
-&lt;li&gt;g键 跳转到地址处&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/8.png&quot;&gt; 
-
-&lt;ul&gt;
-&lt;li&gt;alt+t  搜索指令&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/9.png&quot;&gt; 
-
-&lt;img src=&quot;/img/11-6/10.png&quot;&gt; 
-
-&lt;ul&gt;
-&lt;li&gt;n键对函数进行重命名&lt;/li&gt;
-&lt;/ul&gt;
-&lt;img src=&quot;/img/11-6/11.png&quot;&gt; 
-
-&lt;ul&gt;
-&lt;li&gt;ctrl+z撤销操作&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;数据操</summary>
-      
-    
-    
-    
-    
-    <category term="二进制" scheme="https://yyjccc.github.io/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/"/>
-    
-    <category term="re入门" scheme="https://yyjccc.github.io/tags/re%E5%85%A5%E9%97%A8/"/>
-    
-    <category term="工具使用" scheme="https://yyjccc.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>创建和配置Servlet项目</title>
-    <link href="https://yyjccc.github.io/2023/10/15/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/"/>
-    <id>https://yyjccc.github.io/2023/10/15/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/</id>
-    <published>2023-10-15T03:45:12.031Z</published>
-    <updated>2023-10-15T03:49:39.074Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;创建和配置Servlet项目&quot;&gt;&lt;a href=&quot;#创建和配置Servlet项目&quot; class=&quot;headerlink&quot; title=&quot;创建和配置Servlet项目&quot;&gt;&lt;/a&gt;创建和配置Servlet项目&lt;/h2&gt;&lt;p&gt;servlet是原生的javaweb&lt;/p&gt;
-&lt;p&gt;这里学习javaweb时候，配置Servlet项目，idea社区版怎么手动配置Servlet项目,于是就搞了一个教程,也是算入坑javaweb了&lt;/p&gt;
-&lt;h5 id=&quot;1-创建一个项目&quot;&gt;&lt;a href=&quot;#1-创建一个项目&quot; class=&quot;headerlink&quot; title=&quot;1.创建一个项目&quot;&gt;&lt;/a&gt;&lt;strong&gt;1.创建一个项目&lt;/strong&gt;&lt;/h5&gt;&lt;img src=&quot;/img/9-8/1.png&quot;&gt; 
-
-&lt;h5 id=&quot;2-添加web模块&quot;&gt;&lt;a href=&quot;#2-添加web模块&quot; class=&quot;headerlink&quot; title=&quot;2.添加web模块&quot;&gt;&lt;/a&gt;&lt;strong&gt;2.添加web模块&lt;/strong&gt;&lt;/h5&gt;&lt;p&gt;先选择创建的项目，打开模块设置&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/2.png&quot;&gt; 
-
-
-
-&lt;p&gt;在模块中选中自己的项目，添加web模块&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/3.png&quot;&gt; 
-
-&lt;p&gt;然后确定&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/4.png&quot;&gt; 
-
-&lt;h5 id=&quot;3-配置web模块&quot;&gt;&lt;a href=&quot;#3-配置web模块&quot; class=&quot;headerlink&quot; title=&quot;3.配置web模块&quot;&gt;&lt;/a&gt;&lt;strong&gt;3.配置web模块&lt;/strong&gt;&lt;/h5&gt;&lt;p&gt;在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/5.png&quot;&gt; 
-
-&lt;p&gt;再次打开模块设置，在模块中选择我们的项目，设置输出路径，将两个路径改为刚创建好的classes目录&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/6.png&quot;&gt; 
-
-&lt;p&gt;点击修正，然后创建一个工件&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/7.png&quot;&gt; 
-
-&lt;p&gt;最后确定&lt;/p&gt;
-&lt;img src=&quot;/img/9-8/8.png&quot;&gt; 
-
-&lt;h5 id=&quot;4-</summary>
-      
-    
-    
-    
-    
-    <category term="java" scheme="https://yyjccc.github.io/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
     <title>2023SHCTF之web的wp</title>
     <link href="https://yyjccc.github.io/2023/10/03/2023SHCTF%E4%B9%8Bweb%E7%9A%84wp/"/>
     <id>https://yyjccc.github.io/2023/10/03/2023SHCTF%E4%B9%8Bweb%E7%9A%84wp/</id>
@@ -1568,106 +1480,6 @@
     <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
     
     <category term="基础漏洞" scheme="https://yyjccc.github.io/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>命令执行漏洞总结</title>
-    <link href="https://yyjccc.github.io/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/"/>
-    <id>https://yyjccc.github.io/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/</id>
-    <published>2023-08-05T15:34:41.951Z</published>
-    <updated>2023-12-10T15:44:56.686Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;命令执行漏洞（RCE）&quot;&gt;&lt;a href=&quot;#命令执行漏洞（RCE）&quot; class=&quot;headerlink&quot; title=&quot;命令执行漏洞（RCE）&quot;&gt;&lt;/a&gt;命令执行漏洞（RCE）&lt;/h1&gt;&lt;h2 id=&quot;相关函数&quot;&gt;&lt;a href=&quot;#相关函数&quot; class=&quot;headerlink&quot; title=&quot;相关函数&quot;&gt;&lt;/a&gt;相关函数&lt;/h2&gt;&lt;p&gt;php 常见的调用外部程序的函数&lt;/p&gt;
-&lt;p&gt;系统命令执行&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;system(args)–有回显&lt;/li&gt;
-&lt;li&gt;shell_exec(args)–无回显必须输出&lt;/li&gt;
-&lt;li&gt;passthru()&lt;/li&gt;
-&lt;li&gt;popen(handle,mode)–无回显&lt;/li&gt;
-&lt;li&gt;exec(args)–回显最后一行，必须加echo输出&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;proc_open()&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;`(反单引号)&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;在php中称之为执行运算符，PHP 将尝试将反引号中的内容作为 shell 命令来执行，并将其输出信息返回（即，可以赋给一个变量而不是简单地丢弃到标准输出，使用反引号运算符“`”的效果与函数 shell_exec() 相同。&lt;/p&gt;
-&lt;p&gt;php代码执行&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;assert()a&lt;/li&gt;
-&lt;li&gt;preg_replace ( $pattern ,$replacement ,  $subject [,  $limit = -1 [, &amp;amp;$count ]] )&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;搜索subject中匹配pattern的部分， 以replacement进行替换。当使用被弃用的 e 修饰符时, 这个函数会转义一些字符，在完成替换后，引擎会将结果字符串作为php代码使用eval方式进行评估并将返回值作为最终参与替换的字符串&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;eval()&lt;/li&gt;
-&lt;li&gt;call_user_func (  $callback [, $parameter [, $… ]] )&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;第一个参数 callback 是被调用的回调函数，其余参数是回调函数的参数。 传入call_user_func()的参数不能为引用传递。&lt;/p</summary>
-      
-    
-    
-    
-    
-    <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
-    
-    <category term="基础漏洞" scheme="https://yyjccc.github.io/tags/%E5%9F%BA%E7%A1%80%E6%BC%8F%E6%B4%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JavaScript的原型链污染</title>
-    <link href="https://yyjccc.github.io/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/"/>
-    <id>https://yyjccc.github.io/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/</id>
-    <published>2023-07-26T02:55:53.923Z</published>
-    <updated>2023-12-10T15:37:04.808Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;js原型链污染&quot;&gt;&lt;a href=&quot;#js原型链污染&quot; class=&quot;headerlink&quot; title=&quot;js原型链污染&quot;&gt;&lt;/a&gt;js原型链污染&lt;/h1&gt;&lt;h2 id=&quot;基础概念辨析&quot;&gt;&lt;a href=&quot;#基础概念辨析&quot; class=&quot;headerlink&quot; title=&quot;基础概念辨析&quot;&gt;&lt;/a&gt;基础概念辨析&lt;/h2&gt;&lt;h3 id=&quot;原型&quot;&gt;&lt;a href=&quot;#原型&quot; class=&quot;headerlink&quot; title=&quot;原型&quot;&gt;&lt;/a&gt;&lt;strong&gt;原型&lt;/strong&gt;&lt;/h3&gt;&lt;p&gt;js中一切皆对象,js的每个对象都有一个属性原型（prototype），原型本身也是一个对象，因此该原型也有一个prototype指向上层原型，直到为null，这样就构成了原型链&lt;/p&gt;
-&lt;p&gt;简单来说，原型链是javascript中类继承的一种机制，每个对象都有对应的原型，储存了定义的属性和方法，之中包含了prototype，指向上一级的原型。最上层Object原型中的prototype为null&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;特性&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;类定义中的属性，会在创建对象时在对象中创建，类定义的方法而是存在于原型之中。当使用没有定义的属性和方法时，就会顺着原型链一直寻找，直到为undefined,用此来实现继承，子类能用父类的属性和方法&lt;/p&gt;
-&lt;p&gt;示例&lt;/p&gt;
-&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title function_&quot;&gt;Person&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;name&lt;/span&gt;) {&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;variable language_&quot;&gt;this&lt;/span&gt;.&lt;span class=&quot;property&quot;&gt;name&lt;/span&gt; = name;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   }&lt;/span&gt;&lt;br&gt;&lt;span class=</summary>
-      
-    
-    
-    
-    
-    <category term="web安全" scheme="https://yyjccc.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>http概述</title>
-    <link href="https://yyjccc.github.io/2023/07/20/http%E6%A6%82%E8%BF%B0/"/>
-    <id>https://yyjccc.github.io/2023/07/20/http%E6%A6%82%E8%BF%B0/</id>
-    <published>2023-07-20T02:28:58.731Z</published>
-    <updated>2023-07-20T04:46:54.233Z</updated>
-    
-    
-      
-      
-    <summary type="html">&lt;hr&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;h4 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h4&gt;&lt;p&gt;​	Web 使用一种名为 HTTP（超文本传输协议 ）的协议作为规范，完成从客户端到服务器端等一系列运作流 程。而协议是指规则的约定。Web 是建立在 HTTP 协议上通 信的。 http协议主要是计算机网络系统上的应   用层。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;h4 id=&quot;TCP-IP协议族&quot;&gt;&lt;a href=&quot;#TCP-IP协议族&quot; class=&quot;headerlink&quot; title=&quot;TCP/IP协议族&quot;&gt;&lt;/a&gt;TCP/IP协议族&lt;/h4&gt;&lt;h5 id=&quot;主要内容：&quot;&gt;&lt;a href=&quot;#主要内容：&quot; class=&quot;headerlink&quot; title=&quot;主要内容：&quot;&gt;&lt;/a&gt;主要内容：&lt;/h5&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;应用层：FTP（文件传输协议）和DNS（域名系统）和http协议&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;传输层：TCP（传输控制协议）和UDP（用户数据报协议）&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;网络层：处理在网络上流动的数据包 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;链路层：处理连接网络的硬件部分 &lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;h4 id=&quot;IP、TCP和DNS：&quot;&gt;&lt;a href=&quot;#IP、TCP和DNS：&quot; class=&quot;headerlink&quot; title=&quot;IP、TCP和DNS：&quot;&gt;&lt;/a&gt;IP、TCP和DNS：&lt;/h4&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;</summary>
-      
-    
-    
-    
-    
-    <category term="web基础" scheme="https://yyjccc.github.io/tags/web%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   

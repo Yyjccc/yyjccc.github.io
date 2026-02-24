@@ -203,79 +203,37 @@
   <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
-      <a class="post-link" href="/2023/11/06/IDA%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8Ere%E6%B5%85%E6%B5%85%E5%85%A5%E9%97%A8/" aria-label="IDA的使用与re浅浅入门"></a>
+      <a class="post-link" href="/2023/12/05/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E8%AF%95/" aria-label="fastjson反序列化解析过程调试"></a>
     
     
     <div class="post-cover-left">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20240409/d5d041d0a34a8970fff3c21578c31a9b.jpg" data-sizes="auto" alt="IDA的使用与re浅浅入门" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/12.png" data-sizes="auto" alt="fastjson反序列化解析过程调试" class="lazyload">
         
       
     </div>
     <div class="post-info">
       <div class="post-meta">
-        <span><span class="icon-calendar"></span>2023-11-06</span>
-        <span><span class="icon-pencil"></span>618 字</span>
-        <span><span class="icon-clock"></span>2 分钟</span>
+        <span><span class="icon-calendar"></span>2023-12-05</span>
+        <span><span class="icon-pencil"></span>1.8k 字</span>
+        <span><span class="icon-clock"></span>6 分钟</span>
       </div>
-      <h2 class="post-title">IDA的使用与re浅浅入门</h2>
+      <h2 class="post-title">fastjson反序列化解析过程调试</h2>
       <article class="post-article">
         
-          IDA的使用与re浅浅入门界面介绍
-左侧是函数窗口，显示一些函数，可以crtf+f寻找main函数,找到主程序
+          fastjson反序列化解析过程调试简单水一下fastjson反序列化解析过程的调试
+介绍​    fastjson是阿里巴巴开源的java中解析json的一个组件。其功能就是将json字符串与java对象进行相互转化。正如其名，解析j转化速度很快
+​     但fastjson多个版本都爆出反序列化漏洞，因此当遇到json时，可以看是否用了fastjson，再测是否存在漏洞
+​	当json中含有@type字段时，fastjson会将json解析为对应类的对象
+​	本篇文章主要是fastjson在反序列化解析的调试
+调式的代码环境：
 
+jdk8
+fastjson 1.2.24
 
-
-
-主体是汇编代码，可以通过空格切换查看视图
-
-
-
-
-内存分段，直接明了看所在内存的位置
-
-
-
-常用快捷键
-F5键–反汇编，，转化为伪C代码
-
- 
-
-
-shift+F12 切换到字符串展示界面(String Window)所有字符串在这里显示
-
- 
-
-
-crtf+X 交叉引用 寻找数据被引用的地方
-
- 
-
-
-g键 跳转到地址处
-
- 
-
-
-alt+t  搜索指令
-
- 
-
- 
-
-
-n键对函数进行重命名
-
- 
-
-
-ctrl+z撤销操作
-
-数据操作
-
-d键转化数据格式，h结尾代表十六进制
+导入（pom.
         
       </article>
     </div>
@@ -288,67 +246,13 @@ d键转化数据格式，h结尾代表十六进制
   <div class="post-wrapper">
   <div class="post-wrap-right" data-aos="fade-up">
     
-    <a class="post-link" href="/2023/10/15/%E5%88%9B%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AEServlet%E9%A1%B9%E7%9B%AE/" aria-label="创建和配置Servlet项目"></a>
+    <a class="post-link" href="/2023/10/03/2023SHCTF%E4%B9%8Bweb%E7%9A%84wp/" aria-label="2023SHCTF之web的wp"></a>
     
     <div class="post-cover-right">
       
         
         
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="创建和配置Servlet项目" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2023-10-15</span>
-        <span><span class="icon-pencil"></span>486 字</span>
-        <span><span class="icon-clock"></span>1 分钟</span>
-      </div>
-      <h2 class="post-title">创建和配置Servlet项目</h2>
-      <article class="post-article">
-        
-          创建和配置Servlet项目servlet是原生的javaweb
-这里学习javaweb时候，配置Servlet项目，idea社区版怎么手动配置Servlet项目,于是就搞了一个教程,也是算入坑javaweb了
-1.创建一个项目 
-
-2.添加web模块先选择创建的项目，打开模块设置
- 
-
-
-
-在模块中选中自己的项目，添加web模块
- 
-
-然后确定
- 
-
-3.配置web模块在生成的web目录下的WEB-INF目录下创建classes目录，用于存放编译后的文件
- 
-
-再次打开模块设置，在模块中选择我们的项目，设置输出路径，将两个路径改为刚创建好的classes目录
- 
-
-点击修正，然后创建一个工件
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
-  
-  <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2023/10/03/2023SHCTF%E4%B9%8Bweb%E7%9A%84wp/" aria-label="2023SHCTF之web的wp"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://cdn.pixabay.com/photo/2023/11/15/13/55/woman-8390124_1280.jpg" data-sizes="auto" alt="2023SHCTF之web的wp" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/14.png" data-sizes="auto" alt="2023SHCTF之web的wp" class="lazyload">
         
       
     </div>
@@ -375,15 +279,16 @@ d键转化数据格式，h结尾代表十六进制
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2023/09/12/2023MoeCTF%E4%B9%8Bweb%E7%9A%84wp/" aria-label="2023MoeCTF之web的wp"></a>
+      <a class="post-link" href="/2023/09/12/2023MoeCTF%E4%B9%8Bweb%E7%9A%84wp/" aria-label="2023MoeCTF之web的wp"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2024/01/22/10/49/ai-generated-8524877_1280.jpg" data-sizes="auto" alt="2023MoeCTF之web的wp" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/3.jpg" data-sizes="auto" alt="2023MoeCTF之web的wp" class="lazyload">
         
       
     </div>
@@ -422,16 +327,15 @@ Web入门指北签到题二
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2023/08/28/%E5%85%A5%E9%97%A8flask%E6%A1%86%E6%9E%B6/" aria-label="入门flask框架"></a>
+    <a class="post-link" href="/2023/08/28/%E5%85%A5%E9%97%A8flask%E6%A1%86%E6%9E%B6/" aria-label="入门flask框架"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20240409/d5d041d0a34a8970fff3c21578c31a9b.jpg" data-sizes="auto" alt="入门flask框架" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/6.jpg" data-sizes="auto" alt="入门flask框架" class="lazyload">
         
       
     </div>
@@ -461,15 +365,16 @@ WSGI工具箱采用Werkzeug(路由模块)，模板引擎采用jinja2
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
-    <a class="post-link" href="/2023/08/28/%E5%88%9D%E6%8E%A2python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/" aria-label="初探python沙箱逃逸"></a>
+      <a class="post-link" href="/2023/08/28/%E5%88%9D%E6%8E%A2python%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/" aria-label="初探python沙箱逃逸"></a>
     
-    <div class="post-cover-right">
+    
+    <div class="post-cover-left">
       
         
         
-          <img data-src="https://pic.3gbizhi.com/uploads/20240409/d5d041d0a34a8970fff3c21578c31a9b.jpg" data-sizes="auto" alt="初探python沙箱逃逸" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/3.jpg" data-sizes="auto" alt="初探python沙箱逃逸" class="lazyload">
         
       
     </div>
@@ -500,16 +405,15 @@ timeit：timeit.sys、timeit.timeit(&#34;__import__(&#39;os&#39;).sys
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
-      <a class="post-link" href="/2023/08/23/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93-mysql/" aria-label="sql注入漏洞总结"></a>
+    <a class="post-link" href="/2023/08/23/sql%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93-mysql/" aria-label="sql注入漏洞总结"></a>
     
-    
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="sql注入漏洞总结" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/1.jpg" data-sizes="auto" alt="sql注入漏洞总结" class="lazyload">
         
       
     </div>
@@ -549,132 +453,6 @@ group_co
   
   
   <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-    <a class="post-link" href="/2023/08/05/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" aria-label="命令执行漏洞总结"></a>
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://yyjccc.github.io/images/cover/5.jpg" data-sizes="auto" alt="命令执行漏洞总结" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2023-08-05</span>
-        <span><span class="icon-pencil"></span>4.5k 字</span>
-        <span><span class="icon-clock"></span>17 分钟</span>
-      </div>
-      <h2 class="post-title">命令执行漏洞总结</h2>
-      <article class="post-article">
-        
-          命令执行漏洞（RCE）相关函数php 常见的调用外部程序的函数
-系统命令执行
-
-system(args)–有回显
-shell_exec(args)–无回显必须输出
-passthru()
-popen(handle,mode)–无回显
-exec(args)–回显最后一行，必须加echo输出
-proc_open()
-`(反单引号)
-
-在php中称之为执行运算符，PHP 将尝试将反引号中的内容作为 shell 命令来执行，并将其输出信息返回（即，可以赋给一个变量而不是简单地丢弃到标准输出，使用反引号运算符“`”的效果与函数 shell_exec() 相同。
-php代码执行
-
-assert()a
-pre
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
-  
-  <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2023/07/26/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/" aria-label="JavaScript的原型链污染"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://pic.3gbizhi.com/uploads/20230911/c63af4ab3f51787272e698a737671b51.jpg" data-sizes="auto" alt="JavaScript的原型链污染" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2023-07-26</span>
-        <span><span class="icon-pencil"></span>1.1k 字</span>
-        <span><span class="icon-clock"></span>4 分钟</span>
-      </div>
-      <h2 class="post-title">JavaScript的原型链污染</h2>
-      <article class="post-article">
-        
-          js原型链污染基础概念辨析原型js中一切皆对象,js的每个对象都有一个属性原型（prototype），原型本身也是一个对象，因此该原型也有一个prototype指向上层原型，直到为null，这样就构成了原型链
-简单来说，原型链是javascript中类继承的一种机制，每个对象都有对应的原型，储存了定义的属性和方法，之中包含了prototype，指向上一级的原型。最上层Object原型中的prototype为null
-特性
-类定义中的属性，会在创建对象时在对象中创建，类定义的方法而是存在于原型之中。当使用没有定义的属性和方法时，就会顺着原型链一直寻找，直到为undefined,用此来实现继承，子
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
-  
-  <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-    <a class="post-link" href="/2023/07/20/http%E6%A6%82%E8%BF%B0/" aria-label="http概述"></a>
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://yyjccc.github.io/images/cover/5.jpg" data-sizes="auto" alt="http概述" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2023-07-20</span>
-        <span><span class="icon-pencil"></span>3.1k 字</span>
-        <span><span class="icon-clock"></span>11 分钟</span>
-      </div>
-      <h2 class="post-title">http概述</h2>
-      <article class="post-article">
-        
-          
-
-概述​	Web 使用一种名为 HTTP（超文本传输协议 ）的协议作为规范，完成从客户端到服务器端等一系列运作流 程。而协议是指规则的约定。Web 是建立在 HTTP 协议上通 信的。 http协议主要是计算机网络系统上的应   用层。
-
-TCP/IP协议族主要内容：
-
-应用层：FTP（文件传输协议）和DNS（域名系统）和http协议传输层：TCP（传输控制协议）和UDP（用户数据报协议）网络层：处理在网络上流动的数据包 链路层：处理连接网络的硬件部分 
-
-
-IP、TCP和DNS：
-
-**IP**IP地址：指明被分配的地址MAC地址：指网卡所属固定的地址运作方式：利用IP指明目标，中转时利用
-        
-      </article>
-    </div>
-  </div>
-  </div>
-
-
-  
-  
-  <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
       <a class="post-link" href="/2023/07/19/hello-world/" aria-label="Hello World"></a>
@@ -684,7 +462,7 @@ IP、TCP和DNS：
       
         
         
-          <img data-src="https://cdn.pixabay.com/photo/2023/08/13/13/03/girl-8187440_1280.jpg" data-sizes="auto" alt="Hello World" class="lazyload">
+          <img data-src="https://yyjccc.github.io/images/cover/13.png" data-sizes="auto" alt="Hello World" class="lazyload">
         
       
     </div>
@@ -729,7 +507,7 @@ IP、TCP和DNS：
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">47</div>
+    <div class="sidebar-state-number">43</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -737,7 +515,7 @@ IP、TCP和DNS：
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">72</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -793,7 +571,7 @@ IP、TCP和DNS：
     
     <div>
       <span class="icon-copyright"></span>
-      2023-2025
+      2023-2026
       <span class="footer-info-sep"></span>
       Yyjccc
     </div>
@@ -806,7 +584,7 @@ IP、TCP和DNS：
     
       <div>
         <span class="icon-brush"></span>
-        163.6k
+        162k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         11:09
@@ -841,7 +619,7 @@ IP、TCP和DNS：
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">47</div>
+    <div class="sidebar-state-number">43</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -849,7 +627,7 @@ IP、TCP和DNS：
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">72</div>
+    <div class="sidebar-state-number">69</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -1106,6 +884,6 @@ IP、TCP和DNS：
 
   <!-- hexo injector body_end start -->
 <script src="/js/insert_highlight.js" data-pjax></script>
-<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+<!-- hexo injector body_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
   </html>
 

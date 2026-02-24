@@ -1,0 +1,1244 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  data-theme="dark" >
+  <head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'true');
+  </script>
+  <!-- End Google Analytics -->
+
+
+  
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
+
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};</script>
+  
+  
+  <title>
+    COM组件对象模型 |
+    
+    yyjccc的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  <meta name="description" content="COM 组件对象模型　　	COM （Component Object Model，即组件对象模型）它是微软提出的一套开发软件的方法与规范。它也代表了一种软件开发思想，那就是面向组件编程的思想 　　	COM 是一个平台无关、分布式、面向对象的系统  ， 用于创建可交互的二进制软件组件。COM 是微软 OLE（对象链接与嵌入）（复合文档）和 ActiveX（启用 Internet 的组件）技术的基础技">
+<meta property="og:type" content="article">
+<meta property="og:title" content="COM组件对象模型">
+<meta property="og:url" content="https://yyjccc.github.io/2025/10/31/COM-%E7%BB%84%E4%BB%B6%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="yyjccc的博客">
+<meta property="og:description" content="COM 组件对象模型　　	COM （Component Object Model，即组件对象模型）它是微软提出的一套开发软件的方法与规范。它也代表了一种软件开发思想，那就是面向组件编程的思想 　　	COM 是一个平台无关、分布式、面向对象的系统  ， 用于创建可交互的二进制软件组件。COM 是微软 OLE（对象链接与嵌入）（复合文档）和 ActiveX（启用 Internet 的组件）技术的基础技">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251031221435-v3tuipz.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251031232218-omkbjey.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101175421-7z8d9hq.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251031235612-k94543m.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251031235145-do28s0a.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101002827-mimmh0l.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101005756-yy7gmsw.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101010523-mlu37q7.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101011202-dvpot56.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101011719-6kh8xyg.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101012249-ms4517n.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251101013132-mtfegba.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102015728-ylh8wj8.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102015950-z1digtg.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102171308-tar5dlo.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102171958-p5nzwrl.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102172506-dz7d7zq.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102174131-wzk1zcd.png">
+<meta property="og:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251102174625-csiqyo0.png">
+<meta property="article:published_time" content="2025-10-31T13:35:09.000Z">
+<meta property="article:modified_time" content="2026-02-24T08:05:26.074Z">
+<meta property="article:author" content="Yyjccc">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yyjccc.github.io/img/2026/2-24/image-20251031221435-v3tuipz.png">
+  
+    <link rel="alternate" href="/atom.xml" title="yyjccc的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/gitalk/dist/gitalk.css">
+
+    
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.0.1/dist/aos.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+  <body>
+    
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">首页</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">归档</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">关于</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">友链</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/cover/4.jpg" alt="COM组件对象模型">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">COM组件对象模型</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-COM-组件对象模型" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/10/31/COM-%E7%BB%84%E4%BB%B6%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-10-31T13:35:09.000Z" itemprop="datePublished">2025-10-31</time>
+    <time style="display: none;" id="post-update-time">2026-02-24</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Windows/" data-aos="zoom-in">Windows</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <h1 id="COM-组件对象模型"><a href="#COM-组件对象模型" class="headerlink" title="COM 组件对象模型"></a>COM 组件对象模型</h1><p>　　	COM （Component Object Model，即组件对象模型）它是微软提出的一套开发软件的方法与规范。它也代表了一种软件开发思想，那就是面向组件编程的思想</p>
+<p>　　	COM 是一个平台无关、分布式、面向对象的系统  <strong>，</strong> 用于创建可交互的二进制软件组件。COM 是微软 OLE（对象链接与嵌入）（复合文档）和 ActiveX（启用 Internet 的组件）技术的基础技术，COM 旨在促进软件互操作性；也就是说，即使两个或多个应用程序或“组件”是由不同的供应商在不同的时间用不同的编程语言编写的，或者运行在不同的机器和不同的操作系统上，它们也能轻松地相互交互</p>
+<p>　　面向组件编程 （COP）:</p>
+<p>　　模块分隔。这里的分隔有两层含义，第一就是要将应用程序按功能划分成多个模块；第二就是每一个模块要有相当程度的独立性</p>
+<p>　　‍</p>
+<p>　　COM 最初是为了使 Microsoft Office 应用程序能够在文档之间进行通信和交换数据而创建的，例如将 Excel 图表嵌入到 Word 文档或 PowerPoint 演示文稿中 &lt;—这种功能称为 OLE</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h2 id="COM-组件组成"><a href="#COM-组件组成" class="headerlink" title="COM 组件组成"></a>COM 组件组成</h2><p>　　‍</p>
+<h3 id="对象与接口"><a href="#对象与接口" class="headerlink" title="对象与接口"></a>对象与接口</h3><p>　　一个COM组件就是一个dll文件或者一个exe文件，一个组件可以包含多个COM对象，并且每个COM对象可以实现多个接口。</p>
+<p>　　COM对象是通过接口来进行进程间通信的。</p>
+<p><img src="/img/2026/2-24/image-20251031221435-v3tuipz.png" alt="image"></p>
+<p>　　在进程通信中，COM规范采用的是客户/服务器模型。</p>
+<p>　　<strong>核心原则</strong>：客户端永远无法直接访问 COM 对象的全部内容 。相反，客户端总是通过明确定义的契约 （即对象支持的接口）来访问对象。</p>
+<p>　　接口：本质上是<strong>一个抽象类</strong>，只包含<strong>纯虚函数</strong>，没有数据成员。</p>
+<p>　　抽象类是指只包含纯虚函数声明（“= 0”表示纯虚函数）而没有数据成员的类：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IClassA</span></span><br><span class="line">{</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">   <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func1</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　<strong>抽象类是不能用于创建对象的类</strong>；但是，它可以被继承</p>
+<p>　　只能通过指向<em>虚函数表的指针来</em>访问接口类，该虚函数表公开了接口中的方法  <strong>。</strong>  接口本身并不存在，它通常由一个继承类来实现。这种实现了接口公开方法的类通常被称为共类（派生类）。以下是一个共类的示例：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ClassB</span>: <span class="keyword">public</span> IClassA</span><br><span class="line">{</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">   <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func1</span><span class="params">()</span> </span>{ </span><br><span class="line">	<span class="comment">// implementation here</span></span><br><span class="line"> }</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　这里， IClassA 是基类，由于它包含一个纯虚函数 ( func1 )， 因此它成为了一个抽象类。ClassB 派生自父类 IClassA。func1 定义在派生类中</p>
+<p>　　‍</p>
+<p>　　我们可以使用全局方法来创建 co-class 的实例，也可以使用静态方法。<strong>使用创建 co-class 实例并返回指向其接口的指针的方法，这种技术通常被称为类分解</strong></p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">IClassA* <span class="title">CreateInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ClassB;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line"><span class="comment">//IClassA b;   ---------- &gt; this line will throw an error</span></span><br><span class="line">IClassA* b = <span class="built_in">CreateInstance</span>(); <span class="comment">//---------- &gt; pointer can be created, so this line is correct</span></span><br><span class="line">b -&gt; <span class="built_in">func1</span>();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　一般而言，服务器为COM组件，调用方为客户端。</p>
+<ul>
+<li><p><strong>COM 类用一个128位全局唯一标识符（GUID）来标识，称之为CLISID</strong>。 (class id) 该 ID 将类与文件系统中的特定部署关联起来，在 Windows 系统中，该部署是 DLL 或 EXE 文件</p>
+</li>
+<li><p>还可以使用程序标识符（ <strong>ProgID</strong> ）来标识 COM 类  <em>，</em>​<strong>它是一个可以与 CLSID 关联的注册表项</strong>。与 CLSID 类似，ProgID 也用于标识一个类（COM组件名称），但精度较低，因为它不能保证全局唯一。</p>
+</li>
+<li><p><strong>COM接口也是用一个128位的GUID来标识，称为接口标识符 ( IID )</strong> 。接口是强类型的。每个接口都有其唯一的IID，</p>
+</li>
+</ul>
+<p>　　‍</p>
+<p>　　客户通过CLISID来创建COM对象，得到一个指向对象某个接口的指针之后（<strong>在此处可以得到该对象的所有接口指针</strong>），然后再调用该指针，就可以调用该接口提供的所有服务。</p>
+<blockquote>
+<p><strong>COM 客户端仅与指向接口的指针进行交互：</strong>  当客户端获得对某个对象的访问权限时，它实际上只拥有一个指针，通过该指针可以访问接口中的函数。该指针是不透明的，这意味着它隐藏了所有内部实现细节。在 COM 中，客户端只能调用它所拥有<strong>指针指向</strong>的接口的函数。</p>
+</blockquote>
+<p>　　客户可以同时拥有两个相同CLISID的COM对象。</p>
+<p>　　‍</p>
+<p>　　为了通过多种不同的视图（例如按 CLSID、ProgID、服务器可执行文件）枚举 COM 对象，枚举对象的接口，然后创建实例并调用方法，可以使用多个工具：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/tyranid/oleviewdotnet">OleViewDotNet</a></p>
+<p><img src="/img/2026/2-24/image-20251031232218-omkbjey.png" alt="image"></p>
+</li>
+<li><p>Windows SDK 自带工具 oleview.exe （例如：C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\oleview.exe）</p>
+<p> <img src="/img/2026/2-24/image-20251101175421-7z8d9hq.png" alt="image"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.japheth.de/COMView.html">COMView</a></p>
+<p><img src="/img/2026/2-24/image-20251031235612-k94543m.png" alt="image"></p>
+</li>
+</ul>
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="IUnknown接口"><a href="#IUnknown接口" class="headerlink" title="IUnknown接口"></a>IUnknown接口</h3><p>　　所有的COM接口都要继承IUnknown接口，所有的COM对象都需要实现IUnknown接口。<em>IUnknown 是所有其他接口继承的基础接口</em></p>
+<p>　　‍</p>
+<p>　　IUnknown接口提供了非常重要的两个特性：生存期控制和接口查询</p>
+<p>　　客户端程序虽然只能通过接口与COM对象进行通信，但是也能控制COM对象的存在与否</p>
+<p>　　IUnknown接口的定义：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IUnknown</span></span><br><span class="line">{</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> HRESULT _stdcall <span class="title">QueryInterface</span><span class="params">(<span class="type">const</span> IID&amp; iid,<span class="type">void</span> ** ppv)</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> ULONG _stdcall <span class="title">AddRef</span><span class="params">()</span></span>=<span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> ULONG _stdcall <span class="title">Release</span><span class="params">()</span></span>=<span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　QueryInterface用于查询接口，AddRef用于增加引用计数，Release用于减少引用计数</p>
+<p>　　‍</p>
+<p>　　按照惯例，指向接口函数表的指针称为 <strong>pVtbl</strong> 指针。该表本身通常用 <strong>vtbl</strong> 表示，即“<strong>虚函数表</strong>”</p>
+<p>　　查询接口： 一个COM对象可以绑定多个接口，QueryInterface函数返回客户端指定的接口类型指针</p>
+<h3 id="IClassFactory"><a href="#IClassFactory" class="headerlink" title="IClassFactory"></a>IClassFactory</h3><p>　　COM 组件采用的工厂设计模式</p>
+<p>　　‍</p>
+<p>　　我们不直接使用 COM 类来创建 COM 对象类型的实例。反而，使用称为类对象的中间对象来创建 COM 对象的实例。</p>
+<p>　　<strong>类对象</strong>是一种特殊的 COM 对象，它知道如何创建特定类型的 COM 对象。<em>类对象</em>和 <em>COM 对象</em>之间存在一一对应的关系。</p>
+<p>　　‍</p>
+<p>　　	每种类型的类对象只知道如何创建一种类型的 COM 对象。例如，如果在 COM 服务器中实现了两个 COM 对象，分别称为 <strong>O1</strong> 和 <strong>O2</strong> ，则也必须实现两个类对象，一个知道如何创建 <strong>O1</strong> ，另一个知道如何创建 <strong>O2。</strong></p>
+<p>　　类对象可以被视为“<em>创建者</em>”对象。它的唯一目标是<strong>创建 COM 对象的实例。</strong></p>
+<p>　　‍</p>
+<p>　　客户端通过向 COM 子系统请求能够创建所需 COM 对象的特定类对象，来获取指向该类对象接口的指针。利用此接口指针，客户端可以指示该类对象创建一个或多个与其关联的 COM 对象的实例。</p>
+<p>　　‍</p>
+<p>　　COM 规范定义了一个名为 <strong>IClassFactory 的 COM 对象创建接口</strong>：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IClassFactory</span>:<span class="keyword">public</span> IUnkown</span><br><span class="line">{</span><br><span class="line">    <span class="comment">//用来创建COM对象</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> HRESULT _stdcall <span class="title">CreateInstance</span><span class="params">(IUnknown* pUnknownOuter,REFIID  iid,<span class="type">void</span> ** ppv)</span> </span>=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//用来控制组件的生命周期</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> HRESULT _stdcall <span class="title">LockServer</span><span class="params">(BOOL bLock)</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　实现了 IClassFactory 作为对象创建接口的类对象称为类工厂(ClassFactory)</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="IDispatch-接口"><a href="#IDispatch-接口" class="headerlink" title="IDispatch 接口"></a>IDispatch 接口</h3><p>　　IDispatch 接口 继承IUnknown接口 ， IDispatch 是 <strong>OLE Automation</strong> 的核心接口，用于“<strong>晚绑定（Late Binding）</strong> ”</p>
+<p>　　晚绑定：运行时根据字符串名字来调用对象方法，而不是编译时通过 vtable 固定调用。</p>
+<p>　　‍</p>
+<p>　　这便于 脚本语言（如 VBScript、JavaScript、Python COM 模块）中动态调用</p>
+<p>　　所以此接口不是COM组件必须的实现的接口，而是方便其他脚本语言调用而需要实现的接口</p>
+<p>　　‍</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IDispatch</span> : <span class="keyword">public</span> IUnknown</span><br><span class="line">{</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检索对象提供的类型信息接口的数量（0 或 1）。</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> HRESULT STDMETHODCALLTYPE <span class="title">GetTypeInfoCount</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [out] */</span> UINT *pctinfo)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//检索对象的类型信息，然后可以使用该信息获取接口的类型信息。</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> HRESULT STDMETHODCALLTYPE <span class="title">GetTypeInfo</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> UINT iTInfo,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> LCID lcid,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [out] */</span> ITypeInfo **ppTInfo)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将单个成员和一组可选参数名称映射到一组相应的整数 DISPID，这些整数 DISPID 可用于对 Invoke 的后续调用。</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> HRESULT STDMETHODCALLTYPE <span class="title">GetIDsOfNames</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> REFIID riid,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [size_is][in] */</span> LPOLESTR *rgszNames,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [range][in] */</span> UINT cNames,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> LCID lcid,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [size_is][out] */</span> DISPID *rgDispId)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 提供对某一对象公开的属性和方法的访问。</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> HRESULT STDMETHODCALLTYPE <span class="title">Invoke</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> DISPID dispIdMember,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> REFIID riid,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> LCID lcid,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [in] */</span> WORD wFlags,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [out][in] */</span> DISPPARAMS *pDispParams,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [out] */</span> VARIANT *pVarResult,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [out] */</span> EXCEPINFO *pExcepInfo,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">/* [out] */</span> UINT *puArgErr)</span> </span>= <span class="number">0</span>;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　这些四个方法构成 <strong>OLE Automation</strong> 的反射和调用体系</p>
+<p>　　‍</p>
+<p>　　实现 IDispatch 意味着组件必须：</p>
+<ul>
+<li>提供类型信息（ITypeInfo）</li>
+<li>提供名称到 DISPID 的映射表</li>
+<li>封装参数的打包/解包（VARIANT）</li>
+</ul>
+<p>　　系统级接口（DirectX、Shell、Audio、Networking 等）多数不实现 IDispatch，只提供 C++ 风格接口。</p>
+<h2 id="COM对象创建"><a href="#COM对象创建" class="headerlink" title="COM对象创建"></a>COM对象创建</h2><h3 id="COM库"><a href="#COM库" class="headerlink" title="COM库"></a>COM库</h3><p>　　<strong>COM库：使用 COM 的任何进程都必须初始化和取消初始化 COM 库</strong>,</p>
+<p>　　COM 库在 Microsoft Windows 中作为一组 DLL 和 EXE（主要是 Ole32.dll 和 Rpcss.exe）提供，其中包括:</p>
+<ul>
+<li>基本功能，有助于创建 COM 应用程序，包括客户端和服务器。 对于客户端，COM 提供了创建对象的基本功能。 对于服务器，COM 提供了公开其对象的方法。</li>
+<li>实现定位器服务，COM 通过该服务从唯一的类标识符 (CLSID) 中确定哪个服务器实现该类以及该服务器所在的位置。 此服务包括对对象类的标识和实现的打包之间的间接级别（通常是系统注册表）的支持，以便客户端独立于打包，打包在未来可能会更改。</li>
+<li>允许应用程序控制如何在其进程中分配内存</li>
+<li>当对象在本地或远程服务器中运行时，透明远程过程调用。</li>
+</ul>
+<p>　　‍</p>
+<p>　　<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/com/the-com-library">learn.microsoft.com/zh-cn/windows/win32/com/the-com-library</a></p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　<strong>调用COM库函数之前,必须调用COM库的初始化函数</strong>  (初始化com 线程模型)</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 本地 COM</span></span><br><span class="line"><span class="function">HRESULT <span class="title">CoInitialize</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional]IMalloc *pMalloc  <span class="comment">// NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// or </span></span><br><span class="line"><span class="comment">// 远程COM</span></span><br><span class="line"><span class="function">HRESULT <span class="title">CoInitializeEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] LPVOID pvReserved,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           DWORD  dwCoInit  <span class="comment">//默认值为COINIT_MULTITHREADED</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　OLE 复合文档应用程序调用 OleInitialize 函数，该函数调用 CoInitializeEx</p>
+<p>　　‍</p>
+<p>　　取消初始化库也很重要。 <strong>对于对 CoInitialize 或 CoInitializeEx 的每个调用，必须有对 CoUninitialize 的相应调用</strong>。 对于对 OleInitialize 的每个调用，必须有对 OleUninitialize 的相应调用</p>
+<p>　　‍</p>
+<h3 id="COM对象创建流程"><a href="#COM对象创建流程" class="headerlink" title="COM对象创建流程"></a>COM对象创建流程</h3><p>　　当我们想要使用某个 COM 对象的特定接口时，我们不能直接创建该接口的实例，而是需要创建实现了该接口的 COM 类的实例。这个过程称为<strong>激活</strong>​ <em>。</em></p>
+<p>　　给定一个 CLSID，客户端现在必须创建该类的对象才能使用其服务。激活过程分为：</p>
+<ol>
+<li>获取 CLSID 的“类工厂”</li>
+<li>请求类工厂实例化该类的对象</li>
+<li>返回给客户端的接口指针</li>
+</ol>
+<p>　　‍</p>
+<p><img src="/img/2026/2-24/image-20251031235145-do28s0a.png" alt="image" title="客户端请求服务器上的类工厂创建一个对象"></p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　ClassFactory类工厂是由DllGetClassObject来创建的。</p>
+<p>　　DllGetClassObject:</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">DllGetClassObject</span><span class="params">(<span class="type">const</span> CLSID&amp; clsid,<span class="type">const</span> IID&amp; iid,(<span class="type">void</span>**) ppv)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　纵观不同的编程语言，我们发现有很多函数可以帮助我们创建实例，例如：</p>
+<ul>
+<li>C / C++ - CreateInstance | CoCreateInstance | CoCreateInstanceEx</li>
+<li>VBScript / JScript - CreateObject | ActiveXObject</li>
+<li>Powershell - New-Object -ComObject</li>
+</ul>
+<p>　　C/C++：</p>
+<p>　　在COM库中， 有三个API可用于<strong>创建对象</strong>:</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">CoGetClassObject</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           REFCLSID rclsid,  <span class="comment">// 与用于创建对象的数据和代码关联的 CLSID </span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           DWORD    dwClsContext, <span class="comment">//指定组件类型，进程内组件、进程外组件或者进程内控制对象</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] COSERVERINFO  pServerInfo, <span class="comment">//用于DCOM时，不能为NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           REFIID   riid,  <span class="comment">// 接口标识符的参考信息 ，该标识符将在 ppv 中提供。  成功返回后， 此接口将用于与类对象通信 </span></span></span></span><br><span class="line"><span class="params"><span class="function">  [out]          LPVOID   *ppv  <span class="comment">// 接收 riid 中请求的接口指针的指针变量的地址</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CoCreateInstance ，它只是 CoGetClassObject 和 IClassFactory 的一个包装函数。</span></span><br><span class="line"><span class="function">HRESULT <span class="title">CoCreateInstance</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  REFCLSID  rclsid,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  LPUNKNOWN pUnkOuter,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  DWORD     dwClsContext,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]  REFIID    riid,</span></span></span><br><span class="line"><span class="params"><span class="function">  [out] LPVOID    *ppv</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">HRESULT <span class="title">CoCreateInstanceEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]      REFCLSID     Clsid,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]      IUnknown     *punkOuter,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]      DWORD        dwClsCtx,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]      COSERVERINFO *pServerInfo,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in]      DWORD        dwCount,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, out] MULTI_QI     *pResults</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　如果定位和连接到指定的类对象成功，则此函数返回 S_OK</p>
+<p>　　<strong>你不应该直接调用 DllGetClassObject 。当对象在 DLL 中定义时， CoGetClassObject 调用 CoLoadLibrary 加载 DLL的函数，该函数进而调用 DllGetClassObject</strong></p>
+<p>　　‍</p>
+<p>　　在PowerShell 中 <strong>：</strong></p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"># Create Instance from CLSID</span><br><span class="line">[System.Activator]::<span class="built_in">CreateInstance</span>([Type]::<span class="built_in">GetTypeFromCLSID</span>(<span class="string">"56FDF344-FD6D-11d0-958A-006097C9A090"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<h3 id="COM组件注册"><a href="#COM组件注册" class="headerlink" title="COM组件注册"></a>COM组件注册</h3><p>　　‍</p>
+<p>　　Windows 注册表是系统上安装的 COM 类信息的主要位置，每个 COM 对象在安装过程中都会将自身及其相关信息注册到注册表中。</p>
+<blockquote>
+<p>注册 COM 服务器通常是强制性的，需要修改注册表，但是也可以使用 regsvr32.exe 等工具在不修改注册表的情况下注册 COM 对象。</p>
+</blockquote>
+<p>　　注册表路径：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">HKEY_CLASSES_ROOT 用于存储一些文档类型、类、类的关联属性  HKCR</span><br><span class="line">HKEY_CURRENT_CONFIG 用户存储有关本地计算机系统的当前硬件配置文件信息 HKCC</span><br><span class="line">HKEY_CURRENT_USER 用于存储当前用户配置项  HKCU</span><br><span class="line">HKEY_CURRENT_USER_LOCAL_SETTINGS 用于存储当前用户对计算机的配置项 HKCULS</span><br><span class="line">HKEY_LOCAL_MACHINE 用于存储当前用户物理状态 HKLM</span><br><span class="line">HKEY_USERS 用于存储新用户的默认配置项  HKU</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　COM组件需要在注册表内进行注册才可进行调用。通常情况下:</p>
+<ol>
+<li>系统预定义组件注册于 *<em>HKEY_LOCAL_MACHINE\SOFTWARE\Classes*</em></li>
+<li>用户组件注册于*<em>HKEY_CURRENT_USER\SOFTWARE\Classes*</em></li>
+<li><strong>HKEY_CLASSES_ROOT</strong>为二者合并后的视图</li>
+<li>在系统服务角度等同于*<em>HKEY_LOCAL_MACHINE\SOFTWARE\Classes*</em></li>
+</ol>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　以下注册表项是与 COM 相关的主要关注点：</p>
+<ul>
+<li>HKEY_LOCAL_MACHINE\SOFTWARE\Classes</li>
+<li>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Ole</li>
+<li>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion</li>
+</ul>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　其中HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\<clsid>  有如下子键：</clsid></p>
+<p>　　<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/com/clsid-key-hklm">https://learn.microsoft.com/zh-cn/windows/win32/com/clsid-key-hklm</a></p>
+<p>　　重要的</p>
+<table>
+<thead>
+<tr>
+<th>Key Name</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>InprocHandler32</td>
+<td>指定应用程序使用的自定义处理程序</td>
+</tr>
+<tr>
+<td>InprocServer32</td>
+<td>注册32位进程所需要的模块、线程属性配置</td>
+</tr>
+<tr>
+<td>LocalServer32</td>
+<td>指定 32 位本地服务器应用程序的完整路径。</td>
+</tr>
+</tbody></table>
+<p>　　‍</p>
+<p>　　com组件从注册表读取这些属性来查找二进制文件，这也是后面com劫持所需要用到的</p>
+<p>　　‍</p>
+<p>　　COM 服务器支持自注册。 对于进程内服务器，这意味着 DLL 必须导出以下函数：</p>
+<ul>
+<li>DllRegisterServer</li>
+<li>DllUnregisterServer</li>
+</ul>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　当我们提供 CLSID 或 ProgID 作为参数时，控制流将传递给 SCM（Windows 服务管理器），由其处理客户端的请求。</p>
+<p>　　SCM 会查询注册表中的相关位置，并搜索我们传递的标识符。</p>
+<p>　　‍</p>
+<p>　　包含我们传递的标识符的注册表项的值映射到 COM 服务器的位置。例如，如果我们传递 CLSID - {72c57034-02c4-4e9f-bf9c-ca711031757e}，我们会发现映射到该 CLSID 的 COM 服务器(二进制文件)位于 | <em>SystemRoot%\system32\windows.storage.dll</em></p>
+<p><img src="/img/2026/2-24/image-20251101002827-mimmh0l.png" alt="image"></p>
+<p>　　‍</p>
+<p>　　服务管理器请求处理顺序：</p>
+<ul>
+<li>客户端向 COM 库请求指向 COM 对象的接口指针。 （ole32.dll）通过调用诸如 CoCreateInstance 之类的函数。  使用 COM 对象的 CLSID。</li>
+<li>COM 库查询 SCM 以查找与请求的 CLSID 对应的服务器</li>
+<li>SCM 定位服务器，并请求从服务器提供的类工厂创建 COM 对象</li>
+<li>如果成功，COM 库将返回一个指向客户端的接口指针</li>
+</ul>
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="COM-服务器类型"><a href="#COM-服务器类型" class="headerlink" title="COM 服务器类型"></a>COM 服务器类型</h3><p>　　注册 COM 服务器时（即添加与服务器及其相关配置的注册表项），可以指定如何激活此服务器。</p>
+<p>　　激活方式有以下几种：</p>
+<ul>
+<li><p>进程内（InprocServer32）</p>
+</li>
+<li><p>进程外/本地 -(LocalServer32)</p>
+</li>
+<li><p>进程外/远程</p>
+</li>
+</ul>
+<p>　　‍</p>
+<h4 id="In-Process-Server"><a href="#In-Process-Server" class="headerlink" title="In-Process Server"></a>In-Process Server</h4><p>　　当 COM 对象配置为本地服务器时，意味着服务器是一个 EXE 文件，它将作为与实例化 COM 对象的客户端不同的进程执行。SCM 启动本地可执行文件，该文件在启动时注册一个类工厂，并且其接口指针可供系统和客户端使用。</p>
+<p>　　‍</p>
+<p>　　进程内服务器是一种 COM 服务器，它以 <strong>DLL 的形式加载</strong>到客户端进程中：</p>
+<p>　　‍</p>
+<p><img src="/img/2026/2-24/image-20251101005756-yy7gmsw.png" alt="image" title="加载进程服务器的简化示意图"></p>
+<p>　　有以下特点：</p>
+<ul>
+<li><p><strong>无需封送处理</strong>- 由于它只是一个已加载的 DLL，因此客户端和服务器之间的通信无需封送处理</p>
+</li>
+<li><p><strong>EDR 不可见</strong>- 大多数 EDR / XDR 解决方案利用 Hook 来监控某些 API 或接口，通常是针对常见的目标进程，但是要实现这一点，它们需要将自己的 DLL / 保护机制注入到它们想要保护的进程中。 因此，除非向每个生成的进程注入代码，否则他们可能对进程内 COM 对象在接口方法监视方面的活动一无所知。</p>
+</li>
+<li><p><strong>不使用 RPCSS -</strong>  当使用进程外（本地服务器）COM 或 DCOM 时，通信是通过驻留在 svchost.exe 进程之一上的 RPCSS 服务进行中转的。</p>
+</li>
+</ul>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　示例COM组件： <strong>Wscript.Shell</strong></p>
+<p>　　‍</p>
+<p>　　微软提供了各种 COM 对象，其中一些是为自动化目的而设计的，Wscript.Shell 类就是其中之一</p>
+<p>　　使用这个 COM 类，我们可以实例化一个对象，从而允许我们在 Jscript 或其他可执行文件中执行任意命令</p>
+<ul>
+<li>CLSID : {72C24DD5-D70A-438B-8A42-98424B88AFB8}</li>
+<li>ProgID :  WScript.Shell</li>
+</ul>
+<p>　　‍</p>
+<p>　　我们可以查询注册表中的 COM 类 ID (CLSID) 并查看其配置, 来查看Wscript.Shell 是一个进程内服务器</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">Get-ChildItem</span> <span class="literal">-Path</span> <span class="string">"Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{72C24DD5-D70A-438B-8A42-98424B88AFB8}"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　其结果如下：</p>
+<p><img src="/img/2026/2-24/image-20251101010523-mlu37q7.png" alt="image"></p>
+<p>　　我们知道它指的是一个 DLL 服务器组件，然后我们可以看到 Wscript.Shell 类服务器 DLL 是 <em>wshom.ocx</em></p>
+<blockquote>
+<p> <strong>“.ocx”</strong>  扩展名表示该 <strong>DLL</strong> 是一个 ActiveX 控件对象</p>
+</blockquote>
+<p>　　‍</p>
+<p>　　使用 CLSID 激活 COM 类：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$comobj</span> = [<span class="type">System.Activator</span>]::CreateInstance([<span class="type">Type</span>]::GetTypeFromCLSID(<span class="string">"72C24DD5-D70A-438B-8A42-98424B88AFB8"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　或者我们可以使用 ProgID 来实现</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$comobj</span> = [<span class="type">System.Activator</span>]::CreateInstance([<span class="type">Type</span>]::GetTypeFromProgID(<span class="string">"WScript.Shell"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p><img src="/img/2026/2-24/image-20251101011202-dvpot56.png" alt="image"></p>
+<p>　　可以看到powershell 加载了目标dll</p>
+<p>　　‍</p>
+<p>　　现在我们有了 WScript.Shell 的一个实例，可以使用它的一个方法“Run”来执行命令</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$comobj</span>.Run(<span class="string">"notepad.exe"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/img/2026/2-24/image-20251101011719-6kh8xyg.png" alt="image"></p>
+<p>　　notepad.exe 是我们加载 COM 对象的进程的子进程，而不是通常的 wscript.exe 或 cscript.exe 的子进程。</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h4 id="Out-of-Process-Local-Server"><a href="#Out-of-Process-Local-Server" class="headerlink" title="Out-of-Process Local Server"></a>Out-of-Process Local Server</h4><p>　　当 COM 对象配置为本地服务器时，意味着<strong>服务器是一个 EXE 文件</strong>，它将作为与实例化 COM 对象的客户端不同的进程执行。SCM 启动本地可执行文件，该文件在启动时注册一个类工厂，并且其接口指针可供系统和客户端使用</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　对于这种类型，我将以 MMC20 应用为例，因为它也是一个非常常见的例子，同时也是一种常见的横向移动技术</p>
+<p>　　注意，<strong>此 COM 对象既可以在本地使用，也可以在远程（远程计算机）使用</strong></p>
+<blockquote>
+<p>在进程外激活中，会进行“网络调用”，因此需要使用封送和代理存根。要了解更多信息，请查阅微软的文档。(遇到时再在另外一篇文章分析)</p>
+</blockquote>
+<p>　　MMC20 应用程序：</p>
+<ul>
+<li>CLSID : {49B2791A-B1AE-4C90-9B8E-E860BA07F889}</li>
+</ul>
+<p>　　‍</p>
+<p>　　查询注册表,<strong>LocalServer32 指定了对应的可执行文件</strong>，以证明它是一个进程外 COM 服务器，并了解要查找哪个进程</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$comobj</span> = [<span class="type">System.Activator</span>]::CreateInstance([<span class="type">Type</span>]::GetTypeFromCLSID(<span class="string">"49B2791A-B1AE-4C90-9B8E-E860BA07F889"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/img/2026/2-24/image-20251101012249-ms4517n.png" alt="image"></p>
+<p>　　激活COM对象 (此组件激活需要管理员权限)：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$comobj</span> = [<span class="type">System.Activator</span>]::CreateInstance([<span class="type">Type</span>]::GetTypeFromCLSID(<span class="string">"49B2791A-B1AE-4C90-9B8E-E860BA07F889"</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　我们可以看到 COM 服务器是 mmc.exe，它位于 svchost.exe 之下，svchost.exe 生成了它</p>
+<p><img src="/img/2026/2-24/image-20251101013132-mtfegba.png" alt="image"></p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h4 id="Out-of-Process-Local-Server-1"><a href="#Out-of-Process-Local-Server-1" class="headerlink" title="Out-of-Process Local Server"></a>Out-of-Process Local Server</h4><p>　　此处的“远程”指的是<strong>分布式 COM (DCOM)</strong> ，目前可以将其理解为<strong>基于网络的 COM (DCE-RPC)</strong> 。它指的是在远程计算机上激活或访问 COM 对象。本地 SCM 从运行在远程计算机上的 SCM 获取类工厂接口指针。</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　远程激活过程对用户来说应该是完全透明的。这里深入探讨 DCOM。</p>
+<p>　　‍</p>
+<p>　　唯一改变的是我添加了目标 IP，请注意，这是在使用这些 .NET 包装器时的情况，在使用 Win32 API 时， <strong>CoCreateInstance</strong> 创建本地实例，而 <strong>CoCreateInstanceEx</strong> 用于创建远程实例。</p>
+<p>　　‍</p>
+<p>　　本地服务管理器从远程计算机上运行的服务管理器获取类工厂接口指针，然后，如果它拥有适当的权限，它将使用该指针在远程计算机上创建实例。</p>
+<p>　　注意的是：<strong>防火墙规则(rpc 135)</strong> 和<strong>缺乏足够的安全权限</strong>将阻止您激活 COM 对象，甚至无法访问它们</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h2 id="COM组件开发使用"><a href="#COM组件开发使用" class="headerlink" title="COM组件开发使用"></a>COM组件开发使用</h2><p>　　一个典型的自注册COM组件需要提供4个必需的导出函数（dll）：</p>
+<ul>
+<li>DllGetClassObject：用于获得类工厂指针</li>
+<li>DllCanUnloadNow：系统空闲时会调用这个函数，以确定是否可以卸载COM组件</li>
+<li>DllRegisterServer：将COM组件注册到注册表中</li>
+<li>DllUnregisterServer：删除注册表中的COM组件的注册信息</li>
+</ul>
+<p>　　DLL还有一个可选的入口函数DllMain，可用于初始化和释放全局变量</p>
+<p>　　DllMain：DLL的入口函数，在LoadLibrary和FreeLibrary时都会调用</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="C-开发"><a href="#C-开发" class="headerlink" title="C++ 开发"></a>C++ 开发</h3><p>　　示例：</p>
+<p>　　进程内COM组件</p>
+<p>　　‍</p>
+<p>　　接口定义：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// MyCom.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// {22222222-2222-2222-2222-222222222222}</span></span><br><span class="line"><span class="built_in">DEFINE_GUID</span>(IID_IMath, </span><br><span class="line"><span class="number">0x22222222</span>, <span class="number">0x2222</span>, <span class="number">0x2222</span>, <span class="number">0x22</span>, <span class="number">0x22</span>, <span class="number">0x22</span>, <span class="number">0x22</span>, <span class="number">0x22</span>, <span class="number">0x22</span>, <span class="number">0x22</span>, <span class="number">0x22</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// {33333333-3333-3333-3333-333333333333}</span></span><br><span class="line"><span class="built_in">DEFINE_GUID</span>(CLSID_Math, </span><br><span class="line"><span class="number">0x33333333</span>, <span class="number">0x3333</span>, <span class="number">0x3333</span>, <span class="number">0x33</span>, <span class="number">0x33</span>, <span class="number">0x33</span>, <span class="number">0x33</span>, <span class="number">0x33</span>, <span class="number">0x33</span>, <span class="number">0x33</span>, <span class="number">0x33</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//  定义 IMath 接口（继承自 IUnknown）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">IMath</span> : <span class="keyword">public</span> IUnknown</span><br><span class="line">{</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> HRESULT __stdcall <span class="title">Add</span><span class="params">(LONG a, LONG b, LONG* result)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> HRESULT __stdcall <span class="title">Sub</span><span class="params">(LONG a, LONG b, LONG* result)</span> </span>= <span class="number">0</span>;</span><br><span class="line">};</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　或者 使用IDL :</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">// MyCom.idl</span><br><span class="line">import "oaidl.idl";</span><br><span class="line">import "ocidl.idl";</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">    uuid(11111111-1111-1111-1111-111111111111),</span><br><span class="line">    version(1.0)</span><br><span class="line">]</span><br><span class="line">library MyComLib</span><br><span class="line">{</span><br><span class="line">    importlib("stdole2.tlb");</span><br><span class="line"></span><br><span class="line">    [</span><br><span class="line">        object,</span><br><span class="line">        uuid(22222222-2222-2222-2222-222222222222),</span><br><span class="line">        pointer_default(unique)</span><br><span class="line">    ]</span><br><span class="line">    interface IMath : IUnknown</span><br><span class="line">    {</span><br><span class="line">        HRESULT Add([in] LONG a, [in] LONG b, [out, retval] LONG* result);</span><br><span class="line">        HRESULT Sub([in] LONG a, [in] LONG b, [out, retval] LONG* result);</span><br><span class="line">    };</span><br><span class="line"></span><br><span class="line">    [</span><br><span class="line">        uuid(33333333-3333-3333-3333-333333333333)</span><br><span class="line">    ]</span><br><span class="line">    coclass Math</span><br><span class="line">    {</span><br><span class="line">        [default] interface IMath;</span><br><span class="line">    };</span><br><span class="line">};</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　实现类：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"MyCom.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现 IMath 接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Math</span> : <span class="keyword">public</span> IMath {</span><br><span class="line">    LONG m_refCount;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Math</span>() : <span class="built_in">m_refCount</span>(<span class="number">1</span>) {}</span><br><span class="line">    ~<span class="built_in">Math</span>() {}</span><br><span class="line"></span><br><span class="line">    <span class="comment">// IUnknown</span></span><br><span class="line">    <span class="function">HRESULT __stdcall <span class="title">QueryInterface</span><span class="params">(REFIID riid, <span class="type">void</span>** ppv)</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (riid == IID_IUnknown || riid == IID_IMath) {</span><br><span class="line">            *ppv = <span class="built_in">static_cast</span>&lt;IMath*&gt;(<span class="keyword">this</span>);</span><br><span class="line">            <span class="built_in">AddRef</span>();</span><br><span class="line">            <span class="keyword">return</span> S_OK;</span><br><span class="line">        }</span><br><span class="line">        *ppv = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">return</span> E_NOINTERFACE;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">ULONG __stdcall <span class="title">AddRef</span><span class="params">()</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">InterlockedIncrement</span>(&amp;m_refCount);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">ULONG __stdcall <span class="title">Release</span><span class="params">()</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        ULONG res = <span class="built_in">InterlockedDecrement</span>(&amp;m_refCount);</span><br><span class="line">        <span class="keyword">if</span> (res == <span class="number">0</span>) <span class="keyword">delete</span> <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// IMath 实现</span></span><br><span class="line">    <span class="function">HRESULT __stdcall <span class="title">Add</span><span class="params">(LONG a, LONG b, LONG* result)</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        *result = a + b;</span><br><span class="line">        <span class="keyword">return</span> S_OK;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">HRESULT __stdcall <span class="title">Sub</span><span class="params">(LONG a, LONG b, LONG* result)</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        *result = a - b;</span><br><span class="line">        <span class="keyword">return</span> S_OK;</span><br><span class="line">    }</span><br><span class="line">};</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　ClassFactory 实现：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"MyCom.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MathClassFactory</span> : <span class="keyword">public</span> IClassFactory {</span><br><span class="line">    LONG m_refCount;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MathClassFactory</span>() : <span class="built_in">m_refCount</span>(<span class="number">1</span>) {}</span><br><span class="line">    ~<span class="built_in">MathClassFactory</span>() {}</span><br><span class="line"></span><br><span class="line">    <span class="function">HRESULT __stdcall <span class="title">QueryInterface</span><span class="params">(REFIID riid, <span class="type">void</span>** ppv)</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (riid == IID_IUnknown || riid == IID_IClassFactory) {</span><br><span class="line">            *ppv = <span class="built_in">static_cast</span>&lt;IClassFactory*&gt;(<span class="keyword">this</span>);</span><br><span class="line">            <span class="built_in">AddRef</span>();</span><br><span class="line">            <span class="keyword">return</span> S_OK;</span><br><span class="line">        }</span><br><span class="line">        *ppv = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">return</span> E_NOINTERFACE;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">ULONG __stdcall <span class="title">AddRef</span><span class="params">()</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">InterlockedIncrement</span>(&amp;m_refCount);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">ULONG __stdcall <span class="title">Release</span><span class="params">()</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        ULONG res = <span class="built_in">InterlockedDecrement</span>(&amp;m_refCount);</span><br><span class="line">        <span class="keyword">if</span> (res == <span class="number">0</span>) <span class="keyword">delete</span> <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">HRESULT __stdcall <span class="title">CreateInstance</span><span class="params">(IUnknown* pUnkOuter, REFIID riid, <span class="type">void</span>** ppv)</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (pUnkOuter != <span class="literal">nullptr</span>) <span class="keyword">return</span> CLASS_E_NOAGGREGATION;</span><br><span class="line">        Math* obj = <span class="keyword">new</span> <span class="built_in">Math</span>();</span><br><span class="line">        <span class="keyword">return</span> obj-&gt;<span class="built_in">QueryInterface</span>(riid, ppv);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function">HRESULT __stdcall <span class="title">LockServer</span><span class="params">(BOOL fLock)</span> <span class="keyword">override</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> S_OK;</span><br><span class="line">    }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">// DLL 导出</span></span><br><span class="line"><span class="function">HRESULT __stdcall <span class="title">DllGetClassObject</span><span class="params">(REFCLSID rclsid, REFIID riid, <span class="type">void</span>** ppv)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (rclsid == CLSID_Math) {</span><br><span class="line">        MathClassFactory* factory = <span class="keyword">new</span> <span class="built_in">MathClassFactory</span>();</span><br><span class="line">        <span class="keyword">return</span> factory-&gt;<span class="built_in">QueryInterface</span>(riid, ppv);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> CLASS_E_CLASSNOTAVAILABLE;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　注册（dll导出）：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;strsafe.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"MyCom.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">HRESULT <span class="title">RegisterServer</span><span class="params">(HMODULE hModule)</span> </span>{</span><br><span class="line">    WCHAR modulePath[MAX_PATH];</span><br><span class="line">    <span class="built_in">GetModuleFileNameW</span>(hModule, modulePath, MAX_PATH);</span><br><span class="line"></span><br><span class="line">    LPOLESTR clsidStr = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="built_in">StringFromCLSID</span>(CLSID_Math, &amp;clsidStr);</span><br><span class="line"></span><br><span class="line">    WCHAR keyPath[<span class="number">256</span>];</span><br><span class="line">    <span class="built_in">wsprintfW</span>(keyPath, <span class="string">L"CLSID\\%s"</span>, clsidStr);</span><br><span class="line"></span><br><span class="line">    HKEY hKey;</span><br><span class="line">    <span class="built_in">RegCreateKeyW</span>(HKEY_CLASSES_ROOT, keyPath, &amp;hKey);</span><br><span class="line">    <span class="built_in">RegSetValueW</span>(hKey, <span class="literal">NULL</span>, REG_SZ, <span class="string">L"MyCom.Math Class"</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    HKEY hSub;</span><br><span class="line">    <span class="built_in">RegCreateKeyW</span>(hKey, <span class="string">L"InprocServer32"</span>, &amp;hSub);</span><br><span class="line">    <span class="built_in">RegSetValueW</span>(hSub, <span class="literal">NULL</span>, REG_SZ, modulePath, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">RegSetValueW</span>(hSub, <span class="string">L"ThreadingModel"</span>, REG_SZ, <span class="string">L"Apartment"</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">RegCloseKey</span>(hSub);</span><br><span class="line">    <span class="built_in">RegCloseKey</span>(hKey);</span><br><span class="line">    <span class="built_in">CoTaskMemFree</span>(clsidStr);</span><br><span class="line">    <span class="keyword">return</span> S_OK;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function">HRESULT <span class="title">UnregisterServer</span><span class="params">()</span> </span>{</span><br><span class="line">    LPOLESTR clsidStr = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="built_in">StringFromCLSID</span>(CLSID_Math, &amp;clsidStr);</span><br><span class="line">    WCHAR keyPath[<span class="number">256</span>];</span><br><span class="line">    <span class="built_in">wsprintfW</span>(keyPath, <span class="string">L"CLSID\\%s"</span>, clsidStr);</span><br><span class="line">    <span class="built_in">RegDeleteTreeW</span>(HKEY_CLASSES_ROOT, keyPath);</span><br><span class="line">    <span class="built_in">CoTaskMemFree</span>(clsidStr);</span><br><span class="line">    <span class="keyword">return</span> S_OK;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> __declspec(dllexport) <span class="function">HRESULT <span class="title">DllRegisterServer</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">RegisterServer</span>(<span class="built_in">GetModuleHandleW</span>(<span class="string">L"MyCom.dll"</span>));</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> __declspec(dllexport) <span class="function">HRESULT <span class="title">DllUnregisterServer</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">UnregisterServer</span>();</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　上面是服务端代码</p>
+<p>　　编译后使用 regsvr32  进行注册</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">regsvr32 xxx.dll</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　客户端调用：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"MyCom.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="built_in">CoInitialize</span>(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    IMath* pMath = <span class="literal">nullptr</span>;</span><br><span class="line">    HRESULT hr = <span class="built_in">CoCreateInstance</span>(</span><br><span class="line">        CLSID_Math,</span><br><span class="line">        <span class="literal">NULL</span>,</span><br><span class="line">        CLSCTX_INPROC_SERVER,</span><br><span class="line">        IID_IMath,</span><br><span class="line">        (<span class="type">void</span>**)&amp;pMath</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">SUCCEEDED</span>(hr)) {</span><br><span class="line">        LONG result;</span><br><span class="line">        pMath-&gt;<span class="built_in">Add</span>(<span class="number">10</span>, <span class="number">5</span>, &amp;result);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">"10 + 5 = "</span> &lt;&lt; result &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">        pMath-&gt;<span class="built_in">Sub</span>(<span class="number">10</span>, <span class="number">5</span>, &amp;result);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">"10 - 5 = "</span> &lt;&lt; result &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">        pMath-&gt;<span class="built_in">Release</span>();</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        std::cout &lt;&lt; <span class="string">"CoCreateInstance failed, hr = 0x"</span> &lt;&lt; std::hex &lt;&lt; hr &lt;&lt; std::endl;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CoUninitialize</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<h3 id="C语言调用COM"><a href="#C语言调用COM" class="headerlink" title="C语言调用COM"></a>C语言调用COM</h3><p>　　C 中没有面向对象 ，所以实现COM开发比C++ 要更加复杂</p>
+<p>　　‍</p>
+<p>　　C++ 中接口如下定义</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ISomeInterface</span>{</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> RET_T  <span class="title">MemberFunction</span><span class="params">(ARG1_T arg1, ARG2_T arg2 <span class="comment">/*, etc */</span>)</span></span>;</span><br><span class="line">	...</span><br><span class="line">	};</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　该接口对应的 C 声明如下所示：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ISomeInterface</span>{</span></span><br><span class="line">	ISomeInterfaceVtbl *  pVtbl;</span><br><span class="line">} ISomeInterface;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ISomeInterfaceVtbl</span> <span class="title">ISomeInterfaceVtbl</span>;</span> <span class="comment">// 提前声明，由于后面结构体中this指针类型</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ISomeInterfaceVtbl</span>{</span></span><br><span class="line">	RET_T (*MemberFunction)(ISomeInterface * this, ARG1_T arg1,ARG2_T arg2 <span class="comment">/*, etc */</span>);</span><br><span class="line">	......</span><br><span class="line">} ;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　我们所做的，是用纯 C 代码重新创建了一个 C++ 类。ISomeInterface 结构体实际上就是一个 C++ 类。C++ 类本质上就是一个结构体，它的第一个成员始终是指向其虚函数表（一个函数指针数组）的指针 ——该数组包含指向该类中所有函数的指针。 传递给对象函数的第一个参数是指向对象（结构体）自身的指针。（这被称为隐藏的“ this ”指针。）</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　主要是调用进程内COM组件</p>
+<p>　　步骤：</p>
+<ul>
+<li><p>加载指定dll ，调用 dll中DllGetClassObject 获取ClassFactory</p>
+</li>
+<li><p>调用ClassFactory接口类型变量中的CreateInstance 创建对象</p>
+</li>
+<li><p>通过IDispatch 接口中 GetIDsOfNames 获取 dispid</p>
+</li>
+<li><p>初始化函数参数，并调用目标函数</p>
+</li>
+</ul>
+<p>　　‍</p>
+<p>　　需要注意的是 <strong>接口查询 IDispatch 后 调用Invoke 函数的参数传递</strong>：</p>
+<p>　　在Invoke中第5个参数是 DISPPARAMS结构体指针 ，包含了参数数组，命名参数的 DISPID 数组以及数组中元素数量的个数的结构。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">tagDISPPARAMS</span> {</span><br><span class="line">  VARIANTARG *rgvarg;<span class="comment">//An array of arguments.</span></span><br><span class="line">  DISPID     *rgdispidNamedArgs;</span><br><span class="line">  UINT       cArgs; <span class="comment">//The number of arguments.</span></span><br><span class="line">  UINT       cNamedArgs;</span><br><span class="line">} DISPPARAMS;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　<strong>BSTR（基本字符串或二进制字符串）</strong> 是一种字符串数据类型，供 COM、自动化和互操作函数使用。所有需要通过脚本访问的接口都应使用 BSTR 数据类型。</p>
+<p>　　‍</p>
+<p>　　字符串初始化：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line"></span><br><span class="line">VARIANT args = { VT_EMPTY };</span><br><span class="line">args.vt = VT_BSTR;</span><br><span class="line">args.bstrVal = <span class="built_in">SysAllocString</span>(<span class="string">L"calc"</span>);</span><br><span class="line">DISPPARAMS dp = {&amp;args, <span class="literal">NULL</span>, <span class="number">1</span>, <span class="number">0</span>};</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　最终代码：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;initguid.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="comment">//gcc .\comfunc.c -o com.exe -lole32 -luuid -loleaut32</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//The CLSID {13709620-C279-11CE-A49E-4445535400} associated with the data and code that we will use to create the object.</span></span><br><span class="line">DEFINE_GUID(clsid, <span class="number">0x13709620</span>, <span class="number">0xc279</span>, <span class="number">0x11ce</span>, <span class="number">0xa4</span>, <span class="number">0x9e</span>, <span class="number">0x44</span>, <span class="number">0x45</span>, <span class="number">0x53</span>, <span class="number">0x54</span>, <span class="number">0x00</span>, <span class="number">0x00</span>);</span><br><span class="line"></span><br><span class="line"> <span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">char</span> argc, <span class="type">char</span> **argv)</span>{</span><br><span class="line">  </span><br><span class="line">    LPOLESTR clsidstr = <span class="literal">NULL</span>;</span><br><span class="line">    StringFromCLSID(&amp;clsid, &amp;clsidstr);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Our targeted CLSID is %ls\n"</span>, clsidstr);</span><br><span class="line">    HRESULT hr;</span><br><span class="line">    hr = CoInitialize(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    FARPROC DllGetClassObject = GetProcAddress(LoadLibrary(<span class="string">"shell32.dll"</span>), <span class="string">"DllGetClassObject"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"DllGetClassObject is at 0x%p\n\n"</span>, DllGetClassObject);</span><br><span class="line">  </span><br><span class="line">    IClassFactory *icf = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">// Get shell32.DLL's IClassFactory</span></span><br><span class="line">    hr = DllGetClassObject(&amp;clsid, &amp;IID_IClassFactory, (<span class="type">void</span> **)&amp;icf);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(hr != S_OK) {</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"DllGetClassObject failed to do something. Error %d HRESULT 0x%08x\n"</span>, GetLastError(), (<span class="type">unsigned</span> <span class="type">int</span>)hr);</span><br><span class="line"></span><br><span class="line">            CoUninitialize();</span><br><span class="line">            ExitProcess(<span class="number">0</span>);        </span><br><span class="line">    }</span><br><span class="line">	<span class="comment">// Create an IDispatch object</span></span><br><span class="line">   IDispatch *id = <span class="literal">NULL</span>;</span><br><span class="line">   hr = icf-&gt;lpVtbl-&gt;CreateInstance(icf, <span class="literal">NULL</span>, &amp;IID_IDispatch, (<span class="type">void</span> **)&amp;id);</span><br><span class="line">    <span class="keyword">if</span>(hr != S_OK) {</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"CreateInstance failed to do something. Error %d HRESULT 0x%08x\n"</span>, GetLastError(), (<span class="type">unsigned</span> <span class="type">int</span>)hr);</span><br><span class="line"></span><br><span class="line">            CoUninitialize();</span><br><span class="line">            ExitProcess(<span class="number">0</span>);        </span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// get function ID</span></span><br><span class="line">   WCHAR *member = <span class="string">L"ShellExecute"</span>;</span><br><span class="line">   DISPID dispid = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    hr = id-&gt;lpVtbl-&gt;GetIDsOfNames(id, &amp;IID_NULL, &amp;member, <span class="number">1</span>, LOCALE_USER_DEFAULT, &amp;dispid);</span><br><span class="line">    <span class="keyword">if</span>(hr != S_OK) {</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"GetIDsOfNames failed to do something. Error %d HRESULT 0x%08x\n"</span>, GetLastError(), (<span class="type">unsigned</span> <span class="type">int</span>)hr);</span><br><span class="line"></span><br><span class="line">            CoUninitialize();</span><br><span class="line">            ExitProcess(<span class="number">0</span>);        </span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">	<span class="comment">// initialize parameters</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">//VARIANT describes arguments passed within DISPPARAMS.</span></span><br><span class="line">    VARIANT args = { VT_EMPTY };</span><br><span class="line">    args.vt = VT_BSTR;</span><br><span class="line">    args.bstrVal = SysAllocString(<span class="string">L"calc"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Contains the arguments passed to ShellExecute method.</span></span><br><span class="line">    DISPPARAMS dp = {&amp;args, <span class="literal">NULL</span>, <span class="number">1</span>, <span class="number">0</span>};</span><br><span class="line"></span><br><span class="line">    VARIANT output = { VT_EMPTY };</span><br><span class="line"> hr = id-&gt;lpVtbl-&gt;Invoke(id, dispid, &amp;IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &amp;dp, &amp;output, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">     <span class="keyword">if</span>(hr != S_OK) {</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Invoke failed to do something. Error %d HRESULT 0x%08x\n"</span>, GetLastError(), (<span class="type">unsigned</span> <span class="type">int</span>)hr);</span><br><span class="line">            CoUninitialize();</span><br><span class="line">            ExitProcess(<span class="number">0</span>);        </span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    id-&gt;lpVtbl-&gt;Release(id);</span><br><span class="line">    icf-&gt;lpVtbl-&gt;Release(icf);</span><br><span class="line">    SysFreeString(args.bstrVal);</span><br><span class="line">    CoUninitialize();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="Golang-调用COM"><a href="#Golang-调用COM" class="headerlink" title="Golang 调用COM"></a>Golang 调用COM</h3><p>　　使用go-ole 库实现与COM组件交互</p>
+<figure class="highlight cmd"><table><tbody><tr><td class="code"><pre><span class="line">go get github.com/go-ole/go-ole</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　如果目标COM组件 实现了IDispatch 接口</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/go-ole/go-ole"</span></span><br><span class="line">	<span class="string">"github.com/go-ole/go-ole/oleutil"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	<span class="comment">// 初始化 COM 环境</span></span><br><span class="line">	err := ole.CoInitialize(<span class="number">0</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">		log.Fatalf(<span class="string">"CoInitialize failed: %v"</span>, err)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">defer</span> ole.CoUninitialize()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取 CLSID（WScript.Shell）</span></span><br><span class="line">	clsid, err := ole.CLSIDFromString(<span class="string">"{72C24DD5-D70A-438B-8A42-98424B88AFB8}"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">		log.Fatalf(<span class="string">"CLSIDFromString failed: %v"</span>, err)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建 COM 对象实例</span></span><br><span class="line">	unknown, err := ole.CreateInstance(clsid, <span class="literal">nil</span>, ole.CLSCTX_ALL)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">		log.Fatalf(<span class="string">"CreateInstance failed: %v"</span>, err)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">defer</span> unknown.Release()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取 IDispatch 接口</span></span><br><span class="line">	shell, err := unknown.QueryInterface(ole.IID_IDispatch)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">		log.Fatalf(<span class="string">"QueryInterface failed: %v"</span>, err)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">defer</span> shell.Release()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用 Run 方法</span></span><br><span class="line">	_, err = oleutil.CallMethod(shell, <span class="string">"Run"</span>, <span class="string">"notepad.exe"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">		log.Fatalf(<span class="string">"Run() failed: %v"</span>, err)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　假如目标COM组件 没有实现，需要像c那样定义结构体 虚函数表</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"syscall"</span></span><br><span class="line">	<span class="string">"unsafe"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/go-ole/go-ole"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// --- COM 接口定义 ---</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IShellLinkWVtbl <span class="keyword">struct</span> {</span><br><span class="line">	QueryInterface <span class="type">uintptr</span></span><br><span class="line">	AddRef         <span class="type">uintptr</span></span><br><span class="line">	Release        <span class="type">uintptr</span></span><br><span class="line">	GetPath        <span class="type">uintptr</span></span><br><span class="line">	GetIDList      <span class="type">uintptr</span></span><br><span class="line">	SetIDList      <span class="type">uintptr</span></span><br><span class="line">	GetDescription <span class="type">uintptr</span></span><br><span class="line">	SetDescription <span class="type">uintptr</span></span><br><span class="line">	GetWorkingDirectory <span class="type">uintptr</span></span><br><span class="line">	SetWorkingDirectory <span class="type">uintptr</span></span><br><span class="line">	GetArguments <span class="type">uintptr</span></span><br><span class="line">	SetArguments <span class="type">uintptr</span></span><br><span class="line">	GetHotkey <span class="type">uintptr</span></span><br><span class="line">	SetHotkey <span class="type">uintptr</span></span><br><span class="line">	GetShowCmd <span class="type">uintptr</span></span><br><span class="line">	SetShowCmd <span class="type">uintptr</span></span><br><span class="line">	GetIconLocation <span class="type">uintptr</span></span><br><span class="line">	SetIconLocation <span class="type">uintptr</span></span><br><span class="line">	SetRelativePath <span class="type">uintptr</span></span><br><span class="line">	Resolve <span class="type">uintptr</span></span><br><span class="line">	SetPath <span class="type">uintptr</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IShellLinkW <span class="keyword">struct</span> {</span><br><span class="line">	LpVtbl *IShellLinkWVtbl</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IPersistFileVtbl <span class="keyword">struct</span> {</span><br><span class="line">	QueryInterface <span class="type">uintptr</span></span><br><span class="line">	AddRef         <span class="type">uintptr</span></span><br><span class="line">	Release        <span class="type">uintptr</span></span><br><span class="line">	GetClassID     <span class="type">uintptr</span></span><br><span class="line">	IsDirty        <span class="type">uintptr</span></span><br><span class="line">	Load           <span class="type">uintptr</span></span><br><span class="line">	Save           <span class="type">uintptr</span></span><br><span class="line">	SaveCompleted  <span class="type">uintptr</span></span><br><span class="line">	GetCurFile     <span class="type">uintptr</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> IPersistFile <span class="keyword">struct</span> {</span><br><span class="line">	LpVtbl *IPersistFileVtbl</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	CLSID_ShellLink = ole.NewGUID(<span class="string">"{00021401-0000-0000-C000-000000000046}"</span>)</span><br><span class="line">	IID_IShellLinkW = ole.NewGUID(<span class="string">"{000214F9-0000-0000-C000-000000000046}"</span>)</span><br><span class="line">	IID_IPersistFile = ole.NewGUID(<span class="string">"{0000010b-0000-0000-C000-000000000046}"</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	ole.CoInitialize(<span class="number">0</span>)</span><br><span class="line">	<span class="keyword">defer</span> ole.CoUninitialize()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> pShellLink *IShellLinkW</span><br><span class="line">	hr := ole.CoCreateInstance(</span><br><span class="line">		CLSID_ShellLink,</span><br><span class="line">		<span class="literal">nil</span>,</span><br><span class="line">		ole.CLSCTX_INPROC_SERVER,</span><br><span class="line">		IID_IShellLinkW,</span><br><span class="line">		(*unsafe.Pointer)(unsafe.Pointer(&amp;pShellLink)),</span><br><span class="line">	)</span><br><span class="line">	<span class="keyword">if</span> hr != <span class="number">0</span> {</span><br><span class="line">		log.Fatalf(<span class="string">"CoCreateInstance failed: 0x%x"</span>, hr)</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">defer</span> syscall.SyscallN(pShellLink.LpVtbl.Release, <span class="type">uintptr</span>(unsafe.Pointer(pShellLink)))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用 IShellLinkW::SetPath</span></span><br><span class="line">	target, _ := syscall.UTF16PtrFromString(<span class="string">"C:\\Windows\\System32\\notepad.exe"</span>)</span><br><span class="line">	syscall.SyscallN(</span><br><span class="line">		pShellLink.LpVtbl.SetPath,</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(pShellLink)),</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(target)),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用 IShellLinkW::SetDescription</span></span><br><span class="line">	desc, _ := syscall.UTF16PtrFromString(<span class="string">"Launch Notepad"</span>)</span><br><span class="line">	syscall.SyscallN(</span><br><span class="line">		pShellLink.LpVtbl.SetDescription,</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(pShellLink)),</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(desc)),</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取 IPersistFile 接口</span></span><br><span class="line">	<span class="keyword">var</span> pPersistFile *IPersistFile</span><br><span class="line">	syscall.SyscallN(</span><br><span class="line">		pShellLink.LpVtbl.QueryInterface,</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(pShellLink)),</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(IID_IPersistFile)),</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(&amp;pPersistFile)),</span><br><span class="line">	)</span><br><span class="line">	<span class="keyword">defer</span> syscall.SyscallN(pPersistFile.LpVtbl.Release, <span class="type">uintptr</span>(unsafe.Pointer(pPersistFile)))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用 IPersistFile::Save 保存 .lnk 文件</span></span><br><span class="line">	savePath, _ := syscall.UTF16PtrFromString(<span class="string">"C:\\Users\\Public\\Desktop\\Notepad.lnk"</span>)</span><br><span class="line">	syscall.SyscallN(</span><br><span class="line">		pPersistFile.LpVtbl.Save,</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(pPersistFile)),</span><br><span class="line">		<span class="type">uintptr</span>(unsafe.Pointer(savePath)),</span><br><span class="line">		<span class="number">1</span>, <span class="comment">// TRUE</span></span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">" Shortcut created: C:\\Users\\Public\\Desktop\\Notepad.lnk"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="COM-利用"><a href="#COM-利用" class="headerlink" title="COM 利用"></a>COM 利用</h2><p>　　枚举COM对象</p>
+<figure class="highlight c++"><table><tbody><tr><td class="code"><pre><span class="line">gwmi Win32_COMSetting | ? {$_.progid } | sort | ft ProgId,Caption,InprocServer32</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　COM接口里枚举出来的函数（如果是微软公开的话）可以到：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/search/?dataSource=previousVersions&amp;terms=">https://docs.microsoft.com/en-us/search/?dataSource=previousVersions&amp;terms=</a> 搜索</p>
+<p>　　利用系统提供的COM组件</p>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><p>　　使用mmc 来执行命令（管理员权限）</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$handle</span> = [<span class="type">activator</span>]::CreateInstance([<span class="type">type</span>]::GetTypeFromProgID(<span class="string">"MMC20.Application.1"</span>))</span><br><span class="line"><span class="variable">$handle</span>.Document.ActiveView.ExecuteShellCommand(<span class="string">"cmd"</span>,<span class="variable">$null</span>,<span class="string">"/c calc"</span>,<span class="string">"7"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　另外一种com 执行命令：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$hb</span> = [<span class="type">activator</span>]::CreateInstance([<span class="type">type</span>]::GetTypeFromCLSID(<span class="string">"9BA05972-F6A8-11CF-A442-00A0C90A8F39"</span>)) </span><br><span class="line"><span class="variable">$item</span> = <span class="variable">$hb</span>.Item() </span><br><span class="line"><span class="variable">$item</span>.Document.Application.ShellExecute(<span class="string">"cmd.exe"</span>,<span class="string">"/c calc.exe"</span>,<span class="string">"c:\windows\system32"</span>,<span class="variable">$null</span>,<span class="number">0</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　WScript.Shell </p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$shell</span> = [<span class="type">Activator</span>]::CreateInstance([<span class="type">type</span>]::GetTypeFromCLSID(<span class="string">"72C24DD5-D70A-438B-8A42-98424B88AFB8"</span>))</span><br><span class="line"><span class="variable">$shell</span>.Run(<span class="string">"calc.exe"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="计划任务"><a href="#计划任务" class="headerlink" title="计划任务"></a>计划任务</h3><p>　　通过调用ITaskFolder::registerTask 来注册计划任务</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="进程注入"><a href="#进程注入" class="headerlink" title="进程注入"></a>进程注入</h3><p>　　‍</p>
+<p>　　利用com实现进程注入，没有调用CreateProcess等常规api，而是调用<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/winauto/getprocesshandlefromhwnd">oleacc.dll!GetProcessHandleFromHwnd()</a>，利用 <code>IRundown::DoCallback()</code>执行命令，并且该接口需要一个IPID和OXID值来执行代码。该接口也不是公开的方法，需要手动去逆，来实现武器化</p>
+<p>　　‍</p>
+<p>　　相关项目</p>
+<p>　　<a target="_blank" rel="noopener" href="https://github.com/mdsecactivebreach/com_inject">https://github.com/mdsecactivebreach/com_inject</a></p>
+<p>　　‍</p>
+<h2 id="COM-劫持"><a href="#COM-劫持" class="headerlink" title="COM 劫持"></a>COM 劫持</h2><p>　　com组件从注册表中获取二进制文件路径，加载过程如下：</p>
+<ol>
+<li><strong>HKCU\Software\Classes\CLSID</strong></li>
+<li><strong>HKCR\CLSID</strong></li>
+<li>*<em>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\shellCompatibility\Objects*</em></li>
+</ol>
+<p>　　看到HKCU的优先级高于HKCR高于HKLM:</p>
+<p>　　当前 用户COM &gt; 系统COM &gt; 兼容性映射COM</p>
+<p>　　‍</p>
+<p>　　那我们的目标就很明显了，劫持目标选择 HKCU\Software\Classes\CLSID 用户注册COM组件，这样就会先加载我们的恶意dll</p>
+<p>　　与dll劫持不同的是，dll劫持只能劫持dll，com劫持可以劫持 com文件、pe文件、api文件等</p>
+<p>　　<strong>步骤就是修改注册表的路径</strong>，指向我们的恶意路径，和白加黑一样</p>
+<p>　　‍</p>
+<p>　　与DLL劫持原理相近，但是COM组件的劫持可以拓展很多东西，劫持的目标不一定是一个进程，劫持所需的文件不一定是一个DLL，它可以是一个.com文件、二进制PE文件、DLL文件，劫持的目标也可以是一个Windows API。</p>
+<p>　　‍</p>
+<h3 id="利用缺失的CLSID"><a href="#利用缺失的CLSID" class="headerlink" title="利用缺失的CLSID"></a>利用缺失的CLSID</h3><p>　　条件： 管理员权限</p>
+<p>　　因为修改InprocServer32下的dll需要一定权限，所以该方法需要管理员权限</p>
+<p>　　‍</p>
+<p>　　使用Process Monitor 收集,</p>
+<p>　　添加filter：</p>
+<ul>
+<li>RegOpenKey 注册表读取操作</li>
+<li>注册表路径 包含 InprocServer32</li>
+<li>结果是 <code>NAME NOT FOUND</code></li>
+</ul>
+<p><img src="/img/2026/2-24/image-20251102015728-ylh8wj8.png" alt="image"></p>
+<p>　　能找到很多</p>
+<p><img src="/img/2026/2-24/image-20251102015950-z1digtg.png" alt="image"></p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h3 id="覆盖COM键"><a href="#覆盖COM键" class="headerlink" title="覆盖COM键"></a>覆盖COM键</h3><p>　　‍</p>
+<p>　　原理：在<code>HKCU</code>​注册表中添加键值后，当com对象被调用，<code>HKLM</code>​中的键值就会被覆盖(并且添加到<code>HKCR</code>)中</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　思路： 查找低权限可调用的COM组件 ，修改注册表项 ，修改加载的dll为恶意dll</p>
+<p>　　该劫方法不需要高权限，可以看到本来的注册表项键值，但是需要找到一个通用的COM组件</p>
+<p>　　‍</p>
+<p>　　先使用oleview.net来过滤程序启动权限为空的id</p>
+<p><img src="/img/2026/2-24/image-20251102171308-tar5dlo.png" alt="image"></p>
+<p>　　找一个查看属性，CLSID: 275AF033-1C37-48ED-91F7-8E23C5D9B382</p>
+<p><img src="/img/2026/2-24/image-20251102171958-p5nzwrl.png" alt="image"></p>
+<p>　　HKEY_CLASSES_ROOT\CLSID{275AF033-1C37-48ED-91F7-8E23C5D9B382}\InProcServer32</p>
+<p><img src="/img/2026/2-24/image-20251102172506-dz7d7zq.png" alt="image"></p>
+<p>　　‍</p>
+<p>　　将其修改为恶意dll路径</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<p>　　‍</p>
+<h2 id="COM注册表滥用利用"><a href="#COM注册表滥用利用" class="headerlink" title="COM注册表滥用利用"></a>COM注册表滥用利用</h2><p>　　查找注册的COM 中 注册表中指定可执行文件不存在的 进行利用</p>
+<p>　　‍</p>
+<h3 id="LocalServer32"><a href="#LocalServer32" class="headerlink" title="LocalServer32"></a>LocalServer32</h3><p>　　枚举所有LocalServer32键值</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$inproc</span> = <span class="built_in">gwmi</span> Win32_COMSetting | ?{ <span class="variable">$_</span>.LocalServer32 <span class="operator">-ne</span> <span class="variable">$null</span> }</span><br><span class="line"><span class="variable">$inproc</span> | <span class="keyword">ForEach</span> {<span class="variable">$_</span>.LocalServer32} &gt; values.txt</span><br><span class="line"></span><br><span class="line"><span class="built_in">gwmi</span> Win32_COMSetting <span class="literal">-computername</span> <span class="number">127.0</span>.<span class="number">0.1</span> | <span class="built_in">ft</span> LocalServer32 <span class="literal">-autosize</span> | <span class="built_in">Out-String</span> <span class="literal">-width</span> <span class="number">4096</span> | <span class="built_in">out-file</span> dcom_exes.txt</span><br><span class="line"></span><br><span class="line"><span class="built_in">gwmi</span> Win32_COMSetting <span class="literal">-computername</span> <span class="number">127.0</span>.<span class="number">0.1</span> | <span class="built_in">ft</span> InProcServer32 <span class="literal">-autosize</span> | <span class="built_in">Out-String</span> <span class="literal">-width</span> <span class="number">4096</span> | <span class="built_in">out-file</span> dcom_dlls.txt</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　寻找File not Found</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$paths</span> = <span class="built_in">gc</span> .\values.txt</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$p</span> <span class="keyword">in</span> <span class="variable">$paths</span>){<span class="variable">$p</span>;cmd /c <span class="built_in">dir</span> <span class="variable">$p</span> &gt; <span class="variable">$null</span>}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　找exe的文件夹路径</p>
+<p><img src="/img/2026/2-24/image-20251102174131-wzk1zcd.png" alt="image"></p>
+<p>　　找可用exe路径的效率很低</p>
+<p>　　‍</p>
+<h3 id="InprocServer32"><a href="#InprocServer32" class="headerlink" title="InprocServer32"></a>InprocServer32</h3><p>　　枚举所有InprocServer32中的键值</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$inproc</span> = <span class="built_in">gwmi</span> Win32_COMSetting | ?{ <span class="variable">$_</span>.InprocServer32 <span class="operator">-ne</span> <span class="variable">$null</span> }</span><br><span class="line"><span class="variable">$paths</span> = <span class="variable">$inproc</span> | <span class="keyword">ForEach</span> {<span class="variable">$_</span>.InprocServer32} &gt; comDll.txt</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p><img src="/img/2026/2-24/image-20251102174625-csiqyo0.png" alt="image"></p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$paths</span> = <span class="built_in">gc</span> .\comDll.txt</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$p</span> <span class="keyword">in</span> <span class="variable">$paths</span>){<span class="variable">$p</span>;cmd /c <span class="built_in">dir</span> <span class="variable">$p</span> &gt; <span class="variable">$null</span>}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　找文件夹的权限路径，如果everyone可写，可以替换恶意dll，然后使用rundll32加载</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">rundll32.exe <span class="literal">-sta</span> {CLSID}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<h2 id="COM-挖掘"><a href="#COM-挖掘" class="headerlink" title="COM 挖掘"></a>COM 挖掘</h2><h3 id="手动挖掘"><a href="#手动挖掘" class="headerlink" title="手动挖掘"></a>手动挖掘</h3><p>　　首先需要遍历系统中所有COM对象的CLSID，于是编写powershell脚本，将CLSID输出到txt文本中：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">New-PSDrive</span> <span class="literal">-PSProvider</span> registry <span class="literal">-Root</span> HKEY_CLASSES_ROOT <span class="literal">-Name</span> HKCR</span><br><span class="line"><span class="built_in">Get-ChildItem</span> <span class="literal">-Path</span> HKCR:\CLSID <span class="literal">-Name</span> | <span class="built_in">Select</span> <span class="literal">-Skip</span> <span class="number">1</span> &gt; clsids.txt</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　接着利用这些clsid通过powershell创建对应的COM对象，并且使用Get-Member方法获取对应的方法和属性，并最终输出到文本中，pwoershell脚本如下：</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="variable">$Position</span>  = <span class="number">1</span></span><br><span class="line"><span class="variable">$Filename</span> = <span class="string">"clsid-members.txt"</span></span><br><span class="line"><span class="variable">$inputFilename</span> = <span class="string">"clsids.txt"</span></span><br><span class="line"><span class="keyword">ForEach</span>(<span class="variable">$CLSID</span> <span class="keyword">in</span> <span class="built_in">Get-Content</span> <span class="variable">$inputFilename</span>) {</span><br><span class="line">      <span class="built_in">Write-Output</span> <span class="string">"<span class="variable">$</span>(<span class="variable">$Position</span>) - <span class="variable">$</span>(<span class="variable">$CLSID</span>)"</span></span><br><span class="line">      <span class="built_in">Write-Output</span> <span class="string">"------------------------"</span> | <span class="built_in">Out-File</span> <span class="variable">$Filename</span> <span class="literal">-Append</span></span><br><span class="line">      <span class="built_in">Write-Output</span> <span class="variable">$</span>(<span class="variable">$CLSID</span>) | <span class="built_in">Out-File</span> <span class="variable">$Filename</span> <span class="literal">-Append</span></span><br><span class="line">      <span class="variable">$handle</span> = [<span class="type">activator</span>]::CreateInstance([<span class="type">type</span>]::GetTypeFromCLSID(<span class="variable">$CLSID</span>))</span><br><span class="line">      <span class="variable">$handle</span> | <span class="built_in">Get-Member</span> | <span class="built_in">Out-File</span> <span class="variable">$Filename</span> <span class="literal">-Append</span></span><br><span class="line">      <span class="variable">$Position</span> += <span class="number">1</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　‍</p>
+<p>　　自动化挖掘：<a target="_blank" rel="noopener" href="https://github.com/nickvourd/COM-Hunter">https://github.com/nickvourd/COM-Hunter</a></p>
+<p>　　‍</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mohamed-fakroud.gitbook.io/red-teamings-dojo/windows-internals/playing-around-com-objects-part-1">https://mohamed-fakroud.gitbook.io/red-teamings-dojo/windows-internals/playing-around-com-objects-part-1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.221bluestreet.com/offensive-security/windows-components-object-model/demystifying-windows-component-object-model-com">https://www.221bluestreet.com/offensive-security/windows-components-object-model/demystifying-windows-component-object-model-com</a></li>
+<li><a target="_blank" rel="noopener" href="http://diff3.com/b7ae/">http://diff3.com/b7ae/</a></li>
+<li><a target="_blank" rel="noopener" href="https://tttang.com/archive/1824/">https://tttang.com/archive/1824/</a></li>
+</ul>
+<p>　　‍</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/cover/9.jpg" data-sizes="auto" alt="Fastjosn_Jackson_Hessian原生反序列化" class="lazyload">
+      
+      <a href="/2025/02/08/Fastjosn-Jackson-Hessian%E5%8E%9F%E7%94%9F%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          Fastjosn_Jackson_Hessian原生反序列化
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+  <div id="comments" class="gtcomment"></div>
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#COM-%E7%BB%84%E4%BB%B6%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">COM 组件对象模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E7%BB%84%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-number">1.1.</span> <span class="toc-text">COM 组件组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E4%B8%8E%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.1.</span> <span class="toc-text">对象与接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IUnknown%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.2.</span> <span class="toc-text">IUnknown接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IClassFactory"><span class="toc-number">1.1.3.</span> <span class="toc-text">IClassFactory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDispatch-%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.4.</span> <span class="toc-text">IDispatch 接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA"><span class="toc-number">1.2.</span> <span class="toc-text">COM对象创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#COM%E5%BA%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">COM库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COM%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">COM对象创建流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COM%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C"><span class="toc-number">1.2.3.</span> <span class="toc-text">COM组件注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COM-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">COM 服务器类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#In-Process-Server"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">In-Process Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Out-of-Process-Local-Server"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">Out-of-Process Local Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Out-of-Process-Local-Server-1"><span class="toc-number">1.2.4.3.</span> <span class="toc-text">Out-of-Process Local Server</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">COM组件开发使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.1.</span> <span class="toc-text">C++ 开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E8%B0%83%E7%94%A8COM"><span class="toc-number">1.3.2.</span> <span class="toc-text">C语言调用COM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Golang-%E8%B0%83%E7%94%A8COM"><span class="toc-number">1.3.3.</span> <span class="toc-text">Golang 调用COM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E5%88%A9%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">COM 利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.4.1.</span> <span class="toc-text">命令执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.4.2.</span> <span class="toc-text">计划任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.3.</span> <span class="toc-text">进程注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E5%8A%AB%E6%8C%81"><span class="toc-number">1.5.</span> <span class="toc-text">COM 劫持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%BC%BA%E5%A4%B1%E7%9A%84CLSID"><span class="toc-number">1.5.1.</span> <span class="toc-text">利用缺失的CLSID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%86%E7%9B%96COM%E9%94%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text">覆盖COM键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%BB%A5%E7%94%A8%E5%88%A9%E7%94%A8"><span class="toc-number">1.6.</span> <span class="toc-text">COM注册表滥用利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LocalServer32"><span class="toc-number">1.6.1.</span> <span class="toc-text">LocalServer32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#InprocServer32"><span class="toc-number">1.6.2.</span> <span class="toc-text">InprocServer32</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E6%8C%96%E6%8E%98"><span class="toc-number">1.7.</span> <span class="toc-text">COM 挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%8C%96%E6%8E%98"><span class="toc-number">1.7.1.</span> <span class="toc-text">手动挖掘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">1.8.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">43</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">69</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2023-2026
+      <span class="footer-info-sep"></span>
+      Yyjccc
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        162k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        11:09
+      </div>
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#COM-%E7%BB%84%E4%BB%B6%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">COM 组件对象模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E7%BB%84%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-number">1.1.</span> <span class="toc-text">COM 组件组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E4%B8%8E%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.1.</span> <span class="toc-text">对象与接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IUnknown%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.2.</span> <span class="toc-text">IUnknown接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IClassFactory"><span class="toc-number">1.1.3.</span> <span class="toc-text">IClassFactory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDispatch-%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.4.</span> <span class="toc-text">IDispatch 接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA"><span class="toc-number">1.2.</span> <span class="toc-text">COM对象创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#COM%E5%BA%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">COM库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COM%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">COM对象创建流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COM%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C"><span class="toc-number">1.2.3.</span> <span class="toc-text">COM组件注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COM-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">COM 服务器类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#In-Process-Server"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">In-Process Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Out-of-Process-Local-Server"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">Out-of-Process Local Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Out-of-Process-Local-Server-1"><span class="toc-number">1.2.4.3.</span> <span class="toc-text">Out-of-Process Local Server</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">COM组件开发使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.1.</span> <span class="toc-text">C++ 开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E8%B0%83%E7%94%A8COM"><span class="toc-number">1.3.2.</span> <span class="toc-text">C语言调用COM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Golang-%E8%B0%83%E7%94%A8COM"><span class="toc-number">1.3.3.</span> <span class="toc-text">Golang 调用COM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E5%88%A9%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">COM 利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.4.1.</span> <span class="toc-text">命令执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.4.2.</span> <span class="toc-text">计划任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.3.</span> <span class="toc-text">进程注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E5%8A%AB%E6%8C%81"><span class="toc-number">1.5.</span> <span class="toc-text">COM 劫持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%BC%BA%E5%A4%B1%E7%9A%84CLSID"><span class="toc-number">1.5.1.</span> <span class="toc-text">利用缺失的CLSID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%86%E7%9B%96COM%E9%94%AE"><span class="toc-number">1.5.2.</span> <span class="toc-text">覆盖COM键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%BB%A5%E7%94%A8%E5%88%A9%E7%94%A8"><span class="toc-number">1.6.</span> <span class="toc-text">COM注册表滥用利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LocalServer32"><span class="toc-number">1.6.1.</span> <span class="toc-text">LocalServer32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#InprocServer32"><span class="toc-number">1.6.2.</span> <span class="toc-text">InprocServer32</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COM-%E6%8C%96%E6%8E%98"><span class="toc-number">1.7.</span> <span class="toc-text">COM 挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%8C%96%E6%8E%98"><span class="toc-number">1.7.1.</span> <span class="toc-text">手动挖掘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">1.8.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yyjccc" class="lazyload">
+  <div class="sidebar-author-name">Yyjccc</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">43</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">69</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Yyjccc itemprop="url" target="_blank" aria-label="github"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">首页</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">归档</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">关于</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">友链</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+<script type="module" data-pjax>
+  import PhotoSwipeLightbox from "https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js";
+  
+  const pswp = () => {
+    if (_$$('.article-entry a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-entry',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+      new PhotoSwipeLightbox({
+        gallery: '.article-gallery',
+        children: 'a.article-gallery-item',
+        pswpModule: () => import("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js")
+      }).init();
+    }
+    window.lightboxStatus = 'done';
+    window.removeEventListener('lightbox:ready', pswp);
+  }
+  if(window.lightboxStatus === 'ready') {
+    pswp()
+  } else {
+    window.addEventListener('lightbox:ready', pswp);
+  }
+</script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/gitalk/dist/gitalk.min.js" data-pjax></script>
+
+  
+  <script data-pjax>
+    var gitalkId = location.pathname;
+    var gitalk = new Gitalk({
+      clientID: '0efb4a442bc09d1ba17e',
+      clientSecret: 'd26f520fef841de4f4388029a0d5c0f4730357cf',
+      repo: 'https://github.com/Yyjccc/yyjccc.github.io.git',
+      owner: 'Yyjccc',
+      admin: "Yyjccc",
+      id: gitalkId, // Ensure uniqueness and length less than 50
+      distractionFreeMode: false // Facebook-like distraction free mode
+    })
+    if (document.getElementById('comments')) {
+      gitalk.render('comments')
+    }
+  </script>
+
+
+
+
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+  <script>
+    function initLive2d() {
+      live2d.init("https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/", {themeTipsPath: ""});
+    }
+  </script>
+  
+<script src="https://fastly.jsdelivr.net/gh/D-Sketon/plugin-live2d/js/live2d-autoload.js" onload="initLive2d &amp;&amp; initLive2d()" async></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+
+  <script data-pjax>
+    quicklink.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.0-alpha.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true,"react":{"opacity":0.7}}});</script></body>
+  </html>
+
